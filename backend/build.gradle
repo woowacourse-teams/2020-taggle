@@ -5,43 +5,45 @@ plugins {
     id 'java'
 }
 
-group = 'com.woowacourse'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+subprojects {
+    group = 'com.woowacourse'
+    version = '0.0.1-SNAPSHOT'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = '1.8'
+
+    repositories {
+        mavenCentral()
     }
-}
 
-repositories {
-    mavenCentral()
-}
-
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'com.h2database:h2'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    ext {
+        set('snippetsDir', file("build/generated-snippets"))
     }
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-}
 
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
 
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
+    test {
+        outputs.dir snippetsDir
+        useJUnitPlatform()
+    }
+
+    asciidoctor {
+        inputs.dir snippetsDir
+        dependsOn test
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 }

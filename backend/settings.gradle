@@ -1,1 +1,5 @@
 rootProject.name = 'taggle'
+include 'web'
+include 'core'
+include 'admin'
+
