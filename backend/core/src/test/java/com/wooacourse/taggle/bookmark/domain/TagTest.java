@@ -11,13 +11,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.wooacourse.taggle.bookmark.exception.EmptyValueException;
 
 class TagTest {
-    @DisplayName("constructor: 빈 생성자로 Tag 인스턴스 생성")
-    @Test
-    void noArgsConstructor() {
-        assertThat(new Tag())
-                .isInstanceOf(Tag.class);
-    }
-
     @DisplayName("constructor: 인자가 있는 경우 Tag 인스턴스 생성")
     @Test
     void allArgsConstructor() {

@@ -10,13 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.wooacourse.taggle.bookmark.exception.UrlFormatMismatchException;
 
 class LinkTest {
-    @DisplayName("constructor: Link 인스턴스 생성")
-    @Test
-    void constructor() {
-        assertThat(new Link())
-                .isInstanceOf(Link.class);
-    }
-
     @DisplayName("constructor: url을 인자로 받아 인스턴스 생성")
     @ParameterizedTest
     @ValueSource(strings = {"https://github.com", "naver.com", "bit.ly/hello"})
