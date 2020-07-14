@@ -1,10 +1,10 @@
-package com.wooacourse.taggle.domain.bookmark;
+package com.wooacourse.taggle.bookmark.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.wooacourse.taggle.domain.bookmark.exception.EmptyValueException;
+import com.wooacourse.taggle.bookmark.exception.EmptyValueException;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

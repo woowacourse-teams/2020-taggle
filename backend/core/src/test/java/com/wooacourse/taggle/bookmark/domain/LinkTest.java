@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.domain.bookmark;
+package com.wooacourse.taggle.bookmark.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.wooacourse.taggle.domain.bookmark.exception.UrlFormatMismatchException;
+import com.wooacourse.taggle.bookmark.exception.UrlFormatMismatchException;
 
 class LinkTest {
     @DisplayName("constructor: Link 인스턴스 생성")

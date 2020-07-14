@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.domain.bookmark;
+package com.wooacourse.taggle.bookmark.domain;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.wooacourse.taggle.domain.bookmark.exception.UrlFormatMismatchException;
+import com.wooacourse.taggle.bookmark.exception.UrlFormatMismatchException;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
