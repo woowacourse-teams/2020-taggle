@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.domain.user;
+package com.wooacourse.taggle.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

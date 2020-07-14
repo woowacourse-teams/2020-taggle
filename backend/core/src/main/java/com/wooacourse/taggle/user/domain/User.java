@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.domain.user;
+package com.wooacourse.taggle.user.domain;
 
 import java.time.LocalDateTime;
 
@@ -10,18 +10,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
+import com.wooacourse.taggle.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,17 +39,11 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    @CreatedDate
-    private LocalDateTime signUpDate;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
-
     private LocalDateTime signOutDate;
 
     @Builder
-    public User(String nickName, String email, String kakaoId, String phoneNumber,
-            Role role) {
+    public User(final String nickName, final String email, final String kakaoId, final String phoneNumber,
+            final Role role) {
         this.nickName = nickName;
         this.email = email;
         this.kakaoId = kakaoId;
