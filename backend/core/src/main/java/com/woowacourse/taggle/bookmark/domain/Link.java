@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.bookmark.domain;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.wooacourse.taggle.bookmark.exception.UrlFormatMismatchException;
+import com.woowacourse.taggle.bookmark.exception.UrlFormatMismatchException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

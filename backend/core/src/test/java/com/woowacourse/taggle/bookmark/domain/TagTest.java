@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.bookmark.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -8,7 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import com.wooacourse.taggle.bookmark.exception.EmptyValueException;
+import com.woowacourse.taggle.bookmark.exception.EmptyValueException;
 
 class TagTest {
     @DisplayName("constructor: 인자가 있는 경우 Tag 인스턴스 생성")

@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.bookmark.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

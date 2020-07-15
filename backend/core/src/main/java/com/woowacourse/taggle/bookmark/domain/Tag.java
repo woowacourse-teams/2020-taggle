@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.bookmark.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.wooacourse.taggle.bookmark.exception.EmptyValueException;
+import com.woowacourse.taggle.bookmark.exception.EmptyValueException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
