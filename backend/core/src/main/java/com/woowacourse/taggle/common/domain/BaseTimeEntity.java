@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.common.domain;
+package com.woowacourse.taggle.common.domain;
 
 import java.time.LocalDateTime;
 
@@ -13,10 +13,10 @@ import lombok.Getter;
 
 @Getter
 @MappedSuperclass
-@EntityListeners(value = { AuditingEntityListener.class })
+@EntityListeners(value = {AuditingEntityListener.class})
 public abstract class BaseTimeEntity {
     @CreatedDate
-    private LocalDateTime signUpDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;

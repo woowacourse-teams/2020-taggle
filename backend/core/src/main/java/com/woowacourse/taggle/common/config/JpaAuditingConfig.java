@@ -1,4 +1,4 @@
-package com.wooacourse.taggle.common.config;
+package com.woowacourse.taggle.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
