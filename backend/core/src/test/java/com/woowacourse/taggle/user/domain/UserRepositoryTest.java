@@ -30,17 +30,21 @@ class UserRepositoryTest {
     @DisplayName("save(): 유저 저장 확인 테스트")
     @Test
     void save() {
+        // when
         final User actual = userRepository.save(user);
 
+        // then
         assertThat(actual).isNotNull();
     }
 
     @DisplayName("findByEmail(): 이메일로 유저 찾기 테스트")
     @Test
     void findByEmail() {
+        // when
         userRepository.save(user);
         final Optional<User> actual = userRepository.findByEmail(user.getEmail());
 
+        // then
         assertThat(actual).isNotEmpty();
     }
 }
