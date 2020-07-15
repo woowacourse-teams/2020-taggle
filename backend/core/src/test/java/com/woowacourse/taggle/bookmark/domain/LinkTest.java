@@ -14,8 +14,7 @@ class LinkTest {
     @ParameterizedTest
     @ValueSource(strings = {"https://github.com", "naver.com", "bit.ly/hello"})
     void allArgsConstructor(final String url) {
-        assertThat(new Link(url))
-                .isInstanceOf(Link.class);
+        assertThat(new Link(url)).isInstanceOf(Link.class);
     }
 
     @DisplayName("constructor: url의 형태가 올바르지 않을 때 예외 발생")

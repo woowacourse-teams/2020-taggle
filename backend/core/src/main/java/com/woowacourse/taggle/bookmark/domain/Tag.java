@@ -27,12 +27,16 @@ public class Tag {
         this.name = name;
     }
 
-    private void validate(String name) {
+    private void validate(final String name) {
         String trimmedName = name.trim();
         if (trimmedName.length() == 0) {
             throw new EmptyValueException("name이 존재하지 않습니다.\n"
                     + "name: " + name);
         }
+    }
+
+    public boolean isSameName(final Tag tag) {
+        return this.name.equals(tag.getName());
     }
 }
 

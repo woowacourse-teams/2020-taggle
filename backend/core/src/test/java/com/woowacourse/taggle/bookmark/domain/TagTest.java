@@ -14,8 +14,7 @@ class TagTest {
     @DisplayName("constructor: 인자가 있는 경우 Tag 인스턴스 생성")
     @Test
     void allArgsConstructor() {
-        assertThat(new Tag("java"))
-                .isInstanceOf(Tag.class);
+        assertThat(new Tag("java")).isInstanceOf(Tag.class);
     }
 
     @DisplayName("constructor: 이름이 빈 문자열로 입력된 경우 예외 발생")
