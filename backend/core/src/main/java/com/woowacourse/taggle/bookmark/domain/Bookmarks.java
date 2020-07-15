@@ -32,4 +32,8 @@ public class Bookmarks {
                     + "bookmark:" + bookmark);
         }
     }
+
+    public void removeBookmark(final Bookmark bookmark) {
+        bookmarks.remove(bookmark);
+    }
 }

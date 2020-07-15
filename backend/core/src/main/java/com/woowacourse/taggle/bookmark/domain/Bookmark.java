@@ -36,4 +36,8 @@ public class Bookmark {
     public boolean isSameUrl(final Bookmark bookmark) {
         return this.link.getUrl().equals(bookmark.getLink().getUrl());
     }
+
+    public void removeTag(final Tag tag) {
+        tags.removeTag(tag);
+    }
 }

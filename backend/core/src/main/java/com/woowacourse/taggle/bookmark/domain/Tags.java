@@ -33,4 +33,8 @@ public class Tags {
                     + "tag:" + tag);
         }
     }
+
+    public void removeTag(final Tag tag) {
+        tags.remove(tag);
+    }
 }

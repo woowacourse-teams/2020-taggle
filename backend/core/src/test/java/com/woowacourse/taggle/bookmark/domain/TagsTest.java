@@ -49,4 +49,19 @@ class TagsTest {
                 .isInstanceOf(AlreadyExistTagException.class)
                 .hasMessageContaining("이미 존재하는 태그입니다");
     }
+
+    @DisplayName("removeTag: 새로운 태그 추가")
+    @Test
+    void removeTag() {
+        // given
+        Tags tags = Tags.empty();
+        Tag tag = new Tag("hello");
+        tags.addTag(tag);
+
+        // when
+        tags.removeTag(tag);
+
+        // then
+        assertThat(tags.getTags()).hasSize(0);
+    }
 }

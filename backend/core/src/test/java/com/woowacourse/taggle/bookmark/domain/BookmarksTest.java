@@ -31,8 +31,7 @@ public class BookmarksTest {
         bookmarks.addBookmark(bookmark);
 
         // then
-        assertThat(bookmarks.getBookmarks())
-                .hasSize(1);
+        assertThat(bookmarks.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("addBookmark: 이미 존재하는 북마크를 추가하려고 할 때 예외 발생")
@@ -50,5 +49,21 @@ public class BookmarksTest {
         assertThatThrownBy(() -> bookmarks.addBookmark(duplicateBookmark))
                 .isInstanceOf(AlreadyExistBookmarkException.class)
                 .hasMessageContaining("이미 존재하는 북마크입니다");
+    }
+
+    @DisplayName("addBookmark: 새로운 북마크 추가")
+    @Test
+    void removeBookmark() {
+        // given
+        Link link = new Link("https://github.com/taggle");
+        Bookmark bookmark = new Bookmark(link);
+        Bookmarks bookmarks = Bookmarks.empty();
+        bookmarks.addBookmark(bookmark);
+
+        // when
+        bookmarks.removeBookmark(bookmark);
+
+        // then
+        assertThat(bookmarks.getBookmarks()).hasSize(0);
     }
 }

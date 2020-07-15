@@ -45,4 +45,19 @@ public class BookmarkTest {
                 .isInstanceOf(AlreadyExistTagException.class)
                 .hasMessageContaining("이미 존재하는 태그입니다");
     }
+
+    @DisplayName("removeTag: 북마크에 태그 동록")
+    @Test
+    void removeTag() {
+        // given
+        Bookmark bookmark = new Bookmark(LINK);
+        Tag tag = new Tag("taggle");
+        bookmark.addTag(tag);
+
+        // when
+        bookmark.removeTag(tag);
+
+        // then
+        assertThat(bookmark.getTags().getTags()).hasSize(0);
+    }
 }
