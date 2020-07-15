@@ -15,9 +15,12 @@ public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private Link link;
+
     @Column(nullable = false)
     private boolean isRead;
+
     private Tags tags;
 
     public Bookmark(Link link) {
@@ -28,5 +31,9 @@ public class Bookmark {
 
     public void addTag(final Tag tag) {
         tags.addTag(tag);
+    }
+
+    public boolean isSameUrl(final Bookmark bookmark) {
+        return this.link.getUrl().equals(bookmark.getLink().getUrl());
     }
 }
