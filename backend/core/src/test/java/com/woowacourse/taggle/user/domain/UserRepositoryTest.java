@@ -2,6 +2,9 @@ package com.woowacourse.taggle.user.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +20,27 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    @DisplayName("save(): 유저가 저장되는지 확인하는 테스트")
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = new User("태글", "taggle@gmail.com", "taggle", "010-0000-0000", Role.USER);
+    }
+
+    @DisplayName("save(): 유저 저장 확인 테스트")
     @Test
     void save() {
-        final User user = new User("태글", "taggle@gmail.com", "taggle", "010-0000-0000", Role.USER);
         final User actual = userRepository.save(user);
+
         assertThat(actual).isNotNull();
+    }
+
+    @DisplayName("findByEmail(): 이메일로 유저 찾기 테스트")
+    @Test
+    void findByEmail() {
+        userRepository.save(user);
+        final Optional<User> actual = userRepository.findByEmail(user.getEmail());
+
+        assertThat(actual).isNotEmpty();
     }
 }
