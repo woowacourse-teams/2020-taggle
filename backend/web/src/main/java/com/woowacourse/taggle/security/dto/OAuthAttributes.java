@@ -23,8 +23,11 @@ public class OAuthAttributes {
         this.email = email;
     }
 
-    public static OAuthAttributes of(final String userNameAttributeName,
+    public static OAuthAttributes of(final String registrationId, final String userNameAttributeName,
             final Map<String, Object> attributes) {
+        if ("kakao".equals(registrationId)) {
+            return ofKakao("id", attributes);
+        }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
@@ -32,6 +35,17 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .nickName((String)attributes.get("name"))
                 .email((String)attributes.get("email"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuthAttributes ofKakao(final String userNameAttributeName, final Map<String, Object> attributes) {
+        final Map<String, Object> response = (Map<String, Object>)attributes.get("kakao_account");
+        final Map<String, Object> profile = (Map<String, Object>)response.get("profile");
+        return OAuthAttributes.builder()
+                .nickName((String)profile.get("nickname"))
+                .email((String)response.get("email"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
