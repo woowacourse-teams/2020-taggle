@@ -9,16 +9,18 @@ import lombok.Getter;
 
 @Getter
 public class OAuthAttributes {
-    private Map<String, Object> attributes;
-    private String nameAttributeKey;
-    private String nickName;
-    private String email;
-    private String picture;
+    private static final String KAKAO_REGISTRATION_ID = "kakao";
+    private static final String KAKAO_USER_NAME_ATTRIBUTE_NAME = "id";
+
+    private final Map<String, Object> attributes;
+    private final String nameAttributeKey;
+    private final String nickName;
+    private final String email;
+    private final String picture;
 
     @Builder
     public OAuthAttributes(final Map<String, Object> attributes, final String nameAttributeKey, final String nickName,
-            final String email,
-            final String picture) {
+            final String email, final String picture) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.nickName = nickName;
@@ -28,8 +30,8 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(final String registrationId, final String userNameAttributeName,
             final Map<String, Object> attributes) {
-        if ("kakao".equals(registrationId)) {
-            return ofKakao("id", attributes);
+        if (KAKAO_REGISTRATION_ID.equals(registrationId)) {
+            return ofKakao(KAKAO_USER_NAME_ATTRIBUTE_NAME, attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
     }
