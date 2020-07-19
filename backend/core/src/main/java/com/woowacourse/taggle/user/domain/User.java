@@ -31,9 +31,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
-    private String kakaoId;
-
     private String phoneNumber;
+
+    private String picture;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,12 +42,12 @@ public class User extends BaseTimeEntity {
     private LocalDateTime signOutDate;
 
     @Builder
-    public User(final String nickName, final String email, final String kakaoId, final String phoneNumber,
+    public User(final String nickName, final String email, final String phoneNumber, final String picture,
             final Role role) {
         this.nickName = nickName;
         this.email = email;
-        this.kakaoId = kakaoId;
         this.phoneNumber = phoneNumber;
+        this.picture = picture;
         this.role = role;
     }
 }
