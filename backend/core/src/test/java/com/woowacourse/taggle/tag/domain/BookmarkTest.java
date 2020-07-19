@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.tag.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,19 +12,5 @@ class BookmarkTest {
     @Test
     void constructor() {
         assertThat(new Bookmark(URL)).isInstanceOf(Bookmark.class);
-    }
-
-    @DisplayName("addTag: 북마크에 태그를 추가한다")
-    @Test
-    void addTag() {
-        // given
-        Bookmark bookmark = new Bookmark(URL);
-        Tag tag = new Tag("taggle");
-
-        // when
-        bookmark.addTag(tag);
-
-        // then
-        assertThat(bookmark.getTags()).hasSize(1);
     }
 }

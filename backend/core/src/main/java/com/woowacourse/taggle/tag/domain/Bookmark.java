@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.tag.domain;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.woowacourse.taggle.bookmark.exception.UrlFormatMismatchException;
+import com.woowacourse.taggle.tag.exception.UrlFormatMismatchException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,19 +54,11 @@ public class Bookmark {
         }
     }
 
-    public void addTag(final Tag tag) {
-        TagBookmark tagBookmark = new TagBookmark(tag, this);
-        if (!tags.contains(tagBookmark)) {
-            tags.add(tagBookmark);
-            tag.addBookmark(this);
-        }
+    public void addTagBookmark(final TagBookmark tagBookmark) {
+        tags.add(tagBookmark);
     }
 
-    public void removeTag(final Tag tag) {
-        TagBookmark tagBookmark = new TagBookmark(tag, this);
-        if (tags.contains(tagBookmark)) {
-            tags.remove(tagBookmark);
-            tag.removeBookmark(this);
-        }
+    public void removeTagBookmark(final TagBookmark tagBookmark) {
+        tags.remove(tagBookmark);
     }
 }

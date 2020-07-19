@@ -1,6 +1,6 @@
-package com.woowacourse.taggle.bookmark.dto;
+package com.woowacourse.taggle.tag.dto;
 
-import com.woowacourse.taggle.bookmark.domain.Tag;
+import com.woowacourse.taggle.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

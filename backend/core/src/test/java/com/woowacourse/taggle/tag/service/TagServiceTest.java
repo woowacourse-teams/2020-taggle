@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.service;
+package com.woowacourse.taggle.tag.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,14 +13,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.bookmark.domain.Bookmark;
-import com.woowacourse.taggle.bookmark.domain.BookmarkRepository;
-import com.woowacourse.taggle.bookmark.domain.Tag;
-import com.woowacourse.taggle.bookmark.domain.TagRepository;
-import com.woowacourse.taggle.bookmark.dto.BookmarkAddRequest;
-import com.woowacourse.taggle.bookmark.dto.BookmarkRemoveRequest;
-import com.woowacourse.taggle.bookmark.dto.TagCreateRequest;
-import com.woowacourse.taggle.bookmark.dto.TagResponse;
+import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.domain.BookmarkRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
+import com.woowacourse.taggle.tag.domain.TagRepository;
+import com.woowacourse.taggle.tag.dto.BookmarkAddRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkRemoveRequest;
+import com.woowacourse.taggle.tag.dto.TagCreateRequest;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -36,6 +37,9 @@ class TagServiceTest {
 
     @Autowired
     private BookmarkRepository bookmarkRepository;
+
+    @Autowired
+    private TagBookmarkRepository tagBookmarkRepository;
 
     @DisplayName("createTag: 태그를 생성한다")
     @Test

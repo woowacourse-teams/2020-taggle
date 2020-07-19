@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.tag.domain;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.woowacourse.taggle.bookmark.exception.EmptyValueException;
+import com.woowacourse.taggle.tag.exception.EmptyValueException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,19 +44,11 @@ public class Tag {
         }
     }
 
-    public void addBookmark(final Bookmark bookmark) {
-        TagBookmark tagBookmark = new TagBookmark(this, bookmark);
-        if (!bookmarks.contains(tagBookmark)) {
-            bookmarks.add(tagBookmark);
-            bookmark.addTag(this);
-        }
+    public void addTagBookmark(final TagBookmark tagBookmark) {
+        bookmarks.add(tagBookmark);
     }
 
-    public void removeBookmark(final Bookmark bookmark) {
-        TagBookmark tagBookmark = new TagBookmark(this, bookmark);
-        if (bookmarks.contains(tagBookmark)) {
-            bookmarks.remove(tagBookmark);
-            bookmark.removeTag(this);
-        }
+    public void removeTagBookmark(final TagBookmark tagBookmark) {
+        bookmarks.remove(tagBookmark);
     }
 }

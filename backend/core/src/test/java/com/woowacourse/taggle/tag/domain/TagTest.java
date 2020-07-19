@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.domain;
+package com.woowacourse.taggle.tag.domain;
 
 import static org.assertj.core.api.Assertions.*;
 

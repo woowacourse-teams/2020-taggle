@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.dto;
+package com.woowacourse.taggle.tag.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
