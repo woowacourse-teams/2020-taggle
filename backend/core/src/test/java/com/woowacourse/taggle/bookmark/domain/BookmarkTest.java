@@ -5,59 +5,26 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.taggle.bookmark.exception.AlreadyExistTagException;
+class BookmarkTest {
+    private static final String URL = "https://github.com/taggle";
 
-public class BookmarkTest {
-    private static final Link LINK = new Link("https://github.com/taggle");
-
-    @DisplayName("constructor: 북마크 생성")
+    @DisplayName("constructor: url을 입력받아 북마크를 생성한다")
     @Test
     void constructor() {
-        assertThat(new Bookmark(LINK)).isInstanceOf(Bookmark.class);
+        assertThat(new Bookmark(URL)).isInstanceOf(Bookmark.class);
     }
 
-    @DisplayName("addTag: 북마크에 태그 동록")
+    @DisplayName("addTag: 북마크에 태그를 추가한다")
     @Test
     void addTag() {
         // given
-        Bookmark bookmark = new Bookmark(LINK);
+        Bookmark bookmark = new Bookmark(URL);
         Tag tag = new Tag("taggle");
 
         // when
         bookmark.addTag(tag);
 
         // then
-        assertThat(bookmark.getTags().getTags()).hasSize(1);
-    }
-
-    @DisplayName("addTag: 북마크에 중복태그를 추가시 예외 발생")
-    @Test
-    void addTag_DuplicateTag_ExceptionThrown() {
-        // given
-        Bookmark bookmark = new Bookmark(LINK);
-        Tag tag = new Tag("taggle");
-        Tag duplicateTag = new Tag("taggle");
-        bookmark.addTag(tag);
-
-        // when
-        // then
-        assertThatThrownBy(() -> bookmark.addTag(duplicateTag))
-                .isInstanceOf(AlreadyExistTagException.class)
-                .hasMessageContaining("이미 존재하는 태그입니다");
-    }
-
-    @DisplayName("removeTag: 북마크에 태그 동록")
-    @Test
-    void removeTag() {
-        // given
-        Bookmark bookmark = new Bookmark(LINK);
-        Tag tag = new Tag("taggle");
-        bookmark.addTag(tag);
-
-        // when
-        bookmark.removeTag(tag);
-
-        // then
-        assertThat(bookmark.getTags().getTags()).hasSize(0);
+        assertThat(bookmark.getTags()).hasSize(1);
     }
 }

@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages = {"com.woowacourse.taggle"})
 @EntityScan(basePackages = {"com.woowacourse.taggle"})
 @EnableJpaRepositories(basePackages = {"com.woowacourse.taggle"})
-class JpaTestConfiguration {
+public class JpaTestConfiguration {
 }
