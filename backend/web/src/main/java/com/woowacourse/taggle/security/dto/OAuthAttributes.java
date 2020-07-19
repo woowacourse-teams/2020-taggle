@@ -13,14 +13,17 @@ public class OAuthAttributes {
     private String nameAttributeKey;
     private String nickName;
     private String email;
+    private String picture;
 
     @Builder
     public OAuthAttributes(final Map<String, Object> attributes, final String nameAttributeKey, final String nickName,
-            final String email) {
+            final String email,
+            final String picture) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.nickName = nickName;
         this.email = email;
+        this.picture = picture;
     }
 
     public static OAuthAttributes of(final String registrationId, final String userNameAttributeName,
@@ -35,6 +38,7 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .nickName((String)attributes.get("name"))
                 .email((String)attributes.get("email"))
+                .picture((String)attributes.get("picture"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
@@ -46,6 +50,7 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .nickName((String)profile.get("nickname"))
                 .email((String)response.get("email"))
+                .picture((String)profile.get("profile_image_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .build();
@@ -55,6 +60,7 @@ public class OAuthAttributes {
         return User.builder()
                 .nickName(nickName)
                 .email(email)
+                .picture(picture)
                 .role(Role.USER)
                 .build();
     }
