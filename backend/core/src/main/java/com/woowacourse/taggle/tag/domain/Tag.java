@@ -10,14 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
-import com.woowacourse.taggle.tag.exception.EmptyValueException;
-import lombok.EqualsAndHashCode;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@EqualsAndHashCode(of = "id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Tag {
@@ -26,22 +25,14 @@ public class Tag {
     @Column(name = "tag_id")
     private Long id;
 
+    @NotEmpty
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TagBookmark> bookmarks = new HashSet<>();
 
     public Tag(final String name) {
-        validateName(name);
         this.name = name;
-    }
-
-    private void validateName(final String name) {
-        String trimmedName = name.trim();
-        if (trimmedName.length() == 0) {
-            throw new EmptyValueException("name이 존재하지 않습니다.\n"
-                    + "name: " + name);
-        }
     }
 
     public void addTagBookmark(final TagBookmark tagBookmark) {

@@ -27,10 +27,10 @@ import com.woowacourse.taggle.tag.dto.TagResponse;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @DataJpaTest
-class TagServiceTest {
+class TagBookmarkServiceTest {
 
     @Autowired
-    private TagService tagService;
+    private TagBookmarkService tagBookmarkService;
 
     @Autowired
     private TagRepository tagRepository;
@@ -44,7 +44,7 @@ class TagServiceTest {
     @DisplayName("createTag: 태그를 생성한다")
     @Test
     void createTag() {
-        System.out.println(tagService);
+        System.out.println(tagBookmarkService);
 
         // given
         String tagName = "tag";
@@ -52,7 +52,7 @@ class TagServiceTest {
         TagCreateRequest tagCreateRequest = new TagCreateRequest(tagName);
 
         // when
-        TagResponse tag = tagService.createTag(tagCreateRequest);
+        TagResponse tag = tagBookmarkService.createTag(tagCreateRequest);
 
         // then
         assertAll(
@@ -66,15 +66,15 @@ class TagServiceTest {
     @Test
     void addBookmark() {
         // given
-        TagResponse tagResponse = tagService.createTag(new TagCreateRequest("taggle"));
+        TagResponse tagResponse = tagBookmarkService.createTag(new TagCreateRequest("taggle"));
         BookmarkAddRequest bookmarkAddRequest1 = new BookmarkAddRequest(tagResponse.getId(),
                 "https://github.com/taggle");
         BookmarkAddRequest bookmarkAddRequest2 = new BookmarkAddRequest(tagResponse.getId(),
                 "https://github.com/ks-kim");
 
         // when
-        tagService.addBookmarkOnTag(bookmarkAddRequest1);
-        tagService.addBookmarkOnTag(bookmarkAddRequest2);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest1);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest2);
         Tag tag = tagRepository.findById(tagResponse.getId()).get();
         Bookmark bookmark1 = bookmarkRepository.findByUrl("https://github.com/taggle").get();
         Bookmark bookmark2 = bookmarkRepository.findByUrl("https://github.com/ks-kim").get();
@@ -90,17 +90,17 @@ class TagServiceTest {
     @Test
     void addBookmark_DuplicateBookmark_NotSave() {
         // given
-        TagResponse tagResponse = tagService.createTag(new TagCreateRequest("taggle"));
+        TagResponse tagResponse = tagBookmarkService.createTag(new TagCreateRequest("taggle"));
         BookmarkAddRequest bookmarkAddRequest1 = new BookmarkAddRequest(tagResponse.getId(),
                 "https://github.com/taggle");
         BookmarkAddRequest bookmarkAddRequest2 = new BookmarkAddRequest(tagResponse.getId(),
                 "https://github.com/ks-kim");
 
         // when
-        tagService.addBookmarkOnTag(bookmarkAddRequest1);
-        tagService.addBookmarkOnTag(bookmarkAddRequest1);
-        tagService.addBookmarkOnTag(bookmarkAddRequest2);
-        tagService.addBookmarkOnTag(bookmarkAddRequest2);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest1);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest1);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest2);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest2);
         Tag tag = tagRepository.findById(tagResponse.getId()).get();
         Bookmark bookmark1 = bookmarkRepository.findByUrl("https://github.com/taggle").get();
         Bookmark bookmark2 = bookmarkRepository.findByUrl("https://github.com/ks-kim").get();
@@ -116,13 +116,13 @@ class TagServiceTest {
     @Test
     void removeBookmark() {
         // given
-        TagResponse tagResponse = tagService.createTag(new TagCreateRequest("taggle"));
+        TagResponse tagResponse = tagBookmarkService.createTag(new TagCreateRequest("taggle"));
         BookmarkAddRequest bookmarkAddRequest1 =
                 new BookmarkAddRequest(tagResponse.getId(), "https://github.com/taggle");
         BookmarkAddRequest bookmarkAddRequest2 =
                 new BookmarkAddRequest(tagResponse.getId(), "https://github.com/ks-kim");
-        tagService.addBookmarkOnTag(bookmarkAddRequest1);
-        tagService.addBookmarkOnTag(bookmarkAddRequest2);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest1);
+        tagBookmarkService.addBookmarkOnTag(bookmarkAddRequest2);
         Tag addedTag = tagRepository.findById(tagResponse.getId()).get();
         Bookmark addedBookmark1 = bookmarkRepository.findByUrl("https://github.com/taggle").get();
         Bookmark addedBookmark2 = bookmarkRepository.findByUrl("https://github.com/ks-kim").get();
@@ -132,8 +132,8 @@ class TagServiceTest {
                 new BookmarkRemoveRequest(addedTag.getId(), addedBookmark2.getId());
 
         // when
-        tagService.removeBookmarkOnTag(bookmarkRemoveRequest1);
-        tagService.removeBookmarkOnTag(bookmarkRemoveRequest2);
+        tagBookmarkService.removeBookmarkOnTag(bookmarkRemoveRequest1);
+        tagBookmarkService.removeBookmarkOnTag(bookmarkRemoveRequest2);
         Tag tag = tagRepository.findById(tagResponse.getId()).get();
         Bookmark bookmark1 = bookmarkRepository.findByUrl("https://github.com/taggle").get();
         Bookmark bookmark2 = bookmarkRepository.findByUrl("https://github.com/ks-kim").get();

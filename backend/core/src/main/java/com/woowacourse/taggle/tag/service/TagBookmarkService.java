@@ -1,6 +1,7 @@
 package com.woowacourse.taggle.tag.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class TagService {
+public class TagBookmarkService {
     private final TagRepository tagRepository;
     private final BookmarkRepository bookmarkRepository;
     private final TagBookmarkRepository tagBookmarkRepository;
@@ -33,6 +34,7 @@ public class TagService {
         return TagResponse.of(persistTag);
     }
 
+    @Transactional
     public void addBookmarkOnTag(final BookmarkAddRequest bookmarkAddRequest) {
         Tag tag = tagRepository.findById(bookmarkAddRequest.getTagId())
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다."));
@@ -43,10 +45,9 @@ public class TagService {
 
         tag.addTagBookmark(tagBookmark);
         bookmark.addTagBookmark(tagBookmark);
-        tagRepository.save(tag);
-        bookmarkRepository.save(bookmark);
     }
 
+    @Transactional
     public void removeBookmarkOnTag(final BookmarkRemoveRequest bookmarkRemoveRequest) {
         Tag tag = tagRepository.findById(bookmarkRemoveRequest.getTagId())
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다."
@@ -59,8 +60,5 @@ public class TagService {
 
         tag.removeTagBookmark(tagBookmark);
         bookmark.removeTagBookmark(tagBookmark);
-        tagRepository.save(tag);
-        bookmarkRepository.save(bookmark);
-        tagBookmarkRepository.delete(tagBookmark);
     }
 }
