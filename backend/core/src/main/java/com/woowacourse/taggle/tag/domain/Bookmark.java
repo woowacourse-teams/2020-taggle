@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 public class Bookmark {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookmark_id")

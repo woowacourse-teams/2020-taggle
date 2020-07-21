@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class TagCreateRequest {
+
     @NotEmpty
     private String name;
 

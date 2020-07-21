@@ -21,6 +21,7 @@ import lombok.ToString;
 @Embeddable
 @Entity
 public class TagBookmark implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

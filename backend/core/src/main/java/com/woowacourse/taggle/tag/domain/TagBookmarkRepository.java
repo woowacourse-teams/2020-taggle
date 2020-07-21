@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TagBookmarkRepository extends JpaRepository<TagBookmark, Long> {
+
     Optional<TagBookmark> findByTagAndBookmark(final Tag tag, final Bookmark bookmark);
 }

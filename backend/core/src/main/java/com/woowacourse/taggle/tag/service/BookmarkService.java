@@ -13,9 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class BookmarkService {
+
     private final BookmarkRepository bookmarkRepository;
 
-    public BookmarkCreateResponse addBookmark(final BookmarkCreateRequest bookmarkCreateRequest) {
+    public BookmarkCreateResponse createBookmark(final BookmarkCreateRequest bookmarkCreateRequest) {
         Bookmark bookmark = bookmarkRepository.findByUrl(bookmarkCreateRequest.getUrl())
                 .orElse(bookmarkRepository.save(bookmarkCreateRequest.toEntity()));
 
@@ -24,7 +25,8 @@ public class BookmarkService {
 
     public void removeBookmark(final BookmarkRequest bookmarkRemoveRequest) {
         Bookmark bookmark = bookmarkRepository.findById(bookmarkRemoveRequest.getId())
-                .orElseThrow(() -> new BookmarkNotFoundException("삭제하려는 북마크가 존재하지 않습니다."));
+                .orElseThrow(() -> new BookmarkNotFoundException("삭제하려는 북마크가 존재하지 않습니다.\n"
+                        + "bookmarkId: " + bookmarkRemoveRequest.getId()));
         bookmarkRepository.delete(bookmark);
     }
 }

@@ -20,12 +20,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 public class Tag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private Long id;
 
     @NotEmpty
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)

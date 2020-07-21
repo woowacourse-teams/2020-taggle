@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class TagRequest {
+
     @NotNull
     private Long id;
 }

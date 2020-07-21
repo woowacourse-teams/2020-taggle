@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
@@ -21,9 +20,9 @@ import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
-@TestPropertySource(locations = "classpath:application-test.properties")
 @DataJpaTest
 public class BookmarkServiceTest {
+
     @Autowired
     BookmarkService bookmarkService;
 
@@ -37,7 +36,7 @@ public class BookmarkServiceTest {
         BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.addBookmark(bookmarkCreateRequest);
+        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
         assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");
@@ -50,7 +49,7 @@ public class BookmarkServiceTest {
         BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.addBookmark(bookmarkCreateRequest);
+        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
         assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");

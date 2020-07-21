@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class TagResponse {
+public class TagBookmarkResponse {
+
     private Long id;
     private String name;
     private List<BookmarkResponse> bookmarks;
 
-    public static TagResponse of(final Tag tag) {
-        return new TagResponse(tag.getId(), tag.getName(), BookmarkResponse.listOf(tag.getBookmarks()));
+    public static TagBookmarkResponse of(final Tag tag) {
+        return new TagBookmarkResponse(tag.getId(), tag.getName(), BookmarkResponse.listOf(tag.getBookmarks()));
     }
 }
