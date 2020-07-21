@@ -2,6 +2,12 @@ package com.woowacourse.taggle.security.dto;
 
 import java.util.Map;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.URL;
+
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import lombok.Builder;
@@ -12,10 +18,15 @@ public class OAuthAttributes {
     private static final String KAKAO_REGISTRATION_ID = "kakao";
     private static final String KAKAO_USER_NAME_ATTRIBUTE_NAME = "id";
 
+    @NotNull
     private final Map<String, Object> attributes;
+    @NotEmpty
     private final String nameAttributeKey;
+    @NotEmpty
     private final String nickName;
+    @Email
     private final String email;
+    @URL
     private final String picture;
 
     @Builder
