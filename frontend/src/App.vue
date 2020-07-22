@@ -1,7 +1,17 @@
-<template> </template>
+<template>
+  <v-app>
+    <router-view />
+  </v-app>
+</template>
 
 <script>
-export default {};
-</script>
+export default {
+  name: "App",
 
-<style></style>
+  components: {},
+
+  data: () => ({
+    //
+  }),
+};
+</script>
