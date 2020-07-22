@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final CustomOAuth2UserService customOAuth2UserService;
 
     // @formatter:off
@@ -21,14 +22,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/h2-console/**").permitAll()
-                    .anyRequest().authenticated()
+                        .antMatchers("/", "/h2-console/**").permitAll()
+                        .anyRequest().authenticated()
                 .and()
-                    .logout()
-                    .logoutSuccessUrl("/")
+                        .logout()
+                        .logoutSuccessUrl("/")
                 .and()
-                    .oauth2Login()
-                    .userInfoEndpoint()
-                    .userService(customOAuth2UserService);
+                        .oauth2Login()
+                        .userInfoEndpoint()
+                        .userService(customOAuth2UserService);
     }
 }
