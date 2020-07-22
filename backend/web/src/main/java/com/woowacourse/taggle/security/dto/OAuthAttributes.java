@@ -15,17 +15,22 @@ import lombok.Getter;
 
 @Getter
 public class OAuthAttributes {
+
     private static final String KAKAO_REGISTRATION_ID = "kakao";
     private static final String KAKAO_USER_NAME_ATTRIBUTE_NAME = "id";
 
     @NotNull
     private final Map<String, Object> attributes;
+
     @NotEmpty
     private final String nameAttributeKey;
+
     @NotEmpty
     private final String nickName;
+
     @Email
     private final String email;
+
     @URL
     private final String picture;
 
