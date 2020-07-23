@@ -23,7 +23,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <TagList v-show="isBookmarkList" />
+    <TagList />
   </div>
 </template>
 
@@ -37,13 +37,7 @@ export default {
   },
   data() {
     return {
-      items: [{ title: 'tags', icon: 'local_offer' }],
-      isBookmarkList: false
-    }
-  },
-  methods: {
-    toggleBookmarkList: function() {
-      this.isBookmarkList = !this.isBookmarkList
+      items: [{ title: 'tags', icon: 'local_offer' }]
     }
   }
 }

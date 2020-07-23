@@ -39,6 +39,6 @@ export default {
 #container {
   position: relative;
   left: 50px;
-  top: 50px;
+  height: calc(1000vh - 0px);
 }
 </style>

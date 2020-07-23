@@ -1,13 +1,13 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs3></v-flex>
+  <v-layout row wrap style="position: absolute;" class="mt-10">
+    <v-flex xs4></v-flex>
     <v-flex xs6>
       <v-container grid-list-lg text-xs-center>
         <CardStream :bookmarks="bookmarks" v-if="flexOption" />
         <CardModule :bookmarks="bookmarks" v-else />
       </v-container>
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs2>
       <v-icon @click="isOption('stream')" x-large>view_stream</v-icon>
       <v-icon @click="isOption('module')" x-large>view_module</v-icon>
     </v-flex>
