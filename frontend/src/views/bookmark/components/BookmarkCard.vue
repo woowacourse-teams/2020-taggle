@@ -1,7 +1,7 @@
 <template>
-  <v-layout row wrap style="position: absolute;" class="mt-10">
-    <v-flex xs4></v-flex>
-    <v-flex xs6>
+  <v-layout row wrap class="mt-10 layout-container" style="position:absolute">
+    <v-flex xs3></v-flex>
+    <v-flex xs7>
       <v-container grid-list-lg text-xs-center>
         <CardStream :bookmarks="bookmarks" v-if="flexOption" />
         <CardModule :bookmarks="bookmarks" v-else />
@@ -53,3 +53,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.layout-container {
+  width: 100%;
+}
+</style>
