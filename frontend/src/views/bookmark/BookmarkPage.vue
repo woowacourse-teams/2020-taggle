@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import BookmarkCard from "./components/BookmarkCard";
-
+import BookmarkCard from './components/BookmarkCard'
 export default {
-  name: "BookmarkPage",
+  name: 'BookmarkPage',
   components: {
-    BookmarkCard,
-  },
-};
+    BookmarkCard
+  }
+}
 </script>

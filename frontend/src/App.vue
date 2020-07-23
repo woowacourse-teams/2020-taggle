@@ -1,17 +1,18 @@
 <template>
   <v-app>
+    <BookmarkHeader />
     <router-view />
   </v-app>
 </template>
 
 <script>
+import BookmarkHeader from '@/views/header/BookmarkHeader'
+
 export default {
-  name: "App",
+  name: 'App',
 
-  components: {},
-
-  data: () => ({
-    //
-  }),
-};
+  components: {
+    BookmarkHeader
+  }
+}
 </script>
