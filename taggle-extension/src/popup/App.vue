@@ -3,19 +3,16 @@
     <section>
       <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
       <h2 class="taggle-title">TAGGLE</h2>
-      <Dropdown />
     </section>
     <TagInput />
   </div>
 </template>
 
 <script>
-import Dropdown from '../components/Dropdown';
 import TagInput from '../components/TagInput';
 
 export default {
   components: {
-    Dropdown,
     TagInput,
   },
   data() {
@@ -30,6 +27,7 @@ export default {
 html,
 body {
   font-family: 'Roboto Condensed', sans-serif;
+  width: 300px;
 }
 
 #container {
