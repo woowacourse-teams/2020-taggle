@@ -45,7 +45,7 @@ export default {
 
 <style scoped>
 #container {
-  position: relative;
+  position: fixed;
   left: 56px;
   overflow: auto;
   height: 100%;
