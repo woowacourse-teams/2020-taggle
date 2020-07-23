@@ -1,6 +1,6 @@
 <template>
   <v-card width="250" tile id="container">
-    <v-list fill-height class="pa-0" v-for="(tagValue, i) in tagList" :key="i">
+    <v-list class="pa-0" v-for="(tagValue, i) in tagList" :key="i">
       <v-list-group value="true" class="text-center">
         <template v-slot:activator>
           <v-list-item-title>{{ tagValue.title }}</v-list-item-title>
@@ -47,7 +47,7 @@ export default {
 #container {
   position: fixed;
   left: 56px;
-  overflow: auto;
   height: 100%;
+  z-index: 1;
 }
 </style>
