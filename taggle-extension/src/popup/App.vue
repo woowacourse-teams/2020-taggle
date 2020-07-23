@@ -3,16 +3,19 @@
     <section>
       <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
       <h2 class="taggle-title">TAGGLE</h2>
+      <Buttons />
     </section>
     <TagInput />
   </div>
 </template>
 
 <script>
+import Buttons from '../components/Buttons';
 import TagInput from '../components/TagInput';
 
 export default {
   components: {
+    Buttons,
     TagInput,
   },
   data() {
