@@ -1,13 +1,13 @@
 <template>
   <div class="icon-btn">
-    <v-icon>add</v-icon>
-    <v-icon>delete</v-icon>
+    <v-btn small icon><v-icon>add</v-icon></v-btn>
+    <v-btn small icon><v-icon>delete</v-icon></v-btn>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Dropdown-Menu',
+  name: 'Buttons',
   data() {
     return {};
   },
@@ -16,8 +16,6 @@ export default {
 
 <style>
 .icon-btn {
-  display: inline;
   float: right;
-  cursor: pointer;
 }
 </style>
