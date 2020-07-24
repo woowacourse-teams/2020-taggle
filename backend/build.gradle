@@ -46,5 +46,9 @@ subprojects {
         compileOnly {
             extendsFrom annotationProcessor
         }
+        all*.exclude group: 'commons-logging', module: 'commons-logging' // replaced with jcl-over-slf4j
+        all*.exclude group: 'log4j', module: 'log4j' // replaced with log4j-over-slf4j
+
+        all*.exclude module: 'slf4j-log4j12'
     }
 }
