@@ -1,8 +1,15 @@
-plugins {
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'org.asciidoctor.convert' version '1.5.8'
-    id 'java'
+buildscript {
+    ext {
+        springBootVersion = '2.3.1.RELEASE'
+        dependencyManagementVersion = '1.0.9.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}")
+    }
 }
 
 subprojects {
@@ -19,10 +26,6 @@ subprojects {
         mavenCentral()
     }
 
-    ext {
-        set('snippetsDir', file("build/generated-snippets"))
-    }
-
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-validation'
         compileOnly 'org.projectlombok:lombok'
@@ -33,13 +36,7 @@ subprojects {
     }
 
     test {
-        outputs.dir snippetsDir
         useJUnitPlatform()
-    }
-
-    asciidoctor {
-        inputs.dir snippetsDir
-        dependsOn test
     }
 
     configurations {
