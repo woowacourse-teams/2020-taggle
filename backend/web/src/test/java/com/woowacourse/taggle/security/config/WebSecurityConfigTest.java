@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 
 import io.restassured.RestAssured;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.config.location="
+        + "classpath:/config/oauth.properties, "
+        + "classpath:/application.properties")
 class WebSecurityConfigTest {
 
     @LocalServerPort
