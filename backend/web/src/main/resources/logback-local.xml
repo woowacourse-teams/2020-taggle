@@ -26,14 +26,4 @@
     <logger level="WARN" name="org.hibernate.type.BasicTypeRegistry"/>
     <logger level="INFO" name="org.apache.http"/>
 
-    <logger name="TRACE" level="TRACE" additivity="false">
-        <appender-ref ref="console"/>
-    </logger>
-    <logger name="APP_ERROR" level="INFO" additivity="false">
-        <appender-ref ref="console"/>
-    </logger>
-    <logger name="SLOW_LOGIC" level="INFO" additivity="false">
-        <appender-ref ref="console"/>
-    </logger>
-
 </configuration>
