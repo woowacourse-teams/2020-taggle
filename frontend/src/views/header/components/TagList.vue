@@ -38,9 +38,9 @@ export default {
           tags: ['#디자인', '#개떡같다', '#디자인에 문제있어?']
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>

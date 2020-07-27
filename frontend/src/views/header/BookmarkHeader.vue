@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import TagList from './components/TagList'
+import TagList from './components/TagList.vue';
 
 export default {
   name: 'BookmarkHeader',
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       items: [{ title: 'tags', icon: 'local_offer' }]
-    }
+    };
   }
-}
+};
 </script>

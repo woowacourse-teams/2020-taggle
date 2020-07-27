@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import CardStream from './CardStream'
-import CardModule from './CardModule'
+import CardStream from './CardStream.vue';
+import CardModule from './CardModule.vue';
 
 export default {
   name: 'BookmarkCard',
@@ -28,10 +28,10 @@ export default {
     return {
       flexOption: true,
       bookmarks: []
-    }
+    };
   },
   created() {
-    this.setBookmarkData()
+    this.setBookmarkData();
   },
   methods: {
     setBookmarkData: function() {
@@ -40,18 +40,18 @@ export default {
           img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
           title: 'Test Case' + i,
           tags: [{ name: 'Java' }, { name: 'Spring' }, { name: '방구' }]
-        })
+        });
       }
     },
     isOption: function(type) {
       if (type == 'stream') {
-        this.flexOption = true
+        this.flexOption = true;
       } else {
-        this.flexOption = false
+        this.flexOption = false;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

@@ -21,7 +21,7 @@ export default {
     bookmarks: Array
   },
   data() {
-    return {}
+    return {};
   }
-}
+};
 </script>

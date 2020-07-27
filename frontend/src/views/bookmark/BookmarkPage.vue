@@ -3,11 +3,12 @@
 </template>
 
 <script>
-import BookmarkCard from './components/BookmarkCard'
+import BookmarkCard from './components/BookmarkCard.vue';
+
 export default {
   name: 'BookmarkPage',
   components: {
     BookmarkCard
   }
-}
+};
 </script>
