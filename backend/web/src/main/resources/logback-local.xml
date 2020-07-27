@@ -17,8 +17,6 @@
         <appender-ref ref="async"/>
     </root>
 
-    <logger level="DEBUG" name="web"/>
-
     <logger level="INFO" name="org.springframework"/>
     <logger level="DEBUG" name="org.hibernate.tool.hbm2ddl"/>
     <logger level="DEBUG" name="org.hibernate.stat"/>
@@ -26,19 +24,15 @@
     <logger level="TRACE" name="org.hibernate.type"/>
     <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
     <logger level="WARN" name="org.hibernate.type.BasicTypeRegistry"/>
-
     <logger level="INFO" name="org.apache.http"/>
 
-    <!--실시간 TRACE-->
-    <logger name="TRACE" level="trace" additivity="false">
+    <logger name="TRACE" level="TRACE" additivity="false">
         <appender-ref ref="console"/>
     </logger>
-    <!-- 애플리케이션 예외 -->
-    <logger name="APP_ERROR" level="info" additivity="false">
+    <logger name="APP_ERROR" level="INFO" additivity="false">
         <appender-ref ref="console"/>
     </logger>
-    <!-- 느린 로직 -->
-    <logger name="SLOW_LOGIC" level="info" additivity="false">
+    <logger name="SLOW_LOGIC" level="INFO" additivity="false">
         <appender-ref ref="console"/>
     </logger>
 
