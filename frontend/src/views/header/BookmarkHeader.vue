@@ -33,12 +33,12 @@ import TagList from './components/TagList.vue';
 export default {
   name: 'BookmarkHeader',
   components: {
-    TagList
+    TagList,
   },
   data() {
     return {
-      items: [{ title: 'tags', icon: 'local_offer' }]
+      items: [{ title: 'tags', icon: 'local_offer' }],
     };
-  }
+  },
 };
 </script>

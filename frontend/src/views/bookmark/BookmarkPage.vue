@@ -8,7 +8,7 @@ import BookmarkCard from './components/BookmarkCard.vue';
 export default {
   name: 'BookmarkPage',
   components: {
-    BookmarkCard
-  }
+    BookmarkCard,
+  },
 };
 </script>

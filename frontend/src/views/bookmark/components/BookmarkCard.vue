@@ -22,12 +22,12 @@ export default {
   name: 'BookmarkCard',
   components: {
     CardStream,
-    CardModule
+    CardModule,
   },
   data() {
     return {
       flexOption: true,
-      bookmarks: []
+      bookmarks: [],
     };
   },
   created() {
@@ -39,7 +39,7 @@ export default {
         this.bookmarks.push({
           img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
           title: 'Test Case' + i,
-          tags: [{ name: 'Java' }, { name: 'Spring' }, { name: '방구' }]
+          tags: [{ name: 'Java' }, { name: 'Spring' }, { name: '방구' }],
         });
       }
     },
@@ -49,8 +49,8 @@ export default {
       } else {
         this.flexOption = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

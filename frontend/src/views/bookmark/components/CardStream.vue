@@ -22,10 +22,10 @@
 export default {
   name: 'CardModule',
   props: {
-    bookmarks: Array
+    bookmarks: Array,
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
