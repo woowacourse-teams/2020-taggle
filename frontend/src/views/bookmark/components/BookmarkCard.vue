@@ -15,43 +15,43 @@
 </template>
 
 <script>
-import CardStream from './CardStream'
-import CardModule from './CardModule'
+import CardStream from './CardStream.vue';
+import CardModule from './CardModule.vue';
 
 export default {
   name: 'BookmarkCard',
   components: {
     CardStream,
-    CardModule
+    CardModule,
   },
   data() {
     return {
       flexOption: true,
-      bookmarks: []
-    }
+      bookmarks: [],
+    };
   },
   created() {
-    this.setBookmarkData()
+    this.setBookmarkData();
   },
   methods: {
-    setBookmarkData: function() {
-      for (let i = 0; i < 10; i++) {
+    setBookmarkData() {
+      for (let i = 0; i < 10; i += 1) {
         this.bookmarks.push({
           img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
-          title: 'Test Case' + i,
-          tags: [{ name: 'Java' }, { name: 'Spring' }, { name: 'Vue' }]
-        })
+          title: `Test Case ${i}`,
+          tags: [{ name: 'Java' }, { name: 'Spring' }, { name: 'Vue' }],
+        });
       }
     },
-    isOption: function(type) {
-      if (type == 'stream') {
-        this.flexOption = true
+    isOption(type) {
+      if (type === 'stream') {
+        this.flexOption = true;
       } else {
-        this.flexOption = false
+        this.flexOption = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

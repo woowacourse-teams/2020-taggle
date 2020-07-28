@@ -1,17 +1,13 @@
 <template>
   <v-card width="250" tile id="container">
-    <v-list class="pa-0" v-for="(tagValue, i) in tagList" :key="i">
-      <v-list-group value="true" class="text-center">
+    <v-list class="pa-0" v-for="{ id, title, tags } in tagList" :key="id">
+      <v-list-group value="true" class="text-left mt-2">
         <template v-slot:activator>
-          <v-list-item-title>{{ tagValue.title }}</v-list-item-title>
+          <v-list-item-title class="font-weight-black text-h6">{{ title }}</v-list-item-title>
         </template>
-
-        <v-list-item v-for="(tag, i) in tagValue.tags" :key="i">
-          <v-list-item-icon>
-            <v-chip class="ma-auto" color="pink" label text-color="white">
-              <v-icon left>mdi-label</v-icon>
-              {{ tag }}
-            </v-chip>
+        <v-list-item v-for="{ id, name } in tags" :key="id">
+          <v-list-item-icon class="mt-0 mb-0 text-button">
+            {{ name }}
           </v-list-item-icon>
         </v-list-item>
       </v-list-group>
@@ -20,34 +16,27 @@
 </template>
 
 <script>
+import { tagList } from '@/utils/mockTags';
+
 export default {
   name: 'TagList',
   data() {
     return {
-      tagList: [
-        {
-          title: '백엔드',
-          tags: ['#자바', '#노드', '#스프링']
-        },
-        {
-          title: '프론트엔드',
-          tags: ['#자바스크립트', '#Jun', '#Vue.js']
-        },
-        {
-          title: 'UI/UX',
-          tags: ['#디자인', '#로고', '#배열정리']
-        }
-      ]
-    }
-  }
-}
+      tagList: tagList,
+    };
+  },
+};
 </script>
 
-<style scoped>
+<style>
 #container {
   position: fixed;
   left: 56px;
   height: 100%;
   z-index: 1;
+}
+
+.v-list-item {
+  min-height: 20px !important;
 }
 </style>
