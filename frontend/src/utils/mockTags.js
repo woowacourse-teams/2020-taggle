@@ -32,7 +32,7 @@ export const bookmarks = [
   {
     img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
     title: 'Test Case1',
-    tags: [{ name: 'Java' }, { name: 'Spring' }, { name: 'Vue' }],
+    tags: [{ name: 'Java' }, { name: 'Spring' }, { name: 'Vue' }, { name: 'Vuetify' }],
   },
   {
     img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
