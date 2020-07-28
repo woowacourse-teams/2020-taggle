@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { bookmarks } from '@/utils/mockTags';
 import CardStream from './CardStream.vue';
 import CardModule from './CardModule.vue';
 
@@ -27,28 +28,12 @@ export default {
   data() {
     return {
       flexOption: true,
-      bookmarks: [],
+      bookmarks,
     };
   },
-  created() {
-    this.setBookmarkData();
-  },
   methods: {
-    setBookmarkData() {
-      for (let i = 0; i < 10; i += 1) {
-        this.bookmarks.push({
-          img: 'https://t1.daumcdn.net/cfile/tistory/212EFE4D58D72EB70D',
-          title: `Test Case ${i}`,
-          tags: [{ name: 'Java' }, { name: 'Spring' }, { name: 'Vue' }],
-        });
-      }
-    },
     isOption(type) {
-      if (type === 'stream') {
-        this.flexOption = true;
-      } else {
-        this.flexOption = false;
-      }
+      this.flexOption = type === 'stream';
     },
   },
 };

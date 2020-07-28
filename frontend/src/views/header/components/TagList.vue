@@ -1,6 +1,6 @@
 <template>
   <v-card width="250" tile id="container">
-    <v-list class="pa-0" v-for="{ id, title, tags } in tagList" :key="id">
+    <v-list class="pa-0" v-for="{ id, title, tags } in categories" :key="id">
       <v-list-group value="true" class="text-left mt-2">
         <template v-slot:activator>
           <v-list-item-title class="font-weight-black text-h6">{{ title }}</v-list-item-title>
@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import { tagList } from '@/utils/mockTags';
+import { categories } from '@/utils/mockTags';
 
 export default {
   name: 'TagList',
   data() {
     return {
-      tagList: tagList,
+      categories,
     };
   },
 };

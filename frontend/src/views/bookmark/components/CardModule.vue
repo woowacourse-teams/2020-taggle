@@ -1,14 +1,16 @@
 <template>
   <v-layout row wrap>
-    <v-flex v-for="bookmark in bookmarks" :key="bookmark.id" xs4>
-      <v-card>
-        <v-img :src="bookmark.img" aspect-ratio="2.75"></v-img>
-        <v-card-title primary-title>
-          <div>
-            <h3 class="headline mb-0">{{ bookmark.title }}</h3>
+    <v-flex v-for="bookmark in bookmarks" :key="bookmark.id" xs12 md4>
+      <v-card outlined>
+        <v-responsive aspect-ratio="0.66">
+          <v-img :src="bookmark.img" aspect-ratio="1.33"></v-img>
+          <div class="test-size">
+            <v-card-title primary-title>
+              {{ bookmark.title }}
+            </v-card-title>
+            <v-chip v-for="tag in bookmark.tags" :key="tag.id">{{ tag.name }}</v-chip>
           </div>
-        </v-card-title>
-        <v-chip v-for="tag in bookmark.tags" :key="tag.id">{{ tag.name }}</v-chip>
+        </v-responsive>
       </v-card>
     </v-flex>
   </v-layout>

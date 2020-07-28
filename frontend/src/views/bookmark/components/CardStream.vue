@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
     <v-flex v-for="bookmark in bookmarks" :key="bookmark.id" xs12>
-      <v-card>
+      <v-card outlined>
         <div class="d-flex flex-no-wrap">
           <v-avatar class="ma-3" size="125" tile>
             <v-img :src="bookmark.img"></v-img>

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BookmarkCard from './components/BookmarkCard.vue';
+import BookmarkCard from '@/views/bookmark/components/BookmarkCard.vue';
 
 export default {
   name: 'BookmarkPage',

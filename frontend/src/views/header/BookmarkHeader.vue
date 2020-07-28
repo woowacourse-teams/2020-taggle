@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import TagList from './components/TagList.vue';
+import TagList from '@/views/header/components/TagList.vue';
 
 export default {
   name: 'BookmarkHeader',
