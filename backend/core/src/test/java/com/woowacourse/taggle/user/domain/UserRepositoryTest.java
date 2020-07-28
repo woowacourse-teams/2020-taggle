@@ -24,7 +24,8 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("태글", "taggle@gmail.com", "010-0000-0000", "jordy.jpg", Role.USER);
+        user = new User("태글", "taggle@gmail.com", "010-0000-0000",
+                "https://github.com/image.jpg", Role.USER);
     }
 
     @DisplayName("save(): 유저 저장 확인 테스트")

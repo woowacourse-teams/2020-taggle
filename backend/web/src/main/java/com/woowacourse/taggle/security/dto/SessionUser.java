@@ -12,10 +12,13 @@ import lombok.Getter;
 
 @Getter
 public class SessionUser implements Serializable {
+
     @NotEmpty
     private String nickName;
+
     @Email
     private String email;
+
     @URL
     private String picture;
 
