@@ -1,17 +1,16 @@
 <template>
-  <v-layout row wrap class="mt-10 layout-container" style="position:absolute">
-    <v-flex xs3></v-flex>
-    <v-flex xs7>
+  <v-row class="mt-10 layout-container">
+    <v-col cols="10">
       <v-container grid-list-lg text-xs-center>
         <CardStream :bookmarks="bookmarks" v-if="flexOption" />
         <CardModule :bookmarks="bookmarks" v-else />
       </v-container>
-    </v-flex>
-    <v-flex xs2>
+    </v-col>
+    <v-col cols="2">
       <v-icon @click="isOption('stream')" x-large>view_stream</v-icon>
       <v-icon @click="isOption('module')" x-large>view_module</v-icon>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
