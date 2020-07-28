@@ -33,7 +33,6 @@ export default {
   position: fixed;
   left: 56px;
   height: 100%;
-  z-index: 1;
 }
 
 .v-list-item {
