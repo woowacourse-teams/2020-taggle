@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import { tagList } from '@/utils/mockTags.js'
+import { tagList } from '@/utils/mockTags';
 
 export default {
   name: 'TagList',
   data() {
     return {
-      tagList: tagList
-    }
-  }
-}
+      tagList: tagList,
+    };
+  },
+};
 </script>
 
 <style>
