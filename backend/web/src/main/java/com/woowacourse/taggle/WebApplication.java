@@ -1,13 +1,18 @@
 package com.woowacourse.taggle;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
-@PropertySource("classpath:application-oauth.properties")
 public class WebApplication {
+
+    private static final String PROPERTIES = "spring.config.location="
+            + "classpath:/config/oauth.properties, "
+            + "classpath:/application.properties";
+
     public static void main(final String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        new SpringApplicationBuilder(WebApplication.class)
+                .properties(PROPERTIES)
+                .run(args);
     }
 }

@@ -3,8 +3,8 @@ package com.woowacourse.taggle.user.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Getter
 @RequiredArgsConstructor
+@Getter
 public enum Role {
 
     USER("ROLE_USER"),
