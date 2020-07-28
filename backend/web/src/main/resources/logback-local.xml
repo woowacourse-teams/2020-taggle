@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="20 seconds">
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>hello%-5level %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg [%mdc]%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>4096</queueSize>
+        <includeCallerData>false</includeCallerData>
+        <appender-ref ref="console"/>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="async"/>
+    </root>
+
+    <logger level="INFO" name="org.springframework"/>
+    <logger level="DEBUG" name="org.hibernate.tool.hbm2ddl"/>
+    <logger level="DEBUG" name="org.hibernate.stat"/>
+    <logger level="DEBUG" name="org.hibernate.SQL"/>
+    <logger level="TRACE" name="org.hibernate.type"/>
+    <logger level="TRACE" name="org.hibernate.type.descriptor.sql.BasicBinder"/>
+    <logger level="WARN" name="org.hibernate.type.BasicTypeRegistry"/>
+    <logger level="INFO" name="org.apache.http"/>
+
+</configuration>

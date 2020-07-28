@@ -40,7 +40,8 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
-    @Pattern(regexp = "^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$", message = "이게 휴대폰 번호냐??")
+    @Pattern(regexp = "^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$",
+            message = "휴대폰 번호의 형식이 올바르지 않습니다.")
     @Size(min = 7)
     private String phoneNumber;
 

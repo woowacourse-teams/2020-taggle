@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: taggle-logback
+  profiles:
+    active: local
+
+---
+spring:
+  profiles: local
+
+logging:
+  config: classpath:logback-local.xml
+
+---
+spring:
+  profiles: prod
+
+logging:
+  config: classpath:logback-prod.xml
