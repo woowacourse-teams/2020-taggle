@@ -1,17 +1,13 @@
 <template>
   <v-card width="250" tile id="container">
     <v-list class="pa-0" v-for="{ id, title, tags } in tagList" :key="id">
-      <v-list-group value="true" class="text-center">
+      <v-list-group value="true" class="text-left mt-2">
         <template v-slot:activator>
-          <v-list-item-title>{{ title }}</v-list-item-title>
+          <v-list-item-title class="font-weight-black text-h6">{{ title }}</v-list-item-title>
         </template>
-
         <v-list-item v-for="{ id, name } in tags" :key="id">
-          <v-list-item-icon>
-            <v-chip class="ma-auto" color="pink" label text-color="white">
-              <v-icon left>mdi-label</v-icon>
-              {{ name }}
-            </v-chip>
+          <v-list-item-icon class="mt-0 mb-0 text-button">
+            {{ name }}
           </v-list-item-icon>
         </v-list-item>
       </v-list-group>
@@ -32,11 +28,15 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 #container {
   position: fixed;
   left: 56px;
   height: 100%;
   z-index: 1;
+}
+
+.v-list-item {
+  min-height: 20px !important;
 }
 </style>
