@@ -1,6 +1,6 @@
 <template>
-  <v-layout row wrap>
-    <v-flex v-for="bookmark in bookmarks" :key="bookmark.id" xs12>
+  <v-row>
+    <v-col cols="12" v-for="bookmark in bookmarks" :key="bookmark.id">
       <v-card outlined>
         <div class="d-flex flex-no-wrap">
           <v-avatar class="ma-3" size="125" tile>
@@ -14,8 +14,8 @@
           </div>
         </div>
       </v-card>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
