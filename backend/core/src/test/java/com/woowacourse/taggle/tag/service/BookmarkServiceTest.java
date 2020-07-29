@@ -14,7 +14,6 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
-import com.woowacourse.taggle.tag.dto.BookmarkRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 
@@ -61,10 +60,9 @@ public class BookmarkServiceTest {
         // given
         final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
         bookmarkRepository.save(new Bookmark("https://naver.co.kr"));
-        final BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId());
 
         // when
-        bookmarkService.removeBookmark(bookmarkRemoveRequest);
+        bookmarkService.removeBookmark(bookmark.getId());
         // then
         assertThat(bookmarkRepository.findAll()).hasSize(1);
     }
@@ -74,11 +72,10 @@ public class BookmarkServiceTest {
     void removeBookmark_NotFoundException() {
         // given
         final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
-        final BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId() + 1L);
 
         // when
         // then
-        assertThatThrownBy(() -> bookmarkService.removeBookmark(bookmarkRemoveRequest))
+        assertThatThrownBy(() -> bookmarkService.removeBookmark(bookmark.getId() + 1L))
                 .isInstanceOf(BookmarkNotFoundException.class)
                 .hasMessageContaining("삭제하려는 북마크가 존재하지 않습니다");
     }

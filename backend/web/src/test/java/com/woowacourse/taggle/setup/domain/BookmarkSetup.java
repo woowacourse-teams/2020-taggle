@@ -12,9 +12,9 @@ public class BookmarkSetup {
 
     private final BookmarkRepository bookmarkRepository;
 
-    public void save() {
+    public Bookmark save() {
         final Bookmark bookmark = new Bookmark("http://github.com");
 
-        bookmarkRepository.save(bookmark);
+        return bookmarkRepository.save(bookmark);
     }
 }

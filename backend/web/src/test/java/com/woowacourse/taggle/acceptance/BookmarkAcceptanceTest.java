@@ -16,9 +16,14 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
     @Test
     void manageBookmark() {
         createBookmark("http://taggle.com");
-        final List<BookmarkResponse> bookmarks = findBookmarks();
+        List<BookmarkResponse> bookmarks = findBookmarks();
 
         assertThat(bookmarks).hasSize(1);
+
+        removeBookmark(bookmarks.get(0).getId());
+
+        bookmarks = findBookmarks();
+        assertThat(bookmarks).hasSize(0);
     }
 
     public void createBookmark(final String url) {
@@ -30,5 +35,9 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
 
     public List<BookmarkResponse> findBookmarks() {
         return getAsList("/api/v1/bookmarks", BookmarkResponse.class);
+    }
+
+    public void removeBookmark(final Long id) {
+        delete("/api/v1/bookmarks/" + id);
     }
 }

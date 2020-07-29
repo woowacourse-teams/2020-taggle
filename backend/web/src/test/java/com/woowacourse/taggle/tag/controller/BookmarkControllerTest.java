@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.tag.domain.Bookmark;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -58,9 +59,22 @@ class BookmarkControllerTest {
         bookmarkSetup.save();
 
         mockMvc.perform(get("/api/v1/bookmarks")
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @WithMockUser(value = "ADIMI")
+    @DisplayName("removeBookmark: 북마크 하나를 제거한다.")
+    @Test
+    void removeBookmark() throws Exception {
+        Bookmark bookmark = bookmarkSetup.save();
+
+        mockMvc.perform(delete("/api/v1/bookmarks/" + bookmark.getId())
+        )
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 }
