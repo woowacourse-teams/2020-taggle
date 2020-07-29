@@ -14,8 +14,8 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
-import com.woowacourse.taggle.tag.dto.BookmarkCreateResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 
 @ExtendWith(SpringExtension.class)
@@ -33,35 +33,35 @@ public class BookmarkServiceTest {
     @Test
     void addBookmark() {
         // given
-        BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
     @DisplayName("동일한 북마크가 이미 존재 할 경우 이미 존재하는 북마크를 반환한다.")
     @Test
     void addBookmark_DuplicateBookmark_Exception() {
         // given
-        BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
     @DisplayName("북마크를 삭제한다.")
     @Test
     void removeBookmark() {
         // given
-        Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
+        final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
         bookmarkRepository.save(new Bookmark("https://naver.co.kr"));
-        BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId());
+        final BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId());
 
         // when
         bookmarkService.removeBookmark(bookmarkRemoveRequest);
@@ -73,8 +73,8 @@ public class BookmarkServiceTest {
     @Test
     void removeBookmark_NotFoundException() {
         // given
-        Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
-        BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId() + 1L);
+        final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
+        final BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId() + 1L);
 
         // when
         // then

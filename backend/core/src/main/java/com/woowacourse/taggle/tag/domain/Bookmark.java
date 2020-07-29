@@ -27,15 +27,15 @@ public class Bookmark {
     @Column(name = "bookmark_id")
     private Long id;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<TagBookmark> tags = new HashSet<>();
+
     @URL
     @Column(nullable = false)
     private String url;
 
     @Column(nullable = false)
     private Boolean isRead;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TagBookmark> tags = new HashSet<>();
 
     public Bookmark(final String url) {
         this.url = url;
