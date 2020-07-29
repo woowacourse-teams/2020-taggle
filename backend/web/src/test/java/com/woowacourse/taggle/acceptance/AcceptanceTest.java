@@ -1,5 +1,6 @@
 package com.woowacourse.taggle.acceptance;
 
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 
 @ExtendWith(SpringExtension.class)
@@ -33,20 +33,20 @@ public class AcceptanceTest {
 
     @BeforeEach
     public void setUp() {
-        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
-        RestAssuredMockMvc.config = new RestAssuredMockMvcConfig()
+        webAppContextSetup(webApplicationContext);
+        config = new RestAssuredMockMvcConfig()
                 .encoderConfig(new EncoderConfig("UTF-8", "UTF-8"));
         RestAssured.port = port;
     }
 
     @AfterEach
     public void tearDown() {
-        RestAssuredMockMvc.reset();
+        reset();
     }
 
     // @formatter:off
     public void post(final String path, final Map<String, String> params, final String expectLocation) {
-        RestAssuredMockMvc.given()
+        given()
                 .body(params)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +63,7 @@ public class AcceptanceTest {
     // @formatter:off
     public <T> List<T> getAsList(final String path, final Class<T> responseType) {
         return
-                RestAssuredMockMvc.given()
+                given()
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                         .get(path)
@@ -77,7 +77,7 @@ public class AcceptanceTest {
 
     // @formatter:off
     public void delete(final String path) {
-        RestAssuredMockMvc.given()
+        given()
         .when()
                 .delete(path)
         .then()
