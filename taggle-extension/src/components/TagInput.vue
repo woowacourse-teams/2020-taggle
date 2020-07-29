@@ -1,10 +1,10 @@
 <template>
   <div class="mt-1">
     <vue-tags-input
-      v-on:keyup.enter="addTag(tag)"
-      v-model="tag.name"
+      v-model="tag"
       :tags="tags"
       @tags-changed="(newTags) => (tags = newTags)"
+      @before-adding-tag="addTagToBookmark"
       placeholder="태그 추가"
     />
   </div>
@@ -20,15 +20,14 @@ export default {
   },
   data() {
     return {
-      tag: {
-        name: '',
-      },
+      tag: '',
       tags: [],
     };
   },
   methods: {
-    addTag(tag) {
-      TagService.create(tag);
+    addTagToBookmark(data) {
+      TagService.create({ name: data.tag.text });
+      data.addTag();
     },
   },
 };
