@@ -28,7 +28,6 @@ public class BookmarkDocumentation {
                         fieldWithPath("[].url").description("북마크 URL")
                 )
         );
-
     }
 
     public static RestDocumentationResultHandler removeBookmark() {

@@ -14,7 +14,7 @@ endif::[]
 = Resources
 
 [[resources-bookmarks]]
-== Bookmark
+== Bookmarks
 
 [[resources-bookmarks-create]]
 === 북마크 추가
@@ -27,6 +27,19 @@ operation::bookmarks/create[snippets='http-request,request-fields,http-response,
 operation::bookmarks/get[snippets='http-request,request-body,http-response,response-body']
 
 [[resources-bookmarks-delete]]
-=== 북마크 삭제하기
+=== 북마크 삭제
 
 operation::bookmarks/delete[snippets='http-request,request-body,http-response,response-body']
+
+[[resources-tags]]
+== Tags
+
+[[resources-tags-create]]
+=== 태그 추가
+
+operation::tags/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
+
+[[resources-tags-get]]
+=== 태그 가져오기
+
+operation::tags/get[snippets='http-request,request-body,http-response,response-body,response-fields']
