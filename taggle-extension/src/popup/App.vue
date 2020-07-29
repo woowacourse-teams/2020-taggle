@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import Buttons from '../components/Buttons';
-import TagInput from '../components/TagInput';
+import Buttons from '../components/Buttons.vue';
+import TagInput from '../components/TagInput.vue';
+import BookmarkService from "../api/module/bookmark.js";
 
 export default {
   components: {
@@ -29,6 +30,7 @@ export default {
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
         this.url = tabs[0].url;
       });
+      BookmarkService.save(this.url);
     },
   },
   mounted() {
