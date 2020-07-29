@@ -5,6 +5,7 @@
       <h2 class="taggle-title">TAGGLE</h2>
       <Buttons />
     </section>
+    {{ url }}
     <TagInput />
   </v-app>
 </template>
@@ -19,7 +20,19 @@ export default {
     TagInput,
   },
   data() {
-    return {};
+    return {
+      url: '',
+    };
+  },
+  methods: {
+    getUrl: function() {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
+        this.url = tabs[0].url;
+      });
+    },
+  },
+  mounted() {
+    this.getUrl();
   },
 };
 </script>
