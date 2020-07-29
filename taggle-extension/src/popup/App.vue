@@ -13,7 +13,7 @@
 <script>
 import Buttons from '../components/Buttons.vue';
 import TagInput from '../components/TagInput.vue';
-import BookmarkService from "../api/module/bookmark.js";
+import BookmarkService from '../api/module/bookmark.js';
 
 export default {
   components: {

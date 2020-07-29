@@ -1,10 +1,17 @@
 <template>
   <div class="mt-1">
-    <vue-tags-input v-model="tag" :tags="tags" @tags-changed="(newTags) => (tags = newTags)" placeholder="태그 추가" />
+    <vue-tags-input
+      v-on:keyup.enter="addTag(tag)"
+      v-model="tag.name"
+      :tags="tags"
+      @tags-changed="(newTags) => (tags = newTags)"
+      placeholder="태그 추가"
+    />
   </div>
 </template>
 
 <script>
+import TagService from '../api/module/tag.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
@@ -13,9 +20,16 @@ export default {
   },
   data() {
     return {
-      tag: '',
+      tag: {
+        name: '',
+      },
       tags: [],
     };
+  },
+  methods: {
+    addTag(tag) {
+      TagService.create(tag);
+    },
   },
 };
 </script>
