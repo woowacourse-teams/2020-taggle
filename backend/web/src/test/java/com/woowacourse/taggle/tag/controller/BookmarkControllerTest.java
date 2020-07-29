@@ -10,6 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.tag.controller.doc.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 
 class BookmarkControllerTest extends ControllerTest {
@@ -21,7 +22,8 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
-        create("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }");
+        create("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
+                .andDo(BookmarkDocumentation.createBookmark());
     }
 
     @WithMockUser(value = "ADMIN")
@@ -30,15 +32,17 @@ class BookmarkControllerTest extends ControllerTest {
     void findBookmarks() throws Exception {
         bookmarkSetup.save();
 
-        read("/api/v1/bookmarks", jsonPath("$", hasSize(1)));
+        read("/api/v1/bookmarks", jsonPath("$", hasSize(1)))
+                .andDo(BookmarkDocumentation.findBookmarks());
     }
 
     @WithMockUser(value = "ADMIN")
     @DisplayName("removeBookmark: 북마크 하나를 제거한다.")
     @Test
     void removeBookmark() throws Exception {
-        Bookmark bookmark = bookmarkSetup.save();
+        final Bookmark bookmark = bookmarkSetup.save();
 
-        remove("/api/v1/bookmarks/" + bookmark.getId());
+        remove("/api/v1/bookmarks/{id}", bookmark.getId())
+                .andDo(BookmarkDocumentation.removeBookmark());
     }
 }

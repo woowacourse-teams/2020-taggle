@@ -1,0 +1,32 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+[[resources]]
+= Resources
+
+[[resources-bookmarks]]
+== Bookmark
+
+[[resources-bookmarks-create]]
+=== 북마크 추가
+
+operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
+
+[[resources-bookmarks-get]]
+=== 북마크 가져오기
+
+operation::bookmarks/get[snippets='http-request,request-body,http-response,response-body']
+
+[[resources-bookmarks-delete]]
+=== 북마크 삭제하기
+
+operation::bookmarks/delete[snippets='http-request,request-body,http-response,response-body']
