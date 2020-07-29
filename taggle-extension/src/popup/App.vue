@@ -5,7 +5,6 @@
       <h2 class="taggle-title">TAGGLE</h2>
       <Buttons />
     </section>
-    {{ url }}
     <TagInput />
   </v-app>
 </template>
@@ -22,15 +21,17 @@ export default {
   },
   data() {
     return {
-      url: '',
+      presentPage: {
+        url: '',
+      },
     };
   },
   methods: {
     getUrl: function() {
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
-        this.url = tabs[0].url;
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+        this.presentPage.url = tabs[0].url;
+        BookmarkService.save(this.presentPage);
       });
-      BookmarkService.save(this.url);
     },
   },
   mounted() {
