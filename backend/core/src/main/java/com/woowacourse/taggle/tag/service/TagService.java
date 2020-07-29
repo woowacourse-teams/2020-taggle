@@ -1,12 +1,14 @@
 package com.woowacourse.taggle.tag.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagRequest;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -16,16 +18,22 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public TagBookmarkResponse createTag(final TagCreateRequest tagCreateRequest) {
-        Tag tag = tagRepository.findByName(tagCreateRequest.getName())
+    public TagResponse createTag(final TagCreateRequest tagCreateRequest) {
+        final Tag tag = tagRepository.findByName(tagCreateRequest.getName())
                 .orElse(tagRepository.save(tagCreateRequest.toEntity()));
-        return TagBookmarkResponse.of(tag);
+        return TagResponse.of(tag);
     }
 
     public void removeTag(final TagRequest tagRequest) {
-        Tag tag = tagRepository.findById(tagRequest.getId())
+        final Tag tag = tagRepository.findById(tagRequest.getId())
                 .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
                         + "tagId: " + tagRequest.getId()));
         tagRepository.delete(tag);
+    }
+
+    public List<TagResponse> findTags() {
+        final List<Tag> tags = tagRepository.findAll();
+
+        return TagResponse.asList(tags);
     }
 }

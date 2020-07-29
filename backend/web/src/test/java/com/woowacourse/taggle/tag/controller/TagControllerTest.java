@@ -20,17 +20,17 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.setup.domain.TagSetup;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class BookmarkControllerTest {
+public class TagControllerTest {
 
     private MockMvc mockMvc;
 
     @Autowired
-    private BookmarkSetup bookmarkSetup;
+    private TagSetup tagSetup;
 
     @BeforeEach
     void setUp(final WebApplicationContext webApplicationContext) {
@@ -40,11 +40,11 @@ class BookmarkControllerTest {
     }
 
     @WithMockUser(value = "ADMIN")
-    @DisplayName("createBookmark: 북마크를 추가한다.")
+    @DisplayName("createTag: 태그를 추가한다.")
     @Test
-    void createBookmark() throws Exception {
-        mockMvc.perform(post("/api/v1/bookmarks")
-                .content("{ \"url\": \"http://github.com\" }")
+    void createTag() throws Exception {
+        mockMvc.perform(post("/api/v1/tags")
+                .content("{\"name\": \"taggle\"}")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -55,9 +55,9 @@ class BookmarkControllerTest {
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
     @Test
     void findBookmarks() throws Exception {
-        bookmarkSetup.save();
+        tagSetup.save();
 
-        mockMvc.perform(get("/api/v1/bookmarks")
+        mockMvc.perform(get("/api/v1/tags")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())

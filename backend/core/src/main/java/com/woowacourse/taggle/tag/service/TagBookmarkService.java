@@ -10,8 +10,8 @@ import com.woowacourse.taggle.tag.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagBookmarkRequest;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagRequest;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -26,11 +26,11 @@ public class TagBookmarkService {
     private final TagBookmarkRepository tagBookmarkRepository;
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findTagBookmark(final TagRequest tagRequest) {
+    public TagResponse findTagBookmark(final TagRequest tagRequest) {
         Tag tag = tagRepository.findById(tagRequest.getId())
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
                         + "tagId: " + tagRequest.getId()));
-        return TagBookmarkResponse.of(tag);
+        return TagResponse.of(tag);
     }
 
     @Transactional
