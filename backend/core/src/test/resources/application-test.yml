@@ -1,0 +1,4 @@
+spring:
+  datasource.data:
+  jpa.hibernate.use-new-id-generator-mappings: false
+logging.level.org.springframework.jdbc.core.JdbcTemplate: debug

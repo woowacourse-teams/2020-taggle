@@ -23,7 +23,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                         .antMatchers("/", "/h2-console/**").permitAll()
-                        .anyRequest().authenticated()
+                        .antMatchers("/", "/api/**").permitAll() // @FIXME: 테스트를 위해 spring security off
+                .anyRequest().authenticated()
+                .and()
+                        .cors()
                 .and()
                         .logout()
                         .logoutSuccessUrl("/")
@@ -32,4 +35,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .userInfoEndpoint()
                         .userService(customOAuth2UserService);
     }
+
+    // @FIXME: 테스트를 위해 spring security off
+    // @Bean
+    // public CorsConfigurationSource corsConfigurationSource() {
+    //     CorsConfiguration configuration = new CorsConfiguration();
+    //
+    //     configuration.addAllowedOrigin("http://localhost:3000");
+    //     configuration.addAllowedHeader("*");
+    //     configuration.addAllowedMethod("*");
+    //     configuration.setAllowCredentials(true);
+    //
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     source.registerCorsConfiguration("/**", configuration);
+    //     return source;
+    // }
 }
