@@ -20,15 +20,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Tag {
 
-    @OneToMany(mappedBy = "tag", orphanRemoval = true)
-    private final Set<TagBookmark> bookmarks = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private Long id;
+
     @NotEmpty
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "tag", orphanRemoval = true)
+    private Set<TagBookmark> bookmarks = new HashSet<>();
 
     public Tag(final String name) {
         this.name = name;

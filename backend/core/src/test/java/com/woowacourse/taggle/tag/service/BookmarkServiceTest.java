@@ -108,6 +108,6 @@ public class BookmarkServiceTest {
         // then
         assertThatThrownBy(() -> bookmarkService.removeBookmark(bookmark.getId() + 1L))
                 .isInstanceOf(BookmarkNotFoundException.class)
-                .hasMessageContaining("삭제하려는 북마크가 존재하지 않습니다");
+                .hasMessageContaining("북마크가 존재하지 않습니다");
     }
 }
