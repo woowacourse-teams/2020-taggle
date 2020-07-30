@@ -26,9 +26,8 @@ public class BookmarkService {
     }
 
     public void removeBookmark(final Long id) {
-        final Bookmark bookmark = bookmarkRepository.findById(id)
-                .orElseThrow(() -> new BookmarkNotFoundException("삭제하려는 북마크가 존재하지 않습니다.\n"
-                        + "bookmarkId: " + id));
+        final Bookmark bookmark = findBookmarkById(id);
+
         bookmarkRepository.delete(bookmark);
     }
 
@@ -39,10 +38,14 @@ public class BookmarkService {
     }
 
     public BookmarkTagResponse findBookmark(final Long id) {
-        final Bookmark bookmark = bookmarkRepository.findById(id)
-                .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다. \n"
-                        + "bookmarkId: " + id));
+        final Bookmark bookmark = findBookmarkById(id);
 
         return BookmarkTagResponse.of(bookmark);
+    }
+
+    private Bookmark findBookmarkById(final Long id) {
+        return bookmarkRepository.findById(id)
+                .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다.\n"
+                        + "bookmarkId: " + id));
     }
 }

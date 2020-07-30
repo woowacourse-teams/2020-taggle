@@ -28,8 +28,7 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @PostMapping
-    public ResponseEntity<Void> createBookmark(
-            @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
+    public ResponseEntity<Void> createBookmark(@RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
         final BookmarkResponse bookmark = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         return ResponseEntity.created(URI.create("/api/v1/bookmarks/" + bookmark.getId()))
