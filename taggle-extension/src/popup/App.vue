@@ -5,7 +5,7 @@
       <h2 class="taggle-title">TAGGLE</h2>
       <Buttons />
     </section>
-    <TagInput />
+    <TagInput :bookmarkId="bookmarkId" />
   </v-app>
 </template>
 
@@ -21,6 +21,7 @@ export default {
   },
   data() {
     return {
+      bookmarkId: '',
       presentPage: {
         url: '',
       },
@@ -28,9 +29,9 @@ export default {
   },
   methods: {
     getUrl: function() {
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
         this.presentPage.url = tabs[0].url;
-        BookmarkService.save(this.presentPage);
+        this.bookmarkId = await BookmarkService.save(this.presentPage);
       });
     },
   },

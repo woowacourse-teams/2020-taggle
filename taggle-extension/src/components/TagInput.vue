@@ -12,11 +12,18 @@
 
 <script>
 import TagService from '../api/module/tag.js';
+import TagBookmarkService from '../api/module/tagBookmark.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
+  name: "TagInput",
   components: {
     VueTagsInput,
+  },
+  props: {
+    bookmarkId: {
+      type: String
+    }
   },
   data() {
     return {
@@ -25,8 +32,9 @@ export default {
     };
   },
   methods: {
-    addTagToBookmark(data) {
-      TagService.create({ name: data.tag.text });
+    addTagToBookmark: async function(data) {
+      const tagId = await TagService.create({ name: data.tag.text });
+      TagBookmarkService.create(this.bookmarkId, tagId);
       data.addTag();
     },
   },
