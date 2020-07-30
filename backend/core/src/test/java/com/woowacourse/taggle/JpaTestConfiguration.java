@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
         "com.woowacourse.taggle"
 })
 @TestPropertySource(locations = {
-        "classpath:application-test.properties"
+        "classpath:application-test.yml"
 })
 public class JpaTestConfiguration {
 }
