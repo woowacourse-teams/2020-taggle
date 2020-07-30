@@ -18,6 +18,6 @@ public class TagBookmarkResponse {
     private List<BookmarkResponse> bookmarks;
 
     public static TagBookmarkResponse of(final Tag tag) {
-        return new TagBookmarkResponse(tag.getId(), tag.getName(), BookmarkResponse.listOf(tag.getBookmarks()));
+        return new TagBookmarkResponse(tag.getId(), tag.getName(), BookmarkResponse.asList(tag.getBookmarks()));
     }
 }

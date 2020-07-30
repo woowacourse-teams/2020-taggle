@@ -3,7 +3,6 @@ package com.woowacourse.taggle.tag.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class Tag {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tag", orphanRemoval = true)
     private Set<TagBookmark> bookmarks = new HashSet<>();
 
     public Tag(final String name) {

@@ -2,6 +2,8 @@ package com.woowacourse.taggle.tag.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +16,8 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
-import com.woowacourse.taggle.tag.dto.BookmarkCreateResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 
 @ExtendWith(SpringExtension.class)
@@ -33,38 +35,65 @@ public class BookmarkServiceTest {
     @Test
     void addBookmark() {
         // given
-        BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
     @DisplayName("동일한 북마크가 이미 존재 할 경우 이미 존재하는 북마크를 반환한다.")
     @Test
     void addBookmark_DuplicateBookmark_Exception() {
         // given
-        BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
         // when
-        BookmarkCreateResponse bookmarkCreateResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkCreateResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+    }
+
+    @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
+    @Test
+    void findBookmarks() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        bookmarkService.createBookmark(bookmarkCreateRequest);
+
+        //when
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks();
+
+        //then
+        assertThat(bookmarks).hasSize(1);
+    }
+
+    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
+    @Test
+    void findBookmark() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(bookmarkCreateRequest);
+
+        //when
+        final BookmarkTagResponse expected = bookmarkService.findBookmark(bookmark.getId());
+
+        // then
+        assertThat(expected.getId()).isEqualTo(bookmark.getId());
     }
 
     @DisplayName("북마크를 삭제한다.")
     @Test
     void removeBookmark() {
         // given
-        Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
+        final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
         bookmarkRepository.save(new Bookmark("https://naver.co.kr"));
-        BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId());
 
         // when
-        bookmarkService.removeBookmark(bookmarkRemoveRequest);
+        bookmarkService.removeBookmark(bookmark.getId());
         // then
         assertThat(bookmarkRepository.findAll()).hasSize(1);
     }
@@ -73,13 +102,12 @@ public class BookmarkServiceTest {
     @Test
     void removeBookmark_NotFoundException() {
         // given
-        Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
-        BookmarkRequest bookmarkRemoveRequest = new BookmarkRequest(bookmark.getId() + 1L);
+        final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://taggle.co.kr"));
 
         // when
         // then
-        assertThatThrownBy(() -> bookmarkService.removeBookmark(bookmarkRemoveRequest))
+        assertThatThrownBy(() -> bookmarkService.removeBookmark(bookmark.getId() + 1L))
                 .isInstanceOf(BookmarkNotFoundException.class)
-                .hasMessageContaining("삭제하려는 북마크가 존재하지 않습니다");
+                .hasMessageContaining("북마크가 존재하지 않습니다");
     }
 }
