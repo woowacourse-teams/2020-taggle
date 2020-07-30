@@ -9,6 +9,9 @@ const BookmarkService = {
       return locations[locations.length - 1];
     });
   },
+  delete(id) {
+    ApiService.delete(`${BASE_URL}/${id}`);
+  },
 };
 
 export default BookmarkService;

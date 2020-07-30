@@ -3,7 +3,7 @@
     <section>
       <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
       <h2 class="taggle-title">TAGGLE</h2>
-      <Buttons />
+      <Buttons :bookmarkId="bookmarkId" />
     </section>
     <TagInput :bookmarkId="bookmarkId" />
   </v-app>
