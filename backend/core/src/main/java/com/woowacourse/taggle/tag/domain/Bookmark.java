@@ -3,7 +3,6 @@ package com.woowacourse.taggle.tag.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,18 +21,15 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Bookmark {
 
+    @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
+    private final Set<TagBookmark> tags = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bookmark_id")
     private Long id;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<TagBookmark> tags = new HashSet<>();
-
     @URL
     @Column(nullable = false)
     private String url;
-
     @Column(nullable = false)
     private Boolean isRead;
 

@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
+import com.woowacourse.taggle.setup.domain.BookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.controller.docs.TagDocumentation;
+import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 
 public class TagControllerTest extends ControllerTest {
@@ -18,12 +20,25 @@ public class TagControllerTest extends ControllerTest {
     @Autowired
     private TagSetup tagSetup;
 
+    @Autowired
+    private BookmarkSetup bookmarkSetup;
+
     @WithMockUser(value = "ADMIN")
     @DisplayName("createTag: 태그를 추가한다.")
     @Test
     void createTag() throws Exception {
-        create("/api/v1/tags", "{\"name\": \"taggle\"}")
+        createByJsonParams("/api/v1/tags", "{\"name\": \"taggle\"}")
                 .andDo(TagDocumentation.createTag());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("findTagById: 태그 단건을 조회한다.")
+    @Test
+    void findTagById() throws Exception {
+        final Tag tag = tagSetup.save();
+
+        readByPathVariables("/api/v1/tags/{tagId}/bookmarks", tag.getId())
+                .andExpect(jsonPath("$.id", is(tag.getId().intValue())));
     }
 
     @WithMockUser(value = "ADMIN")
@@ -44,5 +59,15 @@ public class TagControllerTest extends ControllerTest {
 
         remove("/api/v1/tags/{id}", tag.getId())
                 .andDo(TagDocumentation.removeTags());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("addBookmarkOnTag: 태그에 북마크를 추가한다.")
+    @Test
+    void addBookmarkOnTag() throws Exception {
+        final Tag tag = tagSetup.save();
+        final Bookmark bookmark = bookmarkSetup.save();
+
+        createByPathVariables("/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId());
     }
 }

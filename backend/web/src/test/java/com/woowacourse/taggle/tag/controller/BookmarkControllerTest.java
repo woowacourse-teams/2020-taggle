@@ -22,7 +22,7 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
-        create("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
+        createByJsonParams("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
                 .andDo(BookmarkDocumentation.createBookmark());
     }
 

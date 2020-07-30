@@ -17,4 +17,8 @@ public class BookmarkSetup {
 
         return bookmarkRepository.save(bookmark);
     }
+
+    public void removeAll() {
+        bookmarkRepository.deleteAll();
+    }
 }

@@ -1,4 +1,15 @@
+spring:
+  jpa.properties.hibernate:
+    show_sql: true
+    format_sql: true
+    use_sql_comments: true
+    h2.console.enabled: true
+    datasource.url: jdbc:h2:mem:testdb
+
+logging.level.org.hibernate.type.descriptor.sql: trace
+
 spring.security.oauth2.client.registration.google:
   client-id: test
   client-secret: test
   scope: profile,email
+

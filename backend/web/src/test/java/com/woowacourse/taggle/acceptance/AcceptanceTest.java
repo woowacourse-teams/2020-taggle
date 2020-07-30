@@ -39,24 +39,17 @@ public class AcceptanceTest {
         RestAssured.port = port;
     }
 
-    @AfterEach
-    public void tearDown() {
-        reset();
-    }
-
     // @formatter:off
-    public void post(final String path, final Map<String, String> params, final String expectLocation) {
-        given()
-                .body(params)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .when()
-                .post(path)
-        .then()
-                .log().all()
-                .statusCode(HttpStatus.CREATED.value())
-                .assertThat()
-                .header("Location", containsString(expectLocation));
+    public <T> T get(final String path, final Class<T> responseType) {
+        return
+                given()
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .when()
+                        .get(path)
+                        .then()
+                        .log().all()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract().as(responseType);
     }
     // @formatter:on
 
@@ -65,13 +58,29 @@ public class AcceptanceTest {
         return
                 given()
                         .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when()
+                        .when()
                         .get(path)
-                .then()
+                        .then()
                         .log().all()
                         .statusCode(HttpStatus.OK.value())
                         .extract()
                         .jsonPath().getList(".", responseType);
+    }
+    // @formatter:on
+
+    // @formatter:off
+    public void post(final String path, final Map<String, String> params, final String expectLocation) {
+        given()
+                .body(params)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post(path)
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .assertThat()
+                .header("Location", containsString(expectLocation));
     }
     // @formatter:on
 
@@ -85,4 +94,9 @@ public class AcceptanceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
     // @formatter:on
+
+    @AfterEach
+    public void tearDown() {
+        reset();
+    }
 }

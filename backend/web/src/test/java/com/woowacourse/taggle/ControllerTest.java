@@ -35,9 +35,18 @@ public class ControllerTest {
                 .build();
     }
 
-    public ResultActions create(final String uri, final String jsonParams) throws Exception {
+    public ResultActions createByJsonParams(final String uri, final String jsonParams) throws Exception {
         return mockMvc.perform(post(uri)
                 .content(jsonParams)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
+    public ResultActions createByPathVariables(final String uri, final Long... ids) throws Exception {
+        return mockMvc.perform(post(uri, ids)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -51,6 +60,14 @@ public class ControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(expect)
+                .andDo(print());
+    }
+
+    public ResultActions readByPathVariables(final String uri, final Long... ids) throws Exception {
+        return mockMvc.perform(get(uri, ids)
+                .accept(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 

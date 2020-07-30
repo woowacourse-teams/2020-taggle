@@ -37,12 +37,12 @@ class TagBookmarkServiceTest {
     @Test
     void findTagBookmark() {
         // given
-        Tag taggle = tagRepository.save(new Tag("taggle"));
-        Bookmark bookmark1 = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(taggle.getId(), bookmark1.getId()));
+        final Tag taggle = tagRepository.save(new Tag("taggle"));
+        final Bookmark bookmark1 = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
+        tagBookmarkService.createTagBookmark(taggle.getId(), bookmark1.getId());
 
         // when
-        TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(taggle.getId()));
+        final TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(taggle.getId()));
 
         // then
         assertThat(tagBookmark).isNotNull();
@@ -52,21 +52,21 @@ class TagBookmarkServiceTest {
     @Test
     void createTagBookmark() {
         // given
-        Tag taggle = tagRepository.save(new Tag("taggle"));
-        Tag google = tagRepository.save(new Tag("google"));
-        Tag naver = tagRepository.save(new Tag("google"));
-        Bookmark bookmark1 = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
-        Bookmark bookmark2 = bookmarkRepository.save(new Bookmark("https://bookmark/2"));
-        Bookmark bookmark3 = bookmarkRepository.save(new Bookmark("https://bookmark/3"));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(taggle.getId(), bookmark1.getId()));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(taggle.getId(), bookmark2.getId()));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(taggle.getId(), bookmark3.getId()));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(naver.getId(), bookmark1.getId()));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(google.getId(), bookmark2.getId()));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(google.getId(), bookmark3.getId()));
+        final Tag taggle = tagRepository.save(new Tag("taggle"));
+        final Tag google = tagRepository.save(new Tag("google"));
+        final Tag naver = tagRepository.save(new Tag("google"));
+        final Bookmark bookmark1 = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
+        final Bookmark bookmark2 = bookmarkRepository.save(new Bookmark("https://bookmark/2"));
+        final Bookmark bookmark3 = bookmarkRepository.save(new Bookmark("https://bookmark/3"));
+        tagBookmarkService.createTagBookmark(taggle.getId(), bookmark1.getId());
+        tagBookmarkService.createTagBookmark(taggle.getId(), bookmark2.getId());
+        tagBookmarkService.createTagBookmark(taggle.getId(), bookmark3.getId());
+        tagBookmarkService.createTagBookmark(naver.getId(), bookmark1.getId());
+        tagBookmarkService.createTagBookmark(google.getId(), bookmark2.getId());
+        tagBookmarkService.createTagBookmark(google.getId(), bookmark3.getId());
 
         // when
-        TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(taggle.getId()));
+        final TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(taggle.getId()));
 
         // then
         assertThat(tagBookmark.getId()).isEqualTo(taggle.getId());
@@ -81,14 +81,14 @@ class TagBookmarkServiceTest {
     @Test
     void removeTagBookmark() {
         // given
-        Tag tag = tagRepository.save(new Tag("taggle"));
-        Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
-        tagBookmarkService.createTagBookmark(new TagBookmarkRequest(tag.getId(), bookmark.getId()));
-        TagBookmarkRequest tagBookmarkRequest = new TagBookmarkRequest(tag.getId(), bookmark.getId());
+        final Tag tag = tagRepository.save(new Tag("taggle"));
+        final Bookmark bookmark = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
+        tagBookmarkService.createTagBookmark(tag.getId(), bookmark.getId());
+        final TagBookmarkRequest tagBookmarkRequest = new TagBookmarkRequest(tag.getId(), bookmark.getId());
 
         // when
         tagBookmarkService.removeTagBookmark(tagBookmarkRequest);
-        TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(tag.getId()));
+        final TagResponse tagBookmark = tagBookmarkService.findTagBookmark(new TagRequest(tag.getId()));
 
         // then
         assertThat(tagBookmark).isNotNull();

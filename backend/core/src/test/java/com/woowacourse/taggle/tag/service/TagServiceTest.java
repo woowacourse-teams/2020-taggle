@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.TagRepository;
+import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -97,5 +98,19 @@ class TagServiceTest {
 
         // then
         assertThat(tags).hasSize(1);
+    }
+
+    @DisplayName("findTags: 전체 태그를 조회한다.")
+    @Test
+    void findTagById() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(tagCreateRequest);
+
+        // when
+        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(tag.getId());
+
+        // then
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
     }
 }

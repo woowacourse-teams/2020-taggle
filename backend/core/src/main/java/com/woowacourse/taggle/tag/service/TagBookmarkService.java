@@ -27,21 +27,21 @@ public class TagBookmarkService {
 
     @Transactional(readOnly = true)
     public TagResponse findTagBookmark(final TagRequest tagRequest) {
-        Tag tag = tagRepository.findById(tagRequest.getId())
+        final Tag tag = tagRepository.findById(tagRequest.getId())
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
                         + "tagId: " + tagRequest.getId()));
         return TagResponse.of(tag);
     }
 
     @Transactional
-    public void createTagBookmark(final TagBookmarkRequest tagBookmarkRequest) {
-        Tag tag = tagRepository.findById(tagBookmarkRequest.getTagId())
+    public void createTagBookmark(final Long tagId, final Long bookmarkId) {
+        final Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
-                        + "tagId: " + tagBookmarkRequest.getTagId()));
-        Bookmark bookmark = bookmarkRepository.findById(tagBookmarkRequest.getBookmarkId())
+                        + "tagId: " + tagId));
+        final Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다.\n"
-                        + "bookmarkId: " + tagBookmarkRequest.getBookmarkId()));
-        TagBookmark tagBookmark = tagBookmarkRepository.save(new TagBookmark(tag, bookmark));
+                        + "bookmarkId: " + bookmarkId));
+        final TagBookmark tagBookmark = tagBookmarkRepository.save(new TagBookmark(tag, bookmark));
 
         tag.addTagBookmark(tagBookmark);
         bookmark.addTagBookmark(tagBookmark);
@@ -49,13 +49,13 @@ public class TagBookmarkService {
 
     @Transactional
     public void removeTagBookmark(final TagBookmarkRequest tagBookmarkRequest) {
-        Tag tag = tagRepository.findById(tagBookmarkRequest.getTagId())
+        final Tag tag = tagRepository.findById(tagBookmarkRequest.getTagId())
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
                         + "tagId: " + tagBookmarkRequest.getTagId()));
-        Bookmark bookmark = bookmarkRepository.findById(tagBookmarkRequest.getBookmarkId())
+        final Bookmark bookmark = bookmarkRepository.findById(tagBookmarkRequest.getBookmarkId())
                 .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다.\n"
                         + "bookmarkId: " + tagBookmarkRequest.getBookmarkId()));
-        TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)
+        final TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)
                 .orElseThrow(() -> new TagBookmarkNotFoundException("태그에 북마크가 존재하지 않습니다.\n"
                         + "tagId:" + tagBookmarkRequest.getTagId() + "\n"
                         + "bookmarkId: " + tagBookmarkRequest.getBookmarkId()));
