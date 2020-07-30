@@ -43,3 +43,8 @@ operation::tags/create[snippets='http-request,request-fields,http-response,respo
 === 태그 가져오기
 
 operation::tags/get[snippets='http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-tags-delete]]
+=== 태그 삭제
+
+operation::tags/delete[snippets='http-request,request-body,http-response,response-body']

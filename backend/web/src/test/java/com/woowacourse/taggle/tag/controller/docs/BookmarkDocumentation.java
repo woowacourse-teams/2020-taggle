@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.tag.controller.doc;
+package com.woowacourse.taggle.tag.controller.docs;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
@@ -16,7 +16,7 @@ public class BookmarkDocumentation {
                         fieldWithPath("url").type(JsonFieldType.STRING).description("북마크에 추가할 URL")
                 ),
                 responseHeaders(
-                        headerWithName("Location").description("GET REST URL")
+                        headerWithName("Location").description("생성된 북마크의 URI")
                 )
         );
     }

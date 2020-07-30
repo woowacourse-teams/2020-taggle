@@ -16,9 +16,14 @@ public class TagAcceptanceTest extends AcceptanceTest {
     @Test
     void manageBookmark() {
         createTag("http://taggle.com");
-        final List<TagResponse> tags = findTags();
+        List<TagResponse> tags = findTags();
 
         assertThat(tags).hasSize(1);
+
+        deleteTeg(tags.get(0).getId());
+        tags = findTags();
+        
+        assertThat(tags).hasSize(0);
     }
 
     public void createTag(final String name) {
@@ -30,5 +35,9 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
     public List<TagResponse> findTags() {
         return getAsList("/api/v1/tags", TagResponse.class);
+    }
+
+    public void deleteTeg(final Long id) {
+        delete("/api/v1/tags/" + id);
     }
 }

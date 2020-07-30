@@ -10,7 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
-import com.woowacourse.taggle.tag.controller.doc.BookmarkDocumentation;
+import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 
 class BookmarkControllerTest extends ControllerTest {

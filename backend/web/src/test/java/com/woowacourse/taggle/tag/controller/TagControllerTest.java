@@ -10,7 +10,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.TagSetup;
-import com.woowacourse.taggle.tag.controller.doc.TagDocumentation;
+import com.woowacourse.taggle.tag.controller.docs.TagDocumentation;
+import com.woowacourse.taggle.tag.domain.Tag;
 
 public class TagControllerTest extends ControllerTest {
 
@@ -26,12 +27,22 @@ public class TagControllerTest extends ControllerTest {
     }
 
     @WithMockUser(value = "ADMIN")
-    @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
+    @DisplayName("findTags: 전체 태그를 조회한다.")
     @Test
     void findTags() throws Exception {
         tagSetup.save();
 
         read("/api/v1/tags", jsonPath("$", hasSize(1)))
                 .andDo(TagDocumentation.findTags());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("removeTag: 태그를 삭제한다.")
+    @Test
+    void removeTag() throws Exception {
+        final Tag tag = tagSetup.save();
+
+        remove("/api/v1/tags/{id}", tag.getId())
+                .andDo(TagDocumentation.removeTags());
     }
 }

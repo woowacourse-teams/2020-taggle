@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
-import com.woowacourse.taggle.tag.dto.TagRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 
@@ -23,6 +22,7 @@ import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
 class TagServiceTest {
+    private static final String TAG_NAME = "spring boot";
 
     @Autowired
     private TagService tagService;
@@ -34,23 +34,21 @@ class TagServiceTest {
     @Test
     void createTag() {
         // given
-        final String tagName = "spring boot";
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(tagName);
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
         final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
-        assertThat(tagResponse.getName()).isEqualTo(tagName);
+        assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
     }
 
     @DisplayName("createTag: 중복된 태그가 존재하는 경우 이미 존재하는 태그를 반환한다.")
     @Test
     void createTag_TagAlreadyExist_ReturnExistTag() {
         // given
-        final String tagName = "spring boot";
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(tagName);
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
         tagService.createTag(tagCreateRequest);
@@ -58,21 +56,19 @@ class TagServiceTest {
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
-        assertThat(tagResponse.getName()).isEqualTo(tagName);
+        assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")
     @Test
     void removeTag() {
         // given
-        final String tagName = "spring boot";
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(tagName);
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
         tagService.createTag(tagCreateRequest);
         final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
-        final TagRequest tagRequest = new TagRequest(tagResponse.getId());
 
         // when
-        tagService.removeTag(tagRequest);
+        tagService.removeTag(tagResponse.getId());
 
         // then
         assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
@@ -82,11 +78,9 @@ class TagServiceTest {
     @Test
     void removeTag_TagNotExist_ExceptionThrown() {
         // given
-        final TagRequest tagRequest = new TagRequest(1L);
-
         // when
         // then
-        assertThatThrownBy(() -> tagService.removeTag(tagRequest))
+        assertThatThrownBy(() -> tagService.removeTag(1L))
                 .isInstanceOf(TagNotFoundException.class)
                 .hasMessageContaining("태그가 존재하지 않습니다");
     }
@@ -95,9 +89,8 @@ class TagServiceTest {
     @Test
     void findTags() {
         // given
-        final String tagName = "spring boot";
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(tagName);
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        tagService.createTag(tagCreateRequest);
 
         // when
         final List<TagResponse> tags = tagService.findTags();

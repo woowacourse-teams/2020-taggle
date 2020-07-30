@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
-import com.woowacourse.taggle.tag.dto.TagRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +23,10 @@ public class TagService {
         return TagResponse.of(tag);
     }
 
-    public void removeTag(final TagRequest tagRequest) {
-        final Tag tag = tagRepository.findById(tagRequest.getId())
+    public void removeTag(final Long id) {
+        final Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
-                        + "tagId: " + tagRequest.getId()));
+                        + "tagId: " + id));
         tagRepository.delete(tag);
     }
 

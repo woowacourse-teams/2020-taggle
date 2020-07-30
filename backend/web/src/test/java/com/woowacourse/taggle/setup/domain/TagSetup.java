@@ -12,7 +12,7 @@ public class TagSetup {
 
     private final TagRepository tagRepository;
 
-    public void save() {
-        tagRepository.save(new Tag("태글"));
+    public Tag save() {
+        return tagRepository.save(new Tag("태글"));
     }
 }
