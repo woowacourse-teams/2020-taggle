@@ -1,8 +1,12 @@
 package com.woowacourse.taggle.security.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.woowacourse.taggle.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                         .antMatchers("/", "/h2-console/**").permitAll()
-                        .antMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
+                .and()
+                        .cors()
                 .and()
                         .logout()
                         .logoutSuccessUrl("/")
@@ -32,5 +37,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .oauth2Login()
                         .userInfoEndpoint()
                         .userService(customOAuth2UserService);
+    }
+
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 }

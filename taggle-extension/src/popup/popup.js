@@ -9,5 +9,5 @@ Vue.prototype.$browser = global.browser;
 new Vue({
   el: '#app',
   vuetify,
-  render: h => h(App),
+  render: (h) => h(App),
 });

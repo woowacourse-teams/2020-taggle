@@ -8,7 +8,7 @@ public class WebApplication {
 
     private static final String PROPERTIES = "spring.config.location="
             + "classpath:/config/oauth.properties, "
-            + "classpath:/application.properties";
+            + "classpath:/application.yml";
 
     public static void main(final String[] args) {
         new SpringApplicationBuilder(WebApplication.class)
