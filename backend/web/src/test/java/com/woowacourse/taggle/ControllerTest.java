@@ -1,5 +1,6 @@
 package com.woowacourse.taggle;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -9,14 +10,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
 @Transactional
 public class ControllerTest {
@@ -24,14 +28,16 @@ public class ControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setUp(final WebApplicationContext webApplicationContext) {
+    void setUp(final WebApplicationContext webApplicationContext,
+            final RestDocumentationContextProvider restDocumentationContextProvider) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
+                .apply(documentationConfiguration(restDocumentationContextProvider))
                 .build();
     }
 
-    public void create(final String uri, final String jsonParams) throws Exception {
-        mockMvc.perform(post(uri)
+    public ResultActions create(final String uri, final String jsonParams) throws Exception {
+        return mockMvc.perform(post(uri)
                 .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -40,8 +46,8 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public void read(final String uri, final ResultMatcher expect) throws Exception {
-        mockMvc.perform(get(uri)
+    public ResultActions read(final String uri, final ResultMatcher expect) throws Exception {
+        return mockMvc.perform(get(uri)
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
@@ -49,8 +55,9 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public void remove(final String uri) throws Exception {
-        mockMvc.perform(delete(uri))
+    public ResultActions remove(final String uri, final Long id) throws Exception {
+        return mockMvc.perform(RestDocumentationRequestBuilders.delete(uri, id)
+        )
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
