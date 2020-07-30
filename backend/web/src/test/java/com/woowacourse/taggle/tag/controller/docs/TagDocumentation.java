@@ -20,8 +20,21 @@ public class TagDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler findTags() {
+    public static RestDocumentationResultHandler findTag() {
         return document("tags/get",
+                pathParameters(
+                        parameterWithName("id").description("태그 ID")
+                ),
+                responseFields(
+                        fieldWithPath("id").description("태그 ID"),
+                        fieldWithPath("name").description("태그 이름"),
+                        fieldWithPath("bookmarks.[].id").description("북마크 ID"),
+                        fieldWithPath("bookmarks.[].url").description("북마크 URI")
+                ));
+    }
+
+    public static RestDocumentationResultHandler findTags() {
+        return document("tags/get/list",
                 responseFields(
                         fieldWithPath("[].id").description("태그 ID"),
                         fieldWithPath("[].name").description("태그 이름")
@@ -33,6 +46,18 @@ public class TagDocumentation {
         return document("tags/delete",
                 pathParameters(
                         parameterWithName("id").description("태그 ID")
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler addBookmarkOnTag() {
+        return document("tags/tagBookmark",
+                pathParameters(
+                        parameterWithName("tagId").description("태그 ID"),
+                        parameterWithName("bookmarkId").description("북마크 ID")
+                ),
+                responseHeaders(
+                        headerWithName("Location").description("태그 조회 URI")
                 )
         );
     }

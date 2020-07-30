@@ -10,13 +10,22 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
+import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.domain.Tag;
 
 class BookmarkControllerTest extends ControllerTest {
 
     @Autowired
+    private TagBookmarkSetup tagBookmarkSetup;
+
+    @Autowired
     private BookmarkSetup bookmarkSetup;
+
+    @Autowired
+    private TagSetup tagSetup;
 
     @WithMockUser(value = "ADMIN")
     @DisplayName("createBookmark: 북마크를 추가한다.")
@@ -31,9 +40,12 @@ class BookmarkControllerTest extends ControllerTest {
     @Test
     void findBookmark() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save();
+        final Tag tag = tagSetup.save();
+        tagBookmarkSetup.save(tag, bookmark);
 
         readByPathVariables("/api/v1/bookmarks/{id}/tags", bookmark.getId())
-                .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())));
+                .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
+                .andDo(BookmarkDocumentation.findBookmark());
     }
 
     @WithMockUser(value = "ADMIN")

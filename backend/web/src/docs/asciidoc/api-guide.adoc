@@ -22,9 +22,14 @@ endif::[]
 operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
 
 [[resources-bookmarks-get]]
-=== 북마크 가져오기
+=== 북마크 조회
 
 operation::bookmarks/get[snippets='http-request,request-body,http-response,response-body']
+
+[[resources-bookmarks-get-list]]
+=== 북마크 전체 조회
+
+operation::bookmarks/get/list[snippets='http-request,request-body,http-response,response-body']
 
 [[resources-bookmarks-delete]]
 === 북마크 삭제
@@ -40,11 +45,23 @@ operation::bookmarks/delete[snippets='http-request,request-body,http-response,re
 operation::tags/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
 
 [[resources-tags-get]]
-=== 태그 가져오기
+=== 태그 조회
 
 operation::tags/get[snippets='http-request,request-body,http-response,response-body,response-fields']
+
+[[resources-tags-get-list]]
+=== 태그 전체 조회
+
+operation::tags/get/list[snippets='http-request,request-body,http-response,response-body,response-fields']
 
 [[resources-tags-delete]]
 === 태그 삭제
 
 operation::tags/delete[snippets='http-request,request-body,http-response,response-body']
+
+[[resources-tags-tagbookmark]]
+=== 태그에 북마크 추가
+
+operation::tags/tagBookmark[snippets='http-request,http-response,response-body,response-headers']
+
+

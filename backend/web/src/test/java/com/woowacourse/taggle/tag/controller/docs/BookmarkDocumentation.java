@@ -21,8 +21,22 @@ public class BookmarkDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler findBookmarks() {
+    public static RestDocumentationResultHandler findBookmark() {
         return document("bookmarks/get",
+                pathParameters(
+                        parameterWithName("id").description("북마크 ID")
+                ),
+                responseFields(
+                        fieldWithPath("id").description("북마크 ID"),
+                        fieldWithPath("url").description("북마크 URL"),
+                        fieldWithPath("tags.[].id").description("북마크에 있는 태그 ID"),
+                        fieldWithPath("tags.[].name").description("북마크에 있는 태그 이름")
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler findBookmarks() {
+        return document("bookmarks/get/List",
                 responseFields(
                         fieldWithPath("[].id").description("북마크 ID"),
                         fieldWithPath("[].url").description("북마크 URL")
@@ -37,4 +51,5 @@ public class BookmarkDocumentation {
                 )
         );
     }
+
 }
