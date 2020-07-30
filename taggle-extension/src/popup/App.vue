@@ -3,15 +3,16 @@
     <section>
       <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
       <h2 class="taggle-title">TAGGLE</h2>
-      <Buttons />
+      <Buttons :bookmarkId="bookmarkId" />
     </section>
-    <TagInput />
+    <TagInput :bookmarkId="bookmarkId" />
   </v-app>
 </template>
 
 <script>
-import Buttons from '../components/Buttons';
-import TagInput from '../components/TagInput';
+import Buttons from '../components/Buttons.vue';
+import TagInput from '../components/TagInput.vue';
+import BookmarkService from '../api/module/bookmark.js';
 
 export default {
   components: {
@@ -19,7 +20,23 @@ export default {
     TagInput,
   },
   data() {
-    return {};
+    return {
+      bookmarkId: '',
+      presentPage: {
+        url: '',
+      },
+    };
+  },
+  methods: {
+    getUrl: function() {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
+        this.presentPage.url = tabs[0].url;
+        this.bookmarkId = await BookmarkService.save(this.presentPage);
+      });
+    },
+  },
+  mounted() {
+    this.getUrl();
   },
 };
 </script>
