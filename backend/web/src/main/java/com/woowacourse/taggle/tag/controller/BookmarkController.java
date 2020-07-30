@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +36,14 @@ public class BookmarkController {
                 .build();
     }
 
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<BookmarkTagResponse> findBookmark(@PathVariable final Long id) {
+        final BookmarkTagResponse bookmarkTagResponse = bookmarkService.findBookmark(id);
+
+        return ResponseEntity.ok()
+                .body(bookmarkTagResponse);
+    }
+
     @GetMapping
     public ResponseEntity<List<BookmarkResponse>> findBookmarks() {
         final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks();
@@ -44,7 +53,7 @@ public class BookmarkController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeBookmark(@PathVariable Long id) {
+    public ResponseEntity<Void> removeBookmark(@PathVariable final Long id) {
         bookmarkService.removeBookmark(id);
 
         return ResponseEntity.noContent()

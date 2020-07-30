@@ -27,6 +27,16 @@ class BookmarkControllerTest extends ControllerTest {
     }
 
     @WithMockUser(value = "ADMIN")
+    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
+    @Test
+    void findBookmark() throws Exception {
+        final Bookmark bookmark = bookmarkSetup.save();
+
+        readByPathVariables("/api/v1/bookmarks/{id}/tags", bookmark.getId())
+                .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())));
+    }
+
+    @WithMockUser(value = "ADMIN")
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
     @Test
     void findBookmarks() throws Exception {

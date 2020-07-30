@@ -8,6 +8,7 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -35,5 +36,13 @@ public class BookmarkService {
         final List<Bookmark> bookmarks = bookmarkRepository.findAll();
 
         return BookmarkResponse.asList(bookmarks);
+    }
+
+    public BookmarkTagResponse findBookmark(final Long id) {
+        final Bookmark bookmark = bookmarkRepository.findById(id)
+                .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다. \n"
+                        + "bookmarkId: " + id));
+
+        return BookmarkTagResponse.of(bookmark);
     }
 }

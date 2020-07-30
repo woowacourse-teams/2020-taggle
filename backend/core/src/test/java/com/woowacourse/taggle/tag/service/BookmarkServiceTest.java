@@ -2,6 +2,8 @@ package com.woowacourse.taggle.tag.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +17,7 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 
 @ExtendWith(SpringExtension.class)
@@ -52,6 +55,34 @@ public class BookmarkServiceTest {
 
         // then
         assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+    }
+
+    @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
+    @Test
+    void findBookmarks() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        bookmarkService.createBookmark(bookmarkCreateRequest);
+
+        //when
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks();
+
+        //then
+        assertThat(bookmarks).hasSize(1);
+    }
+
+    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
+    @Test
+    void findBookmark() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(bookmarkCreateRequest);
+
+        //when
+        final BookmarkTagResponse expected = bookmarkService.findBookmark(bookmark.getId());
+
+        // then
+        assertThat(expected.getId()).isEqualTo(bookmark.getId());
     }
 
     @DisplayName("북마크를 삭제한다.")
