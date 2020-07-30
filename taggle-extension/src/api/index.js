@@ -8,7 +8,6 @@ const AXIOS = axios.create({
 const ApiService = {
   post(uri, params) {
     return AXIOS.post(uri, params).then((res) => {
-      console.log(res);
       return res.headers.location;
     });
   },
