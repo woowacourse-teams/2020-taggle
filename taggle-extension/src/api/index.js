@@ -1,11 +1,18 @@
 import axios from 'axios';
 
+const AXIOS = axios.create({
+  baseURL: process.env.baseUrl || 'http://3.34.203.89:8080',
+  headers: { 'Access-Control-Expose-Headers': 'Location' },
+});
+
 const ApiService = {
   post(uri, params) {
-    return axios.post(uri, params).then((res) => res.headers.location);
+    return AXIOS.post(uri, params).then((res) => {
+      return res.headers.location;
+    });
   },
   delete(uri) {
-    axios.delete(uri);
+    AXIOS.delete(uri);
   },
 };
 
