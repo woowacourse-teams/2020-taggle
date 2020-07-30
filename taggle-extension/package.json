@@ -11,7 +11,7 @@
     "prettier": "prettier \"src/**/*.{js,vue}\"",
     "prettier:write": "npm run prettier -- --write",
     "watch": "npm run build -- --watch",
-    "watch:dev": "cross-env HMR=true npm run build:dev -- --watch"
+    "watch:dev": "cross-env NODE_ENV=dev HMR=true npm run build:dev -- --watch"
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
