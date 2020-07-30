@@ -1,8 +1,12 @@
 package com.woowacourse.taggle.security.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.woowacourse.taggle.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,18 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(customOAuth2UserService);
     }
 
-    // @FIXME: 테스트를 위해 spring security off
-    // @Bean
-    // public CorsConfigurationSource corsConfigurationSource() {
-    //     CorsConfiguration configuration = new CorsConfiguration();
-    //
-    //     configuration.addAllowedOrigin("http://localhost:3000");
-    //     configuration.addAllowedHeader("*");
-    //     configuration.addAllowedMethod("*");
-    //     configuration.setAllowCredentials(true);
-    //
-    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", configuration);
-    //     return source;
-    // }
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
 }
