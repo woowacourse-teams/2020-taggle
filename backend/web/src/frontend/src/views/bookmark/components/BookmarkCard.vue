@@ -26,8 +26,7 @@ export default {
     CardModule,
   },
   created() {
-    this.$store.dispatch(FETCH_BOOKMARKS);
-    console.log(this.bookmarks);
+    this.fetchBookmarks();
   },
   computed: {
     ...mapGetters(['bookmarks']),
