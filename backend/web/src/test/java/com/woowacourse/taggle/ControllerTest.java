@@ -45,7 +45,7 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions createByPathVariables(final String uri, final Long... ids) throws Exception {
+    public ResultActions createByPathVariables(final String uri, final Object... ids) throws Exception {
         return mockMvc.perform(post(uri, ids)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +63,7 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions readByPathVariables(final String uri, final Long... ids) throws Exception {
+    public ResultActions readByPathVariables(final String uri, final Object... ids) throws Exception {
         return mockMvc.perform(get(uri, ids)
                 .accept(MediaType.APPLICATION_JSON)
         )
