@@ -6,9 +6,12 @@ const AXIOS = axios.create({
 });
 
 const ApiService = {
+  get(uri) {
+    return AXIOS.get(uri).then(({ data }) => data);
+  },
   post(uri, params) {
-    return AXIOS.post(uri, params).then((res) => {
-      return res.headers.location;
+    return AXIOS.post(uri, params).then(({ headers }) => {
+      return headers.location;
     });
   },
   delete(uri) {

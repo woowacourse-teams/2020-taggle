@@ -3,40 +3,49 @@
     <section>
       <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
       <h2 class="taggle-title">TAGGLE</h2>
-      <Buttons :bookmarkId="bookmarkId" />
+      <Buttons
+        @toggleDeleteBookmark="onToggle"
+        v-if="isUrlLoaded"
+        :isNotDeletedBookmark="isNotDeletedBookmark"
+        :bookmarkUrl="url"
+      />
     </section>
-    <TagInput :bookmarkId="bookmarkId" />
+    <TagInput v-if="isNotDeletedBookmark && isUrlLoaded" :bookmarkUrl="url" />
   </v-app>
 </template>
 
 <script>
 import Buttons from '../components/Buttons.vue';
 import TagInput from '../components/TagInput.vue';
-import BookmarkService from '../api/module/bookmark.js';
 
 export default {
   components: {
     Buttons,
     TagInput,
   },
-  data() {
-    return {
-      bookmarkId: '',
-      presentPage: {
-        url: '',
-      },
-    };
-  },
-  methods: {
-    getUrl: function() {
-      chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
-        this.presentPage.url = tabs[0].url;
-        this.bookmarkId = await BookmarkService.save(this.presentPage);
-      });
+  computed: {
+    isUrlLoaded() {
+      return this.url !== '';
     },
   },
-  mounted() {
+  data() {
+    return {
+      isNotDeletedBookmark: true,
+      url: '',
+    };
+  },
+  created() {
     this.getUrl();
+  },
+  methods: {
+    onToggle() {
+      this.isNotDeletedBookmark = !this.isNotDeletedBookmark;
+    },
+    getUrl() {
+      chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
+        this.url = tabs[0].url;
+      });
+    },
   },
 };
 </script>
