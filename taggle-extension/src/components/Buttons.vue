@@ -6,8 +6,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { DELETE_BOOKMARK, FETCH_OR_CREATE_BOOKMARK } from '../store/share/actionsType.js';
+import { bookmarks, tagBookmarks, tagMock } from '../utils/mockData.js';
 
 export default {
   name: 'Buttons',
@@ -32,13 +33,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions([DELETE_BOOKMARK, FETCH_OR_CREATE_BOOKMARK]),
     async deleteBookmark() {
-      await this.$store.dispatch(DELETE_BOOKMARK);
+      await this.removeBookmark();
       this.$emit('toggleDeleteBookmark');
+      console.log(tagBookmarks, bookmarks, tagMock);
     },
     async addBookmark() {
-      await this.$store.dispatch(FETCH_OR_CREATE_BOOKMARK, this.bookmark);
+      await this.fetchOrCreateBookmark(this.bookmark);
       this.$emit('toggleDeleteBookmark');
+      console.log(tagBookmarks, bookmarks, tagMock);
     },
   },
 };

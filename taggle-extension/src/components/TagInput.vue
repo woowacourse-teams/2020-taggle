@@ -19,15 +19,17 @@ import {
   DELETE_TAG_BOOKMARK,
   FETCH_OR_CREATE_BOOKMARK,
 } from '../store/share/actionsType.js';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import { bookmarks, tagBookmarks, tagMock } from '../utils/mockData.js';
 
 export default {
   name: 'TagInput',
   components: {
     VueTagsInput,
   },
-  created() {
-    this.fetchBookmark();
+  async created() {
+    await this.fetchOrCreateBookmark(this.bookmarkCreateRequest);
+    console.log(tagBookmarks, bookmarks, tagMock);
   },
   props: {
     bookmarkUrl: {
@@ -51,26 +53,27 @@ export default {
     ...mapGetters(['bookmarkId', 'tagBookmarks']),
   },
   methods: {
-    async fetchBookmark() {
-      await this.$store.dispatch(FETCH_OR_CREATE_BOOKMARK, this.bookmarkCreateRequest);
-    },
+    ...mapActions([FETCH_OR_CREATE_BOOKMARK, ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
     async onAddTagBookmark(data) {
       this.tagCreateRequest.name = data.tag.text;
-      const tagId = await this.$store.dispatch(CREATE_TAG, this.tagCreateRequest);
-      await this.$store.dispatch(ADD_TAG_BOOKMARK, {
+      const tagId = await this.createTag(this.tagCreateRequest);
+      await this.addTagBookmark({
         bookmarkId: this.bookmarkId,
         tagId,
       });
       data.addTag();
+      console.log(tagBookmarks, bookmarks, tagMock);
     },
     async onRemoveTagBookmark(data) {
       const deleteName = data.tag.text;
       const tagId = this.$store.getters.getTagIdByName(deleteName);
-      await this.$store.dispatch(DELETE_TAG_BOOKMARK, {
+      console.log(this.bookmarkId, tagId, deleteName);
+      await this.removeTagBookmark({
         bookmarkId: this.bookmarkId,
         tagId,
       });
       data.deleteTag();
+      console.log(tagBookmarks, bookmarks, tagMock);
     },
   },
 };

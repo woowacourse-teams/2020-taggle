@@ -1,7 +1,7 @@
 export const bookmarks = [
   {
     id: 1,
-    url: 'https://www.naver.com',
+    url: 'https://www.naver.com/',
   },
   {
     id: 2,
