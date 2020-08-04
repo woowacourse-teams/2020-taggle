@@ -1,7 +1,9 @@
 package com.woowacourse.taggle.tag.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.woowacourse.taggle.tag.domain.Category;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +13,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class CategoryResponse {
+
     private Long id;
-    private String name;
-    private List<TagResponse> tags;
+    private String title;
+
+    public static CategoryResponse of(final Category category) {
+        return new CategoryResponse(category.getId(), category.getTitle());
+    }
+
+    public static List<CategoryResponse> asList(final List<Category> categories) {
+        return categories.stream()
+                .map(CategoryResponse::of)
+                .collect(Collectors.toList());
+    }
 }
