@@ -1,14 +1,14 @@
 <template>
-  <v-card width="250" tile id="container">
-    <v-list class="pa-0" v-for="{ id, title, tags } in categories" :key="id">
-      <v-list-group value="true" class="text-left mt-2">
+  <v-card id="container" tile width="250">
+    <v-list :key="id" class="pa-0" v-for="{ id, title, tags } in categories">
+      <v-list-group class="text-left mt-2" value="true">
         <template v-slot:activator>
-          <v-list-item-title class="font-weight-black text-h6">{{ title }}</v-list-item-title>
+          <v-list-item-title class="font-weight-black text-h7">{{ title }}</v-list-item-title>
         </template>
-        <v-list-item v-for="{ id, name } in tags" :key="id">
-          <v-list-item-icon class="mt-0 mb-0 text-button">
+        <v-list-item :key="id" @click.prevent="fetchBookmarks" v-for="{ id, name } in tags">
+          <v-list-item-content>
             {{ name }}
-          </v-list-item-icon>
+          </v-list-item-content>
         </v-list-item>
       </v-list-group>
     </v-list>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { categories } from '@/utils/mockTags';
+import { categories } from '@/utils/mockTags.js';
 
 export default {
   name: 'TagList',
@@ -24,6 +24,14 @@ export default {
     return {
       categories,
     };
+  },
+  methods: {
+    fetchBookmarks() {
+      if (this.$router.currentRoute.path !== '/bookmark') {
+        this.$router.replace('/bookmark');
+      }
+      // this.$router.push(`tags/${tagId}/bookmarks`);
+    },
   },
 };
 </script>
@@ -33,9 +41,5 @@ export default {
   position: fixed;
   left: 56px;
   height: 100%;
-}
-
-.v-list-item {
-  min-height: 20px !important;
 }
 </style>

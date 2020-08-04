@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import BookmarkHeader from '@/views/header/BookmarkHeader';
+import BookmarkHeader from '@/views/header/BookmarkHeader.vue';
 
 export default {
   name: 'App',
