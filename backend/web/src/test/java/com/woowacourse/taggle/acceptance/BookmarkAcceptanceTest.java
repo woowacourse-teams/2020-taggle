@@ -49,6 +49,7 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(bookmarks).hasSize(0);
     }
 
+
     public void createBookmark(final String url) {
         final Map<String, String> request = new HashMap<>();
         request.put("url", url);
