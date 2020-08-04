@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class CategoryService {
         return CategoryResponse.of(category);
     }
 
-    public List<CategoryResponse> findCategories() {
+    public List<CategoryDetailResponse> findCategories() {
         final List<Category> categories = categoryRepository.findAll();
-        return CategoryResponse.asList(categories);
+        return CategoryDetailResponse.asList(categories);
     }
 
     @Transactional
