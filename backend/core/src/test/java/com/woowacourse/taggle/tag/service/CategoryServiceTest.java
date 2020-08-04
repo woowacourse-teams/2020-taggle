@@ -75,8 +75,17 @@ class CategoryServiceTest {
         assertThat(category.getTitle()).isEqualTo("taggle");
     }
 
-    @DisplayName("displayName")
+    @DisplayName("removeCategory: 해당 카테고리를 삭제한다.")
     @Test
     void removeCategory() {
+        //given
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+
+        //when
+        categoryService.removeCategory(categoryResponse.getId());
+
+        //then
+        assertThat(categoryRepository.existsById(categoryResponse.getId())).isFalse();
     }
 }
