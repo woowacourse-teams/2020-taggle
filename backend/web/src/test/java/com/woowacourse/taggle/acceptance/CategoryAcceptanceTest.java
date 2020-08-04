@@ -20,7 +20,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
     void manageCategory() {
         // 카테고리를 생성한다.
         createCategory("project");
-        final List<CategoryResponse> categories = findCategories();
+        List<CategoryResponse> categories = findCategories();
 
         assertThat(categories).hasSize(1);
 
@@ -31,11 +31,11 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         final List<CategoryResponse> updateCategories = findCategories();
         assertThat(updateCategories.get(0).getTitle()).isEqualTo(updateTitle);
 
-        // // 카테고리를 제거한다.
-        // removeCategory(categoryId);
-        //
-        // categories = findCategories();
-        // assertThat(categories).hasSize(0);
+        // 카테고리를 제거한다.
+        removeCategory(categoryId);
+
+        categories = findCategories();
+        assertThat(categories).hasSize(0);
     }
 
     public List<CategoryResponse> findCategories() {

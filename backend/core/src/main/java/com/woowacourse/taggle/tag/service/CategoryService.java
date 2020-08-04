@@ -35,6 +35,7 @@ public class CategoryService {
     }
 
     public void removeCategory(final Long id) {
-
+        final Category category = categoryRepository.findById(id).orElseThrow(IllegalAccessError::new);
+        categoryRepository.delete(category);
     }
 }
