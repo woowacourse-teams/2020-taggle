@@ -18,6 +18,8 @@ import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.exception.CategoryDuplicationException;
+import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -42,6 +44,20 @@ class CategoryServiceTest {
         // than
         assertThat(categoryResponse.getId()).isNotNull();
         assertThat(categoryResponse.getTitle()).isEqualTo("project");
+    }
+
+    @DisplayName("createCategory: 중복된 카테고리가 존재하는 경우 예외가 발생한다.")
+    @Test
+    void createCategory_CategoryDuplicationException() {
+        // given
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        categoryService.createCategory(categoryRequest);
+
+        // when
+        // then
+        assertThatThrownBy(() -> categoryService.createCategory(categoryRequest))
+                .isInstanceOf(CategoryDuplicationException.class)
+                .hasMessageContaining("이미 존재하는 카테고리입니다.");
     }
 
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")
@@ -87,5 +103,16 @@ class CategoryServiceTest {
 
         //then
         assertThat(categoryRepository.existsById(categoryResponse.getId())).isFalse();
+    }
+
+    @DisplayName("removeCategory: 카테고리가 존재하지 않는 경우, 예외가 발생한다.")
+    @Test
+    void removeCategory_NotFoundException() {
+        // given
+        // when
+        // then
+        assertThatThrownBy(() -> categoryService.removeCategory(1L))
+                .isInstanceOf(CategoryNotFoundException.class)
+                .hasMessageContaining("카테고리가 존재하지 않습니다");
     }
 }
