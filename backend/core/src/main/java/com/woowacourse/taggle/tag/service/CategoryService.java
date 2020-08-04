@@ -21,7 +21,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public CategoryResponse createCategory(final CategoryRequest categoryRequest) {
-        boolean isPresentCategory = categoryRepository.findByTitle(categoryRequest.getTitle()).isPresent();
+        final boolean isPresentCategory = categoryRepository.findByTitle(categoryRequest.getTitle()).isPresent();
         if (isPresentCategory) {
             throw new CategoryDuplicationException("이미 존재하는 카테고리입니다. categoryTitle: " + categoryRequest.getTitle());
         }
@@ -46,8 +46,9 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    private Category findCategoryById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
-                + "categoryId:" + id));
+    private Category findCategoryById(final Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
+                        + "categoryId:" + id));
     }
 }
