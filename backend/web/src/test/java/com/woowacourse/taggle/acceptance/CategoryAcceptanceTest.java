@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
 
@@ -20,7 +20,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
     void manageCategory() {
         // 카테고리를 생성한다.
         createCategory("project");
-        List<CategoryResponse> categories = findCategories();
+        List<CategoryDetailResponse> categories = findCategories();
 
         assertThat(categories).hasSize(1);
 
@@ -28,7 +28,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         final Long categoryId = categories.get(0).getId();
         final String updateTitle = "service";
         updateCategory(categoryId, updateTitle);
-        final List<CategoryResponse> updateCategories = findCategories();
+        final List<CategoryDetailResponse> updateCategories = findCategories();
         assertThat(updateCategories.get(0).getTitle()).isEqualTo(updateTitle);
 
         // 카테고리를 제거한다.
@@ -38,8 +38,8 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         assertThat(categories).hasSize(0);
     }
 
-    public List<CategoryResponse> findCategories() {
-        return getAsList("/api/v1/categories", CategoryResponse.class);
+    public List<CategoryDetailResponse> findCategories() {
+        return getAsList("/api/v1/categories", CategoryDetailResponse.class);
     }
 
     private void createCategory(final String title) {

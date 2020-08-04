@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.service.CategoryService;
@@ -35,7 +36,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> findCategories() {
+    public ResponseEntity<List<CategoryDetailResponse>> findCategories() {
         return ResponseEntity.ok()
                 .body(categoryService.findCategories());
     }

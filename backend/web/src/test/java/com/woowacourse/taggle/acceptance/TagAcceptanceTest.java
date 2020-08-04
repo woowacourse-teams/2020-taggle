@@ -12,13 +12,19 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.setup.domain.CategorySetup;
 import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 
 public class TagAcceptanceTest extends AcceptanceTest {
+
     @Autowired
     private BookmarkSetup bookmarkSetup;
+
+    @Autowired
+    private CategorySetup categorySetup;
 
     @Transactional
     @WithMockUser(roles = "ADMIN")
@@ -37,6 +43,14 @@ public class TagAcceptanceTest extends AcceptanceTest {
         final TagBookmarkResponse tagBookmarkResponse = findTagById(tagId);
 
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
+
+        // 태그의 카테고리를 수정한다
+        createCategory("project");
+        updateCategoryOnTag(tagId, 1L);
+        final CategoryDetailResponse categoryDetailResponse = findCategories().get(0);
+
+        assertThat(categoryDetailResponse.getTags()).hasSize(1);
+        assertThat(categoryDetailResponse.getTags().get(0).getName()).isEqualTo("taggle");
 
         // 태그를 제거한다
         deleteTeg(tags.get(0).getId());
@@ -66,5 +80,20 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
     public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
         post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId, new HashMap<>(), "/api/v1/tags/");
+    }
+
+    public void updateCategoryOnTag(final Long tagId, final Long categoryId) {
+        put("/api/v1/tags/" + tagId + "/categories/" + categoryId, new HashMap<>());
+    }
+
+    public List<CategoryDetailResponse> findCategories() {
+        return getAsList("/api/v1/categories", CategoryDetailResponse.class);
+    }
+
+    private void createCategory(final String title) {
+        final Map<String, String> request = new HashMap<>();
+        request.put("title", title);
+
+        post("/api/v1/categories", request, "/api/v1/categories");
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
@@ -51,6 +52,7 @@ public class TagService {
         return TagBookmarkResponse.of(tag);
     }
 
+    @Transactional
     public void updateCategory(final Long tagId, final Long CategoryId) {
         final Tag tag = tagRepository.findById(tagId)
                 .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
@@ -60,5 +62,6 @@ public class TagService {
                         + "categoryId:" + CategoryId));
 
         tag.updateCategory(category);
+        category.add(tag);
     }
 }

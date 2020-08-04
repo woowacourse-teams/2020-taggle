@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
 
     public CategoryResponse createCategory(final CategoryRequest categoryRequest) {
         final boolean isPresentCategory = categoryRepository.findByTitle(categoryRequest.getTitle()).isPresent();
