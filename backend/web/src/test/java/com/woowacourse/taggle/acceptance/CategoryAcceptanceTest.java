@@ -24,10 +24,13 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 
         assertThat(categories).hasSize(1);
 
-        // // 카테고리를 수정한다.
-        // final Long categoryId = categories.get(0).getId();
-        // updateCategory(categoryId, "service");
-        //
+        // 카테고리를 수정한다.
+        final Long categoryId = categories.get(0).getId();
+        final String updateTitle = "service";
+        updateCategory(categoryId, updateTitle);
+        final List<CategoryResponse> updateCategories = findCategories();
+        assertThat(updateCategories.get(0).getTitle()).isEqualTo(updateTitle);
+
         // // 카테고리를 제거한다.
         // removeCategory(categoryId);
         //
@@ -46,9 +49,9 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         post("/api/v1/categories", request, "/api/v1/categories");
     }
 
-    private void updateCategory(final Long id, final String name) {
+    private void updateCategory(final Long id, final String title) {
         final Map<String, String> request = new HashMap<>();
-        request.put("name", name);
+        request.put("title", title);
 
         put("/api/v1/categories/" + id, request);
     }

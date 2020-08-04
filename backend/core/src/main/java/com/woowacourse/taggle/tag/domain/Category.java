@@ -36,6 +36,12 @@ public class Category {
         this.title = title;
     }
 
+    public void update(final Category category) {
+        if (category.getTitle() != null) {
+            this.title = category.getTitle();
+        }
+    }
+
     public void add(final Tag tag) {
         this.tags.add(tag);
     }

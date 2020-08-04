@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class CategoryCreateRequest {
+public class CategoryRequest {
 
     @NotEmpty
     private String title;

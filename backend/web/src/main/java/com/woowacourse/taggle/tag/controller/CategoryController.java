@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.tag.dto.CategoryCreateRequest;
+import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Void> createCategory(@RequestBody @Valid final CategoryCreateRequest categoryCreateRequest) {
-        final CategoryResponse category = categoryService.createCategory(categoryCreateRequest);
+    public ResponseEntity<Void> createCategory(@RequestBody @Valid final CategoryRequest categoryRequest) {
+        final CategoryResponse category = categoryService.createCategory(categoryRequest);
 
         return ResponseEntity.created(URI.create("/api/v1/categories/" + category.getId()))
                 .build();
@@ -42,8 +42,8 @@ public class CategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> createCategory(@PathVariable final Long id,
-            @RequestBody @Valid final CategoryCreateRequest categoryCreateRequest) {
-        categoryService.updateCategory(id, categoryCreateRequest);
+            @RequestBody @Valid final CategoryRequest categoryRequest) {
+        categoryService.updateCategory(id, categoryRequest);
 
         return ResponseEntity.ok()
                 .build();

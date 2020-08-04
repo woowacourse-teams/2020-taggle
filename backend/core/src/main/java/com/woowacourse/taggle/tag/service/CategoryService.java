@@ -3,10 +3,11 @@ package com.woowacourse.taggle.tag.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
-import com.woowacourse.taggle.tag.dto.CategoryCreateRequest;
+import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -16,8 +17,8 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public CategoryResponse createCategory(final CategoryCreateRequest categoryCreateRequest) {
-        final Category category = categoryRepository.save(categoryCreateRequest.toEntity());
+    public CategoryResponse createCategory(final CategoryRequest categoryRequest) {
+        final Category category = categoryRepository.save(categoryRequest.toEntity());
 
         return CategoryResponse.of(category);
     }
@@ -27,8 +28,10 @@ public class CategoryService {
         return CategoryResponse.asList(categories);
     }
 
-    public void updateCategory(final Long id, final CategoryCreateRequest categoryCreateRequest) {
-
+    @Transactional
+    public void updateCategory(final Long id, final CategoryRequest categoryRequest) {
+        final Category category = categoryRepository.findById(id).orElseThrow(IllegalAccessError::new);
+        category.update(categoryRequest.toEntity());
     }
 
     public void removeCategory(final Long id) {
