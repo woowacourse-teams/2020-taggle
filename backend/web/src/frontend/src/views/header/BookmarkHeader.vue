@@ -11,15 +11,14 @@
 
       <v-divider></v-divider>
 
-      <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+      <v-list dense nav class="d-flex flex-wrap" height="94%">
+        <v-list-item v-for="(item, index) in items" :key="index" link :class="`order-${index}`" style="height:0; py-0">
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item>
+        <v-list-item class="pa-0 order-last align-self-end" style="height:0;" link>
+          <v-avatar min-width="0" height="40px" width="40px">
+            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          </v-avatar>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -37,8 +36,10 @@ export default {
   },
   data() {
     return {
-      items: [{ title: 'tags', icon: 'local_offer' }],
+      items: [{ icon: 'local_offer' }],
     };
   },
 };
 </script>
+
+<style></style>
