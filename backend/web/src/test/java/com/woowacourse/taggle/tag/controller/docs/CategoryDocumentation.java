@@ -43,4 +43,12 @@ public class CategoryDocumentation {
                 )
         );
     }
+
+    public static RestDocumentationResultHandler removeCategory() {
+        return document("categories/delete",
+                pathParameters(
+                        parameterWithName("id").description("카테고리 ID")
+                )
+        );
+    }
 }

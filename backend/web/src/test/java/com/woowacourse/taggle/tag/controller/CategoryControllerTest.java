@@ -45,4 +45,14 @@ public class CategoryControllerTest extends ControllerTest {
         updateByJsonParams("/api/v1/categories/{id}", "{ \"title\": \"newCategory\" }", category.getId())
                 .andDo(CategoryDocumentation.updateCategory());
     }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("removeCategory: 카테고리 하나를 제거한다.")
+    @Test
+    void removeCategory() throws Exception {
+        final Category category = categorySetup.save();
+
+        remove("/api/v1/categories/{id}", category.getId())
+                .andDo(CategoryDocumentation.removeCategory());
+    }
 }

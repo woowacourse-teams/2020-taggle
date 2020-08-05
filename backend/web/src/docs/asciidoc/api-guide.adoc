@@ -86,3 +86,8 @@ operation::categories/get/List[snippets='http-request,http-response']
 === 카테고리 수정
 
 operation::categories/update[snippets='http-request,request-body,http-response']
+
+[[resources-categories-delete]]
+=== 카테고리 삭제
+
+operation::categories/delete[snippets='http-request,http-response']
