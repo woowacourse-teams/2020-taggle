@@ -10,8 +10,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.CategorySetup;
-import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.controller.docs.CategoryDocumentation;
+import com.woowacourse.taggle.tag.domain.Category;
 
 public class CategoryControllerTest extends ControllerTest {
 
@@ -30,9 +30,19 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")
     @Test
     void findCategories() throws Exception {
-        categorySetup.save();
+        categorySetup.saveWithTags();
 
         read("/api/v1/categories", jsonPath("$", hasSize(1)))
                 .andDo(CategoryDocumentation.findCategories());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("updateCategory: 카테고리의 제목을 변경한다.")
+    @Test
+    void updateCategory() throws Exception {
+        Category category = categorySetup.saveWithTags();
+
+        updateByJsonParams("/api/v1/categories/{id}", "{ \"title\": \"newCategory\" }", category.getId())
+                .andDo(CategoryDocumentation.updateCategory());
     }
 }

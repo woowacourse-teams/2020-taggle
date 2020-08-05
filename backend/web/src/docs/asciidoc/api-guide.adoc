@@ -82,3 +82,7 @@ operation::categories/create[snippets='http-request,request-body,http-response']
 
 operation::categories/get/List[snippets='http-request,http-response']
 
+[[resources-categories-update]]
+=== 카테고리 수정
+
+operation::categories/update[snippets='http-request,request-body,http-response']
