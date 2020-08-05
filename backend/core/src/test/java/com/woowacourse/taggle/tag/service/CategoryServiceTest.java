@@ -15,9 +15,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.dto.TagCreateRequest;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.CategoryDuplicationException;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
 
@@ -30,7 +34,13 @@ class CategoryServiceTest {
     private CategoryService categoryService;
 
     @Autowired
+    private TagService tagService;
+
+    @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
@@ -114,5 +124,24 @@ class CategoryServiceTest {
         assertThatThrownBy(() -> categoryService.removeCategory(1L))
                 .isInstanceOf(CategoryNotFoundException.class)
                 .hasMessageContaining("카테고리가 존재하지 않습니다");
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @DisplayName("removeCategory: 해당 카테고리를 삭제시, 하위 태그들의 카테고리가 초기화된다.")
+    @Test
+    void removeCategory_initCategoryOfTag() {
+        //given
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest("taggle");
+        TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        tagService.updateCategory(tagResponse.getId(), categoryResponse.getId());
+
+        //when
+        categoryService.removeCategory(categoryResponse.getId());
+        Tag tag = tagRepository.findById(tagResponse.getId()).get();
+
+        //then
+        assertThat(tag.getCategory()).isNull();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
@@ -45,6 +46,7 @@ public class CategoryService {
 
     public void removeCategory(final Long id) {
         final Category category = findCategoryById(id);
+        category.getTags().forEach(tag -> tag.updateCategory(null));
         categoryRepository.delete(category);
     }
 
