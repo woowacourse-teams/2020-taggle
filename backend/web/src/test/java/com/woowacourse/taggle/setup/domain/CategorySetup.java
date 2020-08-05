@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -13,6 +14,9 @@ public class CategorySetup {
     private final CategoryRepository categoryRepository;
 
     public Category save() {
-        return categoryRepository.save(new Category("project"));
+        Category project = new Category("project");
+        project.add(new Tag("someTag"));
+        project.add(new Tag("otherTag"));
+        return categoryRepository.save(project);
     }
 }

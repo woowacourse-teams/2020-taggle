@@ -6,6 +6,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultHandler;
 
 public class CategoryDocumentation {
 
@@ -16,6 +17,17 @@ public class CategoryDocumentation {
                 ),
                 responseHeaders(
                         headerWithName("Location").description("생성된 카테고리의 URI")
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler findCategories() {
+        return document("categories/get/List",
+                responseFields(
+                        fieldWithPath("[].id").description("카테고리 ID"),
+                        fieldWithPath("[].title").description("카테고리 제목"),
+                        fieldWithPath("[].tags.[].id").description("태그 ID"),
+                        fieldWithPath("[].tags.[].name").description("태그 이름")
                 )
         );
     }

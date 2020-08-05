@@ -72,7 +72,13 @@ operation::tags/category[snippets='http-request,http-response']
 [[resources-categories]]
 == Categories
 
-[[resources-categories-get]]
+[[resources-categories-create]]
 === 카테고리 추가
 
 operation::categories/create[snippets='http-request,request-body,http-response']
+
+[[resources-categories-get-list]]
+=== 카테고리 전체 조회
+
+operation::categories/get/List[snippets='http-request,http-response']
+
