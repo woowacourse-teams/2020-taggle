@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
 import com.woowacourse.taggle.setup.domain.CategorySetup;
 import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -45,8 +46,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
 
         // 태그의 카테고리를 수정한다
-        createCategory("project");
-        updateCategoryOnTag(tagId, 1L);
+        final Category category = categorySetup.save();
+        updateCategoryOnTag(tagId, category.getId());
         final CategoryDetailResponse categoryDetailResponse = findCategories().get(0);
 
         assertThat(categoryDetailResponse.getTags()).hasSize(1);
@@ -88,12 +89,5 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
     public List<CategoryDetailResponse> findCategories() {
         return getAsList("/api/v1/categories", CategoryDetailResponse.class);
-    }
-
-    private void createCategory(final String title) {
-        final Map<String, String> request = new HashMap<>();
-        request.put("title", title);
-
-        post("/api/v1/categories", request, "/api/v1/categories");
     }
 }

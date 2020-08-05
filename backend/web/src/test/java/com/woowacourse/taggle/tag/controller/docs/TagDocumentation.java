@@ -61,4 +61,13 @@ public class TagDocumentation {
                 )
         );
     }
+
+    public static RestDocumentationResultHandler updateCategoryOnTag() {
+        return document("tags/category",
+                pathParameters(
+                        parameterWithName("tagId").description("태그 ID"),
+                        parameterWithName("categoryId").description("카테고리 ID")
+                )
+        );
+    }
 }

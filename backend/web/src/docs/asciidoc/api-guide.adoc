@@ -64,4 +64,7 @@ operation::tags/delete[snippets='http-request,request-body,http-response,respons
 
 operation::tags/tagBookmark[snippets='http-request,http-response,response-body,response-headers']
 
+[[resources-tags-category]]
+=== 태그의 카테고리 수정
 
+operation::tags/category[snippets='http-request,http-response']
