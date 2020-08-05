@@ -68,3 +68,11 @@ operation::tags/tagBookmark[snippets='http-request,http-response,response-body,r
 === 태그의 카테고리 수정
 
 operation::tags/category[snippets='http-request,http-response']
+
+[[resources-categories]]
+== Categories
+
+[[resources-categories-get]]
+=== 카테고리 추가
+
+operation::categories/create[snippets='http-request,request-body,http-response']
