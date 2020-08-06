@@ -1,6 +1,8 @@
 package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,7 @@ import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.CategoryDuplicationException;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +36,14 @@ public class CategoryService {
     }
 
     public List<CategoryDetailResponse> findCategories() {
+        final List<TagResponse> tagsWithoutCategory = tagRepository.findAll().stream()
+                .filter(tag -> Objects.isNull(tag.getCategory()))
+                .map(TagResponse::of)
+                .collect(Collectors.toList());
+
         final List<Category> categories = categoryRepository.findAll();
-        return CategoryDetailResponse.asList(categories);
+
+        return CategoryDetailResponse.asList(categories, tagsWithoutCategory);
     }
 
     @Transactional
