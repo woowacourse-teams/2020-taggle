@@ -4,7 +4,7 @@ const BASE_URL = '/api/v1/bookmarks';
 
 const BookmarkService = {
   find(bookmarkId) {
-    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`)
+    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
   },
   save(newBookmark) {
     return ApiService.post(`${BASE_URL}`, newBookmark).then((location) => {

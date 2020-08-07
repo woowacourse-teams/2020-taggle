@@ -13,13 +13,8 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
-import {
-  ADD_TAG_BOOKMARK,
-  CREATE_TAG,
-  DELETE_TAG_BOOKMARK,
-  CREATE_BOOKMARK,
-} from '../store/share/actionsType.js';
 import { mapActions, mapGetters } from 'vuex';
+import { ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK, CREATE_BOOKMARK } from '../store/share/actionsType.js';
 
 export default {
   name: 'TagInput',
@@ -64,7 +59,6 @@ export default {
     async onRemoveTagBookmark(data) {
       const deleteName = data.tag.text;
       const tagId = this.$store.getters.getTagIdByName(deleteName);
-      console.log(this.bookmarkId, tagId, deleteName);
       await this.removeTagBookmark({
         bookmarkId: this.bookmarkId,
         tagId,
