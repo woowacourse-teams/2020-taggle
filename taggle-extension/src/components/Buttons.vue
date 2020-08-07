@@ -7,14 +7,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { DELETE_BOOKMARK, FETCH_OR_CREATE_BOOKMARK } from '../store/share/actionsType.js';
-import { bookmarks, tagBookmarks, tagMock } from '../utils/mockData.js';
+import { DELETE_BOOKMARK, CREATE_BOOKMARK } from '../store/share/actionsType.js';
 
 export default {
   name: 'Buttons',
-  computed: {
-    ...mapGetters(['bookmarkId']),
-  },
   props: {
     isNotDeletedBookmark: {
       type: Boolean,
@@ -32,17 +28,18 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters(['bookmarkId']),
+  },
   methods: {
-    ...mapActions([DELETE_BOOKMARK, FETCH_OR_CREATE_BOOKMARK]),
+    ...mapActions([DELETE_BOOKMARK, CREATE_BOOKMARK]),
     async deleteBookmark() {
       await this.removeBookmark();
       this.$emit('toggleDeleteBookmark');
-      console.log(tagBookmarks, bookmarks, tagMock);
     },
     async addBookmark() {
       await this.fetchOrCreateBookmark(this.bookmark);
       this.$emit('toggleDeleteBookmark');
-      console.log(tagBookmarks, bookmarks, tagMock);
     },
   },
 };

@@ -23,16 +23,16 @@ export default {
     Buttons,
     TagInput,
   },
-  computed: {
-    isUrlLoaded() {
-      return this.url !== '';
-    },
-  },
   data() {
     return {
       isNotDeletedBookmark: true,
       url: '',
     };
+  },
+  computed: {
+    isUrlLoaded() {
+      return this.url !== '';
+    },
   },
   created() {
     this.getUrl();
@@ -61,14 +61,6 @@ body {
 
 #container {
   padding: 10px 12px;
-}
-
-.v-application--wrap {
-  min-height: 0 !important;
-}
-
-.dropdown.is-hoverable:hover .dropdown-menu {
-  display: block !important;
 }
 
 .taggle-title {

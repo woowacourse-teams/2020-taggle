@@ -17,19 +17,14 @@ import {
   ADD_TAG_BOOKMARK,
   CREATE_TAG,
   DELETE_TAG_BOOKMARK,
-  FETCH_OR_CREATE_BOOKMARK,
+  CREATE_BOOKMARK,
 } from '../store/share/actionsType.js';
 import { mapActions, mapGetters } from 'vuex';
-import { bookmarks, tagBookmarks, tagMock } from '../utils/mockData.js';
 
 export default {
   name: 'TagInput',
   components: {
     VueTagsInput,
-  },
-  async created() {
-    await this.fetchOrCreateBookmark(this.bookmarkCreateRequest);
-    console.log(tagBookmarks, bookmarks, tagMock);
   },
   props: {
     bookmarkUrl: {
@@ -52,8 +47,11 @@ export default {
   computed: {
     ...mapGetters(['bookmarkId', 'tagBookmarks']),
   },
+  async created() {
+    await this.createBookmark(this.bookmarkCreateRequest);
+  },
   methods: {
-    ...mapActions([FETCH_OR_CREATE_BOOKMARK, ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
+    ...mapActions([CREATE_BOOKMARK, ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
     async onAddTagBookmark(data) {
       this.tagCreateRequest.name = data.tag.text;
       const tagId = await this.createTag(this.tagCreateRequest);
@@ -62,7 +60,6 @@ export default {
         tagId,
       });
       data.addTag();
-      console.log(tagBookmarks, bookmarks, tagMock);
     },
     async onRemoveTagBookmark(data) {
       const deleteName = data.tag.text;
@@ -73,7 +70,6 @@ export default {
         tagId,
       });
       data.deleteTag();
-      console.log(tagBookmarks, bookmarks, tagMock);
     },
   },
 };
