@@ -5,7 +5,7 @@ import {
   CREATE_TAG,
   DELETE_BOOKMARK,
   DELETE_TAG_BOOKMARK,
-  FETCH_OR_CREATE_BOOKMARK,
+  CREATE_BOOKMARK,
 } from './share/actionsType.js';
 import TagService from '../api/module/tag.js';
 import BookmarkService from '../api/module/bookmark.js';
@@ -40,7 +40,7 @@ export default new Vuex.Store({
   },
   actions: {
     [CREATE_TAG]({ commit }, newTag) {
-      return TagService.createTag(newTag);
+      return TagService.create(newTag);
     },
     [ADD_TAG_BOOKMARK]({ commit }, { bookmarkId, tagId }) {
       return TagService.addBookmarkOnTag(bookmarkId, tagId);
@@ -48,7 +48,7 @@ export default new Vuex.Store({
     [DELETE_TAG_BOOKMARK]({ commit }, { bookmarkId, tagId }) {
       return TagService.removeBookmarkOnTag(bookmarkId, tagId);
     },
-    async [FETCH_OR_CREATE_BOOKMARK]({ commit }, bookmark) {
+    async [CREATE_BOOKMARK]({ commit }, bookmark) {
       const bookmarkId = await BookmarkService.save(bookmark);
       const bookmarkResponse = await BookmarkService.find(bookmarkId);
       commit(SET_BOOKMARK, bookmarkResponse);
