@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <BookmarkHeader />
-    <v-content style="padding-left: 330px;">
+    <v-main style="padding-left: 330px;">
       <router-view />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
