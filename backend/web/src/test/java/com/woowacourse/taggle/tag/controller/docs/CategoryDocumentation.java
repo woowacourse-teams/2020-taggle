@@ -7,7 +7,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class CategoryDocumentation {
 

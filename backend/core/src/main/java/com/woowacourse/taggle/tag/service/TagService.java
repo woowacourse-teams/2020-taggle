@@ -47,7 +47,7 @@ public class TagService {
 
     public TagBookmarkResponse findTagById(final Long id) {
         final Tag tag = tagRepository.findById(id)
-                .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
+                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
                         + "tagId: " + id));
         return TagBookmarkResponse.of(tag);
     }
@@ -55,7 +55,7 @@ public class TagService {
     @Transactional
     public void updateCategory(final Long tagId, final Long CategoryId) {
         final Tag tag = tagRepository.findById(tagId)
-                .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
+                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
                         + "tagId: " + tagId));
         final Category category = categoryRepository.findById(CategoryId)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
