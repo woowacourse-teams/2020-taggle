@@ -13,7 +13,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
+import com.woowacourse.taggle.tag.dto.CategoryRequest;
+import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -27,6 +30,9 @@ class TagServiceTest {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private TagRepository tagRepository;
@@ -100,7 +106,7 @@ class TagServiceTest {
         assertThat(tags).hasSize(1);
     }
 
-    @DisplayName("findTags: 전체 태그를 조회한다.")
+    @DisplayName("findTagById: 특정 태그를 조회한다.")
     @Test
     void findTagById() {
         // given
@@ -112,5 +118,23 @@ class TagServiceTest {
 
         // then
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
+    }
+
+    @DisplayName("updateTagByCategory: 태그의 카테고리를 수정한다.")
+    @Test
+    void updateTagByCategory() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(tagCreateRequest);
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        final CategoryResponse category = categoryService.createCategory(categoryRequest);
+
+        // when
+        tagService.updateCategory(tag.getId(), category.getId());
+        final Tag updateTag = tagRepository.findById(tag.getId()).get();
+
+        // then
+        assertThat(updateTag.getCategory().getId()).isEqualTo(category.getId());
+        assertThat(updateTag.getCategory().getTitle()).isEqualTo("project");
     }
 }

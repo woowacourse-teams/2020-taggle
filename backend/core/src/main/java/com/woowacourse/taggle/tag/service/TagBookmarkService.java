@@ -17,6 +17,8 @@ import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 import lombok.RequiredArgsConstructor;
 
+// @TODO 북마크, 관련된 로직 각 서비스로 분리
+
 @RequiredArgsConstructor
 @Service
 public class TagBookmarkService {

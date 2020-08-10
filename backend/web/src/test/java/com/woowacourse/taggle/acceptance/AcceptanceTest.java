@@ -85,6 +85,21 @@ public class AcceptanceTest {
     // @formatter:on
 
     // @formatter:off
+    public void put(final String path, final Map<String, String> params) {
+        given()
+                .body(params)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .put(path)
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat();
+    }
+    // @formatter:on
+
+    // @formatter:off
     public void delete(final String path) {
         given()
         .when()

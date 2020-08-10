@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class BookmarkTagResponse {
+
     private Long id;
     private String url;
     private List<TagResponse> tags;
