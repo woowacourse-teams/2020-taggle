@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import bookmarkRoutes from '@/router/modules/bookmark';
+import bookmarkRoutes from '@/router/modules/bookmark.js';
 
 Vue.use(VueRouter);
 
