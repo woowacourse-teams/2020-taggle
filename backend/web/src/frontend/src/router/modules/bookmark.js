@@ -1,4 +1,4 @@
-import BookmarkPage from '@/views/bookmark/BookmarkPage';
+import BookmarkPage from '@/views/bookmark/BookmarkPage.vue';
 
 const bookmarkRoutes = [
   {

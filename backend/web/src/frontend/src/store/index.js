@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import BookmarkService from '../api/module/bookmark';
-import { FETCH_BOOKMARKS } from './share/actionType';
-import { SET_BOOKMARKS } from './share/mutationsType';
+import BookmarkService from '../api/module/bookmark.js';
+import { FETCH_BOOKMARKS } from './share/actionType.js';
+import { SET_BOOKMARKS } from './share/mutationsType.js';
 
 Vue.use(Vuex);
 

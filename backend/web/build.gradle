@@ -4,8 +4,6 @@ plugins {
 }
 
 node {
-    version = '12.18.2'
-    npmVersion = '6.14.5'
     workDir = file("./src/frontend")
     nodeModulesDir = file("./src/frontend")
 }

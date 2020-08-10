@@ -6,9 +6,9 @@ module.exports = {
       '/api': {
         target: 'http://localhost:9000',
         ws: true,
-        changeOrigin: true
-      }
-    }
+        changeOrigin: true,
+      },
+    },
   },
   transpileDependencies: ['vuetify'],
   indexPath: path.resolve(__dirname, '../main/resources/templates/index.html'),
@@ -16,8 +16,8 @@ module.exports = {
   configureWebpack: {
     resolve: {
       alias: {
-        '@': path.join(__dirname, 'src/')
-      }
-    }
+        '@': path.join(__dirname, 'src/'),
+      },
+    },
   },
 };

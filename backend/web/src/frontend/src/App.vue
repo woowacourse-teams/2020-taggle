@@ -1,14 +1,14 @@
 <template>
   <v-app>
     <BookmarkHeader />
-    <v-content style="padding-left: 330px;">
+    <v-main class="pl-82">
       <router-view />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import BookmarkHeader from '@/views/header/BookmarkHeader';
+import BookmarkHeader from '@/views/header/BookmarkHeader.vue';
 
 export default {
   name: 'App',
@@ -18,3 +18,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.pl-82 {
+  padding-left: 328px !important;
+}
+</style>

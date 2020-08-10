@@ -10,5 +10,5 @@ module.exports = {
   jsxSingleQuote: false,
   quoteProps: 'as-needed',
   arrowParens: 'always',
-  vueIndentScriptAndStyle: false
+  vueIndentScriptAndStyle: false,
 };
