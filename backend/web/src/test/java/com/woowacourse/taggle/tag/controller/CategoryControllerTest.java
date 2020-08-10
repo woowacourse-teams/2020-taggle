@@ -32,7 +32,7 @@ public class CategoryControllerTest extends ControllerTest {
     void findCategories() throws Exception {
         categorySetup.saveWithTags();
 
-        read("/api/v1/categories", jsonPath("$", hasSize(1)))
+        read("/api/v1/categories", jsonPath("$", hasSize(2)))
                 .andDo(CategoryDocumentation.findCategories());
     }
 
@@ -40,7 +40,7 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("updateCategory: 카테고리의 제목을 변경한다.")
     @Test
     void updateCategory() throws Exception {
-        Category category = categorySetup.saveWithTags();
+        final Category category = categorySetup.saveWithTags();
 
         updateByJsonParams("/api/v1/categories/{id}", "{ \"title\": \"newCategory\" }", category.getId())
                 .andDo(CategoryDocumentation.updateCategory());

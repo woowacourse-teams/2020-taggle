@@ -19,6 +19,7 @@ import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class CategoryService {
 
@@ -35,6 +36,7 @@ public class CategoryService {
         return CategoryResponse.of(category);
     }
 
+    @Transactional(readOnly = true)
     public List<CategoryDetailResponse> findCategories() {
         final List<TagResponse> tagsWithoutCategory = tagRepository.findAll().stream()
                 .filter(tag -> Objects.isNull(tag.getCategory()))
@@ -46,7 +48,6 @@ public class CategoryService {
         return CategoryDetailResponse.asList(categories, tagsWithoutCategory);
     }
 
-    @Transactional
     public void updateCategory(final Long id, final CategoryRequest categoryRequest) {
         final Category category = findCategoryById(id);
         category.update(categoryRequest.toEntity());

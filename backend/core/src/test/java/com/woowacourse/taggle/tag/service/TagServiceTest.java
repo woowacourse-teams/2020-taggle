@@ -106,7 +106,7 @@ class TagServiceTest {
         assertThat(tags).hasSize(1);
     }
 
-    @DisplayName("findTags: 전체 태그를 조회한다.")
+    @DisplayName("findTagById: 특정 태그를 조회한다.")
     @Test
     void findTagById() {
         // given
@@ -120,7 +120,7 @@ class TagServiceTest {
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
     }
 
-    @DisplayName("findTags: 전체 태그를 조회한다.")
+    @DisplayName("updateTagByCategory: 태그의 카테고리를 수정한다.")
     @Test
     void updateTagByCategory() {
         // given

@@ -48,7 +48,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
         // 태그의 카테고리를 수정한다
         final Category category = categorySetup.save();
         updateCategoryOnTag(tagId, category.getId());
-        final CategoryDetailResponse categoryDetailResponse = findCategories().get(0);
+        final CategoryDetailResponse categoryDetailResponse = findCategories().get(1);
 
         assertThat(categoryDetailResponse.getTags()).hasSize(1);
         assertThat(categoryDetailResponse.getTags().get(0).getName()).isEqualTo("taggle");

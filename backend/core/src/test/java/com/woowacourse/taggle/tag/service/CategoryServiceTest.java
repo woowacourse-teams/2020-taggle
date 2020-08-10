@@ -78,10 +78,10 @@ class CategoryServiceTest {
         categoryService.createCategory(categoryRequest);
 
         // when
-        List<CategoryDetailResponse> categories = categoryService.findCategories();
+        final List<CategoryDetailResponse> categories = categoryService.findCategories();
 
         // than
-        assertThat(categories.size()).isEqualTo(1);
+        assertThat(categories.size()).isEqualTo(2);
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -90,12 +90,12 @@ class CategoryServiceTest {
     void updateCategory() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
         final CategoryRequest changeRequest = new CategoryRequest("taggle");
 
         //when
         categoryService.updateCategory(categoryResponse.getId(), changeRequest);
-        Category category = categoryRepository.findById(categoryResponse.getId()).get();
+        final Category category = categoryRepository.findById(categoryResponse.getId()).get();
 
         //then
         assertThat(category.getTitle()).isEqualTo("taggle");
@@ -106,7 +106,7 @@ class CategoryServiceTest {
     void removeCategory() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
 
         //when
         categoryService.removeCategory(categoryResponse.getId());
@@ -132,14 +132,14 @@ class CategoryServiceTest {
     void removeCategory_initCategoryOfTag() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
         final TagCreateRequest tagCreateRequest = new TagCreateRequest("taggle");
-        TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
         tagService.updateCategory(tagResponse.getId(), categoryResponse.getId());
 
         //when
         categoryService.removeCategory(categoryResponse.getId());
-        Tag tag = tagRepository.findById(tagResponse.getId()).get();
+        final Tag tag = tagRepository.findById(tagResponse.getId()).get();
 
         //then
         assertThat(tag.getCategory()).isNull();

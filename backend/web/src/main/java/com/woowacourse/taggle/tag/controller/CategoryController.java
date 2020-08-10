@@ -1,10 +1,10 @@
 package com.woowacourse.taggle.tag.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +25,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/categories")
 @RestController
 public class CategoryController {
+
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Void> createCategory(@RequestBody @Valid final CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid final CategoryRequest categoryRequest) {
         final CategoryResponse category = categoryService.createCategory(categoryRequest);
 
-        return ResponseEntity.created(URI.create("/api/v1/categories/" + category.getId()))
-                .build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", "/api/v1/categories/" + category.getId())
+                .body(category);
     }
 
     @GetMapping
