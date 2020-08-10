@@ -1,11 +1,11 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-row justify="flex-start">
+      <v-row justify="start">
         <v-card
           v-for="bookmark in bookmarks"
           :key="bookmark.id"
-          :href="bookmark.link"
+          :href="bookmark.url"
           link
           class="ma-5"
           outlined
@@ -13,11 +13,13 @@
           width="300"
         >
           <v-responsive aspect-ratio="0.8">
-            <v-img :src="bookmark.img" aspect-ratio="1.6"></v-img>
+            <!--            <v-img :src="bookmark.img" aspect-ratio="1.6"></v-img>-->
+            <v-img aspect-ratio="1.6" src="https://picsum.photos/200/300"></v-img>
             <div class="test-size">
               <v-card-title primary-title>
                 <span class="title-wrap">
-                  {{ bookmark.title }}
+                  <!--                  {{ bookmark.title }}-->
+                  helloworld
                 </span>
               </v-card-title>
               <v-card-text>
