@@ -21,14 +21,14 @@
           </v-list>
         </v-navigation-drawer>
         <v-card tile width="250">
-          <v-list :key="id" class="grow" v-for="{ id, title, tags } in categories">
+          <v-list v-for="{ id, title, tags } in categories" :key="id" class="grow">
             <v-list-group class="text-left mt-2" link value="true">
               <template v-slot:activator>
                 <v-list-item-content>
                   <v-list-item-title class="font-weight-black text-h7">{{ title }}</v-list-item-title>
                 </v-list-item-content>
               </template>
-              <v-list-item :key="id" @click.prevent="fetchBookmarks" v-for="{ id, name } in tags">
+              <v-list-item v-for="{ id, name } in tags" :key="id" @click.prevent="fetchBookmarks">
                 <v-list-item-content>
                   {{ name }}
                 </v-list-item-content>
@@ -46,7 +46,6 @@ import { categories } from '@/utils/mockTags.js';
 
 export default {
   name: 'BookmarkHeader',
-  components: {},
   methods: {
     fetchBookmarks() {
       if (this.$router.currentRoute.path !== '/bookmark') {

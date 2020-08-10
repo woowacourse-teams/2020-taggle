@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <BookmarkHeader />
-    <v-main style="padding-left: 330px;">
+    <v-main class="pl-82">
       <router-view />
     </v-main>
   </v-app>
@@ -18,3 +18,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.pl-82 {
+  padding-left: 328px !important;
+}
+</style>

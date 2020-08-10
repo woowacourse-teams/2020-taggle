@@ -1,15 +1,15 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <v-row justify="center">
+      <v-row justify="flex-start">
         <v-card
-          :href="bookmark.link"
+          v-for="bookmark in bookmarks"
           :key="bookmark.id"
-          class="ma-5"
+          :href="bookmark.link"
           link
+          class="ma-5"
           outlined
           target="_blank"
-          v-for="bookmark in bookmarks"
           width="300"
         >
           <v-responsive aspect-ratio="0.8">
