@@ -1,6 +1,7 @@
 package com.woowacourse.taggle.tag.domain;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -51,5 +52,9 @@ public class Tag {
 
     public void removeTagBookmark(final TagBookmark tagBookmark) {
         bookmarks.remove(tagBookmark);
+    }
+
+    public boolean isNotCategorized() {
+        return Objects.isNull(category);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
@@ -27,10 +28,9 @@ public class CategoryService {
     private final TagRepository tagRepository;
 
     public CategoryResponse createCategory(final CategoryRequest categoryRequest) {
-        final boolean isPresentCategory = categoryRepository.findByTitle(categoryRequest.getTitle()).isPresent();
-        if (isPresentCategory) {
+        categoryRepository.findByTitle(categoryRequest.getTitle()).ifPresent(category -> {
             throw new CategoryDuplicationException("이미 존재하는 카테고리입니다. categoryTitle: " + categoryRequest.getTitle());
-        }
+        });
         final Category category = categoryRepository.save(categoryRequest.toEntity());
 
         return CategoryResponse.of(category);
@@ -39,7 +39,7 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public List<CategoryDetailResponse> findCategories() {
         final List<TagResponse> tagsWithoutCategory = tagRepository.findAll().stream()
-                .filter(tag -> Objects.isNull(tag.getCategory()))
+                .filter(Tag::isNotCategorized)
                 .map(TagResponse::of)
                 .collect(Collectors.toList());
 

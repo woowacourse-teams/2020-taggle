@@ -21,11 +21,11 @@ public class CategoryDetailResponse {
 
     public static List<CategoryDetailResponse> asList(final List<Category> categories,
             final List<TagResponse> tagsWithoutCategory) {
-        final CategoryDetailResponse categoryDetailResponse = ofNoCategory(tagsWithoutCategory);
+        final CategoryDetailResponse noCategoryDetailResponse = ofNoCategory(tagsWithoutCategory);
         final List<CategoryDetailResponse> categoryDetailResponses = categories.stream()
                 .map(CategoryDetailResponse::of)
                 .collect(Collectors.toList());
-        categoryDetailResponses.add(0, categoryDetailResponse);
+        categoryDetailResponses.add(0, noCategoryDetailResponse);
         return categoryDetailResponses;
     }
 
