@@ -20,9 +20,13 @@ public class CategorySetup {
     }
 
     public Category saveWithTags() {
-        Category project = new Category("project");
-        project.add(tagRepository.save(new Tag("someTag")));
-        project.add(tagRepository.save(new Tag("otherTag")));
+        final Category project = new Category("project");
+        final Tag tag1 = tagRepository.save(new Tag("someTag"));
+        final Tag tag2 = tagRepository.save(new Tag("otherTag"));
+        tag1.updateCategory(project);
+        tag2.updateCategory(project);
+        project.add(tagRepository.save(tag1));
+        project.add(tagRepository.save(tag2));
         return categoryRepository.save(project);
     }
 }

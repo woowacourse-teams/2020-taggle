@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CategoryRequest {
 
     @NotEmpty
-    @Length(max = 10, message = "카테고리 제목은 10자보다 클 수 없습니다.")
+    @Length(max = 20, message = "카테고리 제목은 10자보다 클 수 없습니다.")
     private String title;
 
     public Category toEntity() {

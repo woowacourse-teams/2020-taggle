@@ -88,6 +88,6 @@ public class TagAcceptanceTest extends AcceptanceTest {
     }
 
     public List<CategoryDetailResponse> findCategories() {
-        return getAsList("/api/v1/categories", CategoryDetailResponse.class);
+        return getAsList("/api/v1/categories/tags", CategoryDetailResponse.class);
     }
 }
