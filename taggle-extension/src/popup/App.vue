@@ -1,16 +1,17 @@
 <template>
   <v-app id="container">
     <section>
-      <img src="../assets/hashtag-1320568266489631024_24.png" alt="태그로고" />
+      <img src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" />
       <h2 class="taggle-title">TAGGLE</h2>
       <Buttons
-        @toggleDeleteBookmark="onToggle"
+        @deleteBookmark="onDelete"
+        @createBookmark="onCreate"
         v-if="isUrlLoaded"
-        :isNotDeletedBookmark="isNotDeletedBookmark"
+        :hasBookmark="hasBookmark"
         :bookmarkUrl="url"
       />
     </section>
-    <TagInput v-if="isNotDeletedBookmark && isUrlLoaded" :bookmarkUrl="url" />
+    <TagInput v-if="hasBookmark && isUrlLoaded" :bookmarkUrl="url" />
   </v-app>
 </template>
 
@@ -25,7 +26,7 @@ export default {
   },
   data() {
     return {
-      isNotDeletedBookmark: true,
+      hasBookmark: true,
       url: '',
     };
   },
@@ -38,8 +39,11 @@ export default {
     this.getUrl();
   },
   methods: {
-    onToggle() {
-      this.isNotDeletedBookmark = !this.isNotDeletedBookmark;
+    onCreate() {
+      this.hasBookmark = true;
+    },
+    onDelete() {
+      this.hasBookmark = false;
     },
     getUrl() {
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {

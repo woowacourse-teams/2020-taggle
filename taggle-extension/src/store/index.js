@@ -6,6 +6,7 @@ import {
   DELETE_BOOKMARK,
   DELETE_TAG_BOOKMARK,
   CREATE_BOOKMARK,
+  FETCH_TAG_BOOKMARK,
 } from './share/actionsType.js';
 import TagService from '../api/module/tag.js';
 import BookmarkService from '../api/module/bookmark.js';
@@ -29,29 +30,27 @@ export default new Vuex.Store({
     bookmarkId(state) {
       return state.tagBookmark.id;
     },
-    tagBookmarks(state) {
-      return state.tagBookmark.tags;
-    },
     getTagIdByName: (state) => (name) => {
-      const find = state.tagBookmark.tags.find((tag) => tag.name === name);
-      console.log(find);
-      return find ? find.id : undefined;
+      const tag = state.tagBookmark.tags.find((item) => item.name === name);
+      return tag ? tag.id : undefined;
     },
   },
   actions: {
-    [CREATE_TAG]({ commit }, newTag) {
+    async [FETCH_TAG_BOOKMARK]({ commit }, bookmarkId) {
+      const bookmarkResponse = await BookmarkService.findBookmarkTags(bookmarkId);
+      commit(SET_BOOKMARK, bookmarkResponse);
+    },
+    [CREATE_TAG](context, newTag) {
       return TagService.create(newTag);
     },
-    [ADD_TAG_BOOKMARK]({ commit }, { bookmarkId, tagId }) {
+    [ADD_TAG_BOOKMARK](context, { bookmarkId, tagId }) {
       return TagService.addBookmarkOnTag(bookmarkId, tagId);
     },
-    [DELETE_TAG_BOOKMARK]({ commit }, { bookmarkId, tagId }) {
+    [DELETE_TAG_BOOKMARK](context, { bookmarkId, tagId }) {
       return TagService.removeBookmarkOnTag(bookmarkId, tagId);
     },
-    async [CREATE_BOOKMARK]({ commit }, bookmark) {
-      const bookmarkId = await BookmarkService.save(bookmark);
-      const bookmarkResponse = await BookmarkService.find(bookmarkId);
-      commit(SET_BOOKMARK, bookmarkResponse);
+    [CREATE_BOOKMARK](context, bookmark) {
+      return BookmarkService.save(bookmark);
     },
     async [DELETE_BOOKMARK](context) {
       await BookmarkService.delete(context.state.tagBookmark.id);

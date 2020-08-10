@@ -14,7 +14,14 @@
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
 import { mapActions, mapGetters } from 'vuex';
-import { ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK, CREATE_BOOKMARK } from '../store/share/actionsType.js';
+import {
+  ADD_TAG_BOOKMARK,
+  CREATE_TAG,
+  DELETE_TAG_BOOKMARK,
+  CREATE_BOOKMARK,
+  FETCH_TAG_BOOKMARK,
+} from '../store/share/actionsType.js';
+import { BOOKMARK_ID, TAG_ID_BY_NAME } from '../store/share/gettersType.js';
 
 export default {
   name: 'TagInput',
@@ -40,29 +47,32 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['bookmarkId', 'tagBookmarks']),
+    ...mapGetters([BOOKMARK_ID, TAG_ID_BY_NAME]),
   },
   async created() {
-    await this.createBookmark(this.bookmarkCreateRequest);
+    const bookmarkId = await this[CREATE_BOOKMARK](this.bookmarkCreateRequest);
+    await this[FETCH_TAG_BOOKMARK](bookmarkId);
   },
   methods: {
-    ...mapActions([CREATE_BOOKMARK, ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
+    ...mapActions([CREATE_BOOKMARK, ADD_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK, FETCH_TAG_BOOKMARK]),
     async onAddTagBookmark(data) {
       this.tagCreateRequest.name = data.tag.text;
-      const tagId = await this.createTag(this.tagCreateRequest);
-      await this.addTagBookmark({
-        bookmarkId: this.bookmarkId,
+      const tagId = await this[CREATE_TAG](this.tagCreateRequest);
+      await this[ADD_TAG_BOOKMARK]({
+        bookmarkId: this[BOOKMARK_ID],
         tagId,
       });
+      await this[FETCH_TAG_BOOKMARK](this[BOOKMARK_ID]);
       data.addTag();
     },
     async onRemoveTagBookmark(data) {
       const deleteName = data.tag.text;
-      const tagId = this.$store.getters.getTagIdByName(deleteName);
-      await this.removeTagBookmark({
-        bookmarkId: this.bookmarkId,
+      const tagId = this[TAG_ID_BY_NAME](deleteName);
+      await this[DELETE_TAG_BOOKMARK]({
+        bookmarkId: this[BOOKMARK_ID],
         tagId,
       });
+      await this[FETCH_TAG_BOOKMARK](this[BOOKMARK_ID]);
       data.deleteTag();
     },
   },
