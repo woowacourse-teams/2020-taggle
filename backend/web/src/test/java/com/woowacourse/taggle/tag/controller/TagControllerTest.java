@@ -10,10 +10,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.setup.domain.CategorySetup;
 import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.controller.docs.TagDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.Tag;
 
 public class TagControllerTest extends ControllerTest {
@@ -26,6 +28,9 @@ public class TagControllerTest extends ControllerTest {
 
     @Autowired
     private BookmarkSetup bookmarkSetup;
+
+    @Autowired
+    private CategorySetup categorySetup;
 
     @WithMockUser(value = "ADMIN")
     @DisplayName("createTag: 태그를 추가한다.")
@@ -77,5 +82,16 @@ public class TagControllerTest extends ControllerTest {
 
         createByPathVariables("/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
                 .andDo(TagDocumentation.addBookmarkOnTag());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 수정한다.")
+    @Test
+    void updateCategoryOnTag() throws Exception {
+        final Tag tag = tagSetup.save();
+        final Category category = categorySetup.save();
+
+        updateByPathVariables("/api/v1/tags/{tagId}/categories/{categoryId}", tag.getId(), category.getId())
+                .andDo(TagDocumentation.updateCategoryOnTag());
     }
 }

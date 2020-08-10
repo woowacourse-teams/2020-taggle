@@ -12,7 +12,8 @@ module.exports = {
     'comma-dangle': 'off',
     'no-new': 'off',
     indent: ['error', 2],
-    'import/extensions': 'error',
     'import/no-unresolved': 'off',
+    'import/extensions': ['error', 'always'],
+    'no-param-reassign': 0,
   },
 };

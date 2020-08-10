@@ -48,13 +48,13 @@ class TagBookmarkServiceTest {
         assertThat(tagBookmark).isNotNull();
     }
 
-    @DisplayName("createTagBookmark: 태그에 있는 북마크를 추가한다.")
+    @DisplayName("createTagBookmark: 태그에 북마크를 추가한다.")
     @Test
     void createTagBookmark() {
         // given
         final Tag taggle = tagRepository.save(new Tag("taggle"));
         final Tag google = tagRepository.save(new Tag("google"));
-        final Tag naver = tagRepository.save(new Tag("google"));
+        final Tag naver = tagRepository.save(new Tag("naver"));
         final Bookmark bookmark1 = bookmarkRepository.save(new Bookmark("https://bookmark/1"));
         final Bookmark bookmark2 = bookmarkRepository.save(new Bookmark("https://bookmark/2"));
         final Bookmark bookmark3 = bookmarkRepository.save(new Bookmark("https://bookmark/3"));

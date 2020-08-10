@@ -1,12 +1,12 @@
 package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.tag.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class TagService {
 
     private final TagRepository tagRepository;
+    private final CategoryService categoryService;
 
     public TagResponse createTag(final TagCreateRequest tagCreateRequest) {
         final Tag tag = tagRepository.findByName(tagCreateRequest.getName())
@@ -27,10 +28,7 @@ public class TagService {
     }
 
     public void removeTag(final Long id) {
-        final Tag tag = tagRepository.findById(id)
-                .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
-                        + "tagId: " + id));
-        final Set<TagBookmark> bookmarks = tag.getBookmarks();
+        final Tag tag = findById(id);
         tagRepository.delete(tag);
     }
 
@@ -41,9 +39,22 @@ public class TagService {
     }
 
     public TagBookmarkResponse findTagById(final Long id) {
-        final Tag tag = tagRepository.findById(id)
-                .orElseThrow(() -> new TagNotFoundException("삭제하려는 태그가 존재하지 않습니다.\n"
-                        + "tagId: " + id));
+        final Tag tag = findById(id);
         return TagBookmarkResponse.of(tag);
+    }
+
+    @Transactional
+    public void updateCategory(final Long tagId, final Long CategoryId) {
+        final Tag tag = findById(tagId);
+        final Category category = categoryService.findById(CategoryId);
+
+        tag.updateCategory(category);
+        category.add(tag);
+    }
+
+    private Tag findById(final Long id) {
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
+                        + "tagId: " + id));
     }
 }

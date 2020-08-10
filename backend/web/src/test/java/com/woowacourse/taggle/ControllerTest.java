@@ -77,4 +77,23 @@ public class ControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
+
+    public ResultActions updateByPathVariables(final String uri, final Object... ids) throws Exception {
+        return mockMvc.perform(put(uri, ids)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    public ResultActions updateByJsonParams(final String uri, final String jsonParams, final Object... ids) throws Exception {
+        return mockMvc.perform(put(uri, ids)
+                .content(jsonParams)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
