@@ -37,7 +37,7 @@ public class CategoryController {
                 .body(category);
     }
 
-    @GetMapping
+    @GetMapping("/tags")
     public ResponseEntity<List<CategoryDetailResponse>> findCategories() {
         return ResponseEntity.ok()
                 .body(categoryService.findCategories());

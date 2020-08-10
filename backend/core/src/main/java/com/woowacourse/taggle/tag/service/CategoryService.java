@@ -49,17 +49,17 @@ public class CategoryService {
     }
 
     public void updateCategory(final Long id, final CategoryRequest categoryRequest) {
-        final Category category = findCategoryById(id);
+        final Category category = findById(id);
         category.update(categoryRequest.toEntity());
     }
 
     public void removeCategory(final Long id) {
-        final Category category = findCategoryById(id);
+        final Category category = findById(id);
         category.getTags().forEach(tag -> tag.updateCategory(null));
         categoryRepository.delete(category);
     }
 
-    private Category findCategoryById(final Long id) {
+    public Category findById(final Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
                         + "categoryId:" + id));
