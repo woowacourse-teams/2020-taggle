@@ -91,9 +91,9 @@ class CategoryServiceTest {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
         final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
-        final CategoryRequest changeRequest = new CategoryRequest("taggle");
 
         //when
+        final CategoryRequest changeRequest = new CategoryRequest("taggle");
         categoryService.updateCategory(categoryResponse.getId(), changeRequest);
         final Category category = categoryRepository.findById(categoryResponse.getId()).get();
 
