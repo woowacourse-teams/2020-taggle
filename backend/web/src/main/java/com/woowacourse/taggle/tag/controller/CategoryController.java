@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.security.dto.SessionUser;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
@@ -38,7 +40,9 @@ public class CategoryController {
     }
 
     @GetMapping("/tags")
-    public ResponseEntity<List<CategoryDetailResponse>> findCategories() {
+    public ResponseEntity<List<CategoryDetailResponse>> findCategories(
+            @AuthenticationPrincipal final SessionUser user) {
+
         return ResponseEntity.ok()
                 .body(categoryService.findCategories());
     }

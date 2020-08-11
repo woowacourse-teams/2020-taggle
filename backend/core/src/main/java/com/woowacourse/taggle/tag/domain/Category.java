@@ -8,9 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
+import com.woowacourse.taggle.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,8 +35,17 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private Set<Tag> tags = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Category(final String title) {
         this.title = title;
+    }
+
+    public Category(final String title, final User user) {
+        this.title = title;
+        this.user = user;
     }
 
     public void update(final Category category) {
