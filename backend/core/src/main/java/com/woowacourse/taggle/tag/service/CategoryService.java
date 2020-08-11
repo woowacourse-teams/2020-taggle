@@ -45,12 +45,21 @@ public class CategoryService {
     }
 
     public void updateCategory(final SessionUser user, final Long categoryId, final CategoryRequest categoryRequest) {
-        final Category category = categoryRepository.findCategoryByUserId(user.getId(), categoryId);
+        final Category category = findCategoryByUserId(user.getId(), categoryId);
         category.update(categoryRequest.toEntity());
     }
 
     public void removeCategory(final SessionUser user, final Long categoryId) {
-        final Category category = categoryRepository.findCategoryByUserId(user.getId(), categoryId);
+        final Category category = findCategoryByUserId(user.getId(), categoryId);
+        if (category.getTitle().equals("Uncategoried")) {
+            throw new RuntimeException();
+        }
+
+        final Category moveCategory = categoryRepository.findByTitle("Uncategoried")
+                .orElseThrow(RuntimeException::new);
+
+        category.getTags().forEach(tag -> tag.updateCategory(moveCategory));
+
         categoryRepository.delete(category);
     }
 
@@ -58,5 +67,11 @@ public class CategoryService {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
                         + "categoryId:" + id));
+    }
+
+    private Category findCategoryByUserId(final Long userId, final Long categoryId) {
+        return categoryRepository.findCategoryByUserId(userId, categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
+                        + "categoryId:" + categoryId));
     }
 }

@@ -15,6 +15,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findByUserId(final Long id);
 
-    @Query("select Category from Category where user_id= :userId and id= :categoryId")
-    Category findCategoryByUserId(@Param("userId") Long userId, @Param("categoryId") Long categoryId);
+    @Query(value = "SELECT * FROM CATEGORY  WHERE USER_ID = :userId AND CATEGORY_ID = :categoryId", nativeQuery = true)
+    Optional<Category> findCategoryByUserId(@Param("userId") Long userId, @Param("categoryId") Long categoryId);
 }

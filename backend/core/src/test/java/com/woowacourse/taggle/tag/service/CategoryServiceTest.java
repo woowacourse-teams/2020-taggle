@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,10 @@ import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.CategoryDuplicationException;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
+import com.woowacourse.taggle.user.domain.Role;
+import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -42,6 +47,22 @@ class CategoryServiceTest {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private UserService UserService;
+
+    private SessionUser user;
+
+    @BeforeEach
+    void setUp() {
+        final User testUser = UserService.save(User.builder()
+                .email("a@a.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .build());
+        user = new SessionUser(testUser);
+    }
+
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
     void createCategory() {
@@ -49,7 +70,7 @@ class CategoryServiceTest {
         final CategoryRequest categoryRequest = new CategoryRequest("project");
 
         // when
-        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
 
         // than
         assertThat(categoryResponse.getId()).isNotNull();
@@ -61,11 +82,11 @@ class CategoryServiceTest {
     void createCategory_CategoryDuplicationException() {
         // given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        categoryService.createCategory(categoryRequest);
+        categoryService.createCategory(user, categoryRequest);
 
         // when
         // then
-        assertThatThrownBy(() -> categoryService.createCategory(categoryRequest))
+        assertThatThrownBy(() -> categoryService.createCategory(user, categoryRequest))
                 .isInstanceOf(CategoryDuplicationException.class)
                 .hasMessageContaining("이미 존재하는 카테고리입니다.");
     }
@@ -75,10 +96,10 @@ class CategoryServiceTest {
     void findCategories() {
         // given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        categoryService.createCategory(categoryRequest);
+        categoryService.createCategory(user, categoryRequest);
 
         // when
-        final List<CategoryDetailResponse> categories = categoryService.findCategories();
+        final List<CategoryDetailResponse> categories = categoryService.findCategories(user);
 
         // than
         assertThat(categories.size()).isEqualTo(2);
@@ -90,11 +111,11 @@ class CategoryServiceTest {
     void updateCategory() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
 
         //when
         final CategoryRequest changeRequest = new CategoryRequest("taggle");
-        categoryService.updateCategory(categoryResponse.getId(), changeRequest);
+        categoryService.updateCategory(user, categoryResponse.getId(), changeRequest);
         final Category category = categoryRepository.findById(categoryResponse.getId()).get();
 
         //then
@@ -106,10 +127,10 @@ class CategoryServiceTest {
     void removeCategory() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
 
         //when
-        categoryService.removeCategory(categoryResponse.getId());
+        categoryService.removeCategory(user, categoryResponse.getId());
 
         //then
         assertThat(categoryRepository.existsById(categoryResponse.getId())).isFalse();
@@ -121,7 +142,7 @@ class CategoryServiceTest {
         // given
         // when
         // then
-        assertThatThrownBy(() -> categoryService.removeCategory(1L))
+        assertThatThrownBy(() -> categoryService.removeCategory(user, 10L))
                 .isInstanceOf(CategoryNotFoundException.class)
                 .hasMessageContaining("카테고리가 존재하지 않습니다");
     }
@@ -132,16 +153,17 @@ class CategoryServiceTest {
     void removeCategory_initCategoryOfTag() {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse categoryResponse = categoryService.createCategory(categoryRequest);
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
         final TagCreateRequest tagCreateRequest = new TagCreateRequest("taggle");
         final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
         tagService.updateCategory(tagResponse.getId(), categoryResponse.getId());
 
         //when
-        categoryService.removeCategory(categoryResponse.getId());
+        categoryService.removeCategory(user, categoryResponse.getId());
         final Tag tag = tagRepository.findById(tagResponse.getId()).get();
 
         //then
-        assertThat(tag.getCategory()).isNull();
+        System.out.println(tag.getCategory().getTitle());
+        assertThat(tag.getCategory().getTitle()).isEqualTo("Uncategoried");
     }
 }

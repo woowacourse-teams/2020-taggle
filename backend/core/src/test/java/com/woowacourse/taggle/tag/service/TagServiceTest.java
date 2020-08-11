@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,9 @@ import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
+import com.woowacourse.taggle.user.domain.Role;
+import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.SessionUser;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -36,6 +40,14 @@ class TagServiceTest {
 
     @Autowired
     private TagRepository tagRepository;
+
+    private SessionUser user;
+
+    @BeforeEach
+    void setUp() {
+        final User testUser = User.builder().email("a@a.com").nickName("tigger").role(Role.USER).picture("picture").build();
+        user = new SessionUser(testUser);
+    }
 
     @DisplayName("createTag: 태그를 생성한다.")
     @Test
@@ -127,7 +139,7 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
         final TagResponse tag = tagService.createTag(tagCreateRequest);
         final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse category = categoryService.createCategory(categoryRequest);
+        final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
 
         // when
         tagService.updateCategory(tag.getId(), category.getId());

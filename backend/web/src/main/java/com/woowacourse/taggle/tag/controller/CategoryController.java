@@ -31,8 +31,10 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid final CategoryRequest categoryRequest) {
-        final CategoryResponse category = categoryService.createCategory(categoryRequest);
+    public ResponseEntity<CategoryResponse> createCategory(
+            @AuthenticationPrincipal final SessionUser user,
+            @RequestBody @Valid final CategoryRequest categoryRequest) {
+        final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", "/api/v1/categories/" + category.getId())
