@@ -19,18 +19,10 @@ public class CategoryDetailResponse {
     private String title;
     private List<TagResponse> tags;
 
-    public static List<CategoryDetailResponse> asList(final List<Category> categories,
-            final List<TagResponse> tagsWithoutCategory) {
-        final CategoryDetailResponse noCategoryDetailResponse = ofNoCategory(tagsWithoutCategory);
-        final List<CategoryDetailResponse> categoryDetailResponses = categories.stream()
+    public static List<CategoryDetailResponse> asList(final List<Category> categories) {
+        return categories.stream()
                 .map(CategoryDetailResponse::of)
                 .collect(Collectors.toList());
-        categoryDetailResponses.add(0, noCategoryDetailResponse);
-        return categoryDetailResponses;
-    }
-
-    public static CategoryDetailResponse ofNoCategory(final List<TagResponse> tags) {
-        return new CategoryDetailResponse(null, "No Category", tags);
     }
 
     private static CategoryDetailResponse of(final Category category) {

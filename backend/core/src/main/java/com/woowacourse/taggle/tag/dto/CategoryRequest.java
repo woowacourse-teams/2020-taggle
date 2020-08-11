@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.woowacourse.taggle.tag.domain.Category;
+import com.woowacourse.taggle.user.domain.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,5 +22,9 @@ public class CategoryRequest {
 
     public Category toEntity() {
         return new Category(title);
+    }
+
+    public Category toEntityWithUser(final User user) {
+        return new Category(title, user);
     }
 }

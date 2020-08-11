@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.security.dto.SessionUser;
 import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.service.CategoryService;
+import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -42,23 +42,26 @@ public class CategoryController {
     @GetMapping("/tags")
     public ResponseEntity<List<CategoryDetailResponse>> findCategories(
             @AuthenticationPrincipal final SessionUser user) {
-
         return ResponseEntity.ok()
-                .body(categoryService.findCategories());
+                .body(categoryService.findCategories(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateCategory(@PathVariable final Long id,
+    public ResponseEntity<Void> updateCategory(
+            @AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
-        categoryService.updateCategory(id, categoryRequest);
+        categoryService.updateCategory(user, id, categoryRequest);
 
         return ResponseEntity.ok()
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeCategory(@PathVariable final Long id) {
-        categoryService.removeCategory(id);
+    public ResponseEntity<Void> removeCategory(
+            @AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id) {
+        categoryService.removeCategory(user, id);
 
         return ResponseEntity.noContent()
                 .build();

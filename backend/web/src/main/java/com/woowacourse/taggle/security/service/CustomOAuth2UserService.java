@@ -16,14 +16,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.security.dto.OAuthAttributes;
-import com.woowacourse.taggle.security.dto.SessionUser;
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
+import com.woowacourse.taggle.user.dto.OAuthAttributes;
+import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

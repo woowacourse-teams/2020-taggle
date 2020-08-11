@@ -13,9 +13,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.woowacourse.taggle.security.dto.SessionUser;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
+import com.woowacourse.taggle.user.dto.SessionUser;
 
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {

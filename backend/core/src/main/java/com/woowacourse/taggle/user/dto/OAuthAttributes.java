@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.security.dto;
+package com.woowacourse.taggle.user.dto;
 
 import java.util.Map;
 
