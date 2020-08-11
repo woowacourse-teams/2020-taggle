@@ -18,6 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.security.dto.OAuthAttributes;
 import com.woowacourse.taggle.security.dto.SessionUser;
+import com.woowacourse.taggle.tag.domain.Category;
+import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final TagRepository tagRepository;
     private final HttpSession httpSession;
 
     @Transactional
@@ -55,6 +61,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User saveOrFind(final OAuthAttributes attributes) {
         final Optional<User> user = userRepository.findByEmail(attributes.getEmail());
 
-        return user.orElseGet(() -> userRepository.save(attributes.toEntity()));
+        return user.orElseGet(() -> initialize(attributes));
+    }
+
+    private User initialize(final OAuthAttributes attributes) {
+        final User user = userRepository.save(attributes.toEntity());
+        final Category category = categoryRepository.save(new Category("Uncategoried", user));
+        final Tag tag = tagRepository.save(new Tag("Untagged", category));
+        category.add(tag);
+
+        return user;
     }
 }

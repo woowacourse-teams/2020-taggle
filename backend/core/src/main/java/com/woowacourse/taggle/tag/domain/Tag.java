@@ -42,6 +42,11 @@ public class Tag {
         this.category = null;
     }
 
+    public Tag(final String name, final Category category) {
+        this.name = name;
+        this.category = category;
+    }
+
     public void updateCategory(final Category category) {
         this.category = category;
     }
