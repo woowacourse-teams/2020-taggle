@@ -26,7 +26,7 @@ public class CategoryService {
     private final UserRepository userRepository;
 
     public CategoryResponse createCategory(final SessionUser sessionUser, final CategoryRequest categoryRequest) {
-        categoryRepository.findByTitle(categoryRequest.getTitle()).ifPresent(category -> {
+        categoryRepository.findByTitleAndUserId(categoryRequest.getTitle(), sessionUser.getId()).ifPresent(category -> {
             throw new CategoryDuplicationException("이미 존재하는 카테고리입니다. categoryTitle: " + categoryRequest.getTitle());
         });
 
@@ -45,17 +45,17 @@ public class CategoryService {
     }
 
     public void updateCategory(final SessionUser user, final Long categoryId, final CategoryRequest categoryRequest) {
-        final Category category = findCategoryByUserId(user.getId(), categoryId);
+        final Category category = findByIdAndUserId(user.getId(), categoryId);
         category.update(categoryRequest.toEntity());
     }
 
     public void removeCategory(final SessionUser user, final Long categoryId) {
-        final Category category = findCategoryByUserId(user.getId(), categoryId);
-        if (category.getTitle().equals("Uncategoried")) {
+        final Category category = findByIdAndUserId(user.getId(), categoryId);
+        if (category.getTitle().equals("Uncategorized")) {
             throw new RuntimeException();
         }
 
-        final Category moveCategory = categoryRepository.findByTitle("Uncategoried")
+        final Category moveCategory = categoryRepository.findByTitleAndUserId("Uncategorized", user.getId())
                 .orElseThrow(RuntimeException::new);
 
         category.getTags().forEach(tag -> tag.updateCategory(moveCategory));
@@ -63,15 +63,15 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    public Category findById(final Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
-                        + "categoryId:" + id));
-    }
-
-    private Category findCategoryByUserId(final Long userId, final Long categoryId) {
-        return categoryRepository.findCategoryByUserId(userId, categoryId)
+    public Category findByIdAndUserId(final Long userId, final Long categoryId) {
+        return categoryRepository.findByIdAndUserId(categoryId, userId)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
                         + "categoryId:" + categoryId));
+    }
+
+    public Category findByTitleAndUserId(final String title, final Long userId) {
+        return categoryRepository.findByTitleAndUserId(title, userId)
+                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
+                        + "categoryTitle:" + title));
     }
 }

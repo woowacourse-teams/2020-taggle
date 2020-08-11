@@ -48,13 +48,13 @@ class CategoryServiceTest {
     private TagRepository tagRepository;
 
     @Autowired
-    private UserService UserService;
+    private UserService userService;
 
     private SessionUser user;
 
     @BeforeEach
     void setUp() {
-        final User testUser = UserService.save(User.builder()
+        final User testUser = userService.save(User.builder()
                 .email("a@a.com")
                 .nickName("tigger")
                 .role(Role.USER)
@@ -112,7 +112,7 @@ class CategoryServiceTest {
         //given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
         final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
-
+        System.out.println(categoryResponse.getTitle() + "@@@@@@@@@@@@");
         //when
         final CategoryRequest changeRequest = new CategoryRequest("taggle");
         categoryService.updateCategory(user, categoryResponse.getId(), changeRequest);
@@ -155,8 +155,8 @@ class CategoryServiceTest {
         final CategoryRequest categoryRequest = new CategoryRequest("project");
         final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
         final TagCreateRequest tagCreateRequest = new TagCreateRequest("taggle");
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
-        tagService.updateCategory(tagResponse.getId(), categoryResponse.getId());
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+        tagService.updateCategory(user, tagResponse.getId(), categoryResponse.getId());
 
         //when
         categoryService.removeCategory(user, categoryResponse.getId());
@@ -164,6 +164,6 @@ class CategoryServiceTest {
 
         //then
         System.out.println(tag.getCategory().getTitle());
-        assertThat(tag.getCategory().getTitle()).isEqualTo("Uncategoried");
+        assertThat(tag.getCategory().getTitle()).isEqualTo("Uncategorized");
     }
 }

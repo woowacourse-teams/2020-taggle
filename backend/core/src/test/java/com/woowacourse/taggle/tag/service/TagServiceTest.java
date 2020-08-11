@@ -25,6 +25,7 @@ import com.woowacourse.taggle.tag.exception.TagNotFoundException;
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -39,13 +40,21 @@ class TagServiceTest {
     private CategoryService categoryService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private TagRepository tagRepository;
 
     private SessionUser user;
 
     @BeforeEach
     void setUp() {
-        final User testUser = User.builder().email("a@a.com").nickName("tigger").role(Role.USER).picture("picture").build();
+        final User testUser = userService.save(User.builder()
+                .email("a@a.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .build());
         user = new SessionUser(testUser);
     }
 
@@ -56,7 +65,7 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
@@ -70,8 +79,8 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        tagService.createTag(tagCreateRequest);
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
@@ -83,8 +92,8 @@ class TagServiceTest {
     void removeTag() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        tagService.createTag(tagCreateRequest);
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // when
         tagService.removeTag(tagResponse.getId());
@@ -109,7 +118,7 @@ class TagServiceTest {
     void findTags() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        tagService.createTag(tagCreateRequest);
+        tagService.createTag(user, tagCreateRequest);
 
         // when
         final List<TagResponse> tags = tagService.findTags();
@@ -123,7 +132,7 @@ class TagServiceTest {
     void findTagById() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(tagCreateRequest);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
 
         // when
         final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(tag.getId());
@@ -137,12 +146,12 @@ class TagServiceTest {
     void updateTagByCategory() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(tagCreateRequest);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
         final CategoryRequest categoryRequest = new CategoryRequest("project");
         final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
 
         // when
-        tagService.updateCategory(tag.getId(), category.getId());
+        tagService.updateCategory(user, tag.getId(), category.getId());
         final Tag updateTag = tagRepository.findById(tag.getId()).get();
 
         // then

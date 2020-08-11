@@ -22,7 +22,7 @@ public class UserService {
 
     public User save(final User user) {
         final User savedUser = userRepository.save(user);
-        final Category category = categoryRepository.save(new Category("Uncategoried", user));
+        final Category category = categoryRepository.save(new Category("Uncategorized", user));
         final Tag tag = tagRepository.save(new Tag("Untagged", category));
         category.add(tag);
 
