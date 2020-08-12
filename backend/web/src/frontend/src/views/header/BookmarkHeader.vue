@@ -20,14 +20,17 @@
             </v-list-item>
           </v-list>
           <template v-slot:append>
-            <v-avatar>
-              <img
-                src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
-                alt="evan"
-              />
-            </v-avatar>
+            <div class="text-center">
+              <v-avatar>
+                <img
+                  src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
+                  alt="evan"
+                />
+              </v-avatar>
+            </div>
           </template>
         </v-navigation-drawer>
+
         <v-col>
           <v-navigation-drawer permanent width="100%">
             <v-text-field
@@ -58,10 +61,8 @@
             <template v-slot:append>
               <v-row width="100%">
                 <v-col class="text-right">
-                  <CategoryAddModal> </CategoryAddModal>
-                  <v-btn class="mx-2" fab dark small color="indigo">
-                    <v-icon>mdi-brightness-7</v-icon>
-                  </v-btn>
+                  <CategoryAddModal></CategoryAddModal>
+                  <CategoryTagModifyModal></CategoryTagModifyModal>
                 </v-col>
               </v-row>
             </template>
@@ -75,11 +76,13 @@
 <script>
 import { categories } from '@/utils/mockTags.js';
 import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
+import CategoryTagModifyModal from '@/views/header/component/CategoryTagModifyModal.vue';
 
 export default {
   name: 'BookmarkHeader',
   components: {
     CategoryAddModal,
+    CategoryTagModifyModal,
   },
   methods: {
     fetchBookmarks() {

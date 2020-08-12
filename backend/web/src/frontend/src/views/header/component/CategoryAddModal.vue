@@ -8,7 +8,7 @@
 
     <v-card>
       <v-card-title class="headline grey lighten-2">
-        Add Category
+        카테고리 추가
       </v-card-title>
 
       <v-card-text class="pt-6">
