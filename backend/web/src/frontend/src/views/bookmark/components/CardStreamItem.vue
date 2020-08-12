@@ -25,48 +25,24 @@
             nulla pariatur?
           </span>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
-          <v-btn icon>
-            <v-icon>mdi-share-variant</v-icon>
-          </v-btn>
-          <TagEditModal :bookmark="bookmark" />
-        </v-card-actions>
+        <CardIcons :bookmark="bookmark" />
       </v-list-item-content>
     </v-card>
   </v-col>
 </template>
 
 <script>
-import TagEditModal from './TagEditModal.vue';
+import CardIcons from './CardIcons.vue';
 
 export default {
   name: 'CardStreamItem',
   components: {
-    TagEditModal,
+    CardIcons,
   },
   props: {
     bookmark: {
       type: Object,
       required: true,
-    },
-  },
-  created() {
-    this.tags = this.bookmark.tags.map((tag) => this.mapName(tag));
-  },
-  data() {
-    return {
-      dialog: false,
-      tag: '',
-      tags: [],
-    };
-  },
-  methods: {
-    mapName(tagg) {
-      return { text: tagg.name, tiClasses: ['ti-valid'] };
     },
   },
 };
