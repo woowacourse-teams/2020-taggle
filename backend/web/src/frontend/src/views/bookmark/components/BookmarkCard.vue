@@ -14,8 +14,7 @@
 </template>
 
 <script>
-import { bookmarks } from '@/utils/mockTags.js';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { FETCH_BOOKMARKS } from '@/store/share/actionType.js';
 import CardStream from './CardStream.vue';
 import CardModule from './CardModule.vue';
@@ -26,9 +25,11 @@ export default {
     CardStream,
     CardModule,
   },
+  computed: {
+    ...mapGetters(['bookmarks']),
+  },
   data() {
     return {
-      bookmarks,
       cardDisplayMode: 'stream',
     };
   },
