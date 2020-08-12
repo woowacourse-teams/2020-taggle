@@ -1,7 +1,6 @@
 package com.woowacourse.taggle.tag.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -40,12 +38,6 @@ public class TagController {
 
         return ResponseEntity.created(URI.create("/api/v1/tags/" + tag.getId()))
                 .build();
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CategoryTagsResponse>> findTags(@AuthenticationPrincipal final SessionUser user) {
-        return ResponseEntity.ok()
-                .body(tagService.findAllWithCategory(user));
     }
 
     @GetMapping("/{tagId}")

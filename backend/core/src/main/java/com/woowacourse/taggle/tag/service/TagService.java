@@ -1,17 +1,12 @@
 package com.woowacourse.taggle.tag.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -39,12 +34,6 @@ public class TagService {
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryTagsResponse> findAllWithCategory(final SessionUser sessionUser) {
-        final List<Tag> tags = tagRepository.findAllByUserId(sessionUser.getId());
-        return ofTotalCategoryTagsResponses(tags);
-    }
-
-    @Transactional(readOnly = true)
     public TagBookmarkResponse findTagById(final SessionUser user, final Long tagId) {
         final Tag tag = findByIdAndUserId(tagId, user.getId());
         return TagBookmarkResponse.of(tag);
@@ -65,28 +54,7 @@ public class TagService {
                         + "tagId: " + tagId));
     }
 
-    private List<CategoryTagsResponse> ofTotalCategoryTagsResponses(final List<Tag> tags) {
-        final List<CategoryTagsResponse> totalCategoryTagsResponses = new ArrayList<>();
-
-        final List<Tag> tagsWithoutCategory = tags.stream()
-                .filter(tag -> tag.getCategory() == null)
-                .collect(Collectors.toList());
-        
-        if (tagsWithoutCategory.size() > 0) {
-            final CategoryTagsResponse categoryTagsResponse = CategoryTagsResponse.ofNoCategory(tagsWithoutCategory);
-            totalCategoryTagsResponses.add(categoryTagsResponse);
-        }
-
-        final Map<Category, List<Tag>> cache = tags.stream()
-                .filter(tag -> tag.getCategory() != null)
-                .collect(Collectors.groupingBy(Tag::getCategory));
-
-        final List<CategoryTagsResponse> categoryTagsResponses = cache.keySet().stream()
-                .map(category -> CategoryTagsResponse.of(category, cache.get(category)))
-                .collect(Collectors.toList());
-
-        totalCategoryTagsResponses.addAll(categoryTagsResponses);
-
-        return totalCategoryTagsResponses;
+    public List<Tag> findAllByUserId(final Long userId) {
+        return tagRepository.findAllByUserId(userId);
     }
 }

@@ -2,6 +2,8 @@ package com.woowacourse.taggle.tag.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
@@ -81,6 +84,37 @@ public class CategoryServiceTest {
         // then
         assertThat(categoryResponse.getId()).isNotNull();
         assertThat(categoryResponse.getTitle()).isEqualTo("project");
+    }
+
+    @DisplayName("findAllWithTags: 카테고리를 포함한 모든 태그를 가져온다.")
+    @Test
+    void findAllWithTags() {
+        // given
+        final TagCreateRequest tagCreateRequest1 = new TagCreateRequest("java");
+        final TagCreateRequest tagCreateRequest2 = new TagCreateRequest("spring");
+        final TagCreateRequest tagCreateRequest3 = new TagCreateRequest("oauth2");
+        final TagCreateRequest tagCreateRequest4 = new TagCreateRequest("security");
+
+        final TagResponse tagResponse1 = tagService.createTag(user, tagCreateRequest1);
+        tagService.createTag(user, tagCreateRequest2);
+        tagService.createTag(user, tagCreateRequest3);
+        tagService.createTag(user, tagCreateRequest4);
+
+        final CategoryRequest categoryRequest1 = new CategoryRequest("project1");
+        final CategoryRequest categoryRequest2 = new CategoryRequest("project2");
+        final CategoryResponse categoryResponse1 = categoryService.createCategory(user, categoryRequest1);
+        categoryService.createCategory(user, categoryRequest2);
+
+        categoryService.updateCategoryOnTag(user, categoryResponse1.getId(), tagResponse1.getId());
+
+        // when
+        final List<CategoryTagsResponse> categoryTagsResponses = categoryService.findAllWithTags(user);
+
+        // then
+        assertThat(categoryTagsResponses).hasSize(3);
+        assertThat(categoryTagsResponses.get(0).getId()).isNull();
+        assertThat(categoryTagsResponses.get(1).getId()).isNotNull();
+        assertThat(categoryTagsResponses.get(2).getId()).isNotNull();
     }
 
     @DisplayName("updateCategory: 카테고리 타이틀을 변경한다.")
