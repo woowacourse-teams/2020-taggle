@@ -71,8 +71,11 @@ public class TagService {
         final List<Tag> tagsWithoutCategory = tags.stream()
                 .filter(tag -> tag.getCategory() == null)
                 .collect(Collectors.toList());
-
-        final CategoryTagsResponse categoryTagsResponse = CategoryTagsResponse.ofNoCategory(tagsWithoutCategory);
+        
+        if (tagsWithoutCategory.size() > 0) {
+            final CategoryTagsResponse categoryTagsResponse = CategoryTagsResponse.ofNoCategory(tagsWithoutCategory);
+            totalCategoryTagsResponses.add(categoryTagsResponse);
+        }
 
         final Map<Category, List<Tag>> cache = tags.stream()
                 .filter(tag -> tag.getCategory() != null)
@@ -82,7 +85,6 @@ public class TagService {
                 .map(category -> CategoryTagsResponse.of(category, cache.get(category)))
                 .collect(Collectors.toList());
 
-        totalCategoryTagsResponses.add(categoryTagsResponse);
         totalCategoryTagsResponses.addAll(categoryTagsResponses);
 
         return totalCategoryTagsResponses;
