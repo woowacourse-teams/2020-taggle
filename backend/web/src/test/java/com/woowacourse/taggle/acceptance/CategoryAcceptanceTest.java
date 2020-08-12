@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
+import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
 
@@ -29,14 +29,14 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 
         // 카테고리를 가져온다.
         final Tag tag = tagSetup.save();
-        List<CategoryDetailResponse> categories = findCategories();
+        List<CategoryTagsResponse> categories = findCategories();
         assertThat(categories).hasSize(2);
 
         // 카테고리를 수정한다.
         final Long categoryId = categories.get(1).getId();
         final String updateTitle = "service";
         updateCategory(categoryId, updateTitle);
-        final List<CategoryDetailResponse> updateCategories = findCategories();
+        final List<CategoryTagsResponse> updateCategories = findCategories();
         assertThat(updateCategories.get(1).getTitle()).isEqualTo(updateTitle);
 
         // 카테고리를 제거한다.
@@ -46,8 +46,8 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         assertThat(categories).hasSize(1);
     }
 
-    public List<CategoryDetailResponse> findCategories() {
-        return getAsList("/api/v1/categories/tags", CategoryDetailResponse.class);
+    public List<CategoryTagsResponse> findCategories() {
+        return getAsList("/api/v1/categories/tags", CategoryTagsResponse.class);
     }
 
     private void createCategory(final String title) {

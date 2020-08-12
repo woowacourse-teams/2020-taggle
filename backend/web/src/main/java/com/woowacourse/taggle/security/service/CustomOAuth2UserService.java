@@ -17,16 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.domain.UserRepository;
 import com.woowacourse.taggle.user.dto.OAuthAttributes;
 import com.woowacourse.taggle.user.dto.SessionUser;
-import com.woowacourse.taggle.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final HttpSession httpSession;
 
     @Transactional
@@ -53,11 +53,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User saveOrFind(final OAuthAttributes attributes) {
-        final Optional<User> user = userService.findByEmail(attributes.getEmail());
+        final Optional<User> user = userRepository.findByEmail(attributes.getEmail());
         return user.orElseGet(() -> initialize(attributes));
     }
 
     private User initialize(final OAuthAttributes attributes) {
-        return userService.save(attributes.toEntity());
+        return userRepository.save(attributes.toEntity());
     }
 }

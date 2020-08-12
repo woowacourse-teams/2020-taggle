@@ -1,14 +1,11 @@
 package com.woowacourse.taggle.tag.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.service.CategoryService;
@@ -41,19 +37,23 @@ public class CategoryController {
                 .body(category);
     }
 
-    @GetMapping("/tags")
-    public ResponseEntity<List<CategoryDetailResponse>> findCategories(
-            @AuthenticationPrincipal final SessionUser user) {
-        return ResponseEntity.ok()
-                .body(categoryService.findCategories(user));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateCategory(
             @AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long id,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         categoryService.updateCategory(user, id, categoryRequest);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PutMapping("/{categoryId}/tags/{tagId}")
+    public ResponseEntity<Void> updateCategoryOnTag(
+            @AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long categoryId,
+            @PathVariable final Long tagId) {
+        categoryService.updateCategoryOnTag(user, categoryId, tagId);
 
         return ResponseEntity.ok()
                 .build();

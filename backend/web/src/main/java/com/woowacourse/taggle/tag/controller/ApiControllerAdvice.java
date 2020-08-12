@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
+import com.woowacourse.taggle.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -15,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApiControllerAdvice {
 
     @ExceptionHandler(TagNotFoundException.class)
-    public ResponseEntity<String> handleTagNotFoundException(Exception exception) {
+    public ResponseEntity<String> handleTagNotFoundException(final Exception exception) {
         log.error(exception.getMessage());
 
         return ResponseEntity
@@ -24,7 +25,7 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(BookmarkNotFoundException.class)
-    public ResponseEntity<String> handleBookmarkNotFoundException(Exception exception) {
+    public ResponseEntity<String> handleBookmarkNotFoundException(final Exception exception) {
         log.error(exception.getMessage());
 
         return ResponseEntity
@@ -33,7 +34,7 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(TagBookmarkNotFoundException.class)
-    public ResponseEntity<String> handleTagBookmarkNotFoundException(Exception exception) {
+    public ResponseEntity<String> handleTagBookmarkNotFoundException(final Exception exception) {
         log.error(exception.getMessage());
 
         return ResponseEntity
@@ -41,8 +42,17 @@ public class ApiControllerAdvice {
                 .body("태그에 속한 북마크를 찾을 수 없습니다.");
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(final Exception exception) {
+        log.error(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("사용자를 찾을 수 없습니다.");
+    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception exception) {
+    public ResponseEntity<String> handleException(final Exception exception) {
         log.error(exception.getMessage());
 
         return ResponseEntity

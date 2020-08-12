@@ -14,10 +14,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
+import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -87,6 +87,50 @@ class TagServiceTest {
         assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
     }
 
+    @DisplayName("findAllWithCategory: 카테고리를 포함한 모든 태그를 가져온다.")
+    @Test
+    void findAllWithCategory() {
+        // given
+        final TagCreateRequest tagCreateRequest1 = new TagCreateRequest("java");
+        final TagCreateRequest tagCreateRequest2 = new TagCreateRequest("spring");
+        final TagCreateRequest tagCreateRequest3 = new TagCreateRequest("oauth2");
+        final TagCreateRequest tagCreateRequest4 = new TagCreateRequest("security");
+
+        final TagResponse tagResponse1 = tagService.createTag(user, tagCreateRequest1);
+        tagService.createTag(user, tagCreateRequest2);
+        tagService.createTag(user, tagCreateRequest3);
+        tagService.createTag(user, tagCreateRequest4);
+
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
+
+        categoryService.updateCategoryOnTag(user, categoryResponse.getId(), tagResponse1.getId());
+
+        // when
+        final List<CategoryTagsResponse> categoryTagsResponses = tagService.findAllWithCategory(user);
+
+        // then
+        assertThat(categoryTagsResponses).hasSize(2);
+        assertThat(categoryTagsResponses.get(0).getId()).isNull();
+        assertThat(categoryTagsResponses.get(1).getId()).isNotNull();
+        assertThat(categoryTagsResponses.get(0).getTags()).hasSize(3);
+        assertThat(categoryTagsResponses.get(1).getTags()).hasSize(1);
+    }
+
+    @DisplayName("findTagById: 특정 태그를 조회한다.")
+    @Test
+    void findTagById() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
+
+        // when
+        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tag.getId());
+
+        // then
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
+    }
+
     @DisplayName("removeTag: 태그를 제거한다.")
     @Test
     void removeTag() {
@@ -96,7 +140,7 @@ class TagServiceTest {
         final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // when
-        tagService.removeTag(tagResponse.getId());
+        tagService.removeTag(user, tagResponse.getId());
 
         // then
         assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
@@ -108,54 +152,9 @@ class TagServiceTest {
         // given
         // when
         // then
-        assertThatThrownBy(() -> tagService.removeTag(1L))
+        assertThatThrownBy(() -> tagService.removeTag(user, 2L))
                 .isInstanceOf(TagNotFoundException.class)
                 .hasMessageContaining("태그가 존재하지 않습니다");
     }
 
-    @DisplayName("findTags: 전체 태그를 조회한다.")
-    @Test
-    void findTags() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        tagService.createTag(user, tagCreateRequest);
-
-        // when
-        final List<TagResponse> tags = tagService.findTags();
-
-        // then
-        assertThat(tags).hasSize(1);
-    }
-
-    @DisplayName("findTagById: 특정 태그를 조회한다.")
-    @Test
-    void findTagById() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
-
-        // when
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(tag.getId());
-
-        // then
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
-    }
-
-    @DisplayName("updateTagByCategory: 태그의 카테고리를 수정한다.")
-    @Test
-    void updateTagByCategory() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
-        final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
-
-        // when
-        tagService.updateCategory(user, tag.getId(), category.getId());
-        final Tag updateTag = tagRepository.findById(tag.getId()).get();
-
-        // then
-        assertThat(updateTag.getCategory().getId()).isEqualTo(category.getId());
-        assertThat(updateTag.getCategory().getTitle()).isEqualTo("project");
-    }
 }

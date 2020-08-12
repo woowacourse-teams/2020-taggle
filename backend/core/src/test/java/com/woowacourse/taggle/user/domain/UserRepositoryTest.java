@@ -43,7 +43,7 @@ class UserRepositoryTest {
     void findByEmail() {
         // when
         userRepository.save(user);
-        final Optional<User> actual = userRepository.findByEmail(user.getEmail());
+        final Optional<User> actual = userRepository.findById(user.getId());
 
         // then
         assertThat(actual).isNotEmpty();
