@@ -4,7 +4,7 @@
     <v-dialog v-model="dialog" max-width="500">
       <v-card>
         <v-app-bar dense flat>
-          <v-toolbar-title>태그편집</v-toolbar-title>
+          <v-toolbar-title>태그 편집</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
@@ -37,9 +37,6 @@ export default {
       required: true,
     },
   },
-  created() {
-    this.tags = this.bookmark.tags.map((tag) => this.mapName(tag));
-  },
   data() {
     return {
       dialog: false,
@@ -48,9 +45,6 @@ export default {
     };
   },
   methods: {
-    mapName(tagg) {
-      return { text: tagg.name, tiClasses: ['ti-valid'] };
-    },
     closeModal() {
       this.dialog = false;
     },
