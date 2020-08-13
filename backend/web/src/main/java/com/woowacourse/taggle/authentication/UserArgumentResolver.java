@@ -16,6 +16,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
 import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.exception.UserNotFoundException;
 
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -45,7 +46,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private SessionUser getUser(final Authentication authentication) {
         final DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
         final User user = userRepository.findByEmail(defaultOAuth2User.getAttributes().get("email").toString())
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
         return new SessionUser(user);
     }
 }
