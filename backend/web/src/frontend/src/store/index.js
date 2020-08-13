@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from '@/router';
+import Cookie from '@/utils/cookie.js';
 import BookmarkService from '@/api/module/bookmark.js';
 import CategoryService from '@/api/module/category.js';
-import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT  } from '@/store/share/actionTypes.js';
+import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT } from '@/store/share/actionTypes.js';
 import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 
 Vue.use(Vuex);
@@ -41,8 +42,8 @@ export default new Vuex.Store({
   },
   actions: {
     async [LOGIN]({ commit }) {
-      const accessToken = 'JSESSIONTOKEN';
-      // const accessToken = Cookie.getCookie('JSESSIONID');
+      const accessToken = Cookie.getCookie('JSESSIONID');
+      console.log(accessToken);
       commit(SET_ACCESS_TOKEN, accessToken);
     },
     async [LOGOUT]({ commit }) {

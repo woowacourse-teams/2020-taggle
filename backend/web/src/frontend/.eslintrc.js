@@ -15,5 +15,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'always'],
     'no-param-reassign': 0,
+    'no-console': 'off',
   },
 };
