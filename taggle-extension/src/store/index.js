@@ -10,7 +10,7 @@ import {
 } from './share/actionsType.js';
 import TagService from '../api/module/tag.js';
 import BookmarkService from '../api/module/bookmark.js';
-import { RESET_BOOKMARK, SET_BOOKMARK } from './share/mutationsType.js';
+import { RESET_BOOKMARK, SET_BOOKMARK, SHOW_SNACKBAR } from './share/mutationsType.js';
 
 Vue.use(Vuex);
 
@@ -25,6 +25,8 @@ export default new Vuex.Store({
         },
       ],
     },
+    isShow: false,
+    message: '',
   },
   getters: {
     bookmarkId(state) {
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     getTagIdByName: (state) => (name) => {
       const tag = state.tagBookmark.tags.find((item) => item.name === name);
       return tag ? tag.id : undefined;
+    },
+    isShow(state) {
+      return state.isShow;
+    },
+    message(state) {
+      return state.message;
     },
   },
   actions: {
@@ -47,7 +55,7 @@ export default new Vuex.Store({
       return TagService.addBookmarkOnTag(bookmarkId, tagId);
     },
     [DELETE_TAG_BOOKMARK](context, { bookmarkId, tagId }) {
-      return TagService.removeBookmarkOnTag(bookmarkId, tagId);
+      return TagService.deleteBookmarkOnTag(bookmarkId, tagId);
     },
     [CREATE_BOOKMARK](context, bookmark) {
       return BookmarkService.save(bookmark);
@@ -63,6 +71,10 @@ export default new Vuex.Store({
     },
     [RESET_BOOKMARK](state) {
       state.tagBookmark = {};
+    },
+    [SHOW_SNACKBAR](state, message) {
+      state.isShow = !state.isShow;
+      state.message = message;
     },
   },
 });

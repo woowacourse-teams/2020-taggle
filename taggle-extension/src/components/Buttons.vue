@@ -6,9 +6,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapMutations, mapActions, mapGetters } from 'vuex';
 import { DELETE_BOOKMARK, CREATE_BOOKMARK } from '../store/share/actionsType.js';
 import { BOOKMARK_ID } from '../store/share/gettersType.js';
+import { SHOW_SNACKBAR } from '../store/share/mutationsType.js';
+import { SNACKBAR_MESSAGES } from '../utils/constants.js';
 
 export default {
   name: 'Buttons',
@@ -33,14 +35,23 @@ export default {
     ...mapGetters([BOOKMARK_ID]),
   },
   methods: {
+    ...mapMutations([SHOW_SNACKBAR]),
     ...mapActions([DELETE_BOOKMARK, CREATE_BOOKMARK]),
     async deleteBookmark() {
-      await this[DELETE_BOOKMARK](this[BOOKMARK_ID]);
-      this.$emit('deleteBookmark');
+      try {
+        await this[DELETE_BOOKMARK](this[BOOKMARK_ID]);
+        this.$emit('deleteBookmark');
+      } catch (e) {
+        this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.BOOKMARK.DELETE.FAIL);
+      }
     },
     async addBookmark() {
-      await this[CREATE_BOOKMARK](this[BOOKMARK_ID]);
-      this.$emit('createBookmark');
+      try {
+        await this[CREATE_BOOKMARK](this[BOOKMARK_ID]);
+        this.$emit('createBookmark');
+      } catch (e) {
+        this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.BOOKMARK.ADD.FAIL);
+      }
     },
   },
 };

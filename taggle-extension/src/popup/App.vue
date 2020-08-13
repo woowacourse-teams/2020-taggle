@@ -12,15 +12,18 @@
       />
     </section>
     <TagInput v-if="hasBookmark && isUrlLoaded" :bookmarkUrl="url" />
+    <Snackbar />
   </v-app>
 </template>
 
 <script>
 import Buttons from '../components/Buttons.vue';
 import TagInput from '../components/TagInput.vue';
+import Snackbar from '../components/Snackbar.vue';
 
 export default {
   components: {
+    Snackbar,
     Buttons,
     TagInput,
   },
@@ -65,6 +68,14 @@ body {
 
 #container {
   padding: 10px 12px;
+}
+
+.v-application--wrap {
+  min-height: 0 !important;
+}
+
+.dropdown.is-hoverable:hover .dropdown-menu {
+  display: block !important;
 }
 
 .taggle-title {

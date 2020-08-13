@@ -2,7 +2,7 @@ import axios from 'axios';
 import parseIdFromUri from '../utils/idParser.js';
 
 const AXIOS = axios.create({
-  baseURL: process.env.baseUrl || 'http://localhost:8080' || 'http://3.34.203.89:8080',
+  baseURL: process.env.baseUrl || 'http://3.34.203.89:8080',
 });
 
 const ApiService = {
