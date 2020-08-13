@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.security.dto;
+package com.woowacourse.taggle.user.dto;
 
 import java.util.Map;
 
@@ -49,6 +49,7 @@ public class OAuthAttributes {
         if (KAKAO_REGISTRATION_ID.equals(registrationId)) {
             return ofKakao(KAKAO_USER_NAME_ATTRIBUTE_NAME, attributes);
         }
+
         return ofGoogle(userNameAttributeName, attributes);
     }
 

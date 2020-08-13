@@ -2,7 +2,7 @@ package com.woowacourse.taggle.tag.exception;
 
 public class CategoryDuplicationException extends RuntimeException {
 
-    public CategoryDuplicationException(String message) {
+    public CategoryDuplicationException(final String message) {
         super(message);
     }
 }

@@ -2,8 +2,7 @@ package com.woowacourse.taggle.tag.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,14 +12,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.CategoryRequest;
-import com.woowacourse.taggle.tag.dto.CategoryResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
+import com.woowacourse.taggle.user.domain.Role;
+import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -35,7 +35,23 @@ class TagServiceTest {
     private CategoryService categoryService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private TagRepository tagRepository;
+
+    private SessionUser user;
+
+    @BeforeEach
+    void setUp() {
+        final User testUser = userService.save(User.builder()
+                .email("a@a.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .build());
+        user = new SessionUser(testUser);
+    }
 
     @DisplayName("createTag: 태그를 생성한다.")
     @Test
@@ -44,7 +60,7 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
@@ -58,12 +74,26 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        tagService.createTag(tagCreateRequest);
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // then
         assertThat(tagResponse.getId()).isNotNull();
         assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
+    }
+
+    @DisplayName("findTagById: 특정 태그를 조회한다.")
+    @Test
+    void findTagById() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
+
+        // when
+        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tag.getId());
+
+        // then
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")
@@ -71,11 +101,11 @@ class TagServiceTest {
     void removeTag() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        tagService.createTag(tagCreateRequest);
-        final TagResponse tagResponse = tagService.createTag(tagCreateRequest);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
         // when
-        tagService.removeTag(tagResponse.getId());
+        tagService.removeTag(user, tagResponse.getId());
 
         // then
         assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
@@ -87,54 +117,9 @@ class TagServiceTest {
         // given
         // when
         // then
-        assertThatThrownBy(() -> tagService.removeTag(1L))
+        assertThatThrownBy(() -> tagService.removeTag(user, 2L))
                 .isInstanceOf(TagNotFoundException.class)
                 .hasMessageContaining("태그가 존재하지 않습니다");
     }
 
-    @DisplayName("findTags: 전체 태그를 조회한다.")
-    @Test
-    void findTags() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        tagService.createTag(tagCreateRequest);
-
-        // when
-        final List<TagResponse> tags = tagService.findTags();
-
-        // then
-        assertThat(tags).hasSize(1);
-    }
-
-    @DisplayName("findTagById: 특정 태그를 조회한다.")
-    @Test
-    void findTagById() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(tagCreateRequest);
-
-        // when
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(tag.getId());
-
-        // then
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
-    }
-
-    @DisplayName("updateTagByCategory: 태그의 카테고리를 수정한다.")
-    @Test
-    void updateTagByCategory() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(tagCreateRequest);
-        final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse category = categoryService.createCategory(categoryRequest);
-
-        // when
-        tagService.updateCategory(tag.getId(), category.getId());
-        final Tag updateTag = tagRepository.findById(tag.getId()).get();
-
-        // then
-        assertThat(updateTag.getCategory().getId()).isEqualTo(category.getId());
-        assertThat(updateTag.getCategory().getTitle()).isEqualTo("project");
-    }
 }

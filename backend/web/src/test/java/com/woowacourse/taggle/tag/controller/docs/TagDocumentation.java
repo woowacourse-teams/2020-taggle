@@ -23,7 +23,7 @@ public class TagDocumentation {
     public static RestDocumentationResultHandler findTag() {
         return document("tags/get",
                 pathParameters(
-                        parameterWithName("id").description("태그 ID")
+                        parameterWithName("tagId").description("태그 ID")
                 ),
                 responseFields(
                         fieldWithPath("id").description("태그 ID"),
@@ -33,25 +33,16 @@ public class TagDocumentation {
                 ));
     }
 
-    public static RestDocumentationResultHandler findTags() {
-        return document("tags/get/list",
-                responseFields(
-                        fieldWithPath("[].id").description("태그 ID"),
-                        fieldWithPath("[].name").description("태그 이름")
-                )
-        );
-    }
-
     public static RestDocumentationResultHandler removeTags() {
         return document("tags/delete",
                 pathParameters(
-                        parameterWithName("id").description("태그 ID")
+                        parameterWithName("tagId").description("태그 ID")
                 )
         );
     }
 
     public static RestDocumentationResultHandler addBookmarkOnTag() {
-        return document("tags/tagBookmark",
+        return document("tags/bookmarks/create",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID"),
                         parameterWithName("bookmarkId").description("북마크 ID")
@@ -62,11 +53,11 @@ public class TagDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler updateCategoryOnTag() {
-        return document("tags/category",
+    public static RestDocumentationResultHandler removeBookmarkOnTag() {
+        return document("tags/bookmarks/delete",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("categoryId").description("카테고리 ID")
+                        parameterWithName("bookmarkId").description("북마크 ID")
                 )
         );
     }

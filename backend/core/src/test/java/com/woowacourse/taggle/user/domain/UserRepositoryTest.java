@@ -24,7 +24,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User("태글", "taggle@gmail.com", "010-0000-0000",
+        user = new User(1L,"태글", "taggle@gmail.com", "010-0000-0000",
                 "https://github.com/image.jpg", Role.USER);
     }
 
@@ -42,8 +42,8 @@ class UserRepositoryTest {
     @Test
     void findByEmail() {
         // when
-        userRepository.save(user);
-        final Optional<User> actual = userRepository.findByEmail(user.getEmail());
+        User user1 = userRepository.save(user);
+        final Optional<User> actual = userRepository.findById(user1.getId());
 
         // then
         assertThat(actual).isNotEmpty();
