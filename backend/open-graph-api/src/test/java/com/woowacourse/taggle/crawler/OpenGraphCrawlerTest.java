@@ -31,8 +31,9 @@ class OpenGraphCrawlerTest {
     @DisplayName("extractPreview: 오픈그래프에서 타이틀이 없다면 title 태그의 값을 가져오는 테스트")
     @Test
     void extractPreviewTestReturnTitleTag() {
-        OpenGraphDto openGraphDto = openGraphCrawler.findOpenGraph("https://taggle.kr");
-        assertThat(openGraphDto.getTitle()).isEqualTo("frontend");
+        OpenGraphDto openGraphDto = openGraphCrawler.findOpenGraph(
+                "http://info.cern.ch/");
+        assertThat(openGraphDto.getTitle()).isEqualTo("http://info.cern.ch");
     }
 
     @DisplayName("extractPreview: 잘못된 url이 들어왔을 경우 예외처")
