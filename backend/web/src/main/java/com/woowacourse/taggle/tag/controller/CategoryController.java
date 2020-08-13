@@ -35,14 +35,14 @@ public class CategoryController {
             @AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
-        System.out.println(category.getId() + "여기 아이디요!");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", "/api/v1/categories/" + category.getId())
                 .body(category);
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryTagsResponse>> findTags(@AuthenticationPrincipal final SessionUser user) {
+    public ResponseEntity<List<CategoryTagsResponse>> findAllCategories(
+            @AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(categoryService.findAllWithTags(user));
     }
@@ -53,7 +53,6 @@ public class CategoryController {
             @PathVariable final Long id,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         categoryService.updateCategory(user, id, categoryRequest);
-
         return ResponseEntity.ok()
                 .build();
     }
@@ -64,7 +63,6 @@ public class CategoryController {
             @PathVariable final Long categoryId,
             @PathVariable final Long tagId) {
         categoryService.updateCategoryOnTag(user, categoryId, tagId);
-
         return ResponseEntity.ok()
                 .build();
     }
@@ -74,7 +72,6 @@ public class CategoryController {
             @AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long id) {
         categoryService.removeCategory(user, id);
-
         return ResponseEntity.noContent()
                 .build();
     }

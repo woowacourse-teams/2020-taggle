@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -24,19 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.woowacourse.taggle.authentication.UserArgumentResolver;
-import com.woowacourse.taggle.tag.domain.Bookmark;
-import com.woowacourse.taggle.tag.domain.Category;
-import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.user.domain.UserRepository;
+import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 
 @ExtendWith(RestDocumentationExtension.class)
 @SpringBootTest
 @Transactional
 public class ControllerTest {
-
-    @Autowired
-    UserRepository userRepository;
 
     @MockBean
     private UserArgumentResolver userArgumentResolver;
@@ -46,31 +39,29 @@ public class ControllerTest {
     @BeforeEach
     void setUp(final WebApplicationContext webApplicationContext,
             final RestDocumentationContextProvider restDocumentationContextProvider) {
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
                 .build();
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
-
     }
 
-    public ResultActions createByJsonParams(final String uri, final String jsonParams, final Category category) throws
+    public ResultActions createByJsonParams(final User user, final String uri, final String jsonParams) throws
             Exception {
-        SessionUser sessionUser = new SessionUser(category.getUser());
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(post(uri)
                 .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions createByPathVariables(final String uri, final Tag tag) throws Exception {
-        SessionUser sessionUser = new SessionUser(tag.getUser());
+    public ResultActions createByPathVariables(final User user, final String uri) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-
         return mockMvc.perform(post(uri)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,31 +70,30 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions read(final String uri, final ResultMatcher expect, final Tag tag) throws Exception {
-        SessionUser sessionUser = new SessionUser(tag.getUser());
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(status().isOk())
-                .andExpect(expect)
-                .andDo(print());
-    }
-
-    public ResultActions readBookmark(final String uri, final ResultMatcher expect, final Bookmark bookmark) throws
+    public ResultActions readCategory(final User user, final String uri, final ResultMatcher expect) throws
             Exception {
-        SessionUser sessionUser = new SessionUser(bookmark.getUser());
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON)
-        )
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(expect)
                 .andDo(print());
     }
 
-    public ResultActions readByPathVariables(final String uri, final Tag tag) throws Exception {
-        SessionUser sessionUser = new SessionUser(tag.getUser());
+    public ResultActions readBookmark(final User user, final String uri, final ResultMatcher expect) throws
+            Exception {
+        final SessionUser sessionUser = new SessionUser(user);
+        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
+        return mockMvc.perform(get(uri)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(expect)
+                .andDo(print());
+    }
+
+    public ResultActions readByPathVariables(final User user, final String uri) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(get(uri)
                 .accept(MediaType.APPLICATION_JSON)
@@ -112,8 +102,8 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions readByBookmarkPathVariables(final String uri, final Bookmark bookmark) throws Exception {
-        SessionUser sessionUser = new SessionUser(bookmark.getUser());
+    public ResultActions readByBookmarkPathVariables(final User user, final String uri) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(get(uri)
                 .accept(MediaType.APPLICATION_JSON)
@@ -122,8 +112,16 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions remove(final String uri, final Category category) throws Exception {
-        SessionUser sessionUser = new SessionUser(category.getUser());
+    public ResultActions remove(final User user, final String uri, final Long id) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
+        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
+        return mockMvc.perform(delete(uri, id))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    public ResultActions removeBookmark(final User user, final String uri) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(delete(uri)
         )
@@ -131,17 +129,8 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions removeBookmark(final String uri, final Bookmark bookmark) throws Exception {
-        SessionUser sessionUser = new SessionUser(bookmark.getUser());
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(delete(uri)
-        )
-                .andExpect(status().isNoContent())
-                .andDo(print());
-    }
-
-    public ResultActions removeTagAndBookmark(final String uri, final Bookmark bookmark) throws Exception {
-        SessionUser sessionUser = new SessionUser(bookmark.getUser());
+    public ResultActions removeTagAndBookmark(final User user, final String uri) throws Exception {
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(delete(uri)
         )
@@ -149,18 +138,20 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions updateByPathVariables(final String uri, final Object... ids) throws Exception {
+    public ResultActions updateByPathVariables(final User user, final String uri, final Object... ids) throws
+            Exception {
+        final SessionUser sessionUser = new SessionUser(user);
+        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri, ids)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
 
-    public ResultActions updateByJsonParams(final String uri, final String jsonParams, final Category category) throws
+    public ResultActions updateByJsonParams(final User user, final String uri, final String jsonParams) throws
             Exception {
-        SessionUser sessionUser = new SessionUser(category.getUser());
+        final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri)
                 .content(jsonParams)

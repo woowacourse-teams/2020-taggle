@@ -12,7 +12,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.setup.domain.TagSetup;
-import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 
@@ -33,8 +32,8 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
 
         // 태그에 북마크를 추가한다.
         final Long bookmarkId = bookmarks.get(0).getId();
-        final Tag tag = tagSetup.save();
-        addBookmarkOnTag(tag.getId(), bookmarkId);
+        // final Tag tag = tagSetup.save();
+        // addBookmarkOnTag(tag.getId(), bookmarkId);
 
         // 북마크에 있는 태그를 조회한다.
         final BookmarkTagResponse bookmark = findBookmark(bookmarkId);

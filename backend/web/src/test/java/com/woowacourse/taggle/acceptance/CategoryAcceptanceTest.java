@@ -12,7 +12,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.setup.domain.TagSetup;
-import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
@@ -28,7 +27,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         createCategory("project");
 
         // 카테고리를 가져온다.
-        final Tag tag = tagSetup.save();
+        // final Tag tag = tagSetup.save();
         List<CategoryTagsResponse> categories = findCategories();
         assertThat(categories).hasSize(2);
 

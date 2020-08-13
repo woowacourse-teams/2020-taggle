@@ -35,7 +35,7 @@ public class TagController {
             @AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final TagCreateRequest tagCreateRequest) {
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
-        System.out.println("createTag 아이디 " + tag.getId());
+
         return ResponseEntity.created(URI.create("/api/v1/tags/" + tag.getId()))
                 .build();
     }
@@ -43,7 +43,6 @@ public class TagController {
     @GetMapping("/{tagId}")
     public ResponseEntity<TagBookmarkResponse> findTagById(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {
-        System.out.println("패스붸리어블" + tagId);
         final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tagId);
 
         return ResponseEntity.ok()
@@ -75,7 +74,7 @@ public class TagController {
             @PathVariable final Long bookmarkId) {
         tagBookmarkService.removeTagBookmark(user, tagId, bookmarkId);
 
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks" + bookmarkId))
+        return ResponseEntity.noContent()
                 .build();
     }
 }

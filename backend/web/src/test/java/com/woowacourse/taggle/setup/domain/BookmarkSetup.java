@@ -14,21 +14,14 @@ public class BookmarkSetup {
 
     private final BookmarkRepository bookmarkRepository;
 
-    private final UserSetup userSetup;
-
-    public Bookmark save() {
-
-        User user = userSetup.save();
+    public Bookmark save(final User user) {
         final Bookmark bookmark = new Bookmark("http://github.com", user);
 
         return bookmarkRepository.save(bookmark);
     }
 
-    public Bookmark saveBookmarkWithTag(Tag tag) {
+    public Bookmark saveBookmarkWithTag(final Tag tag) {
         return bookmarkRepository.save(new Bookmark("http://github.com", tag.getUser()));
     }
 
-    public void removeAll() {
-        bookmarkRepository.deleteAll();
-    }
 }

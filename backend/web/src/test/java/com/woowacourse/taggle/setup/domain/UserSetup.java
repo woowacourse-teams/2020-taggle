@@ -14,7 +14,7 @@ public class UserSetup {
     private final UserRepository userRepository;
 
     public User save() {
-        User user = User.builder()
+        final User user = User.builder()
                 .id(1L)
                 .email("a@a.com")
                 .nickName("tigger")

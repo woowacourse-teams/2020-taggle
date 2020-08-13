@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
 import com.woowacourse.taggle.setup.domain.CategorySetup;
-import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -32,15 +31,15 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void manageBookmark() {
 
         // 태그를 생성한다
-        Map<String, Object> taggle = createTag("taggle");
-        TagBookmarkResponse tags = findTagById((Long)taggle.get("id"));
+        final Map<String, Object> taggle = createTag("taggle");
+        final TagBookmarkResponse tags = findTagById((Long)taggle.get("id"));
 
         assertThat(tags.getName()).isEqualTo("taggle");
 
         // 북마크에 태그를 추가한다
         final Long tagId = tags.getId();
-        final Bookmark bookmark = bookmarkSetup.save();
-        addBookmarkOnTag(tagId, bookmark.getId());
+        // final Bookmark bookmark = bookmarkSetup.save(user);
+        // addBookmarkOnTag(tagId, bookmark.getId());
         final TagBookmarkResponse tagBookmarkResponse = findTagById(tagId);
 
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);

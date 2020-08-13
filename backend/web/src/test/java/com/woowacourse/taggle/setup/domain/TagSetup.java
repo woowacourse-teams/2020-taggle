@@ -13,10 +13,7 @@ public class TagSetup {
 
     private final TagRepository tagRepository;
 
-    private final UserSetup userSetup;
-
-    public Tag save() {
-        User user = userSetup.save();
+    public Tag save(final User user) {
         return tagRepository.save(new Tag("태글", user));
     }
 }
