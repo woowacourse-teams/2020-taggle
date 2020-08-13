@@ -19,7 +19,8 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
     void createCategory() throws Exception {
-        createByJsonParams("/api/v1/categories", "{ \"title\": \"project\" }")
+        Category category = categorySetup.saveWithUser();
+        createByJsonParams("/api/v1/categories", "{\"title\":\"project\"}", category)
                 .andDo(CategoryDocumentation.createCategory());
     }
 
@@ -38,19 +39,24 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("updateCategory: 카테고리의 제목을 변경한다.")
     @Test
     void updateCategory() throws Exception {
-        final Category category = categorySetup.saveWithTags();
-
-        updateByJsonParams("/api/v1/categories/{id}", "{ \"title\": \"newCategory\" }", category.getId())
+        Category category = categorySetup.saveWithUser();
+        createByJsonParams("/api/v1/categories", "{\"title\":\"project\"}", category)
+                .andDo(CategoryDocumentation.createCategory());
+        updateByJsonParams("/api/v1/categories/" + category.getId(), "{ \"title\": \"newCategory\" }", category)
                 .andDo(CategoryDocumentation.updateCategory());
+
     }
 
     @WithMockUser(value = "ADMIN")
     @DisplayName("removeCategory: 카테고리 하나를 제거한다.")
     @Test
     void removeCategory() throws Exception {
-        final Category category = categorySetup.save();
-
-        remove("/api/v1/categories/{id}", category.getId())
+        Category category = categorySetup.saveWithUser();
+        createByJsonParams("/api/v1/categories", "{\"title\":\"project\"}", category)
+                .andDo(CategoryDocumentation.createCategory());
+        remove("/api/v1/categories/" + category.getId(), category)
                 .andDo(CategoryDocumentation.removeCategory());
+
     }
 }
+

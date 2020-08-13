@@ -10,16 +10,21 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
+import com.woowacourse.taggle.setup.domain.CategorySetup;
 import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.Tag;
 
 class BookmarkControllerTest extends ControllerTest {
 
     @Autowired
     private TagBookmarkSetup tagBookmarkSetup;
+
+    @Autowired
+    private CategorySetup categorySetup;
 
     @Autowired
     private BookmarkSetup bookmarkSetup;
@@ -31,7 +36,8 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
-        createByJsonParams("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
+        Category category = categorySetup.saveWithUser();
+        createByJsonParams("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }", category)
                 .andDo(BookmarkDocumentation.createBookmark());
     }
 
@@ -43,7 +49,7 @@ class BookmarkControllerTest extends ControllerTest {
         final Tag tag = tagSetup.save();
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables("/api/v1/bookmarks/{id}/tags", bookmark.getId())
+        readByBookmarkPathVariables("/api/v1/bookmarks/" + bookmark.getId() + "/tags", bookmark)
                 .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
                 .andDo(BookmarkDocumentation.findBookmark());
     }
@@ -52,9 +58,7 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
     @Test
     void findBookmarks() throws Exception {
-        bookmarkSetup.save();
-
-        read("/api/v1/bookmarks", jsonPath("$", hasSize(1)))
+        readBookmark("/api/v1/bookmarks", jsonPath("$", hasSize(1)), bookmarkSetup.save())
                 .andDo(BookmarkDocumentation.findBookmarks());
     }
 
@@ -64,7 +68,7 @@ class BookmarkControllerTest extends ControllerTest {
     void removeBookmark() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save();
 
-        remove("/api/v1/bookmarks/{id}", bookmark.getId())
+        removeBookmark("/api/v1/bookmarks/" + bookmark.getId(), bookmark)
                 .andDo(BookmarkDocumentation.removeBookmark());
     }
 }

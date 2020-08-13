@@ -36,7 +36,8 @@ public class TagControllerTest extends ControllerTest {
     @DisplayName("createTag: 태그를 추가한다.")
     @Test
     void createTag() throws Exception {
-        createByJsonParams("/api/v1/tags", "{\"name\": \"taggle\"}")
+        Category category = categorySetup.saveWithUser();
+        createByJsonParams("/api/v1/tags", "{\"name\": \"taggle\"}", category)
                 .andDo(TagDocumentation.createTag());
     }
 
@@ -48,29 +49,31 @@ public class TagControllerTest extends ControllerTest {
         final Bookmark bookmark = bookmarkSetup.save();
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables("/api/v1/tags/{id}/bookmarks", tag.getId())
+        readByPathVariables("/api/v1/tags/" + tag.getId(), tag)
                 .andExpect(jsonPath("$.id", is(tag.getId().intValue())))
                 .andDo(TagDocumentation.findTag());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("findTags: 전체 태그를 조회한다.")
-    @Test
-    void findTags() throws Exception {
-        tagSetup.save();
-
-        read("/api/v1/tags", jsonPath("$", hasSize(1)))
-                .andDo(TagDocumentation.findTags());
-    }
+    // @WithMockUser(value = "ADMIN")
+    // @DisplayName("findTags: 전체 태그를 조회한다.")
+    // @Test
+    // void findTags() throws Exception {
+    //     Tag tag = tagSetup.save();
+    //
+    //     read("/api/v1/tags", jsonPath("$", hasSize(1)), tag)
+    //             .andDo(TagDocumentation.findTags());
+    // }
 
     @WithMockUser(value = "ADMIN")
     @DisplayName("removeTag: 태그를 삭제한다.")
     @Test
     void removeTag() throws Exception {
         final Tag tag = tagSetup.save();
+        final Bookmark bookmark = bookmarkSetup.saveBookmarkWithTag(tag);
+        tagBookmarkSetup.save(tag, bookmark);
 
-        remove("/api/v1/tags/{id}", tag.getId())
-                .andDo(TagDocumentation.removeTags());
+        removeTagAndBookmark("/api/v1/tags/" + tag.getId() + "/bookmarks/" + bookmark.getId(), bookmark)
+                .andDo(TagDocumentation.removeTags());//TODO: 도큐먼트 수정 필요
     }
 
     @WithMockUser(value = "ADMIN")
@@ -78,20 +81,20 @@ public class TagControllerTest extends ControllerTest {
     @Test
     void addBookmarkOnTag() throws Exception {
         final Tag tag = tagSetup.save();
-        final Bookmark bookmark = bookmarkSetup.save();
+        final Bookmark bookmark = bookmarkSetup.saveBookmarkWithTag(tag);
 
-        createByPathVariables("/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
+        createByPathVariables("/api/v1/tags/" + tag.getId() + "/bookmarks/" + bookmark.getId(), tag)
                 .andDo(TagDocumentation.addBookmarkOnTag());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 수정한다.")
-    @Test
-    void updateCategoryOnTag() throws Exception {
-        final Tag tag = tagSetup.save();
-        final Category category = categorySetup.save();
-
-        updateByPathVariables("/api/v1/tags/{tagId}/categories/{categoryId}", tag.getId(), category.getId())
-                .andDo(TagDocumentation.updateCategoryOnTag());
-    }
+    // @WithMockUser(value = "ADMIN")
+    // @DisplayName("updateCategoryOnTag: 태그의 카테고리를 수정한다.")
+    // @Test
+    // void updateCategoryOnTag() throws Exception {
+    //     final Tag tag = tagSetup.save();
+    //     final Category category = categorySetup.save();
+    //
+    //     updateByPathVariables("/api/v1/tags/{tagId}/categories/{categoryId}", tag.getId(), category.getId())
+    //             .andDo(TagDocumentation.updateCategoryOnTag());
+    // }
 }
