@@ -26,7 +26,6 @@ public class TagService {
 
     public TagResponse createTag(final SessionUser sessionUser, final TagCreateRequest tagCreateRequest) {
         final User user = userService.findById(sessionUser.getId());
-
         final Tag tag = tagRepository.findByName(tagCreateRequest.getName())
                 .orElse(tagRepository.save(tagCreateRequest.toEntityWithUser(user)));
 
@@ -36,6 +35,7 @@ public class TagService {
     @Transactional(readOnly = true)
     public TagBookmarkResponse findTagById(final SessionUser user, final Long tagId) {
         final Tag tag = findByIdAndUserId(tagId, user.getId());
+
         return TagBookmarkResponse.of(tag);
     }
 
@@ -50,7 +50,7 @@ public class TagService {
 
     public Tag findByIdAndUserId(final Long tagId, final Long userId) {
         return tagRepository.findByIdAndUserId(tagId, userId)
-                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다.\n"
+                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다."
                         + "tagId: " + tagId));
     }
 

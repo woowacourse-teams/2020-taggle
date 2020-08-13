@@ -32,8 +32,7 @@ public class CategoryTagsResponse {
                 TagResponse.asList(tags));
     }
 
-    public static List<CategoryTagsResponse> asList(final List<Tag> tags,
-            final List<Category> categories) {
+    public static List<CategoryTagsResponse> asList(final List<Tag> tags, final List<Category> categories) {
         final List<CategoryTagsResponse> totalCategoryTagsResponses = createNoCategoryTagsResponses(tags);
         final List<CategoryTagsResponse> categoryTagsResponses = createCategoryTagsResponses(tags, categories);
         totalCategoryTagsResponses.addAll(categoryTagsResponses);

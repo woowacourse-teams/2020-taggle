@@ -40,6 +40,7 @@ public class CategoryService {
     public List<CategoryTagsResponse> findAllWithTags(final SessionUser user) {
         final List<Tag> tags = tagService.findAllByUserId(user.getId());
         final List<Category> categories = categoryRepository.findAllByUserId(user.getId());
+
         return CategoryTagsResponse.asList(tags, categories);
     }
 
@@ -72,5 +73,4 @@ public class CategoryService {
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
                         + "categoryId:" + categoryId));
     }
-
 }

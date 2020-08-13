@@ -35,7 +35,7 @@ public class CategoryController {
             @AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
-        System.out.println(category.getId() + "여기 아이디요!");
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", "/api/v1/categories/" + category.getId())
                 .body(category);
