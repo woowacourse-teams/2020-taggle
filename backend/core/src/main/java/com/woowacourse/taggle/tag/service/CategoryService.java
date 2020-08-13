@@ -1,10 +1,6 @@
 package com.woowacourse.taggle.tag.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +37,11 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryTagsResponse> findAllWithTags(final SessionUser user) {
+    public List<CategoryTagsResponse> findAllTagsBy(final SessionUser user) {
         final List<Tag> tags = tagService.findAllByUserId(user.getId());
         final List<Category> categories = categoryRepository.findAllByUserId(user.getId());
-        return ofTotalCategoryTagsResponses(tags, categories);
+
+        return CategoryTagsResponse.asList(tags, categories);
     }
 
     public void updateCategory(final SessionUser user, final Long categoryId, final CategoryRequest categoryRequest) {
@@ -71,52 +68,5 @@ public class CategoryService {
         return categoryRepository.findByIdAndUserId(categoryId, userId)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
                         + "categoryId:" + categoryId));
-    }
-
-    private List<CategoryTagsResponse> ofTotalCategoryTagsResponses(final List<Tag> tags,
-            final List<Category> categories) {
-        final List<CategoryTagsResponse> totalCategoryTagsResponses = createNoCategoryTagsResponses(tags);
-        final List<CategoryTagsResponse> categoryTagsResponses = createCategoryTagsResponses(tags, categories);
-        totalCategoryTagsResponses.addAll(categoryTagsResponses);
-
-        return totalCategoryTagsResponses;
-    }
-
-    private List<CategoryTagsResponse> createNoCategoryTagsResponses(final List<Tag> tags) {
-        final List<CategoryTagsResponse> noCategoryTagsResponses = new ArrayList<>();
-
-        final List<Tag> tagsWithoutCategory = tags.stream()
-                .filter(tag -> tag.getCategory() == null)
-                .collect(Collectors.toList());
-
-        if (tagsWithoutCategory.size() > 0) {
-            final CategoryTagsResponse categoryTagsResponse = CategoryTagsResponse.ofNoCategory(tagsWithoutCategory);
-            noCategoryTagsResponses.add(categoryTagsResponse);
-        }
-
-        return noCategoryTagsResponses;
-    }
-
-    private List<CategoryTagsResponse> createCategoryTagsResponses(final List<Tag> tags, final List<Category> categories) {
-        final Map<Category, List<Tag>> cache = initCache(categories);
-
-        tags.forEach(tag -> {
-            if (tag.getCategory() != null && cache.containsKey(tag.getCategory())) {
-                cache.get(tag.getCategory()).add(tag);
-            }
-        });
-
-        return cache.keySet().stream()
-                .map(category -> CategoryTagsResponse.of(category, cache.get(category)))
-                .collect(Collectors.toList());
-    }
-
-    private Map<Category, List<Tag>> initCache(final List<Category> categories) {
-        final Map<Category, List<Tag>> cache = new HashMap<>();
-        for (final Category category : categories) {
-            final List<Tag> emptyTags = new ArrayList<>();
-            cache.put(category, emptyTags);
-        }
-        return cache;
     }
 }

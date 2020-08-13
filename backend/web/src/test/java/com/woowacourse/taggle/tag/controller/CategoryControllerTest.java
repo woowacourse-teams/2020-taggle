@@ -50,7 +50,7 @@ public class CategoryControllerTest extends ControllerTest {
     @Test
     void findCategories() throws Exception {
         categorySetup.saveWithTag(user);
-        readCategory(user, "/api/v1/categories", jsonPath("$", hasSize(1)))
+        read(user, "/api/v1/categories", jsonPath("$", hasSize(1)))
                 .andDo(CategoryDocumentation.findCategories());
     }
 

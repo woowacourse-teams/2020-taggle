@@ -71,18 +71,7 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions readCategory(final User user, final String uri, final ResultMatcher expect) throws
-            Exception {
-        final SessionUser sessionUser = new SessionUser(user);
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(expect)
-                .andDo(print());
-    }
-
-    public ResultActions readBookmark(final User user, final String uri, final ResultMatcher expect) throws
+    public ResultActions read(final User user, final String uri, final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);

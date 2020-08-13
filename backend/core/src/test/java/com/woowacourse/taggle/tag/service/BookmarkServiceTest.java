@@ -27,7 +27,7 @@ import com.woowacourse.taggle.user.service.UserService;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
-public class BookmarkServiceTest {
+class BookmarkServiceTest {
 
     @Autowired
     BookmarkService bookmarkService;
@@ -66,7 +66,7 @@ public class BookmarkServiceTest {
 
     @DisplayName("동일한 북마크가 이미 존재 할 경우 이미 존재하는 북마크를 반환한다.")
     @Test
-    void createBookmark_DuplicateBookmark_Exception() {
+    void createBookmark_DuplicateBookmark_ExceptionThrown() {
         // given
         final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
 
@@ -128,7 +128,7 @@ public class BookmarkServiceTest {
 
         // when
         // then
-        assertThatThrownBy(() -> bookmarkService.removeBookmark(user, bookmarkResponse.getId() + 1L))
+        assertThatThrownBy(() -> bookmarkService.removeBookmark(user, 0L))
                 .isInstanceOf(BookmarkNotFoundException.class)
                 .hasMessageContaining("북마크가 존재하지 않습니다");
     }

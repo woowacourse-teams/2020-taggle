@@ -13,7 +13,7 @@ public class CategoryTest {
     @DisplayName("constructor: 카테고리를 생성한다.")
     @Test
     void constructor() {
-        User user = User.builder()
+        final User user = User.builder()
                 .id(1L)
                 .email("a@a.com")
                 .nickName("tigger")
@@ -23,5 +23,4 @@ public class CategoryTest {
 
         assertThat(new Category("project", user)).isInstanceOf(Category.class);
     }
-
 }

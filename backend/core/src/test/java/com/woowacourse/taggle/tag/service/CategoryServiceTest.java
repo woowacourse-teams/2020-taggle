@@ -31,7 +31,7 @@ import com.woowacourse.taggle.user.service.UserService;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
-public class CategoryServiceTest {
+class CategoryServiceTest {
 
     @Autowired
     private CategoryService categoryService;
@@ -72,7 +72,7 @@ public class CategoryServiceTest {
         assertThat(categoryResponse.getTitle()).isEqualTo("project");
     }
 
-    @DisplayName("createCategory: 중복된 카테고리가 존재하는 경우 이미 존재하는 카테고리를 반환한다..")
+    @DisplayName("createCategory: 중복된 카테고리가 존재하는 경우 이미 존재하는 카테고리를 반환한다.")
     @Test
     void createCategory_CategoryDuplicationException() {
         // given
@@ -86,9 +86,9 @@ public class CategoryServiceTest {
         assertThat(categoryResponse.getTitle()).isEqualTo("project");
     }
 
-    @DisplayName("findAllWithTags: 카테고리를 포함한 모든 태그를 가져온다.")
+    @DisplayName("findAllTagsBy: 카테고리를 포함한 모든 태그를 가져온다.")
     @Test
-    void findAllWithTags() {
+    void findAllTagsBy() {
         // given
         final TagCreateRequest tagCreateRequest1 = new TagCreateRequest("java");
         final TagCreateRequest tagCreateRequest2 = new TagCreateRequest("spring");
@@ -108,7 +108,7 @@ public class CategoryServiceTest {
         categoryService.updateCategoryOnTag(user, categoryResponse1.getId(), tagResponse1.getId());
 
         // when
-        final List<CategoryTagsResponse> categoryTagsResponses = categoryService.findAllWithTags(user);
+        final List<CategoryTagsResponse> categoryTagsResponses = categoryService.findAllTagsBy(user);
 
         // then
         assertThat(categoryTagsResponses).hasSize(3);

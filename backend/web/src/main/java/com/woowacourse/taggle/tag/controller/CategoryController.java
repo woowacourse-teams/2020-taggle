@@ -44,7 +44,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryTagsResponse>> findAllCategories(
             @AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
-                .body(categoryService.findAllWithTags(user));
+                .body(categoryService.findAllTagsBy(user));
     }
 
     @PutMapping("/{id}")

@@ -60,4 +60,7 @@ public class Tag {
         bookmarks.remove(tagBookmark);
     }
 
+    public boolean isNotCategorized() {
+        return category == null;
+    }
 }
