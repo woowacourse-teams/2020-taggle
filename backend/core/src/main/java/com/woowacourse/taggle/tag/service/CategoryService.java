@@ -58,7 +58,11 @@ public class CategoryService {
 
     public void removeCategory(final SessionUser user, final Long categoryId) {
         final Category category = findByIdAndUserId(categoryId, user.getId());
-        tagService.findByCategoryId(categoryId).forEach(tag -> tag.updateCategory(null));
+        List<Tag> tags = tagService.findByCategoryId(categoryId);
+
+        for (Tag tag : tags) {
+            tag.updateCategory(null);
+        }
 
         categoryRepository.delete(category);
     }
