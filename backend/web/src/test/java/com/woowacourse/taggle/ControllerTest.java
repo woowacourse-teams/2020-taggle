@@ -145,7 +145,7 @@ public class ControllerTest {
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(delete(uri)
         )
-                .andExpect(status().isCreated())
+                .andExpect(status().isNoContent())
                 .andDo(print());
     }
 
