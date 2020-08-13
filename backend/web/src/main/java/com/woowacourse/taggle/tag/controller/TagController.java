@@ -45,7 +45,6 @@ public class TagController {
     @GetMapping("/{tagId}")
     public ResponseEntity<TagBookmarkResponse> findTagById(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {
-        System.out.println("패스붸리어블" + tagId);
         final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tagId);
 
         return ResponseEntity.ok()
@@ -65,7 +64,6 @@ public class TagController {
     public ResponseEntity<Void> addBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId,
             @PathVariable final Long bookmarkId) {
-        System.out.println(user.getId() + " 유저어어아이디");
         tagBookmarkService.createTagBookmark(user, tagId, bookmarkId);
 
         return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks" + bookmarkId))
