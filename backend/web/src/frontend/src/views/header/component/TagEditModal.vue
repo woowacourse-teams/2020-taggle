@@ -49,7 +49,8 @@
 
 <script>
 import draggable from 'vuedraggable';
-import { categories } from '@/utils/mockTags.js';
+import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'CategoryTagModifyModal',
@@ -58,9 +59,11 @@ export default {
   },
   data() {
     return {
-      categories,
       dialog: false,
     };
+  },
+  computed: {
+    ...mapGetters([CATEGORIES]),
   },
   methods: {},
 };
