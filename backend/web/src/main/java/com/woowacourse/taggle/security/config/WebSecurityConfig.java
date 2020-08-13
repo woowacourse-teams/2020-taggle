@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                        .antMatchers("/", "/login**", "/fonts/**", "/css/**", "/js/**", "/h2-console/**", "/api/**").permitAll() // @FIXME: 테스트를 위해 spring security off
+                        .antMatchers("/", "/login**", "/fonts/**", "/img/**","/css/**", "/js/**", "/h2-console/**", "/api/**").permitAll() // @FIXME: 테스트를 위해 spring security off
                 .anyRequest().authenticated()
                 .and()
                         .cors()

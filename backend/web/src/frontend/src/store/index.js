@@ -30,13 +30,13 @@ export default new Vuex.Store({
   },
   actions: {
     async [FETCH_BOOKMARKS]({ commit }, { tagId }) {
-      const res = await BookmarkService.getAll(tagId);
-      const bookmarks = res.data;
+      const response = await BookmarkService.getAll(tagId);
+      const bookmarks = response.data;
       commit(SET_BOOKMARKS, bookmarks);
     },
     async [FETCH_CATEGORIES]({ commit }) {
-      const res = await CategoryService.getAll();
-      const categories = res.data;
+      const response = await CategoryService.getAll();
+      const categories = response.data;
       commit(SET_CATEGORIES, categories);
     },
   },
