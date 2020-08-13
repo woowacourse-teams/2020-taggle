@@ -1,37 +1,63 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import BookmarkService from '../api/module/bookmark.js';
-import { FETCH_BOOKMARKS } from './share/actionType.js';
-import { SET_BOOKMARKS } from './share/mutationsType.js';
+import router from '@/router';
+import BookmarkService from '@/api/module/bookmark.js';
+import CategoryService from '@/api/module/category.js';
+import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT  } from '@/store/share/actionTypes.js';
+import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    bookmarks: [
-      {
-        id: '',
-        url: '',
-        tags: [{ id: '3', name: 'jordy' }],
-      },
-    ],
+    accessToken: null,
+    bookmarks: [],
+    categories: [],
   },
   getters: {
+    isAuthenticated(state) {
+      return !!state.accessToken;
+    },
+    accessToken(state) {
+      return state.accessToken;
+    },
     bookmarks(state) {
-      return state.bookmarks;
+      return state.bookmarks.bookmarks;
+    },
+    categories(state) {
+      return state.categories;
     },
   },
   mutations: {
+    [SET_ACCESS_TOKEN](state, accessToken) {
+      state.accessToken = accessToken;
+    },
     [SET_BOOKMARKS](state, bookmarks) {
       state.bookmarks = bookmarks;
     },
+    [SET_CATEGORIES](state, categories) {
+      state.categories = categories;
+    },
   },
   actions: {
-    async [FETCH_BOOKMARKS]({ commit }) {
-      return BookmarkService.getAll().then(({ data }) => {
-        commit(SET_BOOKMARKS, data);
-        return data;
-      });
+    async [LOGIN]({ commit }) {
+      const accessToken = 'JSESSIONTOKEN';
+      // const accessToken = Cookie.getCookie('JSESSIONID');
+      commit(SET_ACCESS_TOKEN, accessToken);
+    },
+    async [LOGOUT]({ commit }) {
+      commit(SET_ACCESS_TOKEN, null);
+      await router.push('/login');
+    },
+    async [FETCH_BOOKMARKS]({ commit }, { tagId }) {
+      const res = await BookmarkService.getAll(tagId);
+      const bookmarks = res.data;
+      commit(SET_BOOKMARKS, bookmarks);
+    },
+    async [FETCH_CATEGORIES]({ commit }) {
+      const res = await CategoryService.getAll();
+      const categories = res.data;
+      commit(SET_CATEGORIES, categories);
     },
   },
 });

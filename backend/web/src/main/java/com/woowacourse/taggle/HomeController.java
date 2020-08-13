@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController implements ErrorController {
     @GetMapping()
     public String index() {
-        return "index.html";
+        return "index";
     }
 
     @GetMapping("/error")
     public String redirect() {
-        return "index.html";
+        return "index";
     }
 
     @Override

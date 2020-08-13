@@ -57,8 +57,9 @@ public class User extends BaseTimeEntity {
     private LocalDateTime signOutDate;
 
     @Builder
-    public User(final String nickName, final String email, final String phoneNumber, final String picture,
+    public User(final Long id, final String nickName, final String email, final String phoneNumber, final String picture,
             final Role role) {
+        this.id = id;
         this.nickName = nickName;
         this.email = email;
         this.phoneNumber = phoneNumber;

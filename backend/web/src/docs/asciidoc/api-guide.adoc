@@ -13,28 +13,33 @@ endif::[]
 [[resources]]
 = Resources
 
-[[resources-bookmarks]]
-== Bookmarks
+[[resources-categories]]
+== Categories
 
-[[resources-bookmarks-create]]
-=== 북마크 추가
+[[resources-categories-create]]
+=== 카테고리 추가
 
-operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
+operation::categories/create[snippets='http-request,request-body,http-response,response-headers,response-body']
 
-[[resources-bookmarks-get]]
-=== 북마크 조회
+[[resources-categories-get-list]]
+=== 카테고리 전체 조회
 
-operation::bookmarks/get[snippets='http-request,request-body,http-response,response-body']
+operation::categories/get/List[snippets='http-request,http-response,response-fields']
 
-[[resources-bookmarks-get-list]]
-=== 북마크 전체 조회
+[[resources-categories-update]]
+=== 카테고리 수정
 
-operation::bookmarks/get/list[snippets='http-request,request-body,http-response,response-body']
+operation::categories/update[snippets='http-request,request-fields,http-response']
 
-[[resources-bookmarks-delete]]
-=== 북마크 삭제
+[[resources-categories-tags-update]]
+=== 태그의 카테고리 수정
 
-operation::bookmarks/delete[snippets='http-request,request-body,http-response,response-body']
+operation::categories/tags/update[snippets='http-request,http-response,path-parameters']
+
+[[resources-categories-delete]]
+=== 카테고리 삭제
+
+operation::categories/delete[snippets='http-request,http-response,path-parameters']
 
 [[resources-tags]]
 == Tags
@@ -42,52 +47,47 @@ operation::bookmarks/delete[snippets='http-request,request-body,http-response,re
 [[resources-tags-create]]
 === 태그 추가
 
-operation::tags/create[snippets='http-request,request-fields,http-response,response-body,response-headers']
+operation::tags/create[snippets='http-request,request-fields,http-response,response-headers,response-body']
 
 [[resources-tags-get]]
 === 태그 조회
 
-operation::tags/get[snippets='http-request,request-body,http-response,response-body,response-fields']
-
-[[resources-tags-get-list]]
-=== 태그 전체 조회
-
-operation::tags/get/list[snippets='http-request,request-body,http-response,response-body,response-fields']
+operation::tags/get[snippets='http-request,http-response,response-fields']
 
 [[resources-tags-delete]]
 === 태그 삭제
 
-operation::tags/delete[snippets='http-request,request-body,http-response,response-body']
+operation::tags/delete[snippets='http-request,path-parameters,http-response']
 
-[[resources-tags-tagbookmark]]
+[[resources-tags-bookmarks-create]]
 === 태그에 북마크 추가
 
-operation::tags/tagBookmark[snippets='http-request,http-response,response-body,response-headers']
+operation::tags/bookmarks/create[snippets='http-request,path-parameters,http-response,response-headers']
 
-[[resources-tags-category]]
-=== 태그의 카테고리 수정
+[[resources-tags-bookmarks-delete]]
+=== 태그에 북마크 삭제
 
-operation::tags/category[snippets='http-request,http-response']
+operation::tags/bookmarks/delete[snippets='http-request,path-parameters,http-response']
 
-[[resources-categories]]
-== Categories
+[[resources-bookmarks]]
+== Bookmarks
 
-[[resources-categories-create]]
-=== 카테고리 추가
+[[resources-bookmarks-create]]
+=== 북마크 추가
 
-operation::categories/create[snippets='http-request,request-body,http-response']
+operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-headers']
 
-[[resources-categories-get-list]]
-=== 카테고리 전체 조회
+[[resources-bookmarks-get]]
+=== 특정 북마크 조회
 
-operation::categories/get/List[snippets='http-request,http-response']
+operation::bookmarks/get[snippets='http-request,path-parameters,http-response,response-fields']
 
-[[resources-categories-update]]
-=== 카테고리 수정
+[[resources-bookmarks-get-list]]
+=== 북마크 전체 조회
 
-operation::categories/update[snippets='http-request,request-body,http-response']
+operation::bookmarks/get/list[snippets='http-request,http-response,response-fields']
 
-[[resources-categories-delete]]
-=== 카테고리 삭제
+[[resources-bookmarks-delete]]
+=== 북마크 삭제
 
-operation::categories/delete[snippets='http-request,http-response']
+operation::bookmarks/delete[snippets='http-request,path-parameters,http-response']
