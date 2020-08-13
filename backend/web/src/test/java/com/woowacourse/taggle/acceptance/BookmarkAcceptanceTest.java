@@ -7,19 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.setup.domain.TagSetup;
-import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
+import com.woowacourse.taggle.tag.dto.TagResponse;
 
 public class BookmarkAcceptanceTest extends AcceptanceTest {
-
-    @Autowired
-    private TagSetup tagSetup;
 
     @Transactional
     @WithMockUser(roles = "ADMIN")
@@ -33,7 +28,7 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
 
         // 태그에 북마크를 추가한다.
         final Long bookmarkId = bookmarks.get(0).getId();
-        final Tag tag = tagSetup.save();
+        TagResponse tag = createTag("taggle");
         addBookmarkOnTag(tag.getId(), bookmarkId);
 
         // 북마크에 있는 태그를 조회한다.
@@ -49,14 +44,6 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(bookmarks).hasSize(0);
     }
 
-
-    public void createBookmark(final String url) {
-        final Map<String, String> request = new HashMap<>();
-        request.put("url", url);
-
-        post("/api/v1/bookmarks", request, "/api/v1/bookmarks");
-    }
-
     public List<BookmarkResponse> findBookmarks() {
         return getAsList("/api/v1/bookmarks", BookmarkResponse.class);
     }
@@ -70,6 +57,23 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
     }
 
     public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId, new HashMap<>(), "/api/v1/tags/");
+        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId,
+                new HashMap<>(), "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
+    }
+
+    public BookmarkResponse createBookmark(final String url) {
+        final Map<String, Object> request = new HashMap<>();
+        request.put("url", url);
+
+        return post("/api/v1/bookmarks", request, BookmarkResponse.class, "/api/v1/bookmarks");
+    }
+
+    public TagResponse createTag(final String name) {
+
+        final Map<String, Object> request = new HashMap<>();
+        request.put("name", name);
+
+        return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 }
+

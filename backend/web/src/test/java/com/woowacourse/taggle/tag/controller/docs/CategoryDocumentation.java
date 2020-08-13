@@ -17,6 +17,10 @@ public class CategoryDocumentation {
                 ),
                 responseHeaders(
                         headerWithName("Location").description("생성된 카테고리의 URI")
+                ),
+                responseFields(
+                        fieldWithPath("id").description("카테고리 ID"),
+                        fieldWithPath("title").description("카테고리 제목")
                 )
         );
     }
@@ -36,9 +40,15 @@ public class CategoryDocumentation {
         return document("categories/update",
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리의 제목")
-                ),
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler updateCategoryOnTag() {
+        return document("categories/tags/update",
                 pathParameters(
-                        parameterWithName("id").description("카테고리 ID")
+                        parameterWithName("categoryId").description("카테고리 ID"),
+                        parameterWithName("tagId").description("태그 ID")
                 )
         );
     }
@@ -46,7 +56,7 @@ public class CategoryDocumentation {
     public static RestDocumentationResultHandler removeCategory() {
         return document("categories/delete",
                 pathParameters(
-                        parameterWithName("id").description("카테고리 ID")
+                        parameterWithName("categoryId").description("카테고리 ID")
                 )
         );
     }

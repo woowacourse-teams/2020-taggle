@@ -1,8 +1,6 @@
 package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.CategoryDetailResponse;
 import com.woowacourse.taggle.tag.dto.CategoryRequest;
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
-import com.woowacourse.taggle.tag.dto.TagResponse;
-import com.woowacourse.taggle.tag.exception.CategoryDuplicationException;
+import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
+import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -25,43 +23,54 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final TagRepository tagRepository;
+    private final TagService tagService;
+    private final UserService userService;
 
-    public CategoryResponse createCategory(final CategoryRequest categoryRequest) {
-        categoryRepository.findByTitle(categoryRequest.getTitle()).ifPresent(category -> {
-            throw new CategoryDuplicationException("이미 존재하는 카테고리입니다. categoryTitle: " + categoryRequest.getTitle());
-        });
-        final Category category = categoryRepository.save(categoryRequest.toEntity());
+    public CategoryResponse createCategory(final SessionUser sessionUser, final CategoryRequest categoryRequest) {
+        final User user = userService.findById(sessionUser.getId());
+
+        final Category category = categoryRepository.findByTitleAndUserId(categoryRequest.getTitle(),
+                sessionUser.getId())
+                .orElse(categoryRepository.save(categoryRequest.toEntityWithUser(user)));
 
         return CategoryResponse.of(category);
     }
 
     @Transactional(readOnly = true)
-    public List<CategoryDetailResponse> findCategories() {
-        final List<TagResponse> tagsWithoutCategory = tagRepository.findAll().stream()
-                .filter(Tag::isNotCategorized)
-                .map(TagResponse::of)
-                .collect(Collectors.toList());
+    public List<CategoryTagsResponse> findAllTagsBy(final SessionUser user) {
+        final List<Tag> tags = tagService.findAllByUserId(user.getId());
+        final List<Category> categories = categoryRepository.findAllByUserId(user.getId());
 
-        final List<Category> categories = categoryRepository.findAll();
-
-        return CategoryDetailResponse.asList(categories, tagsWithoutCategory);
+        return CategoryTagsResponse.asList(tags, categories);
     }
 
-    public void updateCategory(final Long id, final CategoryRequest categoryRequest) {
-        final Category category = findById(id);
+    public void updateCategory(final SessionUser user, final Long categoryId, final CategoryRequest categoryRequest) {
+        final Category category = findByIdAndUserId(categoryId, user.getId());
+
         category.update(categoryRequest.toEntity());
     }
 
-    public void removeCategory(final Long id) {
-        final Category category = findById(id);
-        category.getTags().forEach(tag -> tag.updateCategory(null));
+    public void updateCategoryOnTag(final SessionUser user, final Long categoryId, final Long tagId) {
+        final Category category = findByIdAndUserId(categoryId, user.getId());
+        final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
+
+        tag.updateCategory(category);
+    }
+
+    public void removeCategory(final SessionUser user, final Long categoryId) {
+        final Category category = findByIdAndUserId(categoryId, user.getId());
+        List<Tag> tags = tagService.findByCategoryId(categoryId);
+
+        for (Tag tag : tags) {
+            tag.updateCategory(null);
+        }
+
         categoryRepository.delete(category);
     }
 
-    public Category findById(final Long id) {
-        return categoryRepository.findById(id)
+    public Category findByIdAndUserId(final Long categoryId, final Long userId) {
+        return categoryRepository.findByIdAndUserId(categoryId, userId)
                 .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
-                        + "categoryId:" + id));
+                        + "categoryId:" + categoryId));
     }
 }
