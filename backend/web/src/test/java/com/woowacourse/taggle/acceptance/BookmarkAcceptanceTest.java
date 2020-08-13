@@ -49,9 +49,8 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(bookmarks).hasSize(0);
     }
 
-
     public void createBookmark(final String url) {
-        final Map<String, String> request = new HashMap<>();
+        final Map<String, Object> request = new HashMap<>();
         request.put("url", url);
 
         post("/api/v1/bookmarks", request, "/api/v1/bookmarks");
@@ -73,3 +72,4 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId, new HashMap<>(), "/api/v1/tags/");
     }
 }
+

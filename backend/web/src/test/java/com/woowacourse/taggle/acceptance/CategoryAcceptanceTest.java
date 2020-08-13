@@ -47,18 +47,20 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
     }
 
     public List<CategoryTagsResponse> findCategories() {
-        return getAsList("/api/v1/categories/tags", CategoryTagsResponse.class);
+        return getAsList("/api/v1/categories", CategoryTagsResponse.class);
     }
 
     private void createCategory(final String title) {
-        final Map<String, String> request = new HashMap<>();
+        final Map<String, Object> request = new HashMap<>();
+        request.put("id", 1L);
         request.put("title", title);
 
         post("/api/v1/categories", request, "/api/v1/categories");
     }
 
     private void updateCategory(final Long id, final String title) {
-        final Map<String, String> request = new HashMap<>();
+        final Map<String, Object> request = new HashMap<>();
+        request.put("id", id);
         request.put("title", title);
 
         put("/api/v1/categories/" + id, request);
@@ -68,3 +70,4 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         delete("/api/v1/categories/" + id);
     }
 }
+
