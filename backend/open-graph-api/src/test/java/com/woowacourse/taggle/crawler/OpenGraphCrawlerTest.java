@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.woowacourse.taggle.dto.OpenGraphDto;
+import com.woowacourse.taggle.exception.InvalidURLException;
 
 class OpenGraphCrawlerTest {
 
@@ -15,9 +16,9 @@ class OpenGraphCrawlerTest {
         this.openGraphCrawler = new OpenGraphCrawler();
     }
 
-    @DisplayName("openGraphCrawler: 오픈 그래프를 제대로 크롤링 하는지 확인하는 테스트")
+    @DisplayName("extractPreview: 오픈 그래프를 제대로 크롤링 하는지 확인하는 테스트")
     @Test
-    void openGraphCrawlerTest() {
+    void extractPreviewTest() {
         OpenGraphDto openGraphDto = openGraphCrawler.findOpenGraph("https://github.com");
         assertThat(openGraphDto.getTitle()).isEqualTo("Build software better, together");
         assertThat(openGraphDto.getDescription())
@@ -27,11 +28,18 @@ class OpenGraphCrawlerTest {
                 .isEqualTo("https://github.githubassets.com/images/modules/open_graph/github-logo.png");
     }
 
-    @DisplayName("openGraphCrawler: 오픈그래프에서 타이틀이 없다면 title 태그의 값을 가져오는 테스트")
+    @DisplayName("extractPreview: 오픈그래프에서 타이틀이 없다면 title 태그의 값을 가져오는 테스트")
     @Test
-    void openGraphCrawlerTestReturnTitleTag() {
-        OpenGraphDto openGraphDto = openGraphCrawler.findOpenGraph("https://taggle.kr/");
+    void extractPreviewTestReturnTitleTag() {
+        OpenGraphDto openGraphDto = openGraphCrawler.findOpenGraph("https://taggle.kr");
         assertThat(openGraphDto.getTitle()).isEqualTo("frontend");
     }
 
+    @DisplayName("extractPreview: 잘못된 url이 들어왔을 경우 예외처")
+    @Test
+    void extractPreviewTestExceptionIncorrectURL() {
+        assertThatThrownBy(() -> openGraphCrawler.findOpenGraph("taggle"))
+                .isInstanceOf(InvalidURLException.class)
+                .hasMessageContaining("잘못된 URL입니다.");
+    }
 }
