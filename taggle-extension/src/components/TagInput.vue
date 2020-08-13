@@ -1,29 +1,29 @@
 <template>
   <div class="mt-1">
     <vue-tags-input
-      v-model="tag"
       :tags="tags"
-      @tags-changed="(newTags) => (tags = newTags)"
       @before-adding-tag="addTagToBookmark"
+      @tags-changed="(newTags) => (tags = newTags)"
       placeholder="태그 추가"
+      v-model="tag"
     />
   </div>
 </template>
 
 <script>
+import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '../api/module/tag.js';
 import TagBookmarkService from '../api/module/tagBookmark.js';
-import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
-  name: "TagInput",
+  name: 'TagInput',
   components: {
     VueTagsInput,
   },
   props: {
     bookmarkId: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
@@ -32,9 +32,9 @@ export default {
     };
   },
   methods: {
-    addTagToBookmark: async function(data) {
+    async addTagToBookmark(data) {
       const tagId = await TagService.create({ name: data.tag.text });
-      TagBookmarkService.create(this.bookmarkId, tagId);
+      TagBookmarkService.create({ tagId, bookmarkId: this.bookmarkId });
       data.addTag();
     },
   },
