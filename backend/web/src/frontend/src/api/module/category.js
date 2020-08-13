@@ -9,6 +9,9 @@ const CategoryService = {
   create(newCategory) {
     return ApiService.post(`${BASE_URL}`, newCategory);
   },
+  changeTag(categoryId, tagId) {
+    return ApiService.put(`${BASE_URL}/${categoryId}/tags/${tagId}`);
+  },
 };
 
 export default CategoryService;

@@ -20,7 +20,13 @@
                   <v-list-item-title class="font-weight-black text-h7">{{ title }}</v-list-item-title>
                 </v-list-item-content>
               </template>
-              <draggable class="list-group" :list="tags" group="categoryTag" handle=".handle">
+              <draggable
+                class="list-group"
+                :list="tags"
+                group="categoryTag"
+                handle=".handle"
+                @change="changeTag($event, id)"
+              >
                 <v-list-item v-for="{ id, name } in tags" :key="id">
                   <v-list-item-icon>
                     <v-icon class="handle">mdi-format-align-justify</v-icon>
@@ -51,6 +57,7 @@
 import draggable from 'vuedraggable';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
 import { mapGetters } from 'vuex';
+import CategoryService from '@/api/module/category.js';
 
 export default {
   name: 'CategoryTagModifyModal',
@@ -65,6 +72,10 @@ export default {
   computed: {
     ...mapGetters([CATEGORIES]),
   },
-  methods: {},
+  methods: {
+    async changeTag({ added }, id) {
+      await CategoryService.changeTag(id, added.element.id);
+    },
+  },
 };
 </script>

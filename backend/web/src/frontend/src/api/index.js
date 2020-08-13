@@ -8,7 +8,7 @@ const ApiService = {
     return axios.post(`${uri}`, params);
   },
   put(uri, params) {
-    return axios.post(`${uri}`, params);
+    return axios.put(`${uri}`, params);
   },
   delete(uri) {
     return axios.delete(`${uri}`);

@@ -13,7 +13,7 @@
 
       <v-card-text class="pt-6">
         <v-text-field
-          @keydown.enter.prevent="addCategory"
+          @keypress.enter.prevent="addCategory"
           v-model="categoryName"
           :error-messages="errorMessages"
           dense

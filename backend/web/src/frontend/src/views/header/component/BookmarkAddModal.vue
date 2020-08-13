@@ -36,7 +36,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex';
-import { CREATE_BOOKMARKS } from '@/store/share/actionTypes.js';
+import { CREATE_BOOKMARKS, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
@@ -62,7 +62,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions([CREATE_BOOKMARKS]),
+    ...mapActions([CREATE_BOOKMARKS, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -84,7 +84,7 @@ export default {
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
         await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
-        // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
+        await this[FETCH_CATEGORIES]();
         data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
