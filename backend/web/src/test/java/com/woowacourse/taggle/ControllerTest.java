@@ -103,40 +103,12 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions readByBookmarkPathVariables(final User user, final String uri) throws Exception {
-        final SessionUser sessionUser = new SessionUser(user);
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON)
-        )
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
-
     public ResultActions removeByPathVariables(final User user, final String uri, final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(delete(uri, ids))
                 .andExpect(status().isNoContent())
-                .andDo(print());
-    }
-
-    public ResultActions removeBookmark(final User user, final String uri) throws Exception {
-        final SessionUser sessionUser = new SessionUser(user);
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(delete(uri)
-        )
-                .andExpect(status().isNoContent())
-                .andDo(print());
-    }
-
-    public ResultActions removeTagAndBookmark(final User user, final String uri) throws Exception {
-        final SessionUser sessionUser = new SessionUser(user);
-        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(delete(uri)
-        )
-                .andExpect(status().isCreated())
                 .andDo(print());
     }
 
@@ -164,4 +136,3 @@ public class ControllerTest {
                 .andExpect(status().isOk());
     }
 }
-

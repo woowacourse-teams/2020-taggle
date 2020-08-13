@@ -1,10 +1,10 @@
 package com.woowacourse.taggle.tag.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,12 +30,13 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @PostMapping
-    public ResponseEntity<Void> createBookmark(@AuthenticationPrincipal final SessionUser user,
+    public ResponseEntity<BookmarkResponse> createBookmark(@AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
-        return ResponseEntity.created(URI.create("/api/v1/bookmarks/" + bookmark.getId()))
-                .build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", "/api/v1/bookmarks/" + bookmark.getId())
+                .body(bookmark);
     }
 
     @GetMapping("/{id}/tags")

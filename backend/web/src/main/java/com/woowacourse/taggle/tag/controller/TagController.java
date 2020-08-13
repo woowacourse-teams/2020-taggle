@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,13 +32,14 @@ public class TagController {
     private final TagBookmarkService tagBookmarkService;
 
     @PostMapping
-    public ResponseEntity<Void> createTag(
+    public ResponseEntity<TagResponse> createTag(
             @AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final TagCreateRequest tagCreateRequest) {
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
 
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tag.getId()))
-                .build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", "/api/v1/tags/" + tag.getId())
+                .body(tag);
     }
 
     @GetMapping("/{tagId}")

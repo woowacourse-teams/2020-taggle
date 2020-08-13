@@ -11,7 +11,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
-import com.woowacourse.taggle.setup.domain.CategorySetup;
 import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.setup.domain.UserSetup;
@@ -24,9 +23,6 @@ class BookmarkControllerTest extends ControllerTest {
 
     @Autowired
     private TagBookmarkSetup tagBookmarkSetup;
-
-    @Autowired
-    private CategorySetup categorySetup;
 
     @Autowired
     private BookmarkSetup bookmarkSetup;
@@ -48,7 +44,6 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
-        categorySetup.save(user);
         createByJsonParams(user, "/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
                 .andDo(BookmarkDocumentation.createBookmark());
     }
@@ -61,7 +56,7 @@ class BookmarkControllerTest extends ControllerTest {
         final Tag tag = tagSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByBookmarkPathVariables(user, "/api/v1/bookmarks/" + bookmark.getId() + "/tags")
+        readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags", bookmark.getId())
                 .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
                 .andDo(BookmarkDocumentation.findBookmark());
     }
@@ -81,7 +76,7 @@ class BookmarkControllerTest extends ControllerTest {
     void removeBookmark() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save(user);
 
-        removeBookmark(user, "/api/v1/bookmarks/" + bookmark.getId())
+        removeByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}", bookmark.getId())
                 .andDo(BookmarkDocumentation.removeBookmark());
     }
 }
