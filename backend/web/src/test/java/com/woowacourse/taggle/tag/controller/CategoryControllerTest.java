@@ -80,7 +80,7 @@ public class CategoryControllerTest extends ControllerTest {
     @Test
     void removeCategory() throws Exception {
         final Category category = categorySetup.save(user);
-        remove(user, "/api/v1/categories/{categoryId}", category.getId())
+        removeByPathVariables(user, "/api/v1/categories/{categoryId}", category.getId())
                 .andDo(CategoryDocumentation.removeCategory());
 
     }

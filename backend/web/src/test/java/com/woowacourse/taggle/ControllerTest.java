@@ -59,10 +59,11 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions createByPathVariables(final User user, final String uri) throws Exception {
+    public ResultActions createByPathVariables(final User user, final String uri, final Object... ids) throws
+            Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(post(uri)
+        return mockMvc.perform(post(uri, ids)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -92,10 +93,10 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions readByPathVariables(final User user, final String uri) throws Exception {
+    public ResultActions readByPathVariables(final User user, final String uri, final Long id) throws Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(get(uri)
+        return mockMvc.perform(get(uri, id)
                 .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
@@ -112,10 +113,11 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions remove(final User user, final String uri, final Long id) throws Exception {
+    public ResultActions removeByPathVariables(final User user, final String uri, final Object... ids) throws
+            Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(delete(uri, id))
+        return mockMvc.perform(delete(uri, ids))
                 .andExpect(status().isNoContent())
                 .andDo(print());
     }
