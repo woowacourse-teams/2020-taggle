@@ -1,5 +1,4 @@
 import axios from 'axios';
-import parseIdFromUri from '../utils/idParser.js';
 
 const AXIOS = axios.create({
   baseURL: process.env.baseUrl || 'http://3.34.203.89:8080',
@@ -10,8 +9,8 @@ const ApiService = {
     return AXIOS.get(uri).then(({ data }) => data);
   },
   post(uri, params) {
-    return AXIOS.post(uri, params).then(({ data, headers }) => {
-      return data.id || parseIdFromUri(headers.location);
+    return AXIOS.post(uri, params).then(({ data }) => {
+      return data.id;
     });
   },
   delete(uri) {
