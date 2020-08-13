@@ -1,10 +1,10 @@
-import ApiService from '../index.js';
+import ApiService from '@/api/index.js';
 
-const BASE_URL = '/api/v1/bookmarks';
+const BASE_URL = '/api/v1/tags';
 
 const BookmarkService = {
-  getAll() {
-    return ApiService.get(`${BASE_URL}`);
+  getAll(tagId) {
+    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
 };
 
