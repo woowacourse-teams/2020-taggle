@@ -40,14 +40,16 @@
               rounded
               dense
               class="ma-2"
-              style="height: 5%;"
+              height="5%"
             ></v-text-field>
             <v-card tile width="250" height="95%">
               <v-list v-for="{ id, title, tags } in categories" :key="id" class="grow">
                 <v-list-group class="text-left mt-2" link value="true">
                   <template v-slot:activator>
                     <v-list-item-content>
-                      <v-list-item-title class="font-weight-black text-h7">{{ title }}</v-list-item-title>
+                      <v-list-item-title class="font-weight-black text-h7">
+                        {{ title }}
+                      </v-list-item-title>
                     </v-list-item-content>
                   </template>
                   <v-list-item v-for="{ id, name } in tags" :key="id" @click.prevent="fetchBookmarks">
@@ -76,7 +78,7 @@
 <script>
 import { categories } from '@/utils/mockTags.js';
 import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
-import CategoryTagModifyModal from '@/views/header/component/CategoryTagModifyModal.vue';
+import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
 
 export default {
   name: 'BookmarkHeader',
