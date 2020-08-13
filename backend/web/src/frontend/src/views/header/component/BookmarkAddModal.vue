@@ -40,7 +40,6 @@ import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
 import BookmarkService from '@/api/module/bookmark.js';
-import { FETCH_BOOKMARK_TAGS } from '@/store/share/actionTypes.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -84,7 +83,7 @@ export default {
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
         await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
-        await this[FETCH_BOOKMARK_TAGS](this.bookmarkId);
+        // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
         data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');

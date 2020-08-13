@@ -13,7 +13,7 @@
 
       <v-card-text class="pt-6">
         <v-text-field
-          @keydown.enter.prevent="addCategory"
+          @keypress.enter.prevent="addCategory"
           v-model="categoryName"
           :error-messages="errorMessages"
           dense
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { CREATE_CATEGORY } from '@/store/share/actionTypes.js';
+import { CREATE_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions } from 'vuex';
 
 export default {
@@ -47,14 +47,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions([CREATE_CATEGORY]),
+    ...mapActions([CREATE_CATEGORY, FETCH_CATEGORIES]),
     async addCategory() {
-      if (this.categoryName === '') {
-        this.errorMessages = '빈값은 입력할 수 없습니다.';
-        return;
-      }
       try {
         await this[CREATE_CATEGORY]({ title: this.categoryName });
+        await this[FETCH_CATEGORIES]();
       } catch (e) {
         this.errorMessages = e;
       }
