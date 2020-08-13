@@ -16,8 +16,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { FETCH_BOOKMARKS } from '@/store/share/actionType.js';
-import CardStream from './CardStream.vue';
-import CardModule from './CardModule.vue';
+import CardStream from '@/views/bookmark/components/CardStream.vue';
+import CardModule from '@/views/bookmark/components/CardModule.vue';
 
 export default {
   name: 'BookmarkCard',
