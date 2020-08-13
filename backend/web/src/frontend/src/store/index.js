@@ -1,18 +1,26 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import BookmarkService from '../api/module/bookmark.js';
-import CategoryService from '../api/module/category.js';
-import { FETCH_BOOKMARKS, FETCH_CATEGORIES } from './share/actionType.js';
-import { SET_BOOKMARKS, SET_CATEGORIES } from './share/mutationsType.js';
+import router from '@/router';
+import BookmarkService from '@/api/module/bookmark.js';
+import CategoryService from '@/api/module/category.js';
+import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT } from '@/store/share/actionType.js';
+import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationsType.js';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    accessToken: null,
     bookmarks: [],
     categories: [],
   },
   getters: {
+    isAuthenticated(state) {
+      return !!state.accessToken;
+    },
+    accessToken(state) {
+      return state.accessToken;
+    },
     bookmarks(state) {
       return state.bookmarks.bookmarks;
     },
@@ -21,6 +29,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    [SET_ACCESS_TOKEN](state, accessToken) {
+      state.accessToken = accessToken;
+    },
     [SET_BOOKMARKS](state, bookmarks) {
       state.bookmarks = bookmarks;
     },
@@ -29,6 +40,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async [LOGIN]({ commit }) {
+      const accessToken = 'JSESSIONTOKEN';
+      // const accessToken = Cookie.getCookie('JSESSIONID');
+      commit(SET_ACCESS_TOKEN, accessToken);
+    },
+    async [LOGOUT]({ commit }) {
+      commit(SET_ACCESS_TOKEN, null);
+      await router.push('/login');
+    },
     async [FETCH_BOOKMARKS]({ commit }, { tagId }) {
       const res = await BookmarkService.getAll(tagId);
       const bookmarks = res.data;
