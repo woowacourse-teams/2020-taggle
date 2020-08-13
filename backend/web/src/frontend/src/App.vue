@@ -7,12 +7,14 @@
     <v-main v-else>
       <LoginPage />
     </v-main>
+    <snackbar />
   </v-app>
 </template>
 
 <script>
 import BookmarkHeader from '@/views/header/BookmarkHeader.vue';
 import LoginPage from '@/views/auth/LoginPage.vue';
+import Snackbar from '@/views/common/component/Snackbar.vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -20,6 +22,7 @@ export default {
   components: {
     LoginPage,
     BookmarkHeader,
+    Snackbar,
   },
   computed: {
     ...mapGetters(['isAuthenticated']),
