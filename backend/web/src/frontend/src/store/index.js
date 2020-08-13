@@ -1,26 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import router from '@/router';
 import BookmarkService from '@/api/module/bookmark.js';
 import CategoryService from '@/api/module/category.js';
-import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT  } from '@/store/share/actionTypes.js';
-import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationTypes.js';
+import { FETCH_BOOKMARKS, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    accessToken: null,
     bookmarks: [],
     categories: [],
   },
   getters: {
-    isAuthenticated(state) {
-      return !!state.accessToken;
-    },
-    accessToken(state) {
-      return state.accessToken;
-    },
     bookmarks(state) {
       return state.bookmarks.bookmarks;
     },
@@ -29,9 +21,6 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    [SET_ACCESS_TOKEN](state, accessToken) {
-      state.accessToken = accessToken;
-    },
     [SET_BOOKMARKS](state, bookmarks) {
       state.bookmarks = bookmarks;
     },
@@ -40,23 +29,14 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async [LOGIN]({ commit }) {
-      const accessToken = 'JSESSIONTOKEN';
-      // const accessToken = Cookie.getCookie('JSESSIONID');
-      commit(SET_ACCESS_TOKEN, accessToken);
-    },
-    async [LOGOUT]({ commit }) {
-      commit(SET_ACCESS_TOKEN, null);
-      await router.push('/login');
-    },
     async [FETCH_BOOKMARKS]({ commit }, { tagId }) {
-      const res = await BookmarkService.getAll(tagId);
-      const bookmarks = res.data;
+      const response = await BookmarkService.getAll(tagId);
+      const bookmarks = response.data;
       commit(SET_BOOKMARKS, bookmarks);
     },
     async [FETCH_CATEGORIES]({ commit }) {
-      const res = await CategoryService.getAll();
-      const categories = res.data;
+      const response = await CategoryService.getAll();
+      const categories = response.data;
       commit(SET_CATEGORIES, categories);
     },
   },
