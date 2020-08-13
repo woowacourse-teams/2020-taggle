@@ -29,7 +29,10 @@ public class TagDocumentation {
                         fieldWithPath("id").description("태그 ID"),
                         fieldWithPath("name").description("태그 이름"),
                         fieldWithPath("bookmarks.[].id").description("북마크 ID"),
-                        fieldWithPath("bookmarks.[].url").description("북마크 URI")
+                        fieldWithPath("bookmarks.[].url").description("북마크 URI"),
+                        fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
+                        fieldWithPath("bookmarks.[].description").description("북마크 설명"),
+                        fieldWithPath("bookmarks.[].image").description("북마크 이미지")
                 ));
     }
 
