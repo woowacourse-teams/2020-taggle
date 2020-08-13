@@ -10,7 +10,7 @@
           </v-list-item>
           <v-divider></v-divider>
           <v-list dense nav>
-            <v-list-item :key="title" link v-for="{ icon, title } in icons">
+            <v-list-item v-for="{ icon, title } in icons" :key="title" link>
               <v-list-item-action>
                 <v-icon>{{ icon }}</v-icon>
               </v-list-item-action>
@@ -52,7 +52,7 @@
                       </v-list-item-title>
                     </v-list-item-content>
                   </template>
-                  <v-list-item v-for="{ id, name } in tags" :key="id" @click.prevent="fetchBookmarks">
+                  <v-list-item v-for="{ id, name } in tags" :key="id" :to="{ name: 'bookmarks', params: { id } }">
                     <v-list-item-content>
                       {{ name }}
                     </v-list-item-content>
@@ -76,9 +76,11 @@
 </template>
 
 <script>
-import { categories } from '@/utils/mockTags.js';
 import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
 import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
+import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'BookmarkHeader',
@@ -86,17 +88,18 @@ export default {
     CategoryAddModal,
     CategoryTagModifyModal,
   },
+  created() {
+    this[FETCH_CATEGORIES]();
+  },
   methods: {
-    fetchBookmarks() {
-      if (this.$router.currentRoute.path !== '/bookmark') {
-        this.$router.replace('/bookmark');
-      }
-    },
+    ...mapActions([FETCH_CATEGORIES]),
+  },
+  computed: {
+    ...mapGetters([CATEGORIES]),
   },
   data() {
     return {
       icons: [{ icon: 'local_offer', title: 'tag' }],
-      categories,
     };
   },
 };
