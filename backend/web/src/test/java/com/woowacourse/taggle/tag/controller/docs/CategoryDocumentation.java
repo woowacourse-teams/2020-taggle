@@ -45,7 +45,7 @@ public class CategoryDocumentation {
     }
 
     public static RestDocumentationResultHandler updateCategoryOnTag() {
-        return document("categories/update",
+        return document("categories/tags/update",
                 pathParameters(
                         parameterWithName("categoryId").description("카테고리 ID"),
                         parameterWithName("tagId").description("태그 ID")
