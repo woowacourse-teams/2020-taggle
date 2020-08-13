@@ -2,6 +2,9 @@ package com.woowacourse.taggle;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.Bean;
+
+import com.woowacourse.taggle.crawler.OpenGraphCrawler;
 
 @SpringBootApplication
 public class WebApplication {
@@ -15,5 +18,10 @@ public class WebApplication {
         new SpringApplicationBuilder(WebApplication.class)
                 .properties(PROPERTIES)
                 .run(args);
+    }
+
+    @Bean
+    public OpenGraphCrawler openGraphCrawler() {
+        return new OpenGraphCrawler();
     }
 }

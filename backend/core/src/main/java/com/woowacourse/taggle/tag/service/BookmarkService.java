@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
-import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
@@ -25,11 +25,11 @@ public class BookmarkService {
     private final UserService userService;
 
     public BookmarkResponse createBookmark(final SessionUser sessionUser,
-            final BookmarkCreateRequest bookmarkCreateRequest) {
+            final BookmarkCreateDto bookmarkCreateDto) {
         final User user = userService.findById(sessionUser.getId());
 
-        final Bookmark bookmark = bookmarkRepository.findByUrlAndUserId(bookmarkCreateRequest.getUrl(), user.getId())
-                .orElse(bookmarkRepository.save(bookmarkCreateRequest.toEntityWithUser(user)));
+        final Bookmark bookmark = bookmarkRepository.findByUrlAndUserId(bookmarkCreateDto.getUrl(), user.getId())
+                .orElse(bookmarkRepository.save(bookmarkCreateDto.toEntityWithUser(user)));
 
         return BookmarkResponse.of(bookmark);
     }

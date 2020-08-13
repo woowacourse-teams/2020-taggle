@@ -21,11 +21,11 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
     @Test
     void manageBookmark() {
         // 북마크를 생성한다.
-        createBookmark("http://taggle.com");
+        createBookmark("http://naver.com");
         List<BookmarkResponse> bookmarks = findBookmarks();
 
         assertThat(bookmarks).hasSize(1);
-
+        
         // 태그에 북마크를 추가한다.
         final Long bookmarkId = bookmarks.get(0).getId();
         TagResponse tag = createTag("taggle");
