@@ -52,7 +52,7 @@ operation::tags/create[snippets='http-request,request-fields,http-response,respo
 [[resources-tags-get]]
 === 태그 조회
 
-operation::tags/get[snippets='http-request,request-body,http-response,response-fields']
+operation::tags/get[snippets='http-request,http-response,response-fields']
 
 [[resources-tags-delete]]
 === 태그 삭제
