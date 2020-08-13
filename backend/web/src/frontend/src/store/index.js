@@ -3,8 +3,8 @@ import Vuex from 'vuex';
 import router from '@/router';
 import BookmarkService from '@/api/module/bookmark.js';
 import CategoryService from '@/api/module/category.js';
-import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT } from '@/store/share/actionType.js';
-import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationsType.js';
+import { FETCH_BOOKMARKS, FETCH_CATEGORIES, LOGIN, LOGOUT  } from '@/store/share/actionTypes.js';
+import { SET_ACCESS_TOKEN, SET_BOOKMARKS, SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 
 Vue.use(Vuex);
 

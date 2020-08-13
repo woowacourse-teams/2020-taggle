@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { LOGIN } from '@/store/share/actionType.js';
+import { LOGIN } from '@/store/share/actionTypes.js';
 import { mapActions } from 'vuex';
 
 export default {
