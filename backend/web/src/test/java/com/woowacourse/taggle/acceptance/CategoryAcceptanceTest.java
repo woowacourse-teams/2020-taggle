@@ -7,17 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
-
-    @Autowired
-    private TagSetup tagSetup;
 
     @Transactional
     @WithMockUser(roles = "ADMIN")
@@ -27,22 +22,21 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         createCategory("project");
 
         // 카테고리를 가져온다.
-        // final Tag tag = tagSetup.save();
         List<CategoryTagsResponse> categories = findCategories();
-        assertThat(categories).hasSize(2);
+        assertThat(categories).hasSize(1);
 
         // 카테고리를 수정한다.
-        final Long categoryId = categories.get(1).getId();
+        final Long categoryId = categories.get(0).getId();
         final String updateTitle = "service";
         updateCategory(categoryId, updateTitle);
         final List<CategoryTagsResponse> updateCategories = findCategories();
-        assertThat(updateCategories.get(1).getTitle()).isEqualTo(updateTitle);
+        assertThat(updateCategories.get(0).getTitle()).isEqualTo(updateTitle);
 
         // 카테고리를 제거한다.
         removeCategory(categoryId);
 
         categories = findCategories();
-        assertThat(categories).hasSize(1);
+        assertThat(categories).hasSize(0);
     }
 
     public List<CategoryTagsResponse> findCategories() {
@@ -54,7 +48,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         request.put("id", 1L);
         request.put("title", title);
 
-        post("/api/v1/categories", request, "/api/v1/categories");
+        post("/api/v1/categories", request, Void.class, "/api/v1/categories");
     }
 
     private void updateCategory(final Long id, final String title) {

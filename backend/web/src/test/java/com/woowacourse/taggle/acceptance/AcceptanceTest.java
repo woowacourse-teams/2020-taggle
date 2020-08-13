@@ -96,6 +96,22 @@ public class AcceptanceTest {
     // @formatter:on
 
     // @formatter:off
+    public <T> T post(final String path, final Map<String, Object> params, final Class<T> responseType, final String expectLocation) {
+        return given()
+                .body(params)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .post(path)
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .header("Location", containsString(expectLocation))
+                .extract().as(responseType);
+    }
+    // @formatter:on
+
+    // @formatter:off
     public void post(final String path, final Map<String, Object> params, final String expectLocation) {
         given()
                 .body(params)
@@ -106,8 +122,7 @@ public class AcceptanceTest {
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .assertThat()
-                .header("Location", containsString(expectLocation));
+                .header("Location", expectLocation);
     }
     // @formatter:on
 
