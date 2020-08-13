@@ -32,6 +32,8 @@ bootJar {
 }
 
 dependencies {
+    compile('org.flywaydb:flyway-core')
+
     implementation project(':core')
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-security'
