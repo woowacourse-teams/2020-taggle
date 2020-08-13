@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CardStreamItem from './CardStreamItem.vue';
+import CardStreamItem from '@/views/bookmark/components/CardStreamItem.vue';
 
 export default {
   name: 'CardModule',

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import CardIcons from './CardIcons.vue';
+import CardIcons from '@/views/bookmark/components/CardIcons.vue';
 
 export default {
   name: 'CardStreamItem',
@@ -49,5 +49,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

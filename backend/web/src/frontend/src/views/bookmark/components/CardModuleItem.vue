@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import TagEditModal from './TagEditModal.vue';
+import TagEditModal from '@/views/bookmark/components/TagEditModal.vue';
 
 export default {
   name: 'CardStreamItem',
@@ -52,5 +52,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

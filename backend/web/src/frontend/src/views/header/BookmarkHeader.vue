@@ -42,20 +42,20 @@
 </template>
 
 <script>
-import { FETCH_CATEGORIES } from '@/store/share/actionType.js';
+import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { CATEGORIES } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'BookmarkHeader',
-  components: {},
   created() {
-    this.fetchCategories();
+    this[FETCH_CATEGORIES]();
   },
   methods: {
     ...mapActions([FETCH_CATEGORIES]),
   },
   computed: {
-    ...mapGetters(['categories']),
+    ...mapGetters([CATEGORIES]),
   },
   data() {
     return {

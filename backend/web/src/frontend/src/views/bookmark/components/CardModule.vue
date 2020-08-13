@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CardModuleItem from './CardModuleItem.vue';
+import CardModuleItem from '@/views/bookmark/components/CardModuleItem.vue';
 
 export default {
   name: 'CardModule',
