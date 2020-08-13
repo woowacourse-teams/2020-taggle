@@ -20,7 +20,7 @@
                 @keypress.enter="addBookmark"
               ></v-text-field>
               <vue-tags-input
-                v-model="tagCreateRequest.name"
+                v-model="tag"
                 :tags="tags"
                 @before-adding-tag="onAddTagBookmark"
                 @tags-changed="(newTags) => (tags = newTags)"
@@ -55,7 +55,7 @@ export default {
         name: '',
       },
       dialog: false,
-      // tag: '',
+      tag: '',
       tags: [],
       rules: [(value) => !!value || '북마크로 저장할 URL값이 필요합니다.'],
       bookmarkId: '',
@@ -83,7 +83,7 @@ export default {
       this.tagCreateRequest.name = data.tag.text;
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
-        await TagService.addBookmarkOnTag(this.bookmarkId, tagId);
+        await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
         // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
         data.addTag();
       } catch (e) {

@@ -11,7 +11,7 @@ const BookmarkService = {
     return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
   post(newBookmark) {
-    return axios.post(`/api/v1/bookmarks`, newBookmark);
+    return axios.post(`/api/v1/bookmarks`, newBookmark).then(({ data }) => data.id);
   },
   delete(bookmarkId) {
     return axios.delete(`/api/v1/bookmarks/${bookmarkId}`);

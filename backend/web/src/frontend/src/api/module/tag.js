@@ -4,9 +4,9 @@ const BASE_URL = '/api/v1/tags';
 
 const TagService = {
   create(newTag) {
-    return ApiService.post(`${BASE_URL}`, newTag);
+    return ApiService.post(`${BASE_URL}`, newTag).then(({ data }) => data.id);
   },
-  addBookmarkOnTag(bookmarkId, tagId) {
+  addBookmarkOnTag(tagId, bookmarkId) {
     return ApiService.post(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
   },
   deleteBookmarkOnTag(bookmarkId, tagId) {
