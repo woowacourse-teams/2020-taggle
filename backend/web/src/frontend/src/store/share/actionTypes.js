@@ -8,3 +8,4 @@ export const CREATE_TAG = 'createTag';
 export const ADD_TAG_BOOKMARK = 'addTagBookmark';
 export const FETCH_TAG_BOOKMARK = 'fetchTagBookmark';
 export const DELETE_TAG_BOOKMARK = 'deleteTagBookmark';
+export const CREATE_CATEGORY = 'createCategory';

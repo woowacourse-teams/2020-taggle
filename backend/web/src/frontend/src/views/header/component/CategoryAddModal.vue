@@ -34,6 +34,9 @@
 </template>
 
 <script>
+import { CREATE_CATEGORY } from '@/store/share/actionTypes.js';
+import { mapActions } from 'vuex';
+
 export default {
   name: 'CategoryAddModal',
   data() {
@@ -44,10 +47,16 @@ export default {
     };
   },
   methods: {
-    addCategory() {
+    ...mapActions([CREATE_CATEGORY]),
+    async addCategory() {
       if (this.categoryName === '') {
         this.errorMessages = '빈값은 입력할 수 없습니다.';
         return;
+      }
+      try {
+        await this[CREATE_CATEGORY]({ title: this.categoryName });
+      } catch (e) {
+        this.errorMessages = e;
       }
       this.categoryName = '';
       this.errorMessages = '';
