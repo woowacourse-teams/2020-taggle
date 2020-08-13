@@ -35,11 +35,12 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import { CREATE_BOOKMARKS } from '@/store/share/actionTypes.js';
+import { mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
+import BookmarkService from '@/api/module/bookmark.js';
+import { FETCH_BOOKMARK_TAGS } from '@/store/share/actionTypes.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -62,7 +63,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions([CREATE_BOOKMARKS]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -72,7 +72,7 @@ export default {
     },
     async addBookmark() {
       try {
-        this.bookmarkId = await this[CREATE_BOOKMARKS](this.createBookmarkRequest);
+        this.bookmarkId = await BookmarkService.post(this.createBookmarkRequest);
         this[SHOW_SNACKBAR]('북마크 생성을 성공했습니다.');
       } catch (e) {
         this[SHOW_SNACKBAR]('북마크 생성중 오류가 발생했습니다.');
@@ -84,7 +84,7 @@ export default {
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
         await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
-        // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
+        await this[FETCH_BOOKMARK_TAGS](this.bookmarkId);
         data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');

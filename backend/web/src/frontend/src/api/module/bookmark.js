@@ -1,20 +1,16 @@
 import ApiService from '@/api/index.js';
-import axios from 'axios';
 
-const BASE_URL = '/api/v1/tags';
+const BASE_URL = '/api/v1/bookmarks';
 
 const BookmarkService = {
-  get(bookmarkId) {
-    return ApiService.get(`/api/v1/bookmarks/${bookmarkId}/tags`);
-  },
-  getAll(tagId) {
-    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
+  findBookmarkWithTags(bookmarkId) {
+    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
   },
   post(newBookmark) {
-    return axios.post(`/api/v1/bookmarks`, newBookmark).then(({ data }) => data.id);
+    return ApiService.post(BASE_URL, newBookmark).then(({ data }) => data.id);
   },
   delete(bookmarkId) {
-    return axios.delete(`/api/v1/bookmarks/${bookmarkId}`);
+    return ApiService.delete(`${BASE_URL}/${bookmarkId}`);
   },
 };
 
