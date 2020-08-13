@@ -66,7 +66,7 @@ public class TagController {
             @PathVariable final Long bookmarkId) {
         tagBookmarkService.createTagBookmark(user, tagId, bookmarkId);
 
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks" + bookmarkId))
+        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId))
                 .build();
     }
 
@@ -76,7 +76,7 @@ public class TagController {
             @PathVariable final Long bookmarkId) {
         tagBookmarkService.removeTagBookmark(user, tagId, bookmarkId);
 
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks" + bookmarkId))
+        return ResponseEntity.noContent()
                 .build();
     }
 }
