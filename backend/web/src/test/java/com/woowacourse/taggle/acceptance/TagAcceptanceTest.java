@@ -7,43 +7,35 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.setup.domain.BookmarkSetup;
-import com.woowacourse.taggle.setup.domain.CategorySetup;
-import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 
 public class TagAcceptanceTest extends AcceptanceTest {
 
-    @Autowired
-    private BookmarkSetup bookmarkSetup;
-
-    @Autowired
-    private CategorySetup categorySetup;
-
     @Transactional
-    @WithMockUser(roles = "ADMIN")
+    @WithMockUser(username = "tigger", password = "tigger", roles = "ADMIN")
     @Test
     void manageBookmark() {
 
         // 태그를 생성한다
-        Map<String, Object> taggle = createTag("taggle");
-        TagBookmarkResponse tags = findTagById((Long)taggle.get("id"));
+        TagResponse taggle = createTag("taggle");
+        TagBookmarkResponse tagBookmarkResponse = findTagById(taggle.getId());
 
-        assertThat(tags.getName()).isEqualTo("taggle");
+        assertThat(tagBookmarkResponse.getName()).isEqualTo("taggle");
 
         // 북마크에 태그를 추가한다
-        final Long tagId = tags.getId();
-        final Bookmark bookmark = bookmarkSetup.save();
-        addBookmarkOnTag(tagId, bookmark.getId());
-        final TagBookmarkResponse tagBookmarkResponse = findTagById(tagId);
+        final Long tagId = tagBookmarkResponse.getId();
 
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
+        BookmarkResponse bookmark = createBookmark("http://taggle.com");
+        addBookmarkOnTag(tagId, bookmark.getId());
+        final TagBookmarkResponse tagBookmarkResponse2 = findTagById(tagId);
+
+        assertThat(tagBookmarkResponse2.getBookmarks()).hasSize(1);
 
         // // 태그의 카테고리를 수정한다
         // final Category category = categorySetup.save();
@@ -53,20 +45,26 @@ public class TagAcceptanceTest extends AcceptanceTest {
         // assertThat(categoryDetailResponse.getTags()).hasSize(1);
         // assertThat(categoryDetailResponse.getTags().get(0).getName()).isEqualTo("taggle");
 
+        // 북마크의 태그를 수정 한다
         // 태그를 제거한다
-        deleteTeg(tags.getId());
+        deleteTeg(tagBookmarkResponse.getId());
 
-        // assertThat(tagRepository.findAll()).hasSize(0);
+        // 북마크에 새로운 태그를 추가한다
+        TagResponse tag = createTag("taggle");
+        TagBookmarkResponse anotherTagBookmarkResponse = findTagById(tag.getId());
+        final Long anotherTagId = anotherTagBookmarkResponse.getId();
+        final BookmarkResponse anotherBookmark = createBookmark("http://taggle2.com");
+        addBookmarkOnTag(anotherTagId, anotherBookmark.getId());
+        final TagBookmarkResponse anotherTagBookmarkResponse2 = findTagById(anotherTagId);
+        assertThat(anotherTagBookmarkResponse2.getBookmarks()).hasSize(1);
     }
 
-    public Map<String, Object> createTag(final String name) {
+    public TagResponse createTag(final String name) {
 
         final Map<String, Object> request = new HashMap<>();
-        request.put("id", 2L);
         request.put("name", name);
 
-        post("/api/v1/tags", request, "/api/v1/tags");
-        return request;
+        return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 
     public List<TagResponse> findTags() {
@@ -83,7 +81,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
     }
 
     public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId, new HashMap<>(), "/api/v1/tags/");
+        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId, new HashMap<>(),
+                "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
     }
 
     public void updateCategoryOnTag(final Long tagId, final Long categoryId) {
@@ -93,5 +92,13 @@ public class TagAcceptanceTest extends AcceptanceTest {
     public List<CategoryTagsResponse> findCategories() {
         return getAsList("/api/v1/categories/tags", CategoryTagsResponse.class);
     }
+
+    public BookmarkResponse createBookmark(final String url) {
+        final Map<String, Object> request = new HashMap<>();
+        request.put("url", url);
+
+        return post("/api/v1/bookmarks", request, BookmarkResponse.class, "/api/v1/bookmarks");
+    }
+
 }
 
