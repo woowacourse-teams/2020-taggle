@@ -42,11 +42,6 @@ public class Tag {
     @OneToMany(mappedBy = "tag", orphanRemoval = true)
     private Set<TagBookmark> bookmarks = new HashSet<>();
 
-    public Tag(final String name) {
-        this.name = name;
-        this.category = null;
-    }
-
     public Tag(final String name, final User user) {
         this.name = name;
         this.category = null;

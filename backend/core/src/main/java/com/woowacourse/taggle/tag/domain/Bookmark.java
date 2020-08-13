@@ -43,11 +43,6 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    public Bookmark(final String url) {
-        this.url = url;
-        this.isRead = false;
-    }
-
     public Bookmark(final String url, final User user) {
         this.url = url;
         this.isRead = false;
