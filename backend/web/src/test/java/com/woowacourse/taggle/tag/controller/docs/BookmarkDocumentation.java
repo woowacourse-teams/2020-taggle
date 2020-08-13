@@ -24,7 +24,7 @@ public class BookmarkDocumentation {
     public static RestDocumentationResultHandler findBookmark() {
         return document("bookmarks/get",
                 pathParameters(
-                        parameterWithName("id").description("북마크 ID")
+                        // parameterWithName("id").description("북마크 ID")
                 ),
                 responseFields(
                         fieldWithPath("id").description("북마크 ID"),
@@ -47,7 +47,7 @@ public class BookmarkDocumentation {
     public static RestDocumentationResultHandler removeBookmark() {
         return document("bookmarks/delete",
                 pathParameters(
-                        parameterWithName("id").description("북마크 ID")
+                        // parameterWithName("id").description("북마크 ID")
                 )
         );
     }

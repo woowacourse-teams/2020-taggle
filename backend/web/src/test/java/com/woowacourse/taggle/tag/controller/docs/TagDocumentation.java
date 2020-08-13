@@ -23,7 +23,7 @@ public class TagDocumentation {
     public static RestDocumentationResultHandler findTag() {
         return document("tags/get",
                 pathParameters(
-                        parameterWithName("id").description("태그 ID")
+                        // parameterWithName("tag.id").description("태그 ID")
                 ),
                 responseFields(
                         fieldWithPath("id").description("태그 ID"),
@@ -45,7 +45,7 @@ public class TagDocumentation {
     public static RestDocumentationResultHandler removeTags() {
         return document("tags/delete",
                 pathParameters(
-                        parameterWithName("id").description("태그 ID")
+                        // parameterWithName("id").description("태그 ID")
                 )
         );
     }
@@ -53,8 +53,8 @@ public class TagDocumentation {
     public static RestDocumentationResultHandler addBookmarkOnTag() {
         return document("tags/tagBookmark",
                 pathParameters(
-                        parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("bookmarkId").description("북마크 ID")
+                        // parameterWithName("tagId").description("태그 ID"),
+                        // parameterWithName("bookmarkId").description("북마크 ID")
                 ),
                 responseHeaders(
                         headerWithName("Location").description("태그 조회 URI")

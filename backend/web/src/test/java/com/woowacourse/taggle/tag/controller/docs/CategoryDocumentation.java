@@ -36,17 +36,17 @@ public class CategoryDocumentation {
         return document("categories/update",
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리의 제목")
-                ),
-                pathParameters(
-                        parameterWithName("id").description("카테고리 ID")
                 )
+                // pathParameters(
+                //         parameterWithName("id").description("카테고리 ID")
+                // )
         );
     }
 
     public static RestDocumentationResultHandler removeCategory() {
         return document("categories/delete",
                 pathParameters(
-                        parameterWithName("id").description("카테고리 ID")
+                        // parameterWithName("id").description("카테고리 ID")
                 )
         );
     }
