@@ -68,7 +68,6 @@ export default {
       this.dialog = true;
     },
     async fetchBookmarks() {
-      console.log(this.bookmark);
       await this[FETCH_BOOKMARK_TAGS](this.bookmark.id);
       this.initTags();
     },
