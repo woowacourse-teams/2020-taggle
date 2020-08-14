@@ -18,13 +18,19 @@ public class BookmarkResponse {
 
     private Long id;
     private String url;
+    private String title;
+    private String description;
+    private String image;
 
     public static BookmarkResponse of(final Bookmark bookmark) {
-        return new BookmarkResponse(bookmark.getId(), bookmark.getUrl());
+        return new BookmarkResponse(bookmark.getId(), bookmark.getUrl(), bookmark.getTitle(), bookmark.getTitle(),
+                bookmark.getImage());
     }
 
     public static BookmarkResponse of(final TagBookmark tagBookmark) {
-        return new BookmarkResponse(tagBookmark.getBookmark().getId(), tagBookmark.getBookmark().getUrl());
+        return new BookmarkResponse(tagBookmark.getBookmark().getId(), tagBookmark.getBookmark().getUrl(),
+                tagBookmark.getBookmark().getTitle(), tagBookmark.getBookmark().getDescription(),
+                tagBookmark.getBookmark().getImage());
     }
 
     public static List<BookmarkResponse> asList(final List<Bookmark> bookmarks) {

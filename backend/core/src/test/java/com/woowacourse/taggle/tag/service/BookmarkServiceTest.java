@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
-import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
@@ -55,10 +55,11 @@ class BookmarkServiceTest {
     @Test
     void createBookmark() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateDto = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
 
         // when
-        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // then
         assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
@@ -68,7 +69,8 @@ class BookmarkServiceTest {
     @Test
     void createBookmark_DuplicateBookmark_ExceptionThrown() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
 
         // when
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
@@ -81,7 +83,8 @@ class BookmarkServiceTest {
     @Test
     void findBookmark() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
@@ -95,7 +98,8 @@ class BookmarkServiceTest {
     @Test
     void findBookmarks() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
         bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
@@ -109,7 +113,8 @@ class BookmarkServiceTest {
     @Test
     void removeBookmark() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         // when
@@ -123,7 +128,8 @@ class BookmarkServiceTest {
     @Test
     void removeBookmark_NotFoundException() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         // when
