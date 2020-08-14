@@ -7,6 +7,7 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  plugins: ['vue'],
   rules: {
     semi: ['error', 'always'],
     'comma-dangle': 'off',
@@ -15,6 +16,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': ['error', 'always'],
     'no-param-reassign': 0,
-    'no-console': 'off',
+    'no-shadow': ['error', { allow: ['state'] }],
   },
 };

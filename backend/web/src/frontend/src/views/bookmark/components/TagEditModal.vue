@@ -15,6 +15,7 @@
             v-model="tag"
             :tags="tags"
             @tags-changed="(newTags) => (tags = newTags)"
+            @before-adding-tag="onAddTagBookmark"
             placeholder="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
           />
         </v-card-text>
@@ -25,6 +26,10 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
+import TagService from '@/api/module/tag.js';
+import { FETCH_BOOKMARK_TAGS } from '@/store/share/actionTypes.js';
 
 export default {
   name: 'TagEditModal',
@@ -37,19 +42,54 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters(['bookmarkTags']),
+  },
+  created() {
+    this.fetchBookmarks();
+  },
   data() {
     return {
+      tagCreateRequest: {
+        name: '',
+      },
       dialog: false,
       tag: '',
       tags: [],
     };
   },
   methods: {
+    ...mapActions([FETCH_BOOKMARK_TAGS]),
+    ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
     },
     openModal() {
       this.dialog = true;
+    },
+    async fetchBookmarks() {
+      await this[FETCH_BOOKMARK_TAGS](this.bookmark.id);
+      this.initTags();
+    },
+    async onAddTagBookmark(data) {
+      this.tagCreateRequest.name = data.tag.text;
+      try {
+        const tagId = await TagService.create(this.tagCreateRequest);
+        await TagService.addBookmarkOnTag(tagId, this.bookmark.id);
+        await this[FETCH_BOOKMARK_TAGS](this.bookmark.id);
+        data.addTag();
+      } catch (e) {
+        this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
+      }
+    },
+    initTags() {
+      this.bookmarkTags.map((tag) => this.mapTag(tag));
+    },
+    mapTag(tagValue) {
+      return {
+        text: tagValue.name,
+        tiClasses: ['ti-valid'],
+      };
     },
   },
 };
