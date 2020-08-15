@@ -31,7 +31,12 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import TagService from '@/api/module/tag.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
-import { FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import {
+  FETCH_BOOKMARK_WITH_TAGS,
+  ADD_TAG_ON_BOOKMARK,
+  DELETE_TAG_ON_BOOKMARK,
+  FETCH_CATEGORIES,
+} from '@/store/share/actionTypes.js';
 
 export default {
   name: 'TagEditModal',
@@ -49,26 +54,21 @@ export default {
   },
   data() {
     return {
-      tagCreateRequest: {
-        name: '',
-      },
-      fetchTagsRequest: {
-        bookmarkId: this.bookmark.id,
-      },
       dialog: false,
       tag: '',
       tags: [],
     };
   },
   watch: {
-    dialog(newValue) {
+    async dialog(newValue) {
       if (newValue) {
-        this.fetchBookmarks();
+        await this.fetchBookmarks();
+        this.initTags();
       }
     },
   },
   methods: {
-    ...mapActions([FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES]),
+    ...mapActions([FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES, ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -77,30 +77,29 @@ export default {
       this.dialog = true;
     },
     async fetchBookmarks() {
-      await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
-      this.initTags();
+      await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
     },
     async onAddTagBookmark(data) {
-      this.tagCreateRequest.name = data.tag.text;
+      const targetTagName = data.tag.text;
       try {
-        const tagId = await TagService.create(this.tagCreateRequest);
-        await TagService.addBookmarkOnTag(tagId, this.bookmark.id);
-        await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
+        const targetTagId = await TagService.create({ name: targetTagName });
+        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this.fetchBookmarks();
         await this[FETCH_CATEGORIES]();
-        this[SHOW_SNACKBAR]('태그 북마크 생성이 성공적으로 이뤄졌습니다.');
         data.addTag();
+        this[SHOW_SNACKBAR]('태그 북마크 생성이 성공적으로 이뤄졌습니다.');
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
       }
     },
     async onDeleteTagBookmark(data) {
-      const deleteName = data.tag.text;
-      const tagId = this[GET_TAG_ID_BY_NAME](deleteName);
+      const targetTagName = data.tag.text;
+      const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await TagService.deleteBookmarkOnTag(tagId, this.bookmark.id);
-        await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
-        this[SHOW_SNACKBAR]('태그 북마크 삭제가 성공적으로 이뤄졌습니다.');
+        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this.fetchBookmarks();
         data.deleteTag();
+        this[SHOW_SNACKBAR]('태그 북마크 삭제가 성공적으로 이뤄졌습니다.');
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 삭제중 오류가 발생했습니다.');
       }
