@@ -46,6 +46,7 @@ export default {
     ...mapGetters(['bookmarkTags']),
   },
   created() {
+    alert('언제 생성대ㅗ나');
     this.fetchBookmarks();
   },
   data() {

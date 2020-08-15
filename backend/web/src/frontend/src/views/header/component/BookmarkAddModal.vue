@@ -35,11 +35,12 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
 import BookmarkService from '@/api/module/bookmark.js';
+import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -62,6 +63,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions([FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -83,6 +85,7 @@ export default {
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
         await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
+        await this[FETCH_CATEGORIES]();
         // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
         data.addTag();
       } catch (e) {
