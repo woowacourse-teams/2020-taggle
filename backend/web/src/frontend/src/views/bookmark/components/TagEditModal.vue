@@ -30,7 +30,7 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import TagService from '@/api/module/tag.js';
-import { BOOKMARK_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import { FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 
 export default {
@@ -45,12 +45,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([BOOKMARK_TAGS, GET_TAG_ID_BY_NAME]),
+    ...mapGetters([BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME]),
   },
   data() {
     return {
       tagCreateRequest: {
         name: '',
+      },
+      fetchTagsRequest: {
+        bookmarkId: this.bookmark.id,
       },
       dialog: false,
       tag: '',
@@ -74,7 +77,7 @@ export default {
       this.dialog = true;
     },
     async fetchBookmarks() {
-      await this[FETCH_BOOKMARK_WITH_TAGS](this.bookmark.id);
+      await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
       this.initTags();
     },
     async onAddTagBookmark(data) {
@@ -82,7 +85,7 @@ export default {
       try {
         const tagId = await TagService.create(this.tagCreateRequest);
         await TagService.addBookmarkOnTag(tagId, this.bookmark.id);
-        await this[FETCH_BOOKMARK_WITH_TAGS](this.bookmark.id);
+        await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
         await this[FETCH_CATEGORIES]();
         this[SHOW_SNACKBAR]('태그 북마크 생성이 성공적으로 이뤄졌습니다.');
         data.addTag();
@@ -95,7 +98,7 @@ export default {
       const tagId = this[GET_TAG_ID_BY_NAME](deleteName);
       try {
         await TagService.deleteBookmarkOnTag(tagId, this.bookmark.id);
-        await this[FETCH_BOOKMARK_WITH_TAGS](this.bookmarkId);
+        await this[FETCH_BOOKMARK_WITH_TAGS](this.fetchTagsRequest);
         this[SHOW_SNACKBAR]('태그 북마크 삭제가 성공적으로 이뤄졌습니다.');
         data.deleteTag();
       } catch (e) {
@@ -103,7 +106,7 @@ export default {
       }
     },
     initTags() {
-      this.tags = this[BOOKMARK_TAGS].map((tag) => this.mapTag(tag));
+      this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => this.mapTag(tag));
     },
     mapTag(tagValue) {
       return {
