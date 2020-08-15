@@ -48,6 +48,7 @@ import {
   DELETE_TAG_ON_BOOKMARK,
 } from '@/store/share/actionTypes.js';
 import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { MESSAGES } from '@/utils/constants.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -95,9 +96,9 @@ export default {
       try {
         this.bookmarkId = await BookmarkService.post({ url: this.url });
         await this.fetchBookmark();
-        this[SHOW_SNACKBAR]('북마크 생성을 성공했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
       } catch (e) {
-        this[SHOW_SNACKBAR]('북마크 생성중 오류가 발생했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
       }
     },
     async onAddTagBookmark(data) {
@@ -107,10 +108,10 @@ export default {
         await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
         await this.fetchBookmark();
-        this[SHOW_SNACKBAR]('태그 북마크 생성을 성공했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.SUCCESS);
         data.addTag();
       } catch (e) {
-        this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.FAIL);
       }
     },
     async onDeleteTagBookmark(data) {
@@ -119,10 +120,10 @@ export default {
       try {
         await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this.fetchBookmark();
-        this[SHOW_SNACKBAR]('태그 북마크 삭제를 성공했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.SUCCESS);
         data.deleteTag();
       } catch (e) {
-        this[SHOW_SNACKBAR]('태그 북마크 삭제중 오류가 발생했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.FAIL);
       }
     },
   },
