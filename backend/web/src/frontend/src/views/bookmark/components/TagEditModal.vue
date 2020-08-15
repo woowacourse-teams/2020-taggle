@@ -46,7 +46,6 @@ export default {
     ...mapGetters(['bookmarkTags']),
   },
   created() {
-    alert('언제 생성대ㅗ나');
     this.fetchBookmarks();
   },
   data() {
@@ -84,7 +83,9 @@ export default {
       }
     },
     initTags() {
-      this.bookmarkTags.map((tag) => this.mapTag(tag));
+      console.log(this.bookmarkTags);
+      this.tags = this.bookmarkTags.map((tag) => this.mapTag(tag));
+      console.log(this.tags);
     },
     mapTag(tagValue) {
       return {

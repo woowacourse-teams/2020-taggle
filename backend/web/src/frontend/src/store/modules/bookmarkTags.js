@@ -18,8 +18,8 @@ const getters = {
   },
 };
 const mutations = {
-  [SET_BOOKMARK_TAGS](state, tagBookmark) {
-    state.tagBookmarks = tagBookmark;
+  [SET_BOOKMARK_TAGS](state, bookmarkTags) {
+    state.bookmarkTags = bookmarkTags;
   },
 };
 const actions = {
