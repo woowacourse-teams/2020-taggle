@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="snackbar" :timeout="2000" multi-line>
+  <v-snackbar v-model="snackbar" :left="true" :timeout="2000" multi-line>
     <div class="text-center width-100 font-size-15">{{ snackbarMsg }}</div>
   </v-snackbar>
 </template>
@@ -14,8 +14,8 @@ export default {
     ...mapGetters([IS_SHOWN_SNACKBAR, SNACKBAR_MESSAGE]),
   },
   watch: {
-    isShow() {
-      this.showSnackbar(this.message);
+    [IS_SHOWN_SNACKBAR]() {
+      this.showSnackbar(this[SNACKBAR_MESSAGE]);
     },
   },
   methods: {
