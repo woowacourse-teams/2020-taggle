@@ -1,6 +1,7 @@
 import BookmarkService from '@/api/module/bookmark.js';
 import { FETCH_BOOKMARK_TAGS } from '@/store/share/actionTypes.js';
 import { SET_BOOKMARK_TAGS } from '@/store/share/mutationTypes.js';
+import { BOOKMARK_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 
 const state = {
   bookmarkTags: {
@@ -13,8 +14,12 @@ const state = {
   },
 };
 const getters = {
-  bookmarkTags(state) {
+  [BOOKMARK_TAGS](state) {
     return state.bookmarkTags.tags;
+  },
+  [GET_TAG_ID_BY_NAME]: (state, getter) => (name) => {
+    const tag = getter.bookmarkTags.find((item) => item.name === name);
+    return tag ? tag.id : undefined;
   },
 };
 const mutations = {

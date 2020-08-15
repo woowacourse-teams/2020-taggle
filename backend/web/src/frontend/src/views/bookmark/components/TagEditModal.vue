@@ -29,7 +29,8 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import TagService from '@/api/module/tag.js';
-import { FETCH_BOOKMARK_TAGS } from '@/store/share/actionTypes.js';
+import { BOOKMARK_TAGS } from '@/store/share/getterTypes.js';
+import { FETCH_BOOKMARK_TAGS, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 
 export default {
   name: 'TagEditModal',
@@ -43,10 +44,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['bookmarkTags']),
-  },
-  created() {
-    this.fetchBookmarks();
+    ...mapGetters([BOOKMARK_TAGS, GET_TAG_ID_BY_NAME]),
   },
   data() {
     return {
@@ -58,8 +56,15 @@ export default {
       tags: [],
     };
   },
+  watch: {
+    dialog(newValue) {
+      if (newValue) {
+        this.fetchBookmarks();
+      }
+    },
+  },
   methods: {
-    ...mapActions([FETCH_BOOKMARK_TAGS]),
+    ...mapActions([FETCH_BOOKMARK_TAGS, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -78,14 +83,13 @@ export default {
         await TagService.addBookmarkOnTag(tagId, this.bookmark.id);
         await this[FETCH_BOOKMARK_TAGS](this.bookmark.id);
         data.addTag();
+        await this[FETCH_CATEGORIES]();
       } catch (e) {
         this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
       }
     },
     initTags() {
-      console.log(this.bookmarkTags);
-      this.tags = this.bookmarkTags.map((tag) => this.mapTag(tag));
-      console.log(this.tags);
+      this.tags = this[BOOKMARK_TAGS].map((tag) => this.mapTag(tag));
     },
     mapTag(tagValue) {
       return {
