@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.woowacourse.taggle.setup.domain.UserFixture;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 
 class CategoryTest {
