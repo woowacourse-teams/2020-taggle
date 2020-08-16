@@ -3,6 +3,7 @@ package com.woowacourse.taggle.tag.controller;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
 import com.woowacourse.taggle.setup.domain.TagSetup;
+import com.woowacourse.taggle.setup.domain.UserSetup;
 import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.user.domain.User;
 
 class BookmarkControllerTest extends ControllerTest {
 
@@ -27,11 +30,21 @@ class BookmarkControllerTest extends ControllerTest {
     @Autowired
     private TagSetup tagSetup;
 
+    @Autowired
+    private UserSetup userSetup;
+
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = userSetup.save();
+    }
+
     @WithMockUser(value = "ADMIN")
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
-        createByJsonParams("/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
+        createByJsonParams(user, "/api/v1/bookmarks", "{ \"url\": \"http://github.com\" }")
                 .andDo(BookmarkDocumentation.createBookmark());
     }
 
@@ -39,11 +52,11 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
     @Test
     void findBookmark() throws Exception {
-        final Bookmark bookmark = bookmarkSetup.save();
-        final Tag tag = tagSetup.save();
+        final Bookmark bookmark = bookmarkSetup.save(user);
+        final Tag tag = tagSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables("/api/v1/bookmarks/{id}/tags", bookmark.getId())
+        readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags", bookmark.getId())
                 .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
                 .andDo(BookmarkDocumentation.findBookmark());
     }
@@ -52,9 +65,8 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
     @Test
     void findBookmarks() throws Exception {
-        bookmarkSetup.save();
-
-        read("/api/v1/bookmarks", jsonPath("$", hasSize(1)))
+        bookmarkSetup.save(user);
+        read(user, "/api/v1/bookmarks", jsonPath("$", hasSize(1)))
                 .andDo(BookmarkDocumentation.findBookmarks());
     }
 
@@ -62,9 +74,9 @@ class BookmarkControllerTest extends ControllerTest {
     @DisplayName("removeBookmark: 북마크 하나를 제거한다.")
     @Test
     void removeBookmark() throws Exception {
-        final Bookmark bookmark = bookmarkSetup.save();
+        final Bookmark bookmark = bookmarkSetup.save(user);
 
-        remove("/api/v1/bookmarks/{id}", bookmark.getId())
+        removeByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}", bookmark.getId())
                 .andDo(BookmarkDocumentation.removeBookmark());
     }
 }

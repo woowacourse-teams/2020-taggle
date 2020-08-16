@@ -1,11 +1,12 @@
 package com.woowacourse.taggle.tag.controller;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
+import com.woowacourse.taggle.tag.service.BookmarkCrawlerService;
 import com.woowacourse.taggle.tag.service.BookmarkService;
+import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -26,34 +30,39 @@ import lombok.RequiredArgsConstructor;
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
+    private final BookmarkCrawlerService bookmarkCrawlerService;
 
     @PostMapping
-    public ResponseEntity<Void> createBookmark(@RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
-        final BookmarkResponse bookmark = bookmarkService.createBookmark(bookmarkCreateRequest);
-
-        return ResponseEntity.created(URI.create("/api/v1/bookmarks/" + bookmark.getId()))
-                .build();
+    public ResponseEntity<BookmarkResponse> createBookmark(@AuthenticationPrincipal final SessionUser user,
+            @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
+        BookmarkCreateDto bookmarkCreateDto = bookmarkCrawlerService.findOpenGraph(bookmarkCreateRequest);
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Location", "/api/v1/bookmarks/" + bookmark.getId())
+                .body(bookmark);
     }
 
     @GetMapping("/{id}/tags")
-    public ResponseEntity<BookmarkTagResponse> findBookmark(@PathVariable final Long id) {
-        final BookmarkTagResponse bookmarkTagResponse = bookmarkService.findBookmark(id);
+    public ResponseEntity<BookmarkTagResponse> findBookmark(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id) {
+        final BookmarkTagResponse bookmarkTagResponse = bookmarkService.findBookmark(user, id);
 
         return ResponseEntity.ok()
                 .body(bookmarkTagResponse);
     }
 
     @GetMapping
-    public ResponseEntity<List<BookmarkResponse>> findBookmarks() {
-        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks();
+    public ResponseEntity<List<BookmarkResponse>> findBookmarks(@AuthenticationPrincipal final SessionUser user) {
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user);
 
         return ResponseEntity.ok()
                 .body(bookmarks);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeBookmark(@PathVariable final Long id) {
-        bookmarkService.removeBookmark(id);
+    public ResponseEntity<Void> removeBookmark(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id) {
+        bookmarkService.removeBookmark(user, id);
 
         return ResponseEntity.noContent()
                 .build();

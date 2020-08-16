@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.URL;
 
+import com.woowacourse.taggle.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,15 +33,32 @@ public class Bookmark {
     @Column(nullable = false)
     private String url;
 
+    @Column
+    private String title;
+
+    @Column
+    private String description;
+
+    @Column
+    private String image;
+
     @Column(nullable = false)
     private Boolean isRead;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    public Bookmark(final String url) {
+    public Bookmark(final String url, final User user, String title, String description, String image) {
         this.url = url;
         this.isRead = false;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.image = image;
     }
 
     public void addTagBookmark(final TagBookmark tagBookmark) {

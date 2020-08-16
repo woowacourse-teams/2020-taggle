@@ -32,24 +32,3 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: ${{ env.working-directory }}
-      
-    - name: Slack Notify
-      if: failure()
-      uses: rtCamp/action-slack-notify@v2.1.0
-      env:
-        SLACK_CHANNEL: group-dev
-        SLACK_COLOR: '#FF2D00'
-        SLACK_USERNAME: 'Github Action'
-        SLACK_ICON: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-        SLACK_TITLE: Build Failure - ${{ github.event.pull_request.title }}
-        SLACK_MESSAGE: PR Url - ${{ github.event.pull_request.url }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-    
-    - name: action-slack
-      uses: 8398a7/action-slack@v2.6.0
-      with:
-        status: ${{job.status}}
-        author_name: taggle bot
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required

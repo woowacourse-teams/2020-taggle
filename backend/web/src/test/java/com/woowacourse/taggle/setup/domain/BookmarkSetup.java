@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
+import com.woowacourse.taggle.user.domain.User;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -12,13 +13,9 @@ public class BookmarkSetup {
 
     private final BookmarkRepository bookmarkRepository;
 
-    public Bookmark save() {
-        final Bookmark bookmark = new Bookmark("http://github.com");
+    public Bookmark save(final User user) {
+        final Bookmark bookmark = new Bookmark("http://github.com", user, "title", "description", "image");
 
         return bookmarkRepository.save(bookmark);
-    }
-
-    public void removeAll() {
-        bookmarkRepository.deleteAll();
     }
 }

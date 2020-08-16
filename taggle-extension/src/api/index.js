@@ -9,9 +9,7 @@ const ApiService = {
     return AXIOS.get(uri).then(({ data }) => data);
   },
   post(uri, params) {
-    return AXIOS.post(uri, params).then(({ data }) => {
-      return data.id;
-    });
+    return AXIOS.post(uri, params).then(({ data }) => data.id);
   },
   delete(uri) {
     return AXIOS.delete(uri);

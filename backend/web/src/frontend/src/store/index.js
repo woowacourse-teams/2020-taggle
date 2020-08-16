@@ -1,37 +1,19 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import BookmarkService from '../api/module/bookmark.js';
-import { FETCH_BOOKMARKS } from './share/actionType.js';
-import { SET_BOOKMARKS } from './share/mutationsType.js';
+import auth from '@/store/modules/auth.js';
+import bookmarkTags from '@/store/modules/bookmarkTags.js';
+import tagBookmarks from '@/store/modules/tagBookmarks.js';
+import category from '@/store/modules/category.js';
+import snackbar from '@/store/modules/snackbar.js';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    bookmarks: [
-      {
-        id: '',
-        url: '',
-        tags: [{ id: '3', name: 'jordy' }],
-      },
-    ],
-  },
-  getters: {
-    bookmarks(state) {
-      return state.bookmarks;
-    },
-  },
-  mutations: {
-    [SET_BOOKMARKS](state, bookmarks) {
-      state.bookmarks = bookmarks;
-    },
-  },
-  actions: {
-    async [FETCH_BOOKMARKS]({ commit }) {
-      return BookmarkService.getAll().then(({ data }) => {
-        commit(SET_BOOKMARKS, data);
-        return data;
-      });
-    },
+  modules: {
+    auth,
+    bookmarkTags,
+    tagBookmarks,
+    category,
+    snackbar,
   },
 });

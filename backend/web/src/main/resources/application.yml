@@ -1,24 +1,15 @@
 spring:
-  application:
-    name: taggle-logback
   profiles:
     active: local
-  jpa.properties.hibernate:
-    show_sql: true
-    format_sql: true
-    use_sql_comments: true
-  h2.console.enabled: true
-  datasource.url: jdbc:h2:mem:testdb
-
-logging.level.org.hibernate.type.descriptor.sql: trace
+    include:
+      - db
 
 ---
-
 spring:
   profiles: local
 
-logging:
-  config: classpath:logback-local.xml
+#logging:
+#  config: classpath:logback-local.xml
 
 ---
 spring:
@@ -26,5 +17,4 @@ spring:
 
 logging:
   config: classpath:logback-prod.xml
-
 ---

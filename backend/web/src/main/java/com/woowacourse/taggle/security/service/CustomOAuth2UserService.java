@@ -16,10 +16,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.security.dto.OAuthAttributes;
-import com.woowacourse.taggle.security.dto.SessionUser;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
+import com.woowacourse.taggle.user.dto.OAuthAttributes;
+import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -55,6 +55,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private User saveOrFind(final OAuthAttributes attributes) {
         final Optional<User> user = userRepository.findByEmail(attributes.getEmail());
 
-        return user.orElseGet(() -> userRepository.save(attributes.toEntity()));
+        return user.orElseGet(() -> initialize(attributes));
+    }
+
+    private User initialize(final OAuthAttributes attributes) {
+        return userRepository.save(attributes.toEntity());
     }
 }
