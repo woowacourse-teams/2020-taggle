@@ -35,6 +35,7 @@ dependencies {
     compile('org.flywaydb:flyway-core')
 
     implementation project(':core')
+    implementation project(':open-graph-api')
     implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'

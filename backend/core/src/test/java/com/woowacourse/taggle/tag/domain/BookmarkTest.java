@@ -23,6 +23,6 @@ class BookmarkTest {
                 .picture("https://www.naver.com/")
                 .build();
 
-        assertThat(new Bookmark(URL, user)).isInstanceOf(Bookmark.class);
+        assertThat(new Bookmark(URL, user, "title", "description", "image")).isInstanceOf(Bookmark.class);
     }
 }

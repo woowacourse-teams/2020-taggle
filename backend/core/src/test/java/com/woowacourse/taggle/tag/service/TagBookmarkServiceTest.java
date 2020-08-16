@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
@@ -61,11 +61,14 @@ class TagBookmarkServiceTest {
         final TagResponse naver = tagService.createTag(user, new TagCreateRequest("naver"));
 
         final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
-                new BookmarkCreateRequest("https://bookmark/1"));
+                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
+                        "description", "image"));
         final BookmarkResponse bookmark2 = bookmarkService.createBookmark(user,
-                new BookmarkCreateRequest("https://bookmark/2"));
+                new BookmarkCreateDto("https://taggle.co.kr/2", "title",
+                        "description", "image"));
         final BookmarkResponse bookmark3 = bookmarkService.createBookmark(user,
-                new BookmarkCreateRequest("https://bookmark/3"));
+                new BookmarkCreateDto("https://taggle.co.kr/3", "title",
+                        "description", "image"));
 
         // when
         tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
@@ -98,9 +101,11 @@ class TagBookmarkServiceTest {
         final TagResponse taggle = tagService.createTag(user, new TagCreateRequest("taggle"));
 
         final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
-                new BookmarkCreateRequest("https://bookmark/1"));
+                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
+                        "description", "image"));
         final BookmarkResponse bookmark2 = bookmarkService.createBookmark(user,
-                new BookmarkCreateRequest("https://bookmark/2"));
+                new BookmarkCreateDto("https://taggle.co.kr/2", "title",
+                        "description", "image"));
 
         tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
         tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark2.getId());
