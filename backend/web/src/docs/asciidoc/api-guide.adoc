@@ -54,6 +54,11 @@ operation::tags/create[snippets='http-request,request-fields,http-response,respo
 
 operation::tags/get[snippets='http-request,http-response,response-fields']
 
+[[resources-tags-untagged-get]]
+=== Untagged 조회
+
+operation::tags/untagged/get[snippets='http-request,http-response,response-fields']
+
 [[resources-tags-delete]]
 === 태그 삭제
 

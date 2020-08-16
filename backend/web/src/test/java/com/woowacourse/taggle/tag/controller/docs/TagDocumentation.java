@@ -36,6 +36,19 @@ public class TagDocumentation {
                 ));
     }
 
+    public static RestDocumentationResultHandler findUntagged() {
+        return document("tags/untagged/get",
+                responseFields(
+                        fieldWithPath("id").description("태그 ID: Null").optional(),
+                        fieldWithPath("name").description("태그 이름: Untagged"),
+                        fieldWithPath("bookmarks.[].id").description("북마크 ID"),
+                        fieldWithPath("bookmarks.[].url").description("북마크 URI"),
+                        fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
+                        fieldWithPath("bookmarks.[].description").description("북마크 설명"),
+                        fieldWithPath("bookmarks.[].image").description("북마크 이미지")
+                ));
+    }
+
     public static RestDocumentationResultHandler removeTags() {
         return document("tags/delete",
                 pathParameters(

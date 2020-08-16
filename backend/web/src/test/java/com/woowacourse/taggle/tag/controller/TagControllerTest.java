@@ -62,6 +62,16 @@ public class TagControllerTest extends ControllerTest {
     }
 
     @WithMockUser(value = "ADMIN")
+    @DisplayName("findUntagged: Untagged를 조회한다.")
+    @Test
+    void findUntagged() throws Exception {
+        bookmarkSetup.save(user);
+
+        read(user, "/api/v1/tags/untagged", jsonPath("$.id", is(nullValue())))
+                .andDo(TagDocumentation.findUntagged());
+    }
+
+    @WithMockUser(value = "ADMIN")
     @DisplayName("removeTag: 태그를 삭제한다.")
     @Test
     void removeTag() throws Exception {

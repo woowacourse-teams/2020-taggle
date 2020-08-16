@@ -13,6 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.domain.TagRepository;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -32,7 +34,7 @@ class TagServiceTest {
     private TagService tagService;
 
     @Autowired
-    private CategoryService categoryService;
+    private BookmarkService bookmarkService;
 
     @Autowired
     private UserService userService;
@@ -94,6 +96,24 @@ class TagServiceTest {
 
         // then
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
+    }
+
+    @DisplayName("findUntagged: Untagged를 조회한다.")
+    @Test
+    void findUntagged() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
+                "image");
+        bookmarkService.createBookmark(user, bookmarkCreateDto);
+
+        // when
+        final TagBookmarkResponse untagged = tagService.findUntagged(user);
+
+        // then
+        assertThat(untagged.getId()).isNull();
+        assertThat(untagged.getName()).isEqualTo("Untagged");
+        assertThat(untagged.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")

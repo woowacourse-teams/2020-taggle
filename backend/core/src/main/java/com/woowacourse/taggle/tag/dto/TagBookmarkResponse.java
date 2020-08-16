@@ -2,6 +2,7 @@ package com.woowacourse.taggle.tag.dto;
 
 import java.util.List;
 
+import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,5 +20,9 @@ public class TagBookmarkResponse {
 
     public static TagBookmarkResponse of(final Tag tag) {
         return new TagBookmarkResponse(tag.getId(), tag.getName(), BookmarkResponse.asList(tag.getBookmarks()));
+    }
+
+    public static TagBookmarkResponse ofUntagged(final List<Bookmark> bookmarks) {
+        return new TagBookmarkResponse(null, "Untagged", BookmarkResponse.asList(bookmarks));
     }
 }

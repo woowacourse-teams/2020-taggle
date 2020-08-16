@@ -51,6 +51,14 @@ public class TagController {
                 .body(tagBookmarkResponse);
     }
 
+    @GetMapping("/untagged")
+    public ResponseEntity<TagBookmarkResponse> findUntagged(@AuthenticationPrincipal final SessionUser user) {
+        final TagBookmarkResponse tagBookmarkResponse = tagService.findUntagged(user);
+
+        return ResponseEntity.ok()
+                .body(tagBookmarkResponse);
+    }
+
     @DeleteMapping("/{tagId}")
     public ResponseEntity<Void> removeTag(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {

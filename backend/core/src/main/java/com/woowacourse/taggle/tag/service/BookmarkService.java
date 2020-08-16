@@ -54,6 +54,10 @@ public class BookmarkService {
         bookmarkRepository.delete(bookmark);
     }
 
+    public List<Bookmark> findAllByUserId(final Long userId) {
+        return bookmarkRepository.findAllByUserId(userId);
+    }
+
     public Bookmark findByIdAndUserId(final Long bookmarkId, final Long userId) {
         return bookmarkRepository.findByIdAndUserId(bookmarkId, userId)
                 .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다.\n"
