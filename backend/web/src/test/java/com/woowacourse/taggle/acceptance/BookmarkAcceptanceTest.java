@@ -25,6 +25,12 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         List<BookmarkResponse> bookmarks = findBookmarks();
 
         assertThat(bookmarks).hasSize(1);
+
+        // 기존에 존재하는 북마크와 동일한 이름의 북마크를 생성요청시, 새 북마크를 생성하지 않는다.
+        createBookmark("http://naver.com");
+        bookmarks = findBookmarks();
+
+        assertThat(bookmarks).hasSize(1);
         
         // 태그에 북마크를 추가한다.
         final Long bookmarkId = bookmarks.get(0).getId();

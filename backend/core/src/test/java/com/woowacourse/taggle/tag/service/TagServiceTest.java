@@ -59,19 +59,19 @@ class TagServiceTest {
         assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
     }
 
-    @DisplayName("createTag: 중복된 태그가 존재하는 경우 이미 존재하는 태그를 반환한다.")
+    @DisplayName("createTag: 이미 같은 이름의 태그가 존재하는 경우, 기존의 태그를 반환한다.")
     @Test
     void createTag_TagAlreadyExist_ReturnExistTag() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        tagService.createTag(user, tagCreateRequest);
         final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponseWithSameName = tagService.createTag(user, tagCreateRequest);
 
         // then
-        assertThat(tagResponse.getId()).isNotNull();
-        assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
+        assertThat(tagResponse.getId()).isEqualTo(tagResponseWithSameName.getId());
+        assertThat(tagResponse.getName()).isEqualTo(tagResponseWithSameName.getName());
     }
 
     @DisplayName("findTagById: 특정 태그를 조회한다.")

@@ -60,7 +60,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
-    @DisplayName("동일한 북마크가 이미 존재 할 경우 이미 존재하는 북마크를 반환한다.")
+    @DisplayName("이미 같은 이름의 url을 가진 북마크가 존재 하는 경우, 기존의 북마크를 반환한다.")
     @Test
     void createBookmark_DuplicateBookmark_ExceptionThrown() {
         // given
@@ -69,9 +69,14 @@ class BookmarkServiceTest {
 
         // when
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getId()).isEqualTo(bookmarkResponseWithSameName.getId());
+        assertThat(bookmarkResponse.getUrl()).isEqualTo(bookmarkResponseWithSameName.getUrl());
+        assertThat(bookmarkResponse.getTitle()).isEqualTo(bookmarkResponseWithSameName.getTitle());
+        assertThat(bookmarkResponse.getDescription()).isEqualTo(bookmarkResponseWithSameName.getDescription());
+        assertThat(bookmarkResponse.getImage()).isEqualTo(bookmarkResponseWithSameName.getImage());
     }
 
     @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
