@@ -17,10 +17,12 @@
                 v-model="url"
                 label="URL 입력후 enter로저장 https://..."
                 :rules="rules"
+                :disabled="isBookmarkAdded"
                 @keypress.enter="addBookmark"
               ></v-text-field>
               <vue-tags-input
                 v-model="tag"
+                v-if="isBookmarkAdded"
                 :tags="tags"
                 @before-adding-tag="onAddTagBookmark"
                 @before-deleting-tag="onDeleteTagBookmark"
@@ -37,15 +39,15 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { SHOW_SNACKBAR, RESET_BOOKMARK_WITH_TAGS } from '@/store/share/mutationTypes.js';
+import { RESET_BOOKMARK_WITH_TAGS, SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
 import BookmarkService from '@/api/module/bookmark.js';
 import {
-  FETCH_CATEGORIES,
-  FETCH_BOOKMARK_WITH_TAGS,
   ADD_TAG_ON_BOOKMARK,
   DELETE_TAG_ON_BOOKMARK,
+  FETCH_BOOKMARK_WITH_TAGS,
+  FETCH_CATEGORIES,
 } from '@/store/share/actionTypes.js';
 import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -74,6 +76,9 @@ export default {
   },
   computed: {
     ...mapGetters([GET_TAG_ID_BY_NAME]),
+    isBookmarkAdded() {
+      return !!this.bookmarkId;
+    },
   },
   methods: {
     ...mapActions([FETCH_CATEGORIES, FETCH_BOOKMARK_WITH_TAGS, ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK]),
@@ -85,7 +90,9 @@ export default {
       this.dialog = true;
     },
     clearInputTagForm() {
+      this.tag = '';
       this.tags = [];
+      this.bookmarkId = '';
       this.url = '';
       this[RESET_BOOKMARK_WITH_TAGS]();
     },
