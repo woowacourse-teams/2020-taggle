@@ -61,10 +61,14 @@ export default {
     };
   },
   watch: {
-    async dialog(newValue) {
-      if (newValue) {
-        await this.fetchBookmarks();
-        this.initTags();
+    async dialog() {
+      if (this.dialog) {
+        try {
+          await this.fetchBookmark();
+          this.initTags();
+        } catch (e) {
+          this[SHOW_SNACKBAR](MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
+        }
       }
     },
   },
@@ -77,20 +81,17 @@ export default {
     openModal() {
       this.dialog = true;
     },
-    async fetchBookmarks() {
-      await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
-    },
     async onAddTagBookmark(data) {
       const targetTagName = data.tag.text;
       try {
         const targetTagId = await TagService.create({ name: targetTagName });
         await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
-        await this.fetchBookmarks();
+        await this.fetchBookmark();
         await this[FETCH_CATEGORIES]();
         data.addTag();
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.SUCCESS);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
       } catch (e) {
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.FAIL);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
       }
     },
     async onDeleteTagBookmark(data) {
@@ -98,11 +99,18 @@ export default {
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
         await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
-        await this.fetchBookmarks();
+        await this.fetchBookmark();
         data.deleteTag();
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.SUCCESS);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
       } catch (e) {
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.FAIL);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
+      }
+    },
+    async fetchBookmark() {
+      try {
+        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
+      } catch (e) {
+        throw new Error(MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
       }
     },
     initTags() {

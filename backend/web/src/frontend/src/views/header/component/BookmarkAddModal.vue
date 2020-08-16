@@ -68,8 +68,8 @@ export default {
     };
   },
   watch: {
-    dialog(newValue) {
-      if (!newValue) {
+    dialog() {
+      if (!this.dialog) {
         this.clearInputTagForm();
       }
     },
@@ -96,9 +96,6 @@ export default {
       this.url = '';
       this[RESET_BOOKMARK_WITH_TAGS]();
     },
-    async fetchBookmark() {
-      await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
-    },
     async addBookmark() {
       try {
         this.bookmarkId = await BookmarkService.post({ url: this.url });
@@ -115,10 +112,10 @@ export default {
         await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
         await this.fetchBookmark();
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.SUCCESS);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
         data.addTag();
       } catch (e) {
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.ADD.FAIL);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
       }
     },
     async onDeleteTagBookmark(data) {
@@ -127,10 +124,17 @@ export default {
       try {
         await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this.fetchBookmark();
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.SUCCESS);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
         data.deleteTag();
       } catch (e) {
-        this[SHOW_SNACKBAR](MESSAGES.TAG_BOOKMARK.DELETE.FAIL);
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
+      }
+    },
+    async fetchBookmark() {
+      try {
+        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+      } catch (e) {
+        throw new Error(MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
       }
     },
   },
