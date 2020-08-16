@@ -12,12 +12,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.setup.domain.UserFixture;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -32,9 +32,6 @@ class TagServiceTest {
     private TagService tagService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -44,12 +41,7 @@ class TagServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(User.builder()
-                .email("a@a.com")
-                .nickName("tigger")
-                .role(Role.USER)
-                .picture("https://www.naver.com/")
-                .build());
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
     }
 

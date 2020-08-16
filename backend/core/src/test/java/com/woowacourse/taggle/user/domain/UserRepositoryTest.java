@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.setup.domain.UserFixture;
 
 @DataJpaTest
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -24,8 +25,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(1L,"태글", "taggle@gmail.com", "010-0000-0000",
-                "https://github.com/image.jpg", Role.USER);
+        user = UserFixture.DEFAULT_USER;
     }
 
     @DisplayName("save(): 유저 저장 확인 테스트")

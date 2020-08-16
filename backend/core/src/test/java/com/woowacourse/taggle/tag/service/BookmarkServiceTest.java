@@ -14,12 +14,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.setup.domain.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -42,12 +42,7 @@ class BookmarkServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(User.builder()
-                .email("a@a.com")
-                .nickName("tigger")
-                .role(Role.USER)
-                .picture("https://www.naver.com/")
-                .build());
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
     }
 
