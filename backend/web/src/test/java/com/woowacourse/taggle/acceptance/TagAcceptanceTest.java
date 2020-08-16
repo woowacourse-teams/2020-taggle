@@ -31,7 +31,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
         // 북마크에 태그를 추가한다
         final Long tagId = tagBookmarkResponse.getId();
 
-        BookmarkResponse bookmark = createBookmark("http://taggle.com");
+        BookmarkResponse bookmark = createBookmark("http://naver.com");
         addBookmarkOnTag(tagId, bookmark.getId());
         final TagBookmarkResponse tagBookmarkResponse2 = findTagById(tagId);
 
@@ -53,7 +53,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
         TagResponse tag = createTag("taggle");
         TagBookmarkResponse anotherTagBookmarkResponse = findTagById(tag.getId());
         final Long anotherTagId = anotherTagBookmarkResponse.getId();
-        final BookmarkResponse anotherBookmark = createBookmark("http://taggle2.com");
+        final BookmarkResponse anotherBookmark = createBookmark("http://daum.net");
         addBookmarkOnTag(anotherTagId, anotherBookmark.getId());
         final TagBookmarkResponse anotherTagBookmarkResponse2 = findTagById(anotherTagId);
         assertThat(anotherTagBookmarkResponse2.getBookmarks()).hasSize(1);

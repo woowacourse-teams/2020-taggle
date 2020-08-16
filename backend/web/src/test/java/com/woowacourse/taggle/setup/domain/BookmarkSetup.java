@@ -14,7 +14,7 @@ public class BookmarkSetup {
     private final BookmarkRepository bookmarkRepository;
 
     public Bookmark save(final User user) {
-        final Bookmark bookmark = new Bookmark("http://github.com", user);
+        final Bookmark bookmark = new Bookmark("http://github.com", user, "title", "description", "image");
 
         return bookmarkRepository.save(bookmark);
     }

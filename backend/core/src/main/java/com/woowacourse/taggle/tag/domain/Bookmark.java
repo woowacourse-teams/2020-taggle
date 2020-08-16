@@ -33,6 +33,15 @@ public class Bookmark {
     @Column(nullable = false)
     private String url;
 
+    @Column
+    private String title;
+
+    @Column
+    private String description;
+
+    @Column
+    private String image;
+
     @Column(nullable = false)
     private Boolean isRead;
 
@@ -43,10 +52,13 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    public Bookmark(final String url, final User user) {
+    public Bookmark(final String url, final User user, String title, String description, String image) {
         this.url = url;
         this.isRead = false;
         this.user = user;
+        this.title = title;
+        this.description = description;
+        this.image = image;
     }
 
     public void addTagBookmark(final TagBookmark tagBookmark) {

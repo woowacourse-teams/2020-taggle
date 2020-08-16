@@ -18,6 +18,8 @@
                 <v-list-item-title>{{ title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
+            <v-divider />
+            <BookmarkAddModal />
           </v-list>
           <template v-slot:append>
             <div class="text-center">
@@ -78,6 +80,7 @@
 <script>
 import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
 import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
+import BookmarkAddModal from '@/views/header/component/BookmarkAddModal.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
@@ -87,6 +90,7 @@ export default {
   components: {
     CategoryAddModal,
     CategoryTagModifyModal,
+    BookmarkAddModal,
   },
   created() {
     this[FETCH_CATEGORIES]();

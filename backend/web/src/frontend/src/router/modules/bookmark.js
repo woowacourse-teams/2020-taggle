@@ -5,7 +5,6 @@ const bookmarkRoutes = [
     name: 'bookmarks',
     path: '/tags/:id/bookmarks',
     component: BookmarkPage,
-    meta: { requiresAuth: true },
   },
 ];
 
