@@ -13,13 +13,15 @@
         <v-card-text>
           <v-row>
             <v-col cols="10">
-              <v-text-field
-                v-model="url"
-                label="URL 입력후 enter로저장 https://..."
-                :rules="rules"
-                :disabled="isBookmarkAdded"
-                @keypress.enter="addBookmark"
-              ></v-text-field>
+              <v-form ref="bookmarkForm" @submit.prevent>
+                <v-text-field
+                  v-model="url"
+                  label="URL 입력후 enter를 입력하여 저장. https://..."
+                  :rules="rules"
+                  :disabled="isBookmarkAdded"
+                  @keypress.enter="addBookmark"
+                ></v-text-field>
+              </v-form>
               <vue-tags-input
                 v-model="tag"
                 v-if="isBookmarkAdded"
@@ -51,6 +53,7 @@ import {
 } from '@/store/share/actionTypes.js';
 import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
+import validator from '@/utils/validator.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -62,7 +65,7 @@ export default {
       dialog: false,
       tag: '',
       tags: [],
-      rules: [(value) => !!value || '북마크로 저장할 URL값이 필요합니다.'],
+      rules: validator.bookmark.url,
       bookmarkId: '',
       url: '',
     };
@@ -95,8 +98,12 @@ export default {
       this.bookmarkId = '';
       this.url = '';
       this[RESET_BOOKMARK_WITH_TAGS]();
+      this.$refs.bookmarkForm.resetValidation();
     },
     async addBookmark() {
+      if (!this.$refs.bookmarkForm.validate()) {
+        return;
+      }
       try {
         this.bookmarkId = await BookmarkService.post({ url: this.url });
         await this.fetchBookmark();
