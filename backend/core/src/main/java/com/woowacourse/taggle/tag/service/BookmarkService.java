@@ -29,7 +29,7 @@ public class BookmarkService {
         final User user = userService.findById(sessionUser.getId());
 
         final Bookmark bookmark = bookmarkRepository.findByUrlAndUserId(bookmarkCreateDto.getUrl(), user.getId())
-                .orElse(bookmarkRepository.save(bookmarkCreateDto.toEntityWithUser(user)));
+                .orElseGet(() -> bookmarkRepository.save(bookmarkCreateDto.toEntityWithUser(user)));
 
         return BookmarkResponse.of(bookmark);
     }
