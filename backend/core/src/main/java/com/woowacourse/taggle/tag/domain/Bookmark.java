@@ -52,7 +52,8 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    public Bookmark(final String url, final User user, final String title, final String description, final String image) {
+    public Bookmark(final String url, final User user, final String title, final String description,
+            final String image) {
         this.url = url;
         this.isRead = false;
         this.user = user;
@@ -69,7 +70,7 @@ public class Bookmark {
         tags.remove(tagBookmark);
     }
 
-    public boolean isEmptyTag() {
+    public boolean isTagsEmpty() {
         return tags.isEmpty();
     }
 }

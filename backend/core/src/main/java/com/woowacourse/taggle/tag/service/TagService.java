@@ -45,7 +45,7 @@ public class TagService {
     @Transactional(readOnly = true)
     public TagBookmarkResponse findUntagged(final SessionUser user) {
         final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
-                .filter(Bookmark::isEmptyTag)
+                .filter(Bookmark::isTagsEmpty)
                 .collect(Collectors.toList());
         return TagBookmarkResponse.ofUntagged(bookmarks);
     }

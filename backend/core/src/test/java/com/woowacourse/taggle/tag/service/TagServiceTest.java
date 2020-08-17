@@ -100,20 +100,21 @@ class TagServiceTest {
 
     @DisplayName("findUntagged: Untagged를 조회한다.")
     @Test
-    void findUntagged() {
+    void findUntaggedBookmarks() {
         // given
-        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest("https://taggle.co.kr");
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
+                "https://github.com/woowacourse-teams/2020-taggle");
         final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
                 "image");
         bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // when
-        final TagBookmarkResponse untagged = tagService.findUntagged(user);
+        final TagBookmarkResponse untaggedBookmarks = tagService.findUntagged(user);
 
         // then
-        assertThat(untagged.getId()).isNull();
-        assertThat(untagged.getName()).isEqualTo("Untagged");
-        assertThat(untagged.getBookmarks()).hasSize(1);
+        assertThat(untaggedBookmarks.getId()).isNull();
+        assertThat(untaggedBookmarks.getName()).isEqualTo("Untagged");
+        assertThat(untaggedBookmarks.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")
