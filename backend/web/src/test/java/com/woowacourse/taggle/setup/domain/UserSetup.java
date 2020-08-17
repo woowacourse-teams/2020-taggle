@@ -16,7 +16,7 @@ public class UserSetup {
     public User save() {
         final User user = User.builder()
                 .id(1L)
-                .email("a@a.com")
+                .email("jordyLover@kakao.com")
                 .nickName("tigger")
                 .role(Role.USER)
                 .picture("https://www.naver.com/")

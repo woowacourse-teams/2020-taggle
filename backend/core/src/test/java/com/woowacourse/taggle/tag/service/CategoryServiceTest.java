@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
@@ -23,7 +24,6 @@ import com.woowacourse.taggle.tag.dto.CategoryTagsResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.CategoryNotFoundException;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -49,12 +49,7 @@ class CategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(User.builder()
-                .email("a@a.com")
-                .nickName("tigger")
-                .role(Role.USER)
-                .picture("https://www.naver.com/")
-                .build());
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
     }
 
@@ -72,18 +67,18 @@ class CategoryServiceTest {
         assertThat(categoryResponse.getTitle()).isEqualTo("project");
     }
 
-    @DisplayName("createCategory: 중복된 카테고리가 존재하는 경우 이미 존재하는 카테고리를 반환한다.")
+    @DisplayName("createCategory: 이미 같은 이름의 카테고리가 존재하는 경우, 기존의 카테고리를 반환한다.")
     @Test
     void createCategory_CategoryDuplicationException() {
         // given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
 
         // when
-        categoryService.createCategory(user, categoryRequest);
         final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
+        final CategoryResponse categoryResponseWithSameName = categoryService.createCategory(user, categoryRequest);
         // then
-        assertThat(categoryResponse.getId()).isNotNull();
-        assertThat(categoryResponse.getTitle()).isEqualTo("project");
+        assertThat(categoryResponse.getId()).isEqualTo(categoryResponseWithSameName.getId());
+        assertThat(categoryResponse.getTitle()).isEqualTo(categoryResponseWithSameName.getTitle());
     }
 
     @DisplayName("findAllTagsBy: 카테고리를 포함한 모든 태그를 가져온다.")

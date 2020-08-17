@@ -31,7 +31,7 @@ public class CategoryService {
 
         final Category category = categoryRepository.findByTitleAndUserId(categoryRequest.getTitle(),
                 sessionUser.getId())
-                .orElse(categoryRepository.save(categoryRequest.toEntityWithUser(user)));
+                .orElseGet(() -> categoryRepository.save(categoryRequest.toEntityWithUser(user)));
 
         return CategoryResponse.of(category);
     }
