@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app permanent width="312px" floating="true">
+  <v-navigation-drawer app permanent width="312px" floating>
     <v-row class="fill-height" no-gutters>
       <v-navigation-drawer dark mini-variant mini-variant-width="56" permanent>
         <!-- home icon -->
@@ -12,7 +12,7 @@
 
         <!-- navigation menus -->
         <v-list dense nav>
-          <!-- dialog 컴포넌트화로 인해서 기존 버튼과의 불일치 발생. 해결 필요 -->
+          <!--          dialog 컴포넌트화로 인해서 기존 버튼과의 불일치 발생. 해결 필요-->
           <!--          <v-list-item link>-->
           <!--            <v-list-item-action>-->
           <!--              <v-icon>local_offer</v-icon>-->
@@ -71,8 +71,8 @@
           <v-divider></v-divider>
           <v-row width="100%">
             <v-col class="text-right">
-              <CategoryAddModal></CategoryAddModal>
-              <CategoryTagModifyModal></CategoryTagModifyModal>
+              <CategoryAddModal />
+              <CategoryTagModifyModal />
             </v-col>
           </v-row>
         </template>
