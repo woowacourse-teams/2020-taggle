@@ -8,6 +8,10 @@ module.exports = {
         ws: true,
         changeOrigin: true,
       },
+      '/oauth2': {
+        target: 'http://localhost:8080',
+        changeOrigin: false,
+      },
     },
   },
   transpileDependencies: ['vuetify'],
