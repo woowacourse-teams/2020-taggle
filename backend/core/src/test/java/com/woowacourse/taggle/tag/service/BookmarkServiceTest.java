@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.setup.domain.UserFixture;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
@@ -60,7 +60,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
-    @DisplayName("이미 같은 이름의 url을 가진 북마크가 존재 하는 경우, 기존의 북마크를 반환한다.")
+    @DisplayName("createBookmark: 이미 같은 이름의 url을 가진 북마크가 존재 하는 경우, 기존의 북마크를 반환한다.")
     @Test
     void createBookmark_DuplicateBookmark_ExceptionThrown() {
         // given
@@ -109,7 +109,7 @@ class BookmarkServiceTest {
         assertThat(bookmarks).hasSize(1);
     }
 
-    @DisplayName("북마크를 삭제한다.")
+    @DisplayName("removeBookmark: 북마크를 삭제한다.")
     @Test
     void removeBookmark() {
         // given
@@ -124,7 +124,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponses).hasSize(0);
     }
 
-    @DisplayName("삭제하려는 북마크가 존재 하지 않을 경우 익셉션을 발생한다")
+    @DisplayName("removeBookmark: 삭제하려는 북마크가 존재 하지 않을 경우 익셉션을 발생한다")
     @Test
     void removeBookmark_NotFoundException() {
         // given

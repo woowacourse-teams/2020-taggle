@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.setup.domain;
+package com.woowacourse.taggle.fixture;
 
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;

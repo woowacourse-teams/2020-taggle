@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.setup.domain.UserFixture;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;

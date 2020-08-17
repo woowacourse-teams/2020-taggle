@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.woowacourse.taggle.setup.domain.UserFixture;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.user.domain.User;
 
 class CategoryTest {
