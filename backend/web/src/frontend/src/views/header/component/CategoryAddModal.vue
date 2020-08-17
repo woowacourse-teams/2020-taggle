@@ -7,56 +7,64 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline grey lighten-2">
-        카테고리 추가
-      </v-card-title>
+      <v-app-bar dense flat>
+        <v-card-title>
+          카테고리 추가
+        </v-card-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="dialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-app-bar>
 
       <v-card-text class="pt-6">
-        <v-text-field
-          @keypress.enter.prevent="addCategory"
-          v-model="categoryName"
-          :error-messages="errorMessages"
-          dense
-          label="Category"
-        ></v-text-field>
+        <v-form ref="createCategoryRequest" @submit.prevent="onAddCategory">
+          <v-text-field
+            v-model="createCategoryRequest.title"
+            dense
+            :rules="rules"
+            label="이름을 입력후에 enter를 입력하여 저장."
+          ></v-text-field>
+        </v-form>
       </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="dialog = false">
-          닫기
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex';
 import { CREATE_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
-import { mapActions } from 'vuex';
+import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
+import { MESSAGES } from '@/utils/constants.js';
+import validator from '@/utils/validator.js';
 
 export default {
   name: 'CategoryAddModal',
   data() {
     return {
-      categoryName: '',
+      createCategoryRequest: {
+        title: '',
+      },
+      rules: validator.category.title,
       dialog: false,
-      errorMessages: '',
     };
   },
   methods: {
     ...mapActions([CREATE_CATEGORY, FETCH_CATEGORIES]),
-    async addCategory() {
-      try {
-        await this[CREATE_CATEGORY]({ title: this.categoryName });
-        await this[FETCH_CATEGORIES]();
-      } catch (e) {
-        this.errorMessages = e;
+    ...mapMutations([SHOW_SNACKBAR]),
+    async onAddCategory() {
+      if (!this.$refs.createCategoryRequest.validate()) {
+        return;
       }
-      this.categoryName = '';
-      this.errorMessages = '';
+      try {
+        await this[CREATE_CATEGORY](this.createCategoryRequest);
+        await this[FETCH_CATEGORIES]();
+        this[SHOW_SNACKBAR](MESSAGES.CATEGORY.ADD.SUCCESS);
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.CATEGORY.ADD.FAIL);
+      } finally {
+        this.createCategoryRequest.title = '';
+      }
     },
   },
 };

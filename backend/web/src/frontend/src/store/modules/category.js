@@ -1,5 +1,5 @@
 import CategoryService from '@/api/module/category.js';
-import { CREATE_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { CREATE_CATEGORY, EDIT_TAG, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 
 const state = {
@@ -24,6 +24,10 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   async [CREATE_CATEGORY]({ commit }, newCategory) {
     return CategoryService.create(newCategory);
+  },
+  // eslint-disable-next-line no-unused-vars
+  async [EDIT_TAG]({ commit }, categoryId, tagId) {
+    return CategoryService.changeTag(categoryId, tagId);
   },
 };
 

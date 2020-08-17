@@ -13,13 +13,12 @@
         <v-card-text>
           <v-row>
             <v-col cols="10">
-              <v-form ref="bookmarkForm" @submit.prevent>
+              <v-form ref="bookmarkForm" @submit.prevent="addBookmark">
                 <v-text-field
                   v-model="url"
                   label="URL 입력후 enter를 입력하여 저장. https://..."
                   :rules="rules"
                   :disabled="isBookmarkAdded"
-                  @keypress.enter="addBookmark"
                 ></v-text-field>
               </v-form>
               <vue-tags-input
