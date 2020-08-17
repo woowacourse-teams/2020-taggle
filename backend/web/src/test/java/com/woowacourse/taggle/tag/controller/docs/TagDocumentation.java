@@ -28,6 +28,7 @@ public class TagDocumentation {
                 responseFields(
                         fieldWithPath("id").description("태그 ID"),
                         fieldWithPath("name").description("태그 이름"),
+                        fieldWithPath("bookmarks").description("태그의 북마크 (Nullable)").optional(),
                         fieldWithPath("bookmarks.[].id").description("북마크 ID"),
                         fieldWithPath("bookmarks.[].url").description("북마크 URI"),
                         fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
@@ -39,8 +40,8 @@ public class TagDocumentation {
     public static RestDocumentationResultHandler findUntagged() {
         return document("tags/untagged/get",
                 responseFields(
-                        fieldWithPath("id").description("태그 ID: Null").optional(),
-                        fieldWithPath("name").description("태그 이름: Untagged"),
+                        fieldWithPath("id").description("태그 ID (Null)").optional(),
+                        fieldWithPath("name").description("태그 이름 (Untagged)"),
                         fieldWithPath("bookmarks.[].id").description("북마크 ID"),
                         fieldWithPath("bookmarks.[].url").description("북마크 URI"),
                         fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
