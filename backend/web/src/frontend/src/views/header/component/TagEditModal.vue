@@ -59,7 +59,7 @@ import { MESSAGES } from '@/utils/constants.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 
 export default {
-  name: 'CategoryTagModifyModal',
+  name: 'TagEditModal',
   components: {
     draggable,
   },
