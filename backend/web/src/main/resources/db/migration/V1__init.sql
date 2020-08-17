@@ -6,7 +6,7 @@ CREATE TABLE `user`
     `email`         varchar(255) NOT NULL,
     `nick_name`     varchar(255) NOT NULL,
     `phone_number`  varchar(255) DEFAULT NULL,
-    `picture`       varchar(255) NOT NULL,
+    `picture`       longtext NOT NULL,
     `role`          varchar(255) NOT NULL,
     `sign_out_date` datetime     DEFAULT NULL,
     PRIMARY KEY (`id`)
@@ -16,8 +16,11 @@ CREATE TABLE `bookmark`
 (
     `bookmark_id` bigint(20)   NOT NULL AUTO_INCREMENT,
     `is_read`     bit(1)       NOT NULL,
-    `url`         varchar(255) NOT NULL,
+    `url`         longtext NOT NULL,
     `user_id`     bigint(20) DEFAULT NULL,
+    `description` longtext DEFAULT NULL,
+    `title` varchar(255) DEFAULT NULL,
+    `image` longtext DEFAULT NULL,
     PRIMARY KEY (`bookmark_id`),
     FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 );
