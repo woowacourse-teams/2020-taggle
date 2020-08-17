@@ -19,6 +19,7 @@
             <v-list-item-title class="font-weight-black text-h7">
               {{ title }}
             </v-list-item-title>
+            <CategoryIcons :category="{ id: id, title: title }" />
           </v-list-item-content>
         </template>
         <v-list-item v-for="{ id, name } in tags" :key="id" :to="{ name: 'bookmarks', params: { id } }">
@@ -43,8 +44,9 @@
 </template>
 
 <script>
-import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
+import CategoryAddModal from '@/views/header/component/category/CategoryAddModal.vue';
 import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
+import CategoryIcons from '@/views/header/component/category/CategoryIcons.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
@@ -54,15 +56,16 @@ export default {
   components: {
     CategoryAddModal,
     CategoryTagModifyModal,
+    CategoryIcons,
+  },
+  computed: {
+    ...mapGetters([CATEGORIES]),
   },
   created() {
     this[FETCH_CATEGORIES]();
   },
   methods: {
     ...mapActions([FETCH_CATEGORIES]),
-  },
-  computed: {
-    ...mapGetters([CATEGORIES]),
   },
 };
 </script>
