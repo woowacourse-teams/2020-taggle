@@ -13,16 +13,21 @@
         <v-card-text>
           <v-row>
             <v-col cols="10">
-              <v-text-field
-                v-model="createBookmarkRequest.url"
-                label="URL 입력후 enter로저장 https://..."
-                :rules="rules"
-                @keypress.enter="addBookmark"
-              ></v-text-field>
+              <v-form ref="bookmarkForm" @submit.prevent>
+                <v-text-field
+                  v-model="url"
+                  label="URL 입력후 enter를 입력하여 저장. https://..."
+                  :rules="rules"
+                  :disabled="isBookmarkAdded"
+                  @keypress.enter="addBookmark"
+                ></v-text-field>
+              </v-form>
               <vue-tags-input
                 v-model="tag"
+                v-if="isBookmarkAdded"
                 :tags="tags"
                 @before-adding-tag="onAddTagBookmark"
+                @before-deleting-tag="onDeleteTagBookmark"
                 @tags-changed="(newTags) => (tags = newTags)"
                 placeholder="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
               />
@@ -35,11 +40,20 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
-import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { RESET_BOOKMARK_WITH_TAGS, SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import VueTagsInput from '@johmun/vue-tags-input';
 import TagService from '@/api/module/tag.js';
 import BookmarkService from '@/api/module/bookmark.js';
+import {
+  ADD_TAG_ON_BOOKMARK,
+  DELETE_TAG_ON_BOOKMARK,
+  FETCH_BOOKMARK_WITH_TAGS,
+  FETCH_CATEGORIES,
+} from '@/store/share/actionTypes.js';
+import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { MESSAGES } from '@/utils/constants.js';
+import validator from '@/utils/validator.js';
 
 export default {
   name: 'BookmarkAddModal',
@@ -48,61 +62,88 @@ export default {
   },
   data() {
     return {
-      createBookmarkRequest: {
-        url: '',
-      },
-      tagCreateRequest: {
-        name: '',
-      },
       dialog: false,
       tag: '',
       tags: [],
-      rules: [(value) => !!value || '북마크로 저장할 URL값이 필요합니다.'],
+      rules: validator.bookmark.url,
       bookmarkId: '',
+      url: '',
     };
   },
+  watch: {
+    dialog() {
+      if (!this.dialog) {
+        this.clearInputTagForm();
+      }
+    },
+  },
+  computed: {
+    ...mapGetters([GET_TAG_ID_BY_NAME]),
+    isBookmarkAdded() {
+      return !!this.bookmarkId;
+    },
+  },
   methods: {
-    ...mapMutations([SHOW_SNACKBAR]),
+    ...mapActions([FETCH_CATEGORIES, FETCH_BOOKMARK_WITH_TAGS, ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK]),
+    ...mapMutations([SHOW_SNACKBAR, RESET_BOOKMARK_WITH_TAGS]),
     closeModal() {
       this.dialog = false;
     },
     openModal() {
       this.dialog = true;
     },
+    clearInputTagForm() {
+      this.tag = '';
+      this.tags = [];
+      this.bookmarkId = '';
+      this.url = '';
+      this[RESET_BOOKMARK_WITH_TAGS]();
+      this.$refs.bookmarkForm.resetValidation();
+    },
     async addBookmark() {
-      try {
-        this.bookmarkId = await BookmarkService.post(this.createBookmarkRequest);
-        this[SHOW_SNACKBAR]('북마크 생성을 성공했습니다.');
-      } catch (e) {
-        this[SHOW_SNACKBAR]('북마크 생성중 오류가 발생했습니다.');
+      if (!this.$refs.bookmarkForm.validate()) {
+        return;
       }
-      this.createBookmarkRequest.url = '';
+      try {
+        this.bookmarkId = await BookmarkService.post({ url: this.url });
+        await this.fetchBookmark();
+        this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
+      }
     },
     async onAddTagBookmark(data) {
-      this.tagCreateRequest.name = data.tag.text;
+      const targetTagName = data.tag.text;
       try {
-        const tagId = await TagService.create(this.tagCreateRequest);
-        await TagService.addBookmarkOnTag(tagId, this.bookmarkId);
-        // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
+        const targetTagId = await TagService.create({ name: targetTagName });
+        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        await this[FETCH_CATEGORIES]();
+        await this.fetchBookmark();
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
         data.addTag();
       } catch (e) {
-        this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
       }
     },
-    // async onRemoveTagBookmark(data) {
-    //   const deleteName = data.tag.text;
-    //   const tagId = this[TAG_ID_BY_NAME](deleteName);
-    //   try {
-    //     await this[DELETE_TAG_BOOKMARK]({
-    //       bookmarkId: this[BOOKMARK_ID],
-    //       tagId,
-    //     });
-    //     await this[FETCH_TAG_BOOKMARK](this[BOOKMARK_ID]);
-    //     data.deleteTag();
-    //   } catch (e) {
-    //     this[SHOW_SNACKBAR]('태그 북마크 삭제중 오류가 발생했습니다.');
-    //   }
-    // },
+    async onDeleteTagBookmark(data) {
+      const targetTagName = data.tag.text;
+      const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
+      try {
+        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        await this.fetchBookmark();
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
+        data.deleteTag();
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
+      }
+    },
+    async fetchBookmark() {
+      try {
+        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+      } catch (e) {
+        throw new Error(MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
+      }
+    },
   },
 };
 </script>
