@@ -86,7 +86,7 @@ export default {
         // await this[FETCH_TAG_BOOKMARK](this.bookmarkId);
         data.addTag();
       } catch (e) {
-        this[SHOW_SNACKBAR]('태그 북마크 생성중 오류가 발생했습니다.');
+        this[SHOW_SNACKBAR]('태그 추가중 오류가 발생했습니다.');
       }
     },
     // async onRemoveTagBookmark(data) {
