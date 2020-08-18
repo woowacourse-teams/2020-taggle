@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -30,6 +29,7 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @NotEmpty
@@ -47,9 +47,8 @@ public class User extends BaseTimeEntity {
     private String phoneNumber;
 
     @URL
-    @Lob
     @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String picture;
 
     @Enumerated(EnumType.STRING)

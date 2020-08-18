@@ -33,6 +33,7 @@ public class Tag {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
