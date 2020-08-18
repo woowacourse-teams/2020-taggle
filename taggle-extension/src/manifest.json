@@ -1,6 +1,6 @@
 {
-  "name": "taggle-extension",
-  "description": "A Vue.js web extension",
+  "name": "Taggle",
+  "description": "태그단위로 당신의 북마크를 효율적으로 관리하세요!",
   "version": null,
   "manifest_version": 2,
   "icons": {

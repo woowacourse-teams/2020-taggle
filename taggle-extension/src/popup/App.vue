@@ -1,7 +1,7 @@
 <template>
   <v-app id="container">
     <section>
-      <img src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" />
+      <img @click="moveTagglePage" src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" />
       <h2 class="taggle-title">TAGGLE</h2>
       <Buttons
         @deleteBookmark="onDelete"
@@ -11,15 +11,15 @@
         :bookmarkUrl="url"
       />
     </section>
-    <TagInput v-if="hasBookmark && isUrlLoaded" :bookmarkUrl="url" />
+    <TagInput v-if="hasBookmark && isUrlLoaded" />
     <Snackbar />
   </v-app>
 </template>
 
 <script>
-import Buttons from '../components/Buttons.vue';
-import TagInput from '../components/TagInput.vue';
-import Snackbar from '../components/Snackbar.vue';
+import Buttons from '@/components/Buttons.vue';
+import TagInput from '@/components/TagInput.vue';
+import Snackbar from '@/components/Snackbar.vue';
 
 export default {
   components: {
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     isUrlLoaded() {
-      return this.url !== '';
+      return !!this.url;
     },
   },
   created() {
@@ -51,6 +51,11 @@ export default {
     getUrl() {
       chrome.tabs.query({ active: true, lastFocusedWindow: true }, async (tabs) => {
         this.url = tabs[0].url;
+      });
+    },
+    moveTagglePage() {
+      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.executeScript(tabs[0].id, { code: `window.location.href='https://taggle.kr';` });
       });
     },
   },

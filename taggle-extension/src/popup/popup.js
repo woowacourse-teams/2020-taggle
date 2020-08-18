@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import App from './App';
-import store from '../store';
-import vuetify from '../plugins/vuetify.js';
+import store from '@/store';
+import App from '@/popup/App';
+import vuetify from '@/plugins/vuetify.js';
 
 global.browser = require('webextension-polyfill');
 

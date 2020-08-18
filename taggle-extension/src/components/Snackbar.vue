@@ -6,15 +6,16 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { IS_SHOW, MESSAGE } from '@/store/share/gettersType.js';
 
 export default {
   name: 'Snackbar',
   computed: {
-    ...mapGetters(['isShow', 'message']),
+    ...mapGetters([IS_SHOW, MESSAGE]),
   },
   watch: {
-    isShow() {
-      this.showSnackbar(this.message);
+    [IS_SHOW]() {
+      this.showSnackbar(this[MESSAGE]);
     },
   },
   methods: {

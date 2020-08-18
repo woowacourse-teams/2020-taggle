@@ -1,16 +1,16 @@
-import ApiService from '../index.js';
+import ApiService from '@/api/index.js';
 
 const BASE_URL = '/api/v1/bookmarks';
 
 const BookmarkService = {
-  findBookmarkTags(bookmarkId) {
-    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
+  getBookmarkWithTags(bookmarkId) {
+    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`).then(({ data }) => data);
   },
-  save(newBookmark) {
-    return ApiService.post(`${BASE_URL}`, newBookmark);
+  create(newBookmark) {
+    return ApiService.post(BASE_URL, newBookmark).then(({ data }) => data.id);
   },
-  delete(id) {
-    return ApiService.delete(`${BASE_URL}/${id}`);
+  delete(bookmarkId) {
+    return ApiService.delete(`${BASE_URL}/${bookmarkId}`);
   },
 };
 
