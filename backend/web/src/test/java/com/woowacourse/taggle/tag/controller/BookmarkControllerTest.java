@@ -11,8 +11,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
-import com.woowacourse.taggle.setup.domain.TagBookmarkSetup;
-import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.setup.domain.UserSetup;
 import com.woowacourse.taggle.tag.controller.docs.BookmarkDocumentation;
 import com.woowacourse.taggle.tag.domain.Bookmark;
@@ -21,13 +19,7 @@ import com.woowacourse.taggle.user.domain.User;
 class BookmarkControllerTest extends ControllerTest {
 
     @Autowired
-    private TagBookmarkSetup tagBookmarkSetup;
-
-    @Autowired
     private BookmarkSetup bookmarkSetup;
-
-    @Autowired
-    private TagSetup tagSetup;
 
     @Autowired
     private UserSetup userSetup;

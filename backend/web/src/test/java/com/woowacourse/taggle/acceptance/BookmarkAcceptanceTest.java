@@ -21,27 +21,20 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
     @Test
     void manageBookmark() {
         // 북마크를 생성한다.
-        createBookmark("http://naver.com");
-        List<BookmarkResponse> bookmarks = findBookmarks();
+        final BookmarkResponse bookmarkResponse = createBookmark("http://naver.com");
 
-        assertThat(bookmarks).hasSize(1);
-        
-        // 태그에 북마크를 추가한다.
-        final Long bookmarkId = bookmarks.get(0).getId();
-        TagResponse tag = createTag("taggle");
-        addBookmarkOnTag(tag.getId(), bookmarkId);
+        assertThat(bookmarkResponse.getUrl()).isEqualTo("http://naver.com");
 
-        // 북마크에 있는 태그를 조회한다.
-        final BookmarkTagResponse bookmark = findBookmark(bookmarkId);
+        // 북마크 전체를 가져온다.
+        List<BookmarkResponse> bookmarkResponses = findBookmarks();
 
-        assertThat(bookmark.getId()).isEqualTo(bookmarkId);
-        assertThat(bookmark.getTags()).hasSize(1);
+        assertThat(bookmarkResponses).hasSize(1);
 
         // 북마크를 제거한다.
-        removeBookmark(bookmarkId);
+        removeBookmark(bookmarkResponse.getId());
 
-        bookmarks = findBookmarks();
-        assertThat(bookmarks).hasSize(0);
+        bookmarkResponses = findBookmarks();
+        assertThat(bookmarkResponses).hasSize(0);
     }
 
     public List<BookmarkResponse> findBookmarks() {
