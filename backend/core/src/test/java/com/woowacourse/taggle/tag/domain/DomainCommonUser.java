@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 
-public class DomainTest {
+public class DomainCommonUser {
 
     protected User user;
 
