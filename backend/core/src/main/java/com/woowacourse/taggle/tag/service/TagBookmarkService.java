@@ -63,7 +63,7 @@ public class TagBookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public BookmarkTagResponse findBookmark(final SessionUser user, final Long id) {
+    public BookmarkTagResponse findTagsOfBookmark(final SessionUser user, final Long id) {
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(id, user.getId());
 
         return BookmarkTagResponse.of(bookmark);

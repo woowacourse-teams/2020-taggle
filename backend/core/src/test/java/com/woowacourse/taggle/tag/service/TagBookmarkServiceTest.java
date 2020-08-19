@@ -15,6 +15,7 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -152,5 +153,20 @@ class TagBookmarkServiceTest {
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);
+    }
+
+    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
+    @Test
+    void findTagsOfBookmark() {
+        // given
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+                "description", "image");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+
+        //when
+        final BookmarkTagResponse expected = tagBookmarkService.findTagsOfBookmark(user, bookmark.getId());
+
+        // then
+        assertThat(expected.getId()).isEqualTo(bookmark.getId());
     }
 }
