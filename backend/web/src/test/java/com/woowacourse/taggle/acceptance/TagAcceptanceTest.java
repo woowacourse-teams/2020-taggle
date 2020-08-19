@@ -23,17 +23,17 @@ public class TagAcceptanceTest extends AcceptanceTest {
     void manageBookmark() {
 
         // 태그를 생성한다
-        TagResponse taggle = createTag("taggle");
-        TagBookmarkResponse tagBookmarkResponse = findTagById(taggle.getId());
+        final TagResponse taggle = createTag("taggle");
+        final TagBookmarkResponse tagBookmarkResponse = findBookmarksOfTag(taggle.getId());
 
         assertThat(tagBookmarkResponse.getName()).isEqualTo("taggle");
 
         // 북마크에 태그를 추가한다
         final Long tagId = tagBookmarkResponse.getId();
 
-        BookmarkResponse bookmark = createBookmark("http://naver.com");
+        final BookmarkResponse bookmark = createBookmark("http://naver.com");
         addBookmarkOnTag(tagId, bookmark.getId());
-        final TagBookmarkResponse tagBookmarkResponse2 = findTagById(tagId);
+        final TagBookmarkResponse tagBookmarkResponse2 = findBookmarksOfTag(tagId);
 
         assertThat(tagBookmarkResponse2.getBookmarks()).hasSize(1);
 
@@ -50,12 +50,12 @@ public class TagAcceptanceTest extends AcceptanceTest {
         deleteTeg(tagBookmarkResponse.getId());
 
         // 북마크에 새로운 태그를 추가한다
-        TagResponse tag = createTag("taggle");
-        TagBookmarkResponse anotherTagBookmarkResponse = findTagById(tag.getId());
+        final TagResponse tag = createTag("taggle");
+        final TagBookmarkResponse anotherTagBookmarkResponse = findBookmarksOfTag(tag.getId());
         final Long anotherTagId = anotherTagBookmarkResponse.getId();
         final BookmarkResponse anotherBookmark = createBookmark("http://daum.net");
         addBookmarkOnTag(anotherTagId, anotherBookmark.getId());
-        final TagBookmarkResponse anotherTagBookmarkResponse2 = findTagById(anotherTagId);
+        final TagBookmarkResponse anotherTagBookmarkResponse2 = findBookmarksOfTag(anotherTagId);
         assertThat(anotherTagBookmarkResponse2.getBookmarks()).hasSize(1);
     }
 
@@ -67,13 +67,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 
-    public List<TagResponse> findTags() {
-        //TODO: 전체 조회 없어서 삭제 해야되는거 확인해야함
-        return getAsList("/api/v1/tags", TagResponse.class);
-    }
-
-    public TagBookmarkResponse findTagById(final Long id) {
-        return get("/api/v1/tags/" + id, TagBookmarkResponse.class);
+    public TagBookmarkResponse findBookmarksOfTag(final Long id) {
+        return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
     }
 
     public void deleteTeg(final Long id) {

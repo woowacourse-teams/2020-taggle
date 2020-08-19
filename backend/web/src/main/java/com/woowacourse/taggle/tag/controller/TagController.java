@@ -6,14 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.service.TagService;
@@ -36,23 +34,6 @@ public class TagController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", "/api/v1/tags/" + tag.getId())
                 .body(tag);
-    }
-
-    @GetMapping("/{tagId}")
-    public ResponseEntity<TagBookmarkResponse> findTagById(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId) {
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tagId);
-
-        return ResponseEntity.ok()
-                .body(tagBookmarkResponse);
-    }
-
-    @GetMapping("/untagged")
-    public ResponseEntity<TagBookmarkResponse> findUntagged(@AuthenticationPrincipal final SessionUser user) {
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findUntagged(user);
-
-        return ResponseEntity.ok()
-                .body(tagBookmarkResponse);
     }
 
     @DeleteMapping("/{tagId}")

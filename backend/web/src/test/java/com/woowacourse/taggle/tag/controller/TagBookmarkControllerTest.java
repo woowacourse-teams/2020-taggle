@@ -1,5 +1,8 @@
 package com.woowacourse.taggle.tag.controller;
 
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +38,29 @@ public class TagBookmarkControllerTest extends ControllerTest {
     @BeforeEach
     void setUp() {
         user = userSetup.save();
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("findBookmarksOfTag: 태그 단건을 조회한다.")
+    @Test
+    void findBookmarksOfTag() throws Exception {
+        final Tag tag = tagSetup.save(user);
+        final Bookmark bookmark = bookmarkSetup.save(user);
+        tagBookmarkSetup.save(tag, bookmark);
+
+        readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks", tag.getId())
+                .andExpect(jsonPath("$.id", is(tag.getId().intValue())))
+                .andDo(TagBookmarkDocumentation.findBookmarksOfTag());
+    }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("findBookmarksOfUntagged: Untagged를 조회한다.")
+    @Test
+    void findBookmarksOfUntagged() throws Exception {
+        bookmarkSetup.save(user);
+
+        read(user, "/api/v1/tags/untagged/bookmarks", jsonPath("$.id", is(nullValue())))
+                .andDo(TagBookmarkDocumentation.findBookmarksOfUntagged());
     }
 
     @WithMockUser(value = "ADMIN")

@@ -5,11 +5,13 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.service.TagBookmarkService;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,24 @@ import lombok.RequiredArgsConstructor;
 public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
+
+    @GetMapping("/tags/{tagId}/bookmarks")
+    public ResponseEntity<TagBookmarkResponse> findBookmarksOfTag(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long tagId) {
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfTag(user, tagId);
+
+        return ResponseEntity.ok()
+                .body(tagBookmarkResponse);
+    }
+
+    @GetMapping("/tags/untagged/bookmarks")
+    public ResponseEntity<TagBookmarkResponse> findBookmarksOfUntagged(
+            @AuthenticationPrincipal final SessionUser user) {
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfUntagged(user);
+
+        return ResponseEntity.ok()
+                .body(tagBookmarkResponse);
+    }
 
     @PostMapping("/tags/{tagId}/bookmarks/{bookmarkId}")
     public ResponseEntity<Void> addBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
