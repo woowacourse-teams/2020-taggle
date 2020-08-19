@@ -80,10 +80,6 @@ public class TagAcceptanceTest extends AcceptanceTest {
                 "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
     }
 
-    public void updateCategoryOnTag(final Long tagId, final Long categoryId) {
-        put("/api/v1/categories/" + categoryId + "/tags/" + tagId, new HashMap<>());
-    }
-
     public List<CategoryTagsResponse> findCategories() {
         return getAsList("/api/v1/categories/tags", CategoryTagsResponse.class);
     }
