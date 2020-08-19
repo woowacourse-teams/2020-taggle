@@ -83,20 +83,6 @@ public class AcceptanceTest {
     // @formatter:on
 
     // @formatter:off
-    public ExtractableResponse<MockMvcResponse> getNotFoundException(final String path) {
-        return
-                given()
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .when()
-                        .get(path)
-                        .then()
-                        .log().all()
-                        .statusCode(HttpStatus.NOT_FOUND.value())
-                        .extract();
-    }
-    // @formatter:on
-
-    // @formatter:off
     public <T> List<T> getAsList(final String path, final Class<T> responseType) {
         return
                 given()
@@ -108,6 +94,20 @@ public class AcceptanceTest {
                         .statusCode(HttpStatus.OK.value())
                         .extract()
                         .jsonPath().getList(".", responseType);
+    }
+    // @formatter:on
+
+    // @formatter:off
+    public ExtractableResponse<MockMvcResponse> getNotFoundException(final String path) {
+        return
+                given()
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .when()
+                        .get(path)
+                        .then()
+                        .log().all()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .extract();
     }
     // @formatter:on
 

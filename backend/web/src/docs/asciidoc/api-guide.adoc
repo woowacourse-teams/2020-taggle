@@ -19,7 +19,7 @@ endif::[]
 [[resources-categories-create]]
 === 카테고리 추가
 
-operation::categories/create[snippets='http-request,request-body,http-response,response-headers,response-body']
+operation::categories/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
 
 [[resources-categories-get-list]]
 === 카테고리 전체 조회
@@ -34,12 +34,12 @@ operation::categories/update[snippets='http-request,request-fields,http-response
 [[resources-categories-tags-update]]
 === 태그의 카테고리 수정
 
-operation::categories/tags/update[snippets='http-request,http-response,path-parameters']
+operation::categories/tags/update[snippets='http-request,path-parameters,http-response']
 
 [[resources-categories-delete]]
 === 카테고리 삭제
 
-operation::categories/delete[snippets='http-request,http-response,path-parameters']
+operation::categories/delete[snippets='http-request,path-parameters,http-response']
 
 [[resources-tags]]
 == Tags
@@ -47,7 +47,7 @@ operation::categories/delete[snippets='http-request,http-response,path-parameter
 [[resources-tags-create]]
 === 태그 추가
 
-operation::tags/create[snippets='http-request,request-fields,http-response,response-headers,response-body']
+operation::tags/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
 
 [[resources-tags-delete]]
 === 태그 삭제
@@ -60,7 +60,7 @@ operation::tags/delete[snippets='http-request,path-parameters,http-response']
 [[resources-bookmarks-create]]
 === 북마크 추가
 
-operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-headers']
+operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
 
 [[resources-bookmarks-get-list]]
 === 북마크 전체 조회
@@ -78,7 +78,7 @@ operation::bookmarks/delete[snippets='http-request,path-parameters,http-response
 [[resources-tags-get]]
 === 태그의 북마크 조회
 
-operation::tags/bookmarks/get[snippets='http-request,http-response,response-fields']
+operation::tags/bookmarks/get[snippets='http-request,path-parameters,http-response,response-fields']
 
 [[resources-tags-untagged-get]]
 === Untagged의 북마크 조회

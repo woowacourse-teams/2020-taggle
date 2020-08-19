@@ -1,15 +1,12 @@
 package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -24,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class TagService {
 
     private final TagRepository tagRepository;
-    private final BookmarkService bookmarkService;
     private final UserService userService;
 
     public TagResponse createTag(final SessionUser sessionUser, final TagCreateRequest tagCreateRequest) {
@@ -33,21 +29,6 @@ public class TagService {
                 .orElseGet(() -> tagRepository.save(tagCreateRequest.toEntityWithUser(user)));
 
         return TagResponse.of(tag);
-    }
-
-    @Transactional(readOnly = true)
-    public TagBookmarkResponse findTagById(final SessionUser user, final Long tagId) {
-        final Tag tag = findByIdAndUserId(tagId, user.getId());
-
-        return TagBookmarkResponse.of(tag);
-    }
-
-    @Transactional(readOnly = true)
-    public TagBookmarkResponse findUntagged(final SessionUser user) {
-        final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
-                .filter(Bookmark::isTagsEmpty)
-                .collect(Collectors.toList());
-        return TagBookmarkResponse.ofUntagged(bookmarks);
     }
 
     public void removeTag(final SessionUser user, final Long tagId) {

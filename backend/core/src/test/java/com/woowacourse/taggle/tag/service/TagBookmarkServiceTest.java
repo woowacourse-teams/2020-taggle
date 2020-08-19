@@ -59,7 +59,7 @@ class TagBookmarkServiceTest {
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
 
         // when
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tag.getId());
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfTag(user, tag.getId());
 
         // then
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
@@ -76,7 +76,7 @@ class TagBookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // when
-        final TagBookmarkResponse untaggedBookmarks = tagService.findUntagged(user);
+        final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findBookmarksOfUntagged(user);
 
         // then
         assertThat(untaggedBookmarks.getId()).isNull();
@@ -110,9 +110,9 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark2.getId());
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark3.getId());
 
-        final TagBookmarkResponse tagBookmark1 = tagService.findTagById(user, taggle.getId());
-        final TagBookmarkResponse tagBookmark2 = tagService.findTagById(user, google.getId());
-        final TagBookmarkResponse tagBookmark3 = tagService.findTagById(user, naver.getId());
+        final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksOfTag(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksOfTag(user, google.getId());
+        final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksOfTag(user, naver.getId());
 
         // then
         assertThat(tagBookmark1.getId()).isEqualTo(taggle.getId());
@@ -144,7 +144,7 @@ class TagBookmarkServiceTest {
 
         // when
         tagBookmarkService.removeTagBookmark(user, taggle.getId(), bookmark1.getId());
-        final TagBookmarkResponse tagBookmark = tagService.findTagById(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksOfTag(user, taggle.getId());
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);
