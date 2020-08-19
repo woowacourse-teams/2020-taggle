@@ -11,8 +11,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
-import com.woowacourse.taggle.tag.dto.TagResponse;
 
 public class BookmarkAcceptanceTest extends AcceptanceTest {
 
@@ -37,23 +35,6 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(bookmarkResponses).hasSize(0);
     }
 
-    public List<BookmarkResponse> findBookmarks() {
-        return getAsList("/api/v1/bookmarks", BookmarkResponse.class);
-    }
-
-    public BookmarkTagResponse findBookmark(final Long id) {
-        return get("/api/v1/bookmarks/" + id + "/tags", BookmarkTagResponse.class);
-    }
-
-    public void removeBookmark(final Long id) {
-        delete("/api/v1/bookmarks/" + id);
-    }
-
-    public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId,
-                new HashMap<>(), "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
-    }
-
     public BookmarkResponse createBookmark(final String url) {
         final Map<String, Object> request = new HashMap<>();
         request.put("url", url);
@@ -61,12 +42,12 @@ public class BookmarkAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/bookmarks", request, BookmarkResponse.class, "/api/v1/bookmarks");
     }
 
-    public TagResponse createTag(final String name) {
+    public List<BookmarkResponse> findBookmarks() {
+        return getAsList("/api/v1/bookmarks", BookmarkResponse.class);
+    }
 
-        final Map<String, Object> request = new HashMap<>();
-        request.put("name", name);
-
-        return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
+    public void removeBookmark(final Long id) {
+        delete("/api/v1/bookmarks/" + id);
     }
 }
 

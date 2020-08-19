@@ -29,6 +29,8 @@ import com.woowacourse.taggle.user.dto.SessionUser;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.response.ExtractableResponse;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -77,6 +79,20 @@ public class AcceptanceTest {
                         .log().all()
                         .statusCode(HttpStatus.OK.value())
                         .extract().as(responseType);
+    }
+    // @formatter:on
+
+    // @formatter:off
+    public ExtractableResponse<MockMvcResponse> getNotFoundException(final String path) {
+        return
+                given()
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .when()
+                        .get(path)
+                        .then()
+                        .log().all()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .extract();
     }
     // @formatter:on
 

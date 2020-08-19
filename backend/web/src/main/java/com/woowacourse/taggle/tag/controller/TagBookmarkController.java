@@ -24,6 +24,15 @@ public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
 
+    @GetMapping("/bookmarks/{id}/tags")
+    public ResponseEntity<BookmarkTagResponse> findTagsOfBookmark(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id) {
+        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsOfBookmark(user, id);
+
+        return ResponseEntity.ok()
+                .body(bookmarkTagResponse);
+    }
+
     @GetMapping("/tags/{tagId}/bookmarks")
     public ResponseEntity<TagBookmarkResponse> findBookmarksOfTag(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {
@@ -60,14 +69,5 @@ public class TagBookmarkController {
 
         return ResponseEntity.noContent()
                 .build();
-    }
-
-    @GetMapping("/bookmarks/{id}/tags")
-    public ResponseEntity<BookmarkTagResponse> findTagsOfBookmark(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long id) {
-        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsOfBookmark(user, id);
-
-        return ResponseEntity.ok()
-                .body(bookmarkTagResponse);
     }
 }
