@@ -62,6 +62,12 @@ export default {
   },
   data() {
     return {
+      createBookmarkRequest: {
+        url: '',
+      },
+      tagCreateRequest: {
+        name: '',
+      },
       dialog: false,
       tag: '',
       tags: [],
