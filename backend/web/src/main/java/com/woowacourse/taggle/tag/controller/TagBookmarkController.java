@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.service.TagBookmarkService;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -59,5 +60,14 @@ public class TagBookmarkController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+
+    @GetMapping("/bookmarks/{id}/tags")
+    public ResponseEntity<BookmarkTagResponse> findTagsOfBookmark(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long id) {
+        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findBookmark(user, id);
+
+        return ResponseEntity.ok()
+                .body(bookmarkTagResponse);
     }
 }

@@ -59,4 +59,19 @@ public class TagBookmarkDocumentation {
                 )
         );
     }
+
+    public static RestDocumentationResultHandler findTagsOfBookmark() {
+        return document("bookmarks/tags/get",
+                pathParameters(
+                        parameterWithName("bookmarkId").description("북마크 ID")
+                ),
+                responseFields(
+                        fieldWithPath("id").description("북마크 ID"),
+                        fieldWithPath("url").description("북마크 URL"),
+                        fieldWithPath("tags").description("북마크의 태그 (Nullable)").optional(),
+                        fieldWithPath("tags.[].id").description("북마크에 있는 태그 ID"),
+                        fieldWithPath("tags.[].name").description("북마크에 있는 태그 이름")
+                )
+        );
+    }
 }

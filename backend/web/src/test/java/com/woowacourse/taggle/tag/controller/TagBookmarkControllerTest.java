@@ -85,4 +85,17 @@ public class TagBookmarkControllerTest extends ControllerTest {
         removeByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
                 .andDo(TagBookmarkDocumentation.removeBookmarkOnTag());
     }
+
+    @WithMockUser(value = "ADMIN")
+    @DisplayName("findTagsOfBookmark: 북마크의 태그를 조회한다.")
+    @Test
+    void findTagsOfBookmark() throws Exception {
+        final Bookmark bookmark = bookmarkSetup.save(user);
+        final Tag tag = tagSetup.save(user);
+        tagBookmarkSetup.save(tag, bookmark);
+
+        readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags", bookmark.getId())
+                .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
+                .andDo(TagBookmarkDocumentation.findTagsOfBookmark());
+    }
 }

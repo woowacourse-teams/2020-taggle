@@ -10,6 +10,7 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -24,12 +25,14 @@ public class TagBookmarkService {
     private final BookmarkService bookmarkService;
     private final TagBookmarkRepository tagBookmarkRepository;
 
+    @Transactional(readOnly = true)
     public TagBookmarkResponse findBookmarksOfTag(final SessionUser user, final Long tagId) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
 
         return TagBookmarkResponse.of(tag);
     }
 
+    @Transactional(readOnly = true)
     public TagBookmarkResponse findBookmarksOfUntagged(final SessionUser user) {
         final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
                 .filter(Bookmark::isTagsEmpty)
@@ -57,5 +60,12 @@ public class TagBookmarkService {
         tagBookmarkRepository.delete(tagBookmark);
         tag.removeTagBookmark(tagBookmark);
         bookmark.removeTagBookmark(tagBookmark);
+    }
+
+    @Transactional(readOnly = true)
+    public BookmarkTagResponse findBookmark(final SessionUser user, final Long id) {
+        final Bookmark bookmark = bookmarkService.findByIdAndUserId(id, user.getId());
+
+        return BookmarkTagResponse.of(bookmark);
     }
 }
