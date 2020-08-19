@@ -12,11 +12,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -40,12 +40,7 @@ class TagServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(User.builder()
-                .email("a@a.com")
-                .nickName("tigger")
-                .role(Role.USER)
-                .picture("https://www.naver.com/")
-                .build());
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
     }
 
@@ -63,19 +58,19 @@ class TagServiceTest {
         assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
     }
 
-    @DisplayName("createTag: 중복된 태그가 존재하는 경우 이미 존재하는 태그를 반환한다.")
+    @DisplayName("createTag: 이미 같은 이름의 태그가 존재하는 경우, 기존의 태그를 반환한다.")
     @Test
     void createTag_TagAlreadyExist_ReturnExistTag() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
 
         // when
-        tagService.createTag(user, tagCreateRequest);
         final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponseWithSameName = tagService.createTag(user, tagCreateRequest);
 
         // then
-        assertThat(tagResponse.getId()).isNotNull();
-        assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
+        assertThat(tagResponse.getId()).isEqualTo(tagResponseWithSameName.getId());
+        assertThat(tagResponse.getName()).isEqualTo(tagResponseWithSameName.getName());
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")

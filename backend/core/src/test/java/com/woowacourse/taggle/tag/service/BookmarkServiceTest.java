@@ -14,11 +14,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -41,12 +41,7 @@ class BookmarkServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(User.builder()
-                .email("a@a.com")
-                .nickName("tigger")
-                .role(Role.USER)
-                .picture("https://www.naver.com/")
-                .build());
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
     }
 
@@ -64,7 +59,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
     }
 
-    @DisplayName("동일한 북마크가 이미 존재 할 경우 이미 존재하는 북마크를 반환한다.")
+    @DisplayName("createBookmark: 이미 같은 이름의 url을 가진 북마크가 존재 하는 경우, 기존의 북마크를 반환한다.")
     @Test
     void createBookmark_DuplicateBookmark_ExceptionThrown() {
         // given
@@ -73,9 +68,14 @@ class BookmarkServiceTest {
 
         // when
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         // then
-        assertThat(bookmarkResponse.getUrl()).isEqualTo("https://taggle.co.kr");
+        assertThat(bookmarkResponse.getId()).isEqualTo(bookmarkResponseWithSameName.getId());
+        assertThat(bookmarkResponse.getUrl()).isEqualTo(bookmarkResponseWithSameName.getUrl());
+        assertThat(bookmarkResponse.getTitle()).isEqualTo(bookmarkResponseWithSameName.getTitle());
+        assertThat(bookmarkResponse.getDescription()).isEqualTo(bookmarkResponseWithSameName.getDescription());
+        assertThat(bookmarkResponse.getImage()).isEqualTo(bookmarkResponseWithSameName.getImage());
     }
 
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
@@ -93,7 +93,7 @@ class BookmarkServiceTest {
         assertThat(bookmarks).hasSize(1);
     }
 
-    @DisplayName("북마크를 삭제한다.")
+    @DisplayName("removeBookmark: 북마크를 삭제한다.")
     @Test
     void removeBookmark() {
         // given
@@ -108,7 +108,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponses).hasSize(0);
     }
 
-    @DisplayName("삭제하려는 북마크가 존재 하지 않을 경우 익셉션을 발생한다")
+    @DisplayName("removeBookmark: 삭제하려는 북마크가 존재 하지 않을 경우 익셉션을 발생한다")
     @Test
     void removeBookmark_NotFoundException() {
         // given

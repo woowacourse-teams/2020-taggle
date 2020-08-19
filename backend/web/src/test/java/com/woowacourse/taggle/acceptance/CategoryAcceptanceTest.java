@@ -29,6 +29,12 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         List<CategoryTagsResponse> categories = findCategories();
         assertThat(categories).hasSize(1);
 
+        // 이미 존재하는 카테고리와 같은 이름의 카테고리 생성요청시 새 카테고리를 생성하지 않는다.
+        createCategory("project");
+        categories = findCategories();
+
+        assertThat(categories).hasSize(1);
+
         // 카테고리를 수정한다.
         final CategoryTagsResponse categoryTagsResponse = categories.get(0);
         final String updateTitle = "service";

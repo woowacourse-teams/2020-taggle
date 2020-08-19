@@ -1,5 +1,5 @@
 import TagService from '@/api/module/tag.js';
-import { FETCH_TAG_BOOKMARKS } from '@/store/share/actionTypes.js';
+import { FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
 import { SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
 import { BOOKMARKS } from '@/store/share/getterTypes.js';
 
@@ -21,7 +21,7 @@ const mutations = {
   },
 };
 const actions = {
-  async [FETCH_TAG_BOOKMARKS]({ commit }, { tagId }) {
+  async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId }) {
     const res = await TagService.findTagWithBookmarks(tagId);
     const bookmarks = res.data;
     commit(SET_TAG_BOOKMARKS, bookmarks);

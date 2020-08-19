@@ -1,6 +1,6 @@
 <template>
-  <v-row class="mt-10 layout-container">
-    <v-col cols="10">
+  <v-row>
+    <v-col>
       <v-container grid-list-lg text-xs-center>
         <CardStream :bookmarks="bookmarks" v-show="cardDisplayMode === 'stream'" />
         <CardModule :bookmarks="bookmarks" v-show="cardDisplayMode === 'module'" />

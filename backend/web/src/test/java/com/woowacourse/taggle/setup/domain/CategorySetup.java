@@ -20,11 +20,11 @@ public class CategorySetup {
         return categoryRepository.save(new Category("project", user));
     }
 
-    public Category saveWithTag(final User user) {
-        System.out.println(user.getId() + "@@@@@@@@@@@@@@@@@@@@@2");
-        final Category category = categoryRepository.save(new Category("project", user));
-        final Tag tag = tagRepository.save(new Tag("taggle", user));
-        tag.updateCategory(category);
-        return category;
+    public void saveWithTag(final User user) {
+        final Category category1 = categoryRepository.save(new Category("project1", user));
+        final Tag tag = tagRepository.save(new Tag("taggle1", user));
+        categoryRepository.save(new Category("project2", user));
+        tagRepository.save(new Tag("taggle2", user));
+        tag.updateCategory(category1);
     }
 }
