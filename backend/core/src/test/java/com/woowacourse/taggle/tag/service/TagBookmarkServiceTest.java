@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
@@ -26,6 +27,8 @@ import com.woowacourse.taggle.user.service.UserService;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
 class TagBookmarkServiceTest {
+
+    private static final String TAG_NAME = "spring boot";
 
     @Autowired
     private TagBookmarkService tagBookmarkService;
@@ -50,6 +53,39 @@ class TagBookmarkServiceTest {
                 .picture("https://www.naver.com/")
                 .build());
         user = new SessionUser(testUser);
+    }
+
+    @DisplayName("findBookmarksOfTag: 특정 태그의 북마크를 조회한다.")
+    @Test
+    void findBookmarksOfTag() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
+
+        // when
+        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tag.getId());
+
+        // then
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
+    }
+
+    @DisplayName("findBookmarksOfUntagged: Untagged의 북마크를 조회한다.")
+    @Test
+    void findBookmarksOfUntagged() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
+                "https://github.com/woowacourse-teams/2020-taggle");
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
+                "image");
+        bookmarkService.createBookmark(user, bookmarkCreateDto);
+
+        // when
+        final TagBookmarkResponse untaggedBookmarks = tagService.findUntagged(user);
+
+        // then
+        assertThat(untaggedBookmarks.getId()).isNull();
+        assertThat(untaggedBookmarks.getName()).isEqualTo("Untagged");
+        assertThat(untaggedBookmarks.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("createTagBookmark: 태그에 북마크를 추가한다.")
