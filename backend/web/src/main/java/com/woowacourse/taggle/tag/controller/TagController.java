@@ -1,7 +1,5 @@
 package com.woowacourse.taggle.tag.controller;
 
-import java.net.URI;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
-import com.woowacourse.taggle.tag.service.TagBookmarkService;
 import com.woowacourse.taggle.tag.service.TagService;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class TagController {
 
     private final TagService tagService;
-    private final TagBookmarkService tagBookmarkService;
 
     @PostMapping
     public ResponseEntity<TagResponse> createTag(
@@ -63,26 +59,6 @@ public class TagController {
     public ResponseEntity<Void> removeTag(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {
         tagService.removeTag(user, tagId);
-
-        return ResponseEntity.noContent()
-                .build();
-    }
-
-    @PostMapping("/{tagId}/bookmarks/{bookmarkId}")
-    public ResponseEntity<Void> addBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId,
-            @PathVariable final Long bookmarkId) {
-        tagBookmarkService.createTagBookmark(user, tagId, bookmarkId);
-
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId))
-                .build();
-    }
-
-    @DeleteMapping("/{tagId}/bookmarks/{bookmarkId}")
-    public ResponseEntity<Void> removeBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId,
-            @PathVariable final Long bookmarkId) {
-        tagBookmarkService.removeTagBookmark(user, tagId, bookmarkId);
 
         return ResponseEntity.noContent()
                 .build();

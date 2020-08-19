@@ -9,6 +9,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 public class TagDocumentation {
+    
     public static RestDocumentationResultHandler createTag() {
         return document("tags/create",
                 requestFields(
@@ -54,27 +55,6 @@ public class TagDocumentation {
         return document("tags/delete",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")
-                )
-        );
-    }
-
-    public static RestDocumentationResultHandler addBookmarkOnTag() {
-        return document("tags/bookmarks/create",
-                pathParameters(
-                        parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("bookmarkId").description("북마크 ID")
-                ),
-                responseHeaders(
-                        headerWithName("Location").description("태그 조회 URI")
-                )
-        );
-    }
-
-    public static RestDocumentationResultHandler removeBookmarkOnTag() {
-        return document("tags/bookmarks/delete",
-                pathParameters(
-                        parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("bookmarkId").description("북마크 ID")
                 )
         );
     }

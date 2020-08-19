@@ -80,27 +80,4 @@ public class TagControllerTest extends ControllerTest {
         removeByPathVariables(user, "/api/v1/tags/{tagId}", tag.getId())
                 .andDo(TagDocumentation.removeTags());
     }
-
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("addBookmarkOnTag: 태그에 북마크를 추가한다.")
-    @Test
-    void addBookmarkOnTag() throws Exception {
-        final Tag tag = tagSetup.save(user);
-        final Bookmark bookmark = bookmarkSetup.save(user);
-
-        createByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
-                .andDo(TagDocumentation.addBookmarkOnTag());
-    }
-
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("removeBookmarkOnTag: 태그에 북마크를 삭제한다.")
-    @Test
-    void removeBookmarkOnTag() throws Exception {
-        final Tag tag = tagSetup.save(user);
-        final Bookmark bookmark = bookmarkSetup.save(user);
-        tagBookmarkSetup.save(tag, bookmark);
-
-        removeByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
-                .andDo(TagDocumentation.removeBookmarkOnTag());
-    }
 }
