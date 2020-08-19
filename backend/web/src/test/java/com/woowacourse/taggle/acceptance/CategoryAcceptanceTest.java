@@ -40,6 +40,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         final String updateTitle = "service";
         updateCategory(categoryTagsResponse.getId(), updateTitle);
         categories = findCategories();
+
         assertThat(categories.get(0).getTitle()).isEqualTo(updateTitle);
 
         // 태그를 다른 카테고리로 이동한다.
@@ -54,8 +55,8 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 
         // 카테고리를 제거한다.
         removeCategory(categoryTagsResponse.getId());
-
         categories = findCategories();
+        
         assertThat(categories).hasSize(1); // Uncategorized가 있기 때문에 sizs는 1이다.
     }
 
