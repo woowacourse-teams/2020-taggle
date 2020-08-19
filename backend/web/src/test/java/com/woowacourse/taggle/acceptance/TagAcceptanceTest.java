@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
@@ -47,8 +46,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 
-    public TagBookmarkResponse findBookmarksOfTag(final Long id) {
-        return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
+    public ExtractableResponse<MockMvcResponse> findBookmarksOfTagNotFoundException(final Long id) {
+        return getNotFoundException("/api/v1/tags/" + id + "/bookmarks");
     }
 
     public void deleteTeg(final Long id) {
