@@ -33,6 +33,7 @@ public class Tag {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
@@ -46,6 +47,11 @@ public class Tag {
         this.name = name;
         this.category = null;
         this.user = user;
+    }
+
+    public Tag(final String name, final Category category) {
+        this.name = name;
+        this.category = category;
     }
 
     public void updateCategory(final Category category) {
