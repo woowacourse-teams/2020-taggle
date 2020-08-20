@@ -1,5 +1,5 @@
 <template>
-  <v-snackbar v-model="snackbar" :left="true" :timeout="2000" multi-line>
+  <v-snackbar v-model="snackbar" :timeout="2000" multi-line>
     <div class="text-center width-100 font-size-15">{{ snackbarMsg }}</div>
   </v-snackbar>
 </template>

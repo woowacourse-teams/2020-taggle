@@ -4,6 +4,10 @@ export const MESSAGES = {
     ADD: {
       FAIL: '태그 추가 중 오류 발생',
     },
+    EDIT: {
+      SUCCESS: '태그를 카테고리에 옮겼습니다.',
+      FAIL: '태그를 카테고리에 옮기는 중에 오류 발생',
+    },
     DELETE: {
       SUCCESS: '태그 제거됨',
       FAIL: '태그 제거 중 오류 발생',
@@ -32,6 +36,20 @@ export const MESSAGES = {
   BOOKMARK_WITH_TAGS: {
     FETCH: {
       FAIL: '북마크에 등록된 태그목록 로딩중 오류 발생',
+    },
+  },
+  CATEGORY: {
+    ADD: {
+      SUCCESS: '카테고리가 등록되었습니다.',
+      FAIL: '카테고리 등록 중 오류가 발생했습니다.',
+    },
+    EDIT: {
+      SUCCESS: '카테고리가 수정되었습니다.',
+      FAIL: '카테고리 수정 중 오류가 발생했습니다.',
+    },
+    DELETE: {
+      SUCCESS: '카테고리가 제거되었습니다.',
+      FAIL: '카테고리 삭제 중 오류가 발생했습니다.',
     },
   },
 };
