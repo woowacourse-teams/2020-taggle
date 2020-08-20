@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { SERVICE_URL } from '@/utils/constants.js';
 
 const AXIOS = axios.create({
-  baseURL: process.env.baseUrl || 'https://taggle.kr',
+  baseURL: SERVICE_URL,
+  withCredentials: true,
 });
 
 const ApiService = {

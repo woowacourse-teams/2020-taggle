@@ -1,15 +1,18 @@
 <template>
   <v-app id="container">
     <section>
-      <img @click="moveTagglePage" src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" />
-      <h2 class="taggle-title">TAGGLE</h2>
-      <Buttons
-        @deleteBookmark="onDelete"
-        @createBookmark="onCreate"
-        v-if="isUrlLoaded"
-        :hasBookmark="hasBookmark"
-        :bookmarkUrl="url"
-      />
+      <v-row class="ma-0" align="center">
+        <img @click="moveTagglePage" src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" width="24" height="24"/>
+        <h2 class="ml-1">TAGGLE</h2>
+        <v-spacer />
+        <Buttons
+          @deleteBookmark="onDelete"
+          @createBookmark="onCreate"
+          v-if="isUrlLoaded"
+          :hasBookmark="hasBookmark"
+          :bookmarkUrl="url"
+        />
+      </v-row>
     </section>
     <TagInput v-if="hasBookmark && isUrlLoaded" />
     <Snackbar />
@@ -20,6 +23,8 @@
 import Buttons from '@/components/Buttons.vue';
 import TagInput from '@/components/TagInput.vue';
 import Snackbar from '@/components/Snackbar.vue';
+import UserService from '@/api/module/user.js';
+import { SERVICE_URL } from '@/utils/constants.js';
 
 export default {
   components: {
@@ -38,8 +43,14 @@ export default {
       return !!this.url;
     },
   },
-  created() {
-    this.getUrl();
+  async created() {
+    try {
+      await UserService.loggedIn();
+      this.getUrl();
+    } catch (e) {
+      chrome.tabs.create({ url: SERVICE_URL });
+      window.close();
+    }
   },
   methods: {
     onCreate() {
@@ -54,8 +65,8 @@ export default {
       });
     },
     moveTagglePage() {
-      chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-        chrome.tabs.executeScript(tabs[0].id, { code: `window.location.href='https://taggle.kr';` });
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.executeScript(tabs[0].id, { code: `window.location.href='${SERVICE_URL}';` });
       });
     },
   },
@@ -77,15 +88,5 @@ body {
 
 .v-application--wrap {
   min-height: 0 !important;
-}
-
-.dropdown.is-hoverable:hover .dropdown-menu {
-  display: block !important;
-}
-
-.taggle-title {
-  display: inline;
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 </style>

@@ -1,7 +1,7 @@
 {
   "name": "Taggle",
   "description": "태그단위로 당신의 북마크를 효율적으로 관리하세요!",
-  "version": null,
+  "version": "1.0.0",
   "manifest_version": 2,
   "icons": {
     "48": "icons/icon_48.png",
@@ -14,5 +14,10 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": ["tabs"]
+  "permissions": [
+    "tabs",
+    "cookies",
+    "http://*/*",
+    "https://*/*"
+  ]
 }

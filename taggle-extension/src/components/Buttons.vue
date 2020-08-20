@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div class="icon-btn">
-      <v-btn v-if="hasBookmark" small icon @click="onDeleteBookmark"><v-icon>delete</v-icon></v-btn>
-      <v-btn v-else small icon @click="onCreateBookmark"><v-icon>get_app</v-icon></v-btn>
-    </div>
+    <v-btn v-if="hasBookmark" small icon @click="onDeleteBookmark"><v-icon>delete</v-icon></v-btn>
+    <v-btn v-else small icon @click="onCreateBookmark"><v-icon>get_app</v-icon></v-btn>
   </div>
 </template>
 
@@ -62,9 +60,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.icon-btn {
-  float: right;
-}
-</style>

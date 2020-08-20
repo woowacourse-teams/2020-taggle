@@ -17,3 +17,5 @@ export const SNACKBAR_MESSAGES = {
     },
   },
 };
+
+export const SERVICE_URL = 'https://taggle.kr';
