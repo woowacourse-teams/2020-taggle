@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
@@ -18,7 +17,6 @@ import io.restassured.response.ExtractableResponse;
 public class TagAcceptanceTest extends AcceptanceTest {
 
     @Transactional
-    @WithMockUser(username = "tigger", password = "tigger", roles = "ADMIN")
     @Test
     void manageBookmark() {
         // 태그를 생성한다
@@ -34,7 +32,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
         // 태그를 제거한다
         deleteTeg(tagResponse.getId());
-        final ExtractableResponse<MockMvcResponse> mockMvcResponse = findBookmarksOfTagNotFoundException(
+        final ExtractableResponse<MockMvcResponse> mockMvcResponse = findBookmarksOfTagExtractableResponse(
                 tagResponse.getId());
 
         assertThat(mockMvcResponse.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value());
@@ -52,8 +50,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
     }
 
-    public ExtractableResponse<MockMvcResponse> findBookmarksOfTagNotFoundException(final Long id) {
-        return getNotFoundException("/api/v1/tags/" + id + "/bookmarks");
+    public ExtractableResponse<MockMvcResponse> findBookmarksOfTagExtractableResponse(final Long id) {
+        return getExtractableResponse("/api/v1/tags/" + id + "/bookmarks");
     }
 
     public void deleteTeg(final Long id) {

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
@@ -31,7 +30,6 @@ class BookmarkControllerTest extends ControllerTest {
         user = userSetup.save();
     }
 
-    @WithMockUser(value = "ADMIN")
     @DisplayName("createBookmark: 북마크를 추가한다.")
     @Test
     void createBookmark() throws Exception {
@@ -39,7 +37,6 @@ class BookmarkControllerTest extends ControllerTest {
                 .andDo(BookmarkDocumentation.createBookmark());
     }
 
-    @WithMockUser(value = "ADMIN")
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
     @Test
     void findBookmarks() throws Exception {
@@ -48,7 +45,6 @@ class BookmarkControllerTest extends ControllerTest {
                 .andDo(BookmarkDocumentation.findBookmarks());
     }
 
-    @WithMockUser(value = "ADMIN")
     @DisplayName("removeBookmark: 북마크 하나를 제거한다.")
     @Test
     void removeBookmark() throws Exception {

@@ -98,7 +98,7 @@ public class AcceptanceTest {
     // @formatter:on
 
     // @formatter:off
-    public ExtractableResponse<MockMvcResponse> getNotFoundException(final String path) {
+    public ExtractableResponse<MockMvcResponse> getExtractableResponse(final String path) {
         return
                 given()
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -106,7 +106,6 @@ public class AcceptanceTest {
                         .get(path)
                         .then()
                         .log().all()
-                        .statusCode(HttpStatus.NOT_FOUND.value())
                         .extract();
     }
     // @formatter:on

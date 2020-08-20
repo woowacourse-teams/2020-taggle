@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
@@ -17,9 +16,8 @@ import com.woowacourse.taggle.tag.dto.TagResponse;
 public class TagBookmarkAcceptanceTest extends AcceptanceTest {
 
     @Transactional
-    @WithMockUser(roles = "ADMIN")
     @Test
-    void manageCategory() {
+    void manageTagBookmark() {
         // Untagged의 북마크 목록을 불러온다.
         final BookmarkResponse bookmarkResponse = createBookmark("http://naver.com");
         TagBookmarkResponse tagBookmarkResponse = findBookmarksOfUntagged();
@@ -46,7 +44,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
 
         // 북마크의 태그를 삭제한다.
         removeBookmarkOnTag(tagResponse.getId(), bookmarkResponse.getId());
-        
+
         bookmarkTagResponse = findTagsOfBookmark(bookmarkResponse.getId());
 
         assertThat(bookmarkTagResponse.getUrl()).isEqualTo("http://naver.com");
@@ -61,7 +59,6 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
     }
 
     public TagResponse createTag(final String name) {
-
         final Map<String, Object> request = new HashMap<>();
         request.put("name", name);
 

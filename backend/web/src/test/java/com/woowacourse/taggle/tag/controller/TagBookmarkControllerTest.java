@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.BookmarkSetup;
@@ -40,8 +39,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
         user = userSetup.save();
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("findBookmarksOfTag: 태그 단건을 조회한다.")
+    @DisplayName("findBookmarksOfTag: 단건 태그와 해당 태그에 속해있는 북마크 목록을 조회한다.")
     @Test
     void findBookmarksOfTag() throws Exception {
         final Tag tag = tagSetup.save(user);
@@ -53,8 +51,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.findBookmarksOfTag());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("findBookmarksOfUntagged: Untagged를 조회한다.")
+    @DisplayName("findBookmarksOfUntagged: 태그가 없는 (Untagged) 북마크 목록을 조회한다.")
     @Test
     void findBookmarksOfUntagged() throws Exception {
         bookmarkSetup.save(user);
@@ -63,8 +60,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.findBookmarksOfUntagged());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("addBookmarkOnTag: 태그에 북마크를 추가한다.")
+    @DisplayName("addBookmarkOnTag: 태그에 하나의 북마크를 추가한다.")
     @Test
     void addBookmarkOnTag() throws Exception {
         final Tag tag = tagSetup.save(user);
@@ -74,8 +70,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.addBookmarkOnTag());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("removeBookmarkOnTag: 태그에 북마크를 삭제한다.")
+    @DisplayName("removeBookmarkOnTag: 태그에 속해있는 하나의 북마크를 삭제한다.")
     @Test
     void removeBookmarkOnTag() throws Exception {
         final Tag tag = tagSetup.save(user);
@@ -86,8 +81,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.removeBookmarkOnTag());
     }
 
-    @WithMockUser(value = "ADMIN")
-    @DisplayName("findTagsOfBookmark: 북마크의 태그를 조회한다.")
+    @DisplayName("findTagsOfBookmark: 하나의 북마크에 포함된 태그목록을 조회한다.")
     @Test
     void findTagsOfBookmark() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save(user);

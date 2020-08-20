@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.TagSetup;
@@ -28,7 +27,6 @@ public class TagControllerTest extends ControllerTest {
         user = userSetup.save();
     }
 
-    @WithMockUser(value = "ADMIN")
     @DisplayName("createTag: 태그를 추가한다.")
     @Test
     void createTag() throws Exception {
@@ -36,7 +34,6 @@ public class TagControllerTest extends ControllerTest {
                 .andDo(TagDocumentation.createTag());
     }
 
-    @WithMockUser(value = "ADMIN")
     @DisplayName("removeTag: 태그를 삭제한다.")
     @Test
     void removeTag() throws Exception {

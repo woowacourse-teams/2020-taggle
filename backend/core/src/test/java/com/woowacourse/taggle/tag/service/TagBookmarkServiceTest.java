@@ -58,11 +58,20 @@ class TagBookmarkServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
 
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
+                "https://github.com/woowacourse-teams/2020-taggle");
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
+                "image");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateDto);
+
+        tagBookmarkService.createTagBookmark(user, tag.getId(), bookmark.getId());
+
         // when
         final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfTag(user, tag.getId());
 
         // then
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
+        assertThat(tagBookmarkResponse.getName()).isEqualTo(TAG_NAME);
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("findBookmarksOfUntagged: Untagged의 북마크를 조회한다.")
@@ -154,7 +163,8 @@ class TagBookmarkServiceTest {
     @Test
     void findTagsOfBookmark() {
         // given
-        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto(
+                "https://github.com/woowacourse-teams/2020-taggle", "title",
                 "description", "image");
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 

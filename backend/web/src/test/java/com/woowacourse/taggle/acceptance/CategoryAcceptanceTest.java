@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.dto.CategoryResponse;
@@ -17,12 +16,11 @@ import com.woowacourse.taggle.tag.dto.TagResponse;
 public class CategoryAcceptanceTest extends AcceptanceTest {
 
     @Transactional
-    @WithMockUser(roles = "ADMIN")
     @Test
     void manageCategory() {
         // 카테고리를 생성한다.
         final String categoryName = "project";
-        final CategoryResponse categoryResponse = createCategory("project");
+        final CategoryResponse categoryResponse = createCategory(categoryName);
         assertThat(categoryResponse.getTitle()).isEqualTo(categoryName);
 
         // 카테고리를 가져온다.
@@ -30,7 +28,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         assertThat(categories).hasSize(1);
 
         // 이미 존재하는 카테고리와 같은 이름의 카테고리 생성요청시 새 카테고리를 생성하지 않는다.
-        createCategory("project");
+        createCategory(categoryName);
         categories = findCategories();
 
         assertThat(categories).hasSize(1);
@@ -56,7 +54,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         // 카테고리를 제거한다.
         removeCategory(categoryTagsResponse.getId());
         categories = findCategories();
-        
+
         assertThat(categories).hasSize(1); // Uncategorized가 있기 때문에 sizs는 1이다.
     }
 

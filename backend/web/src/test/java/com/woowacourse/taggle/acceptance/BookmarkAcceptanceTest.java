@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
@@ -15,7 +14,6 @@ import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 public class BookmarkAcceptanceTest extends AcceptanceTest {
 
     @Transactional
-    @WithMockUser(roles = "ADMIN")
     @Test
     void manageBookmark() {
         // 북마크를 생성한다.
