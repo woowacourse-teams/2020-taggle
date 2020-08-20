@@ -1,9 +1,13 @@
 <template>
-  <v-main>
+  <v-app id="inspire">
     <BookmarkHeader />
-    <router-view class="pl-82" />
-    <Snackbar />
-  </v-main>
+    <v-main>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
+      <Snackbar />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -18,9 +22,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.pl-82 {
-  padding-left: 328px !important;
-}
-</style>

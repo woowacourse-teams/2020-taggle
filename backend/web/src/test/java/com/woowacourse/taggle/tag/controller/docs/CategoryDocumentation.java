@@ -28,8 +28,9 @@ public class CategoryDocumentation {
     public static RestDocumentationResultHandler findCategories() {
         return document("categories/get/List",
                 responseFields(
-                        fieldWithPath("[].id").description("카테고리 ID"),
+                        fieldWithPath("[].id").description("카테고리 ID (Nullable)").optional(),
                         fieldWithPath("[].title").description("카테고리 제목"),
+                        fieldWithPath("[].tags").description("카테고리의 태그 (Nullable)").optional(),
                         fieldWithPath("[].tags.[].id").description("태그 ID"),
                         fieldWithPath("[].tags.[].name").description("태그 이름")
                 )

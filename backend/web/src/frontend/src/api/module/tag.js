@@ -12,7 +12,7 @@ const TagService = {
   addBookmarkOnTag(tagId, bookmarkId) {
     return ApiService.post(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
   },
-  deleteBookmarkOnTag(bookmarkId, tagId) {
+  deleteBookmarkOnTag(tagId, bookmarkId) {
     return ApiService.delete(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
   },
 };

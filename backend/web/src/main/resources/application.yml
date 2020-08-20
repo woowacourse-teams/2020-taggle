@@ -8,8 +8,8 @@ spring:
 spring:
   profiles: local
 
-#logging:
-#  config: classpath:logback-local.xml
+logging:
+  config: classpath:logback-local.xml
 
 ---
 spring:

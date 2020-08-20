@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.fixture.UserFixture;
 
 @DataJpaTest
 @ContextConfiguration(classes = JpaTestConfiguration.class)
@@ -24,11 +25,10 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user = new User(1L,"태글", "taggle@gmail.com", "010-0000-0000",
-                "https://github.com/image.jpg", Role.USER);
+        user = UserFixture.DEFAULT_USER;
     }
 
-    @DisplayName("save(): 유저 저장 확인 테스트")
+    @DisplayName("save: 유저 저장 확인 테스트")
     @Test
     void save() {
         // when
@@ -38,12 +38,12 @@ class UserRepositoryTest {
         assertThat(actual).isNotNull();
     }
 
-    @DisplayName("findByEmail(): 이메일로 유저 찾기 테스트")
+    @DisplayName("findByEmail: 이메일로 유저 찾기 테스트")
     @Test
     void findByEmail() {
         // when
-        User user1 = userRepository.save(user);
-        final Optional<User> actual = userRepository.findById(user1.getId());
+        User newUser = userRepository.save(user);
+        final Optional<User> actual = userRepository.findById(newUser.getId());
 
         // then
         assertThat(actual).isNotEmpty();

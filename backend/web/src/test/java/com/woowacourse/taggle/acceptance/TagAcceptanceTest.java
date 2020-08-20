@@ -28,6 +28,12 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
         assertThat(tagBookmarkResponse.getName()).isEqualTo("taggle");
 
+        // 이미 존재하는 태그와 같은 이름의 태그 생성요청시 새 태그를 생성하지 않는다.
+        TagResponse taggleWithSameName = createTag("taggle");
+        TagBookmarkResponse tagBookmarkResponseWithSameName = findTagById(taggleWithSameName.getId());
+
+        assertThat(tagBookmarkResponse.getId()).isEqualTo(tagBookmarkResponseWithSameName.getId());
+
         // 북마크에 태그를 추가한다
         final Long tagId = tagBookmarkResponse.getId();
 

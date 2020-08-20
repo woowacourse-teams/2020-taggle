@@ -29,6 +29,7 @@ public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @NotEmpty
@@ -47,7 +48,7 @@ public class User extends BaseTimeEntity {
 
     @URL
     @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String picture;
 
     @Enumerated(EnumType.STRING)
@@ -57,7 +58,8 @@ public class User extends BaseTimeEntity {
     private LocalDateTime signOutDate;
 
     @Builder
-    public User(final Long id, final String nickName, final String email, final String phoneNumber, final String picture,
+    public User(final Long id, final String nickName, final String email, final String phoneNumber,
+            final String picture,
             final Role role) {
         this.id = id;
         this.nickName = nickName;

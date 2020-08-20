@@ -1,5 +1,5 @@
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
-import { IS_SHOW, MESSAGE } from '@/store/share/getterTypes.js';
+import { IS_SHOWN_SNACKBAR, SNACKBAR_MESSAGE } from '@/store/share/getterTypes.js';
 
 const state = {
   isShow: false,
@@ -7,10 +7,10 @@ const state = {
 };
 
 const getters = {
-  [IS_SHOW](state) {
+  [IS_SHOWN_SNACKBAR](state) {
     return state.isShow;
   },
-  [MESSAGE](state) {
+  [SNACKBAR_MESSAGE](state) {
     return state.message;
   },
 };

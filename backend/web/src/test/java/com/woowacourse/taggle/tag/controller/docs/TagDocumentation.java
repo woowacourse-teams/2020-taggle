@@ -16,6 +16,10 @@ public class TagDocumentation {
                 ),
                 responseHeaders(
                         headerWithName("Location").description("생성된 태그의 URI")
+                ),
+                responseFields(
+                        fieldWithPath("id").description("태그 ID"),
+                        fieldWithPath("name").description("태그 이름")
                 )
         );
     }

@@ -15,25 +15,16 @@
         </v-card-text>
       </div>
     </v-responsive>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-share-variant</v-icon>
-      </v-btn>
-      <TagEditModal :bookmark="bookmark" />
-    </v-card-actions>
+    <CardIcons :bookmark="bookmark" />
   </v-card>
 </template>
 
 <script>
-import TagEditModal from '@/views/bookmark/components/TagEditModal.vue';
+import CardIcons from '@/views/bookmark/components/CardIcons.vue';
 
 export default {
   name: 'CardStreamItem',
-  components: { TagEditModal },
+  components: { CardIcons },
   props: {
     bookmark: {
       type: Object,
