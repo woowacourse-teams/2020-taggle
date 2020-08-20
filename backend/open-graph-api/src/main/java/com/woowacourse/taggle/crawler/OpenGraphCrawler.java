@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.woowacourse.taggle.dto.OpenGraphDto;
+import com.woowacourse.taggle.dto.OpenGraph;
 import com.woowacourse.taggle.exception.CrawlerConnectionException;
 import com.woowacourse.taggle.exception.InvalidURLException;
 
@@ -19,28 +19,49 @@ public class OpenGraphCrawler {
     private final static String META_IMAGE = "meta[property=og:image]";
     private final static String URL_REGEX = "^(https?)://?[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
     private final static Pattern pattern = Pattern.compile(URL_REGEX);
+    private final static String CONTENT = "content";
+
+    private final String defaultImage;
+
+    public OpenGraphCrawler(String defaultImage) {
+        this.defaultImage = defaultImage;
+    }
+
+    public OpenGraph extractPreview(String url) {
+        validateURL(url);
+        try {
+            Document document = jsoupConfig(url);
+            String title = getTitle(document);
+            String description = document.select(META_DESCRIPTION).attr(CONTENT);
+            String image = getImage(document);
+            return new OpenGraph(title, description, image);
+        } catch (IOException e) {
+            throw new CrawlerConnectionException("연결이 되지 않았습니다. url : " + url);
+        }
+    }
 
     private Document jsoupConfig(String url) throws IOException {
         return Jsoup
                 .connect(url)
                 .userAgent(USER_AGENT)
+                .followRedirects(true)
                 .get();
     }
 
-    public OpenGraphDto findOpenGraph(String url) {
-        validateURL(url);
-        try {
-            Document document = jsoupConfig(url);
-            String title = document.select(META_TITLE).attr("content");
-            if (title.isEmpty()) {
-                title = document.title();
-            }
-            String description = document.select(META_DESCRIPTION).attr("content");
-            String image = document.select(META_IMAGE).attr("content");
-            return new OpenGraphDto(title, description, image);
-        } catch (IOException e) {
-            throw new CrawlerConnectionException("연결이 되지 않았습니다.");
+    private String getImage(Document document) {
+        String image = document.select(META_IMAGE).attr(CONTENT);
+        if (image.isEmpty()) {
+            return defaultImage;
         }
+        return image;
+    }
+
+    private String getTitle(Document document) {
+        String title = document.select(META_TITLE).attr(CONTENT);
+        if (title.isEmpty()) {
+            return document.title();
+        }
+        return title;
     }
 
     private void validateURL(String url) {
