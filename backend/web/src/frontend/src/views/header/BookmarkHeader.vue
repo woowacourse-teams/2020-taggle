@@ -25,7 +25,7 @@
             </template>
             <v-list>
               <v-list-item to="/profile">
-                <v-list-item-title>Settings</v-list-item-title>
+                <v-list-item-title>Profile</v-list-item-title>
               </v-list-item>
               <v-list-item href="/oauth2/logout">
                 <v-list-item-title>Logout</v-list-item-title>
