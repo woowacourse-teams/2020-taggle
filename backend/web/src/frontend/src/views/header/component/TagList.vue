@@ -52,7 +52,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
 
 export default {
-  name: 'tagList',
+  name: 'TagList',
   components: {
     CategoryAddModal,
     CategoryTagModifyModal,
