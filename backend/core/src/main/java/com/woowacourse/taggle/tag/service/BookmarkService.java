@@ -9,7 +9,6 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -35,13 +34,6 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public BookmarkTagResponse findBookmark(final SessionUser user, final Long id) {
-        final Bookmark bookmark = findByIdAndUserId(id, user.getId());
-
-        return BookmarkTagResponse.of(bookmark);
-    }
-
-    @Transactional(readOnly = true)
     public List<BookmarkResponse> findBookmarks(final SessionUser user) {
         final List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(user.getId());
 
@@ -52,6 +44,10 @@ public class BookmarkService {
         final Bookmark bookmark = findByIdAndUserId(id, user.getId());
 
         bookmarkRepository.delete(bookmark);
+    }
+
+    public List<Bookmark> findAllByUserId(final Long userId) {
+        return bookmarkRepository.findAllByUserId(userId);
     }
 
     public Bookmark findByIdAndUserId(final Long bookmarkId, final Long userId) {

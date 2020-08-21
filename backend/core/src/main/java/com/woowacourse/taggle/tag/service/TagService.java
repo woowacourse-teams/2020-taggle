@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -30,13 +29,6 @@ public class TagService {
                 .orElseGet(() -> tagRepository.save(tagCreateRequest.toEntityWithUser(user)));
 
         return TagResponse.of(tag);
-    }
-
-    @Transactional(readOnly = true)
-    public TagBookmarkResponse findTagById(final SessionUser user, final Long tagId) {
-        final Tag tag = findByIdAndUserId(tagId, user.getId());
-
-        return TagBookmarkResponse.of(tag);
     }
 
     public void removeTag(final SessionUser user, final Long tagId) {
