@@ -7,16 +7,18 @@
         </v-avatar>
       </v-col>
       <v-list-item-content class="flex-grow-1">
-        <v-card-title primary-title>
-          <span class="title-wrap">
-            {{ bookmark.title }}
-          </span>
-        </v-card-title>
-        <v-card-text>
-          <span class="content-wrap">
-            {{ bookmark.description }}
-          </span>
-        </v-card-text>
+        <v-responsive aspect-ratio="6.5">
+          <v-card-title primary-title>
+            <span class="title-wrap">
+              {{ bookmark.title }}
+            </span>
+          </v-card-title>
+          <v-card-text>
+            <span class="content-wrap">
+              {{ bookmark.description }}
+            </span>
+          </v-card-text>
+        </v-responsive>
         <CardIcons :bookmark="bookmark" />
       </v-list-item-content>
     </v-card>

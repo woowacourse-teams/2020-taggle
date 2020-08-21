@@ -1,6 +1,6 @@
 <template>
   <v-card :href="bookmark.url" link class="ma-5" outlined target="_blank" width="300">
-    <v-responsive aspect-ratio="0.8">
+    <v-responsive aspect-ratio="0.75">
       <v-img :src="bookmark.image" aspect-ratio="1.6"></v-img>
       <div class="test-size">
         <v-card-title primary-title>
