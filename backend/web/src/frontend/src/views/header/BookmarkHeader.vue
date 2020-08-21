@@ -24,7 +24,7 @@
               </div>
             </template>
             <v-list>
-              <v-list-item>
+              <v-list-item to="/profile">
                 <v-list-item-title>Settings</v-list-item-title>
               </v-list-item>
               <v-list-item href="/oauth2/logout">
