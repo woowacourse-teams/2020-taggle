@@ -17,6 +17,9 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "axios": "^0.19.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "vue": "^2.6.10",
     "vuetify": "^2.2.11",
     "webextension-polyfill": "^0.3.1"
@@ -29,7 +32,7 @@
     "archiver": "^3.0.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.2",
-    "copy-webpack-plugin": "^5.1.1",
+    "copy-webpack-plugin": "^6.0.3",
     "core-js": "^3.0.1",
     "cross-env": "^5.2.0",
     "css-loader": "^3.4.0",
@@ -68,5 +71,10 @@
   },
   "husky": {
     "hooks": {}
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/woowacourse-teams/2020-taggle"
+  },
+  "license": "MIT"
 }
