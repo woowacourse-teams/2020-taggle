@@ -30,16 +30,16 @@ public class Bookmark {
     private Long id;
 
     @URL
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String url;
 
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     @Column(nullable = false)
