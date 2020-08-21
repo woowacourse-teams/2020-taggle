@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.service.BookmarkCrawlerService;
 import com.woowacourse.taggle.tag.service.BookmarkService;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -35,20 +34,11 @@ public class BookmarkController {
     @PostMapping
     public ResponseEntity<BookmarkResponse> createBookmark(@AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
-        BookmarkCreateDto bookmarkCreateDto = bookmarkCrawlerService.findOpenGraph(bookmarkCreateRequest);
+        final BookmarkCreateDto bookmarkCreateDto = bookmarkCrawlerService.findOpenGraph(bookmarkCreateRequest);
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("Location", "/api/v1/bookmarks/" + bookmark.getId())
                 .body(bookmark);
-    }
-
-    @GetMapping("/{id}/tags")
-    public ResponseEntity<BookmarkTagResponse> findBookmark(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long id) {
-        final BookmarkTagResponse bookmarkTagResponse = bookmarkService.findBookmark(user, id);
-
-        return ResponseEntity.ok()
-                .body(bookmarkTagResponse);
     }
 
     @GetMapping

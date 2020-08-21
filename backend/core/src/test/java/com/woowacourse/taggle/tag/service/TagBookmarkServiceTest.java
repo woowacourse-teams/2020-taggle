@@ -14,7 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -26,6 +28,8 @@ import com.woowacourse.taggle.user.service.UserService;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
 class TagBookmarkServiceTest {
+
+    private static final String TAG_NAME = "spring boot";
 
     @Autowired
     private TagBookmarkService tagBookmarkService;
@@ -45,6 +49,48 @@ class TagBookmarkServiceTest {
     void setUp() {
         final User testUser = userService.save(UserFixture.DEFAULT_USER);
         user = new SessionUser(testUser);
+    }
+
+    @DisplayName("findBookmarksByTagId: 특정 태그의 북마크를 조회한다.")
+    @Test
+    void findBookmarksByTagId() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
+
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
+                "https://github.com/woowacourse-teams/2020-taggle");
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
+                "image");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateDto);
+
+        tagBookmarkService.createTagBookmark(user, tag.getId(), bookmark.getId());
+
+        // when
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag.getId());
+
+        // then
+        assertThat(tagBookmarkResponse.getName()).isEqualTo(TAG_NAME);
+        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
+    }
+
+    @DisplayName("findUntaggedBookmarks: Untagged의 북마크를 조회한다.")
+    @Test
+    void findUntaggedBookmarks() {
+        // given
+        final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
+                "https://github.com/woowacourse-teams/2020-taggle");
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, "title", "description",
+                "image");
+        bookmarkService.createBookmark(user, bookmarkCreateDto);
+
+        // when
+        final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findUntaggedBookmarks(user);
+
+        // then
+        assertThat(untaggedBookmarks.getId()).isNull();
+        assertThat(untaggedBookmarks.getName()).isEqualTo("Untagged");
+        assertThat(untaggedBookmarks.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("createTagBookmark: 태그에 북마크를 추가한다.")
@@ -73,9 +119,9 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark2.getId());
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark3.getId());
 
-        final TagBookmarkResponse tagBookmark1 = tagService.findTagById(user, taggle.getId());
-        final TagBookmarkResponse tagBookmark2 = tagService.findTagById(user, google.getId());
-        final TagBookmarkResponse tagBookmark3 = tagService.findTagById(user, naver.getId());
+        final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksByTagId(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksByTagId(user, google.getId());
+        final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksByTagId(user, naver.getId());
 
         // then
         assertThat(tagBookmark1.getId()).isEqualTo(taggle.getId());
@@ -107,9 +153,25 @@ class TagBookmarkServiceTest {
 
         // when
         tagBookmarkService.removeTagBookmark(user, taggle.getId(), bookmark1.getId());
-        final TagBookmarkResponse tagBookmark = tagService.findTagById(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksByTagId(user, taggle.getId());
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);
+    }
+
+    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
+    @Test
+    void findTagsByBookmarkId() {
+        // given
+        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto(
+                "https://github.com/woowacourse-teams/2020-taggle", "title",
+                "description", "image");
+        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+
+        //when
+        final BookmarkTagResponse expected = tagBookmarkService.findTagsByBookmarkId(user, bookmark.getId());
+
+        // then
+        assertThat(expected.getId()).isEqualTo(bookmark.getId());
     }
 }

@@ -18,7 +18,6 @@ import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -77,21 +76,6 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getTitle()).isEqualTo(bookmarkResponseWithSameName.getTitle());
         assertThat(bookmarkResponse.getDescription()).isEqualTo(bookmarkResponseWithSameName.getDescription());
         assertThat(bookmarkResponse.getImage()).isEqualTo(bookmarkResponseWithSameName.getImage());
-    }
-
-    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
-    @Test
-    void findBookmark() {
-        // given
-        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
-                "description", "image");
-        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
-
-        //when
-        final BookmarkTagResponse expected = bookmarkService.findBookmark(user, bookmark.getId());
-
-        // then
-        assertThat(expected.getId()).isEqualTo(bookmark.getId());
     }
 
     @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
