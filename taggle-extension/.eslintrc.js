@@ -12,7 +12,7 @@ module.exports = {
     'comma-dangle': 'off',
     'no-new': 'off',
     indent: ['error', 2],
-    'import/extensions': 'error',
+    'import/extensions': 'off',
     'import/no-unresolved': 'off',
   },
 };

@@ -1,17 +1,20 @@
 import axios from 'axios';
+import { SERVICE_URL } from '@/utils/constants.js';
 
 const AXIOS = axios.create({
-  baseURL: process.env.baseUrl || 'http://localhost:8080',
-  headers: { 'Access-Control-Expose-Headers': 'Location' },
+  baseURL: SERVICE_URL,
+  withCredentials: true,
 });
 
 const ApiService = {
-  async post(uri, params) {
-    const res = await AXIOS.post(uri, params);
-    return res.headers.location;
+  get(uri) {
+    return AXIOS.get(uri);
   },
-  async delete(uri) {
-    await AXIOS.delete(uri);
+  post(uri, params) {
+    return AXIOS.post(uri, params);
+  },
+  delete(uri) {
+    return AXIOS.delete(uri);
   },
 };
 
