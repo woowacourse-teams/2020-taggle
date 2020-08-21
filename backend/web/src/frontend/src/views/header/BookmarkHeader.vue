@@ -26,14 +26,26 @@
 
         <!--user information button-->
         <template v-slot:append>
-          <div class="text-center">
-            <v-avatar>
-              <img
-                src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
-                alt="evan"
-              />
-            </v-avatar>
-          </div>
+          <v-menu right offset-x>
+            <template v-slot:activator="{ on, attrs }">
+              <div class="text-center">
+                <v-avatar v-bind="attrs" v-on="on">
+                  <img
+                    src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
+                    alt="evan"
+                  />
+                </v-avatar>
+              </div>
+            </template>
+            <v-list>
+              <v-list-item>
+                <v-list-item-title>Settings</v-list-item-title>
+              </v-list-item>
+              <v-list-item href="/oauth2/logout">
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </template>
       </v-navigation-drawer>
 
