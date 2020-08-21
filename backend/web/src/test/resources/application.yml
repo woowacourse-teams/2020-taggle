@@ -5,6 +5,8 @@ spring:
     use_sql_comments: true
     h2.console.enabled: true
     datasource.url: jdbc:h2:mem:testdb
+  flyway:
+    enabled: false
 
 logging.level.org.hibernate.type.descriptor.sql: trace
 
