@@ -1,5 +1,5 @@
 <template>
-  <v-btn icon @click.prevent="openModal">
+  <v-btn dark large fixed bottom right fab @click.prevent="openModal">
     <v-icon>mdi-plus</v-icon>
     <v-dialog v-model="dialog" max-width="500">
       <v-card>
