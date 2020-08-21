@@ -26,7 +26,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
         // 이미 존재하는 태그와 같은 이름의 태그 생성요청시 새 태그를 생성하지 않는다.
         final TagResponse sameNameTagResponse = createTag("taggle");
-        final TagBookmarkResponse sameNameTagBookmarkResponse = findBookmarksOfTag(sameNameTagResponse.getId());
+        final TagBookmarkResponse sameNameTagBookmarkResponse = findBookmarksByTagId(sameNameTagResponse.getId());
 
         assertThat(tagResponse.getId()).isEqualTo(sameNameTagBookmarkResponse.getId());
 
@@ -46,7 +46,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 
-    public TagBookmarkResponse findBookmarksOfTag(final Long id) {
+    public TagBookmarkResponse findBookmarksByTagId(final Long id) {
         return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
     }
 
