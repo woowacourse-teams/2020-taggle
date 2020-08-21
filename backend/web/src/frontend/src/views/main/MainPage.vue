@@ -5,6 +5,7 @@
       <v-container>
         <router-view></router-view>
       </v-container>
+      <BookmarkAddModal />
       <Snackbar />
     </v-main>
   </v-app>
@@ -12,13 +13,15 @@
 
 <script>
 import BookmarkHeader from '@/views/header/BookmarkHeader.vue';
-import Snackbar from '@/views/common/component/Snackbar.vue';
+import BookmarkAddModal from '@/views/main/component/BookmarkAddModal.vue';
+import Snackbar from '@/views/main/component/Snackbar.vue';
 
 export default {
   name: 'MainPage',
   components: {
-    Snackbar,
     BookmarkHeader,
+    BookmarkAddModal,
+    Snackbar,
   },
 };
 </script>
