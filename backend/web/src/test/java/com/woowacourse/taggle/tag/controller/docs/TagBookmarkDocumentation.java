@@ -9,7 +9,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 
 public class TagBookmarkDocumentation {
 
-    public static RestDocumentationResultHandler findBookmarksOfTag() {
+    public static RestDocumentationResultHandler findBookmarksByTagId() {
         return document("tags/bookmarks/get",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")
@@ -26,7 +26,7 @@ public class TagBookmarkDocumentation {
                 ));
     }
 
-    public static RestDocumentationResultHandler findBookmarksOfUntagged() {
+    public static RestDocumentationResultHandler findUntaggedBookmarks() {
         return document("tags/bookmarks/untagged/get",
                 responseFields(
                         fieldWithPath("id").description("태그 ID (Null)").optional(),
@@ -60,7 +60,7 @@ public class TagBookmarkDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler findTagsOfBookmark() {
+    public static RestDocumentationResultHandler findTagsByBookmarkId() {
         return document("bookmarks/tags/get",
                 pathParameters(
                         parameterWithName("bookmarkId").description("북마크 ID")

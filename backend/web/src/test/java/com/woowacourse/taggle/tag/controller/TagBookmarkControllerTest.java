@@ -39,25 +39,25 @@ public class TagBookmarkControllerTest extends ControllerTest {
         user = userSetup.save();
     }
 
-    @DisplayName("findBookmarksOfTag: 단건 태그와 해당 태그에 속해있는 북마크 목록을 조회한다.")
+    @DisplayName("findBookmarksByTagId: 단건 태그와 해당 태그에 속해있는 북마크 목록을 조회한다.")
     @Test
-    void findBookmarksOfTag() throws Exception {
+    void findBookmarksByTagId() throws Exception {
         final Tag tag = tagSetup.save(user);
         final Bookmark bookmark = bookmarkSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
         readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks", tag.getId())
                 .andExpect(jsonPath("$.id", is(tag.getId().intValue())))
-                .andDo(TagBookmarkDocumentation.findBookmarksOfTag());
+                .andDo(TagBookmarkDocumentation.findBookmarksByTagId());
     }
 
-    @DisplayName("findBookmarksOfUntagged: 태그가 없는 (Untagged) 북마크 목록을 조회한다.")
+    @DisplayName("findUntaggedBookmarks: 태그가 없는 (Untagged) 북마크 목록을 조회한다.")
     @Test
-    void findBookmarksOfUntagged() throws Exception {
+    void findUntaggedBookmarks() throws Exception {
         bookmarkSetup.save(user);
 
         read(user, "/api/v1/tags/untagged/bookmarks", jsonPath("$.id", is(nullValue())))
-                .andDo(TagBookmarkDocumentation.findBookmarksOfUntagged());
+                .andDo(TagBookmarkDocumentation.findUntaggedBookmarks());
     }
 
     @DisplayName("addBookmarkOnTag: 태그에 하나의 북마크를 추가한다.")
@@ -81,15 +81,15 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.removeBookmarkOnTag());
     }
 
-    @DisplayName("findTagsOfBookmark: 하나의 북마크에 포함된 태그목록을 조회한다.")
+    @DisplayName("findTagsByBookmarkId: 하나의 북마크에 포함된 태그목록을 조회한다.")
     @Test
-    void findTagsOfBookmark() throws Exception {
+    void findTagsByBookmarkId() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save(user);
         final Tag tag = tagSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
         readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags", bookmark.getId())
                 .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
-                .andDo(TagBookmarkDocumentation.findTagsOfBookmark());
+                .andDo(TagBookmarkDocumentation.findTagsByBookmarkId());
     }
 }

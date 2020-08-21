@@ -51,9 +51,9 @@ class TagBookmarkServiceTest {
         user = new SessionUser(testUser);
     }
 
-    @DisplayName("findBookmarksOfTag: 특정 태그의 북마크를 조회한다.")
+    @DisplayName("findBookmarksByTagId: 특정 태그의 북마크를 조회한다.")
     @Test
-    void findBookmarksOfTag() {
+    void findBookmarksByTagId() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
@@ -67,16 +67,16 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, tag.getId(), bookmark.getId());
 
         // when
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfTag(user, tag.getId());
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag.getId());
 
         // then
         assertThat(tagBookmarkResponse.getName()).isEqualTo(TAG_NAME);
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
     }
 
-    @DisplayName("findBookmarksOfUntagged: Untagged의 북마크를 조회한다.")
+    @DisplayName("findUntaggedBookmarks: Untagged의 북마크를 조회한다.")
     @Test
-    void findBookmarksOfUntagged() {
+    void findUntaggedBookmarks() {
         // given
         final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
                 "https://github.com/woowacourse-teams/2020-taggle");
@@ -85,7 +85,7 @@ class TagBookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // when
-        final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findBookmarksOfUntagged(user);
+        final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findUntaggedBookmarks(user);
 
         // then
         assertThat(untaggedBookmarks.getId()).isNull();
@@ -119,9 +119,9 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark2.getId());
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark3.getId());
 
-        final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksOfTag(user, taggle.getId());
-        final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksOfTag(user, google.getId());
-        final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksOfTag(user, naver.getId());
+        final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksByTagId(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksByTagId(user, google.getId());
+        final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksByTagId(user, naver.getId());
 
         // then
         assertThat(tagBookmark1.getId()).isEqualTo(taggle.getId());
@@ -153,7 +153,7 @@ class TagBookmarkServiceTest {
 
         // when
         tagBookmarkService.removeTagBookmark(user, taggle.getId(), bookmark1.getId());
-        final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksOfTag(user, taggle.getId());
+        final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksByTagId(user, taggle.getId());
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);
@@ -161,7 +161,7 @@ class TagBookmarkServiceTest {
 
     @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
     @Test
-    void findTagsOfBookmark() {
+    void findTagsByBookmarkId() {
         // given
         final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto(
                 "https://github.com/woowacourse-teams/2020-taggle", "title",
@@ -169,7 +169,7 @@ class TagBookmarkServiceTest {
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
-        final BookmarkTagResponse expected = tagBookmarkService.findTagsOfBookmark(user, bookmark.getId());
+        final BookmarkTagResponse expected = tagBookmarkService.findTagsByBookmarkId(user, bookmark.getId());
 
         // then
         assertThat(expected.getId()).isEqualTo(bookmark.getId());

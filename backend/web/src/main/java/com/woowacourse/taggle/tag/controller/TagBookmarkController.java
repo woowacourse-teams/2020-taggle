@@ -25,27 +25,27 @@ public class TagBookmarkController {
     private final TagBookmarkService tagBookmarkService;
 
     @GetMapping("/bookmarks/{id}/tags")
-    public ResponseEntity<BookmarkTagResponse> findTagsOfBookmark(@AuthenticationPrincipal final SessionUser user,
+    public ResponseEntity<BookmarkTagResponse> findTagsByBookmarkId(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long id) {
-        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsOfBookmark(user, id);
+        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsByBookmarkId(user, id);
 
         return ResponseEntity.ok()
                 .body(bookmarkTagResponse);
     }
 
     @GetMapping("/tags/{tagId}/bookmarks")
-    public ResponseEntity<TagBookmarkResponse> findBookmarksOfTag(@AuthenticationPrincipal final SessionUser user,
+    public ResponseEntity<TagBookmarkResponse> findBookmarksByTagId(@AuthenticationPrincipal final SessionUser user,
             @PathVariable final Long tagId) {
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfTag(user, tagId);
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tagId);
 
         return ResponseEntity.ok()
                 .body(tagBookmarkResponse);
     }
 
     @GetMapping("/tags/untagged/bookmarks")
-    public ResponseEntity<TagBookmarkResponse> findBookmarksOfUntagged(
+    public ResponseEntity<TagBookmarkResponse> findUntaggedBookmarks(
             @AuthenticationPrincipal final SessionUser user) {
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksOfUntagged(user);
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findUntaggedBookmarks(user);
 
         return ResponseEntity.ok()
                 .body(tagBookmarkResponse);

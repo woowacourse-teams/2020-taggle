@@ -26,14 +26,14 @@ public class TagBookmarkService {
     private final TagBookmarkRepository tagBookmarkRepository;
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findBookmarksOfTag(final SessionUser user, final Long tagId) {
+    public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
 
         return TagBookmarkResponse.of(tag);
     }
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findBookmarksOfUntagged(final SessionUser user) {
+    public TagBookmarkResponse findUntaggedBookmarks(final SessionUser user) {
         final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
                 .filter(Bookmark::isTagsEmpty)
                 .collect(Collectors.toList());
@@ -63,7 +63,7 @@ public class TagBookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public BookmarkTagResponse findTagsOfBookmark(final SessionUser user, final Long id) {
+    public BookmarkTagResponse findTagsByBookmarkId(final SessionUser user, final Long id) {
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(id, user.getId());
 
         return BookmarkTagResponse.of(bookmark);
