@@ -8,9 +8,9 @@ import vuetify from './plugins/vuetify.js';
 Vue.config.productionTip = false;
 
 new Vue({
+  VueGtag,
   router,
   store,
   vuetify,
-  VueGtag,
   render: (h) => h(App),
 }).$mount('#app');
