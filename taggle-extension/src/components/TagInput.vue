@@ -20,7 +20,7 @@ import {
   DELETE_TAG_ON_BOOKMARK,
   FETCH_BOOKMARK_WITH_TAGS,
 } from '@/store/share/actionsType.js';
-import { BOOKMARK_ID, GET_TAG_ID_BY_NAME } from '@/store/share/gettersType.js';
+import { BOOKMARK_ID, TAGS_WITH_BOOKMARK, GET_TAG_ID_BY_NAME } from '@/store/share/gettersType.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationsType.js';
 import { SNACKBAR_MESSAGES } from '@/utils/constants.js';
 
@@ -39,7 +39,19 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([BOOKMARK_ID, GET_TAG_ID_BY_NAME]),
+    ...mapGetters([BOOKMARK_ID, GET_TAG_ID_BY_NAME, TAGS_WITH_BOOKMARK]),
+  },
+  watch: {
+    async [BOOKMARK_ID]() {
+      if (this[BOOKMARK_ID]) {
+        try {
+          await this[FETCH_BOOKMARK_WITH_TAGS](this[BOOKMARK_ID]);
+          this.initTags();
+        } catch (e) {
+          this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.TAG_BOOKMARK.FETCH.FAIL);
+        }
+      }
+    },
   },
   methods: {
     ...mapMutations([SHOW_SNACKBAR]),
@@ -71,6 +83,15 @@ export default {
       } catch (e) {
         this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.TAG_BOOKMARK.DELETE.FAIL);
       }
+    },
+    initTags() {
+      this.tags = this[TAGS_WITH_BOOKMARK].map((tag) => this.mapTag(tag));
+    },
+    mapTag(tagValue) {
+      return {
+        text: tagValue.name,
+        tiClasses: ['ti-valid'],
+      };
     },
   },
 };
