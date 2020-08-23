@@ -10,36 +10,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.woowacourse.taggle.setup.domain.UserSetup;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
-import com.woowacourse.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 class BookmarkCreateServiceTest {
 
-    public static final User DEFAULT_USER = User.builder()
-            .id(1L)
-            .email("jordyLover@kakao.com")
-            .nickName("tigger")
-            .role(Role.USER)
-            .picture("https://www.naver.com/")
-            .build();
-
     @Autowired
     private BookmarkCreateService bookmarkCreateService;
 
     @Autowired
-    private UserService userService;
+    private UserSetup userSetup;
 
     private SessionUser user;
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(DEFAULT_USER);
+        final User testUser = userSetup.save();
         user = new SessionUser(testUser);
     }
 

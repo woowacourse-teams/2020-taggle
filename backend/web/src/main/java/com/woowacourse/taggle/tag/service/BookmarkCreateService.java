@@ -4,8 +4,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.woowacourse.taggle.crawler.OpenGraphCrawler;
-import com.woowacourse.taggle.dto.OpenGraph;
+import com.woowacourse.taggle.linkpreview.LinkPreview;
+import com.woowacourse.taggle.linkpreview.LinkPreviewCrawler;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
@@ -17,13 +17,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BookmarkCreateService {
 
-    private final OpenGraphCrawler openGraphCrawler;
+    private final LinkPreviewCrawler linkPreviewCrawler;
     private final BookmarkService bookmarkService;
 
     public BookmarkResponse createBookmark(final BookmarkCreateRequest bookmarkCreateRequest, final SessionUser user) {
-        final OpenGraph openGraph = openGraphCrawler.extractPreview(bookmarkCreateRequest.getUrl());
-        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, openGraph.getTitle(),
-                openGraph.getDescription(), openGraph.getImage());
+        final LinkPreview linkPreview = linkPreviewCrawler.extractPreview(bookmarkCreateRequest.getUrl());
+        final BookmarkCreateDto bookmarkCreateDto = BookmarkCreateDto.of(bookmarkCreateRequest, linkPreview.getTitle(),
+                linkPreview.getDescription(), linkPreview.getImage());
 
         return bookmarkService.createBookmark(user, bookmarkCreateDto);
     }
