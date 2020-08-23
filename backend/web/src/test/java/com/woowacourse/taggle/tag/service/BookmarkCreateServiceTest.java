@@ -38,17 +38,16 @@ class BookmarkCreateServiceTest {
     @Test
     void createBookmark() {
         // given
-        final BookmarkCreateRequest bookmarkCreateDto = new BookmarkCreateRequest("http://naver.com");
+        final BookmarkCreateRequest bookmarkCreateDto = new BookmarkCreateRequest("https://github.com");
 
         // when
         final BookmarkResponse bookmark = bookmarkCreateService.createBookmark(bookmarkCreateDto, user);
 
         // then
         assertThat(bookmark.getId()).isEqualTo(1L);
-        assertThat(bookmark.getUrl()).isEqualTo("http://naver.com");
-        assertThat(bookmark.getTitle()).isEqualTo("네이버");
-        assertThat(bookmark.getDescription()).isEqualTo("네이버");
-        assertThat(bookmark.getImage()).isEqualTo(
-                "https://s.pstatic.net/static/www/mobile/edit/2016/0705/mobile_212852414260.png");
+        assertThat(bookmark.getUrl()).isEqualTo("https://github.com");
+        assertThat(bookmark.getTitle()).isNotEmpty();
+        assertThat(bookmark.getDescription()).isNotEmpty();
+        assertThat(bookmark.getImage()).isNotEmpty();
     }
 }
