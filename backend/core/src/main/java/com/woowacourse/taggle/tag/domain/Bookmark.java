@@ -30,16 +30,16 @@ public class Bookmark {
     private Long id;
 
     @URL
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String url;
 
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     @Column(nullable = false)
@@ -52,7 +52,8 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
-    public Bookmark(final String url, final User user, String title, String description, String image) {
+    public Bookmark(final String url, final User user, final String title, final String description,
+            final String image) {
         this.url = url;
         this.isRead = false;
         this.user = user;
@@ -67,5 +68,9 @@ public class Bookmark {
 
     public void removeTagBookmark(final TagBookmark tagBookmark) {
         tags.remove(tagBookmark);
+    }
+
+    public boolean isTagsEmpty() {
+        return tags.isEmpty();
     }
 }
