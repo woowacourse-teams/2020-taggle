@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.woowacourse.taggle.exception.CrawlerConnectionException;
+import com.woowacourse.taggle.exception.InvalidURLException;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -49,6 +51,24 @@ public class ApiControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body("사용자를 찾을 수 없습니다.");
+    }
+
+    @ExceptionHandler(CrawlerConnectionException.class)
+    public ResponseEntity<String> crawlerConnectionException(final CrawlerConnectionException exception) {
+        log.error(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Link Preview를 위한 Cralwer에 연결할 수 없습니다.");
+    }
+
+    @ExceptionHandler(InvalidURLException.class)
+    public ResponseEntity<String> InvalidURLException(final InvalidURLException exception) {
+        log.error(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("잘못된 URL 입니다.");
     }
 
     @ExceptionHandler(Exception.class)
