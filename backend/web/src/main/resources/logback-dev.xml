@@ -4,12 +4,12 @@
     <timestamp key="dailyLog" datePattern="yyyyMMdd"/>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${TAGGLE_LOGS_PATH}/taggle_logbacks_${dailyLog}.log</file>
+        <file>${TAGGLE_LOGS_PATH}/taggle_dev_logbacks_${dailyLog}.log</file>
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${TAGGLE_LOGS_PATH}/taggle_logbacks.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${TAGGLE_LOGS_PATH}/taggle_dev_logbacks.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
