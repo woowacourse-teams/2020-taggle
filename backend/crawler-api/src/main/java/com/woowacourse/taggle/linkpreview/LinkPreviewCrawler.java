@@ -30,8 +30,8 @@ public class LinkPreviewCrawler {
         validateURL(url);
         try {
             final Document document = jsoupConfig(url);
-            final String title = getTitle(document);
-            final String description = document.select(META_DESCRIPTION).attr(CONTENT);
+            final String title = getTitle(document, url);
+            final String description = getDescription(document);
             final String image = getImage(document);
             return new LinkPreview(title, description, image);
         } catch (final IOException e) {
@@ -55,10 +55,17 @@ public class LinkPreviewCrawler {
         return image;
     }
 
-    private String getTitle(final Document document) {
-        final String title = document.select(META_TITLE).attr(CONTENT);
+    private String getDescription(final Document document) {
+        return document.select(META_DESCRIPTION).attr(CONTENT);
+    }
+
+    private String getTitle(final Document document, final String url) {
+        String title = document.select(META_TITLE).attr(CONTENT);
         if (title.isEmpty()) {
-            return document.title();
+            title = document.title();
+        }
+        if (title.isEmpty()) {
+            return url;
         }
         return title;
     }
