@@ -9,6 +9,9 @@ export const SNACKBAR_MESSAGES = {
     },
   },
   TAG_BOOKMARK: {
+    FETCH: {
+      FAIL: '태그 북마크 로딩 과정 중 오류가 발생했습니다.',
+    },
     ADD: {
       FAIL: '태그 북마크 추가 과정 중 오류가 발생했습니다.',
     },

@@ -1,5 +1,8 @@
 package com.woowacourse.taggle.tag.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,6 +10,8 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
+import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
+import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +24,21 @@ public class TagBookmarkService {
     private final TagService tagService;
     private final BookmarkService bookmarkService;
     private final TagBookmarkRepository tagBookmarkRepository;
+
+    @Transactional(readOnly = true)
+    public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId) {
+        final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
+
+        return TagBookmarkResponse.of(tag);
+    }
+
+    @Transactional(readOnly = true)
+    public TagBookmarkResponse findUntaggedBookmarks(final SessionUser user) {
+        final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
+                .filter(Bookmark::isTagsEmpty)
+                .collect(Collectors.toList());
+        return TagBookmarkResponse.ofUntagged(bookmarks);
+    }
 
     public void createTagBookmark(final SessionUser user, final Long tagId, final Long bookmarkId) {
 
@@ -40,5 +60,12 @@ public class TagBookmarkService {
         tagBookmarkRepository.delete(tagBookmark);
         tag.removeTagBookmark(tagBookmark);
         bookmark.removeTagBookmark(tagBookmark);
+    }
+
+    @Transactional(readOnly = true)
+    public BookmarkTagResponse findTagsByBookmarkId(final SessionUser user, final Long id) {
+        final Bookmark bookmark = bookmarkService.findByIdAndUserId(id, user.getId());
+
+        return BookmarkTagResponse.of(bookmark);
     }
 }

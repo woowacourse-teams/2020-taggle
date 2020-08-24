@@ -11,17 +11,17 @@ import {
 import TagService from '@/api/module/tag.js';
 import BookmarkService from '@/api/module/bookmark.js';
 import { RESET_BOOKMARK, SET_BOOKMARK, SHOW_SNACKBAR } from '@/store/share/mutationsType.js';
-import { BOOKMARK_ID, IS_SHOW, MESSAGE, GET_TAG_ID_BY_NAME } from '@/store/share/gettersType.js';
+import { BOOKMARK_ID, IS_SHOW, MESSAGE, GET_TAG_ID_BY_NAME, TAGS_WITH_BOOKMARK } from '@/store/share/gettersType.js';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     bookmarkWithTags: {
-      id: 0,
+      id: '',
       tags: [
         {
-          id: 0,
+          id: '',
           name: '',
         },
       ],
@@ -36,6 +36,9 @@ export default new Vuex.Store({
     [GET_TAG_ID_BY_NAME]: (state) => (name) => {
       const tag = state.bookmarkWithTags.tags.find((item) => item.name === name);
       return tag ? tag.id : undefined;
+    },
+    [TAGS_WITH_BOOKMARK](state) {
+      return state.bookmarkWithTags.tags;
     },
     [IS_SHOW](state) {
       return state.isShow;
