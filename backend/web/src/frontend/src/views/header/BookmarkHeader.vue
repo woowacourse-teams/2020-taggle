@@ -16,10 +16,7 @@
             <template v-slot:activator="{ on, attrs }">
               <div class="text-center">
                 <v-avatar v-bind="attrs" v-on="on">
-                  <img
-                    src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
-                    alt="evan"
-                  />
+                  <img :src="user.picture" alt="evan" />
                 </v-avatar>
               </div>
             </template>
@@ -83,7 +80,7 @@
 import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
 import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { CATEGORIES, USER } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -99,7 +96,7 @@ export default {
     ...mapActions([FETCH_CATEGORIES]),
   },
   computed: {
-    ...mapGetters([CATEGORIES]),
+    ...mapGetters([CATEGORIES, USER]),
   },
 };
 </script>

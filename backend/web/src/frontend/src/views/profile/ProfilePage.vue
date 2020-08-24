@@ -1,33 +1,68 @@
 <template>
-  <section style="width: 75%">
-    <div class="profile profile-img">
-      <v-avatar size="240">
-        <img
-          src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
-          alt="evan"
-        />
+  <section style="margin: auto; width: 75%">
+    <div class="profile-img">
+      <v-avatar size="200">
+        <img :src="user.picture" alt="evan" />
       </v-avatar>
-      <h2 style="padding-top: inherit">김준석</h2>
+      <h2 style="padding-top: inherit">{{ user.nickName }}</h2>
     </div>
     <div class="profile">
-      <h2>이메일 주소</h2>
+      <div class="profile-title">
+        <h2>이메일 주소</h2>
+      </div>
+      <div class="profile-content">
+        {{ user.email }}
+      </div>
     </div>
     <div class="profile">
-      <h2>이메일 수신 설정</h2>
+      <div class="profile-title">
+        <h2>이메일 알람 설정</h2>
+      </div>
+      <div class="profile-content">
+        <v-switch inset color="success"></v-switch>
+      </div>
     </div>
     <div class="profile">
-      <h2>회원 탈퇴</h2>
+      <div class="profile-title">
+        <h2>회원 탈퇴</h2>
+      </div>
+      <div class="profile-content">
+        <v-btn depressed color="success" large><h3>회원 탈퇴</h3></v-btn>
+      </div>
     </div>
   </section>
 </template>
 
+<script>
+import { mapGetters } from 'vuex';
+import { USER } from '@/store/share/getterTypes.js';
+
+export default {
+  name: 'ProfilePage',
+  computed: {
+    ...mapGetters([USER]),
+  },
+};
+</script>
+
 <style>
 .profile-img {
   text-align: center;
+  padding-bottom: 1.5rem;
+  padding-top: 1.5rem;
 }
 .profile {
+  display: flex;
   padding-bottom: 1.5rem;
   padding-top: 1.5rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.profile-title {
+  align-self: center;
+  width: 15rem;
+}
+.profile-content {
+  align-self: center;
 }
 </style>
