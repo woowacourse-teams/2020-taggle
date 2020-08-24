@@ -12,8 +12,8 @@ import com.woowacourse.taggle.user.dto.SessionUser;
 @RestController
 public class UserController {
 
-    @GetMapping("/loggedIn")
-    public ResponseEntity<SessionUser> loggedIn(@AuthenticationPrincipal SessionUser user) {
+    @GetMapping("/user-info")
+    public ResponseEntity<SessionUser> getUserInfo(@AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(user);
     }

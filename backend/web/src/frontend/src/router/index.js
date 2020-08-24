@@ -17,7 +17,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((routeInfo) => routeInfo.meta.requiresAuth)) {
     try {
-      await UserService.loggedIn();
+      await UserService.getUserInfo();
       next();
     } catch (e) {
       next('/signin');
