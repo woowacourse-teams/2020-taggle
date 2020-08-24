@@ -1,14 +1,14 @@
 <template>
   <v-row>
     <v-col>
-      <v-container grid-list-lg text-xs-center>
-        <CardStream :bookmarks="bookmarks" v-show="cardDisplayMode === 'stream'" />
-        <CardModule :bookmarks="bookmarks" v-show="cardDisplayMode === 'module'" />
-      </v-container>
+      <CardStream :bookmarks="bookmarks" v-show="cardDisplayMode === 'stream'" />
+      <CardModule :bookmarks="bookmarks" v-show="cardDisplayMode === 'module'" />
     </v-col>
-    <v-col cols="2">
-      <v-icon @click="changeCardDisplayMode('stream')" x-large>view_stream</v-icon>
-      <v-icon @click="changeCardDisplayMode('module')" x-large>view_module</v-icon>
+    <v-col cols="1">
+      <div class="card-change-button-container">
+        <v-icon @click="changeCardDisplayMode('stream')" x-large>view_stream</v-icon>
+        <v-icon @click="changeCardDisplayMode('module')" x-large>view_module</v-icon>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.layout-container {
-  width: 100%;
+.card-change-button-container {
+  position: fixed;
 }
 </style>

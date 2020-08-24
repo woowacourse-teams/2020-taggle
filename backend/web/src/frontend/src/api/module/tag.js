@@ -4,7 +4,7 @@ const BASE_URL = '/api/v1/tags';
 
 const TagService = {
   findTagWithBookmarks(tagId) {
-    return ApiService.get(`${BASE_URL}/${tagId}`);
+    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
   create(newTag) {
     return ApiService.post(`${BASE_URL}`, newTag).then(({ data }) => data.id);
