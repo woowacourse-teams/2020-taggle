@@ -6,6 +6,9 @@ const UserService = {
   getUserInfo() {
     return ApiService.get(`${BASE_URL}/user-info`);
   },
+  deleteUser() {
+    return ApiService.delete(BASE_URL);
+  },
 };
 
 export default UserService;

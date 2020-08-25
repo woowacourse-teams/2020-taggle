@@ -21,4 +21,8 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다. User Id: " + id));
     }
+
+    public void removeUser(final Long id) {
+        userRepository.deleteById(id);
+    }
 }

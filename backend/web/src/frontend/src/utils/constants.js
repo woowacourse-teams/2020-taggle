@@ -34,4 +34,10 @@ export const MESSAGES = {
       FAIL: '북마크에 등록된 태그목록 로딩중 오류 발생',
     },
   },
+  USER: {
+    DELETE: {
+      SUCCESS: '회원 탈퇴 성공',
+      FAIL: '회원 탈퇴 오류 발생',
+    },
+  },
 };
