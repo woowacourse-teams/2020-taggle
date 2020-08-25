@@ -49,14 +49,11 @@ export default {
     async onDeleteCategory() {
       try {
         await this[DELETE_CATEGORY](this.category.id);
-        await this.fetchCategory();
+        await this[FETCH_CATEGORIES]();
         this[SHOW_SNACKBAR](MESSAGES.CATEGORY.DELETE.SUCCESS);
       } catch {
         this[SHOW_SNACKBAR](MESSAGES.CATEGORY.DELETE.FAIL);
       }
-    },
-    async fetchCategory() {
-      await this[FETCH_CATEGORIES]();
     },
   },
 };
