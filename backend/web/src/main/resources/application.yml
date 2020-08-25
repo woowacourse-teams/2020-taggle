@@ -10,12 +10,6 @@ spring:
 
 logging:
   config: classpath:logback-local.xml
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
 
 ---
 spring:
@@ -23,6 +17,7 @@ spring:
 
 logging:
   config: classpath:logback-prod.xml
+
 ---
 spring:
   profiles: dev
