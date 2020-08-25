@@ -19,10 +19,8 @@
             {{ title }}
           </v-list-item-title>
           <v-list-item-action>
-            <CategoryContextMenu :category="{ id: id, title: title }" />
+            <CategoryContextMenu :category="{ id, title }" />
           </v-list-item-action>
-          <!--            <CategoryIcons :category="{ id: id, title: title }" />-->
-          <!--            </v-list-item-content>-->
         </template>
         <v-list-item v-for="{ id, name } in tags" :key="id" :to="{ name: 'bookmarks', params: { id } }">
           <!--            <v-list-item-title @click.prevent="">-->
@@ -32,7 +30,7 @@
             {{ name }}
           </v-list-item-title>
           <v-list-item-action>
-            <TagContextMenu />
+            <TagContextMenu :tag="{ id, title }" />
           </v-list-item-action>
         </v-list-item>
       </v-list-group>
