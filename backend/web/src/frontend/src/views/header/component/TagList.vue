@@ -19,7 +19,7 @@
             {{ title }}
           </v-list-item-title>
           <v-list-item-action>
-            <CategoryContextMenu />
+            <CategoryContextMenu :category="{ id: id, title: title }" />
           </v-list-item-action>
           <!--            <CategoryIcons :category="{ id: id, title: title }" />-->
           <!--            </v-list-item-content>-->
