@@ -2,7 +2,7 @@
   <ContextMenu>
     <template slot="menuItems">
       <v-list-item v-for="(item, index) in items" :key="index" @click.prevent="item.action">
-        <v-list-item-content>{{ item.title }}</v-list-item-content>
+        <v-list-item-content>{{ item.content }}</v-list-item-content>
         <v-list-item-icon>
           <v-icon>
             {{ item.icon }}
@@ -34,9 +34,9 @@ export default {
   data() {
     return {
       items: [
-        { title: '카테고리수정', icon: 'mdi-pencil', action: '' },
+        { content: '카테고리수정', icon: 'mdi-pencil', action: '' },
         {
-          title: '카테고리삭제',
+          content: '카테고리삭제',
           icon: 'mdi-delete',
           action: this.onDeleteCategory,
         },
