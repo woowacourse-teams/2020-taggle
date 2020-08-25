@@ -31,7 +31,8 @@ public class SessionUser implements Serializable {
     @URL
     private String picture;
 
-    private Boolean isNotice;
+    @NotEmpty
+    private Boolean notificationEnabled;
 
     private Role role;
 
@@ -42,7 +43,7 @@ public class SessionUser implements Serializable {
         this.notificationEmail = user.getNotificationEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.picture = user.getPicture();
-        this.isNotice = user.getIsNotice();
+        this.notificationEnabled = user.getNotificationEnabled();
         this.role = user.getRole();
     }
 

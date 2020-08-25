@@ -57,7 +57,7 @@ public class User extends BaseTimeEntity {
     private String picture;
 
     @Column(nullable = false)
-    private Boolean isNotice;
+    private Boolean notificationEnabled;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -75,7 +75,16 @@ public class User extends BaseTimeEntity {
         this.notificationEmail = email;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
-        this.isNotice = false;
+        this.notificationEnabled = false;
         this.role = role;
     }
+
+    public void updateNotificationEmail(final String notificationEmail) {
+        this.notificationEmail = notificationEmail;
+    }
+
+    public void updateNotificationEnabled(final Boolean notificationEnabled) {
+        this.notificationEnabled = notificationEnabled;
+    }
+
 }

@@ -41,22 +41,6 @@ public class UserServiceTest {
         assertThat(actual).isNotNull();
     }
 
-    @DisplayName("findByEmail: 이메일로 유저 찾기 테스트")
-    @Test
-    void findByEmail() {
-        // given
-        final User newUser = userService.save(user);
-
-        // when
-        final User actual = userService.findById(newUser.getId());
-
-        // then
-        assertThat(actual.getId()).isEqualTo(1L);
-        assertThat(actual.getEmail()).isEqualTo("jordyLover@kakao.com");
-        assertThat(actual.getNickName()).isEqualTo("tigger");
-        assertThat(actual.getPicture()).isEqualTo("https://www.naver.com/");
-    }
-
     @DisplayName("removeUser: 회원 탈퇴 테스트")
     @Test
     void removeUser() {
@@ -71,5 +55,21 @@ public class UserServiceTest {
         assertThatThrownBy(() -> userService.findById(newUser.getId()))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("사용자가 존재하지 않습니다.");
+    }
+
+    @DisplayName("findByEmail: 이메일로 유저 찾기 테스트")
+    @Test
+    void findByEmail() {
+        // given
+        final User newUser = userService.save(user);
+
+        // when
+        final User actual = userService.findById(newUser.getId());
+
+        // then
+        assertThat(actual.getId()).isEqualTo(1L);
+        assertThat(actual.getEmail()).isEqualTo("jordyLover@kakao.com");
+        assertThat(actual.getNickName()).isEqualTo("tigger");
+        assertThat(actual.getPicture()).isEqualTo("https://www.naver.com/");
     }
 }

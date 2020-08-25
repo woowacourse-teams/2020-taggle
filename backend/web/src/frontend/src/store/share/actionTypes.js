@@ -5,4 +5,6 @@ export const FETCH_BOOKMARK_WITH_TAGS = 'fetchBookmarkWithTags';
 export const ADD_TAG_ON_BOOKMARK = 'addTagOnBookmark';
 export const DELETE_TAG_ON_BOOKMARK = 'deleteTagOnBookmark';
 export const FETCH_USER = 'fetchUser';
+export const UPDATE_NOTIFICATION_EMAIL = 'updateNotificationEmail';
+export const UPDATE_NOTIFICATION_ENABLED = 'updateNotificationEnabled';
 export const DELETE_USER = 'deleteUser';

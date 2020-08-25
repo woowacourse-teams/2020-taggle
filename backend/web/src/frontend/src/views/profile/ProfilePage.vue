@@ -16,6 +16,17 @@
     </div>
     <div class="profile">
       <div class="profile-title">
+        <h2>알람 이메일 주소</h2>
+      </div>
+      <div class="profile-content">
+        {{ user.notificationEmail }}
+      </div>
+      <div class="profile-button">
+        <v-btn>수정</v-btn>
+      </div>
+    </div>
+    <div class="profile">
+      <div class="profile-title">
         <h2>이메일 알람 설정</h2>
       </div>
       <div class="profile-content">
@@ -35,7 +46,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { DELETE_USER } from '@/store/share/actionTypes.js';
+import { UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED, DELETE_USER } from '@/store/share/actionTypes.js';
 import { USER } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -44,17 +55,36 @@ export default {
   name: 'ProfilePage',
   data() {
     return {
-      isNotice: false,
+      isNotice: '',
+      notificationEmail: '',
     };
   },
+  created() {
+    this.isNotice = this.user.notificationEnabled;
+  },
   methods: {
-    ...mapActions([DELETE_USER]),
+    ...mapActions([UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED, DELETE_USER]),
     ...mapMutations([SHOW_SNACKBAR]),
+    async onUpdateNotificationEmail() {
+      try {
+        await this[UPDATE_NOTIFICATION_EMAIL]({ notificationEmail: this.notificationEmail });
+        await this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_EMAIL.SUCCESS);
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_EMAIL.FAIL);
+      }
+    },
+    async onUpdateNotificationEnabled() {
+      try {
+        await this[UPDATE_NOTIFICATION_ENABLED]({ notificationEnabled: this.isNotice });
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_ENABLED.FAIL);
+      }
+    },
     async onDeleteUser() {
       try {
         await this[DELETE_USER]();
-        this[SHOW_SNACKBAR](MESSAGES.USER.DELETE.SUCCESS);
-        this.$router.replace('/signin');
+        await this[SHOW_SNACKBAR](MESSAGES.USER.DELETE.SUCCESS);
+        await this.$router.replace('/signin');
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.USER.DELETE.FAIL);
       }
@@ -62,6 +92,11 @@ export default {
   },
   computed: {
     ...mapGetters([USER]),
+  },
+  watch: {
+    async isNotice() {
+      await this.onUpdateNotificationEnabled();
+    },
   },
 };
 </script>

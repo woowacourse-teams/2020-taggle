@@ -35,6 +35,13 @@ export const MESSAGES = {
     },
   },
   USER: {
+    NOTIFICATION_EMAIL: {
+      SUCCESS: '알람 이메일 수정됨',
+      FAIL: '알람 이메일 수정 오류 발생',
+    },
+    NOTIFICATION_ENABLED: {
+      FAIL: '알람 수정 오류 발생',
+    },
     DELETE: {
       SUCCESS: '회원 탈퇴 성공',
       FAIL: '회원 탈퇴 오류 발생',
