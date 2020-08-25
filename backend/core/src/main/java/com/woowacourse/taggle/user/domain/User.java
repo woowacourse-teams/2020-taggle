@@ -41,6 +41,11 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
+    @Email
+    @NotEmpty
+    @Column(nullable = false)
+    private String notificationEmail;
+
     @Pattern(regexp = "^([+]?[\\s0-9]+)?(\\d{3}|[(]?[0-9]+[)])?([-]?[\\s]?[0-9])+$",
             message = "휴대폰 번호의 형식이 올바르지 않습니다.")
     @Size(min = 7)
@@ -50,6 +55,9 @@ public class User extends BaseTimeEntity {
     @NotEmpty
     @Column(nullable = false, columnDefinition = "TEXT")
     private String picture;
+
+    @Column(nullable = false)
+    private Boolean isNotice;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -64,8 +72,10 @@ public class User extends BaseTimeEntity {
         this.id = id;
         this.nickName = nickName;
         this.email = email;
+        this.notificationEmail = email;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
+        this.isNotice = false;
         this.role = role;
     }
 }

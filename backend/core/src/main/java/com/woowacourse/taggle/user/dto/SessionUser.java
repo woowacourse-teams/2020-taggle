@@ -23,10 +23,15 @@ public class SessionUser implements Serializable {
     @Email
     private String email;
 
+    @Email
+    private String notificationEmail;
+
     private String phoneNumber;
 
     @URL
     private String picture;
+
+    private Boolean isNotice;
 
     private Role role;
 
@@ -34,8 +39,10 @@ public class SessionUser implements Serializable {
         this.id = user.getId();
         this.nickName = user.getNickName();
         this.email = user.getEmail();
+        this.notificationEmail = user.getNotificationEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.picture = user.getPicture();
+        this.isNotice = user.getIsNotice();
         this.role = user.getRole();
     }
 
