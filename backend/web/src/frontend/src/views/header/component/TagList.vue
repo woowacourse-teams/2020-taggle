@@ -13,19 +13,27 @@
 
     <!-- tag & category list-->
     <v-list v-for="{ id, title, tags } in categories" :key="id" class="grow">
-      <v-list-group class="text-left" link value="true">
+      <v-list-group sub-group class="text-left" value="true">
         <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title class="font-weight-black text-h7">
-              {{ title }}
-            </v-list-item-title>
-            <CategoryIcons :category="{ id: id, title: title }" />
-          </v-list-item-content>
+          <v-list-item-title class="font-weight-black text-h7">
+            {{ title }}
+          </v-list-item-title>
+          <v-list-item-action>
+            <CategoryContextMenu />
+          </v-list-item-action>
+          <!--            <CategoryIcons :category="{ id: id, title: title }" />-->
+          <!--            </v-list-item-content>-->
         </template>
         <v-list-item v-for="{ id, name } in tags" :key="id" :to="{ name: 'bookmarks', params: { id } }">
-          <v-list-item-content>
+          <!--            <v-list-item-title @click.prevent="">-->
+          <!--              <v-text-field :value="name" />-->
+          <!--            </v-list-item-title>-->
+          <v-list-item-title>
             {{ name }}
-          </v-list-item-content>
+          </v-list-item-title>
+          <v-list-item-action>
+            <TagContextMenu />
+          </v-list-item-action>
         </v-list-item>
       </v-list-group>
     </v-list>
@@ -46,17 +54,21 @@
 <script>
 import CategoryAddModal from '@/views/header/component/category/CategoryAddModal.vue';
 import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
-import CategoryIcons from '@/views/header/component/category/CategoryIcons.vue';
+// import CategoryIcons from '@/views/header/component/category/CategoryIcons.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
+import CategoryContextMenu from '@/views/header/component/category/CategoryContextMenu.vue';
+import TagContextMenu from '@/views/header/component/category/TagContextMenu.vue';
 
 export default {
   name: 'TagList',
   components: {
+    CategoryContextMenu,
+    TagContextMenu,
     CategoryAddModal,
     CategoryTagModifyModal,
-    CategoryIcons,
+    // CategoryIcons,
   },
   computed: {
     ...mapGetters([CATEGORIES]),
