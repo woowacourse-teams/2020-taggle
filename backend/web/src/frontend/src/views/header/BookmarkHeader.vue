@@ -8,7 +8,6 @@
             <v-img src="@/assets/images/TaggleLog.png"></v-img>
           </v-list-item-avatar>
         </v-list-item>
-        <v-divider></v-divider>
 
         <!--user information button-->
         <template v-slot:append>
@@ -24,30 +23,18 @@
       </v-navigation-drawer>
 
       <!-- tags & categories -->
-      <TagList />
+      <TagNavigation />
     </v-row>
   </v-navigation-drawer>
 </template>
 
 <script>
-import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
-import { mapActions, mapGetters } from 'vuex';
-import TagList from '@/views/header/component/TagList.vue';
+import TagNavigation from '@/views/header/component/TagNavigation.vue';
 
 export default {
   name: 'BookmarkHeader',
   components: {
-    TagList,
-  },
-  created() {
-    this[FETCH_CATEGORIES]();
-  },
-  methods: {
-    ...mapActions([FETCH_CATEGORIES]),
-  },
-  computed: {
-    ...mapGetters([CATEGORIES]),
+    TagNavigation,
   },
 };
 </script>
