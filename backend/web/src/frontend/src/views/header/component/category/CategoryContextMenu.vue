@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       items: [
-        { content: '카테고리수정', icon: 'mdi-pencil', action: '' },
+        { content: '카테고리수정', icon: 'mdi-pencil', action: this.onEditCategory },
         {
           content: '카테고리삭제',
           icon: 'mdi-delete',
@@ -54,6 +54,9 @@ export default {
       } catch {
         this[SHOW_SNACKBAR](MESSAGES.CATEGORY.DELETE.FAIL);
       }
+    },
+    onEditCategory() {
+      this.$emit('editCategory');
     },
   },
 };

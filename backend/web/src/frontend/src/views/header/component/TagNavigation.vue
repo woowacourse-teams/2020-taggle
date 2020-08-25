@@ -42,7 +42,6 @@
       <v-row width="100%">
         <v-col class="text-right">
           <CategoryAddModal />
-          <CategoryTagModifyModal />
         </v-col>
       </v-row>
     </template>
@@ -51,8 +50,6 @@
 
 <script>
 import CategoryAddModal from '@/views/header/component/category/CategoryAddModal.vue';
-import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
-// import CategoryIcons from '@/views/header/component/category/CategoryIcons.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import { CATEGORIES } from '@/store/share/getterTypes.js';
@@ -60,13 +57,11 @@ import CategoryContextMenu from '@/views/header/component/category/CategoryConte
 import TagContextMenu from '@/views/header/component/category/TagContextMenu.vue';
 
 export default {
-  name: 'TagList',
+  name: 'TagNavigation',
   components: {
     CategoryContextMenu,
     TagContextMenu,
     CategoryAddModal,
-    CategoryTagModifyModal,
-    // CategoryIcons,
   },
   computed: {
     ...mapGetters([CATEGORIES]),
@@ -79,5 +74,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
