@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <BookmarkHeader />
     <v-main>
-      <v-container>
+      <v-container style="height: 100% !important;">
         <router-view></router-view>
       </v-container>
       <BookmarkAddModal />

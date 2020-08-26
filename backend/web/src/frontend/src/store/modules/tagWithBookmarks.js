@@ -1,7 +1,7 @@
 import TagService from '@/api/module/tag.js';
 import { CLEAR_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
 import { ADD_MORE_BOOKMARKS, SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
-import { BOOKMARKS } from '@/store/share/getterTypes.js';
+import { BOOKMARKS, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 
 const state = {
   tagBookmarks: {
@@ -13,6 +13,9 @@ const state = {
 const getters = {
   [BOOKMARKS](state) {
     return state.tagBookmarks.bookmarks;
+  },
+  [IS_BOOKMARKS_EMPTY](state) {
+    return state.tagBookmarks.bookmarks.length === 0;
   },
 };
 const mutations = {

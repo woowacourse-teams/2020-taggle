@@ -1,5 +1,13 @@
 <template>
-  <div>
+  <v-row v-if="isBookmarksEmpty" justify="center" align="center" style="height: 100% !important;">
+    <v-col>
+      <div class="ma-3 text-center">
+        <h3 class="text--primary">북마크가 존재하지 않습니다.</h3>
+        <span class="text--secondary">북마크에 이 태그를 달아보세요 :)</span>
+      </div>
+    </v-col>
+  </v-row>
+  <div v-else>
     <BookmarkCard />
     <Infinite-loading
       v-if="bookmarks.length"
@@ -18,7 +26,7 @@ import BookmarkCard from '@/views/bookmark/components/BookmarkCard.vue';
 import InfiniteLoading from 'vue-infinite-loading';
 import { mapActions, mapGetters } from 'vuex';
 import { CLEAR_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
-import { BOOKMARKS } from '@/store/share/getterTypes.js';
+import { BOOKMARKS, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 
 export default {
   name: 'BookmarkPage',
@@ -38,7 +46,7 @@ export default {
     this.changeTag();
   },
   computed: {
-    ...mapGetters([BOOKMARKS]),
+    ...mapGetters([BOOKMARKS, IS_BOOKMARKS_EMPTY]),
   },
   methods: {
     ...mapActions([FETCH_TAG_WITH_BOOKMARKS, FETCH_MORE_BOOKMARKS, CLEAR_BOOKMARKS]),
