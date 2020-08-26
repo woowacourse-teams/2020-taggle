@@ -3,18 +3,27 @@ spring:
     active: local
     include:
       - db
+logback:
+  access:
+    config: classpath:logback/logback-access.xml
 
 ---
 spring:
   profiles: local
 
 logging:
-  config: classpath:logback-local.xml
+  config: classpath:logback/logback-local.xml
 
 ---
 spring:
   profiles: prod
 
 logging:
-  config: classpath:logback-prod.xml
+  config: classpath:logback/logback-prod.xml
+
 ---
+spring:
+  profiles: dev
+
+logging:
+  config: classpath:logback/logback-dev.xml
