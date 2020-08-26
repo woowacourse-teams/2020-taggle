@@ -7,12 +7,13 @@ import {
   FETCH_CATEGORIES,
 } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
+import { CATEGORIES } from '@/store/share/getterTypes.js';
 
 const state = {
   categories: [],
 };
 const getters = {
-  categories(state) {
+  [CATEGORIES](state) {
     return state.categories;
   },
 };
