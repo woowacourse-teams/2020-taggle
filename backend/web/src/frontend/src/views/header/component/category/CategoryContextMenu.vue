@@ -56,7 +56,7 @@ export default {
       }
     },
     onEditCategory() {
-      this.$emit('editCategory');
+      this.$emit('edit-category');
     },
   },
 };

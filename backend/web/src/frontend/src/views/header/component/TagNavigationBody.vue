@@ -1,5 +1,5 @@
 <template>
-  <v-card flat="true">
+  <v-card :flat="true">
     <v-list v-for="category in categories" :key="category.id" class="grow">
       <CategoryGroup :category="category" />
     </v-list>
