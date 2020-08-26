@@ -13,7 +13,7 @@ public class BookmarkDocumentation {
     public static RestDocumentationResultHandler createBookmark() {
         return document("bookmarks/create",
                 requestFields(
-                        fieldWithPath("url").type(JsonFieldType.STRING).description("북마크에 추가할 URL")
+                        fieldWithPath("url").type(JsonFieldType.STRING).description("등록할 웹 페이지의 URL")
                 ),
                 responseHeaders(
                         headerWithName("Location").description("생성된 북마크의 URI")
@@ -30,6 +30,10 @@ public class BookmarkDocumentation {
 
     public static RestDocumentationResultHandler findBookmarks() {
         return document("bookmarks/get/List",
+                requestParameters(
+                        parameterWithName("start").description("시작 페이지").optional(),
+                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                ),
                 responseFields(
                         fieldWithPath("[].id").description("북마크 ID"),
                         fieldWithPath("[].url").description("북마크 URL"),

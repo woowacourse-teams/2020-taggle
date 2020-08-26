@@ -46,7 +46,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
         final Bookmark bookmark = bookmarkSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks", tag.getId())
+        readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks?start=1&display=24", tag.getId())
                 .andExpect(jsonPath("$.id", is(tag.getId().intValue())))
                 .andDo(TagBookmarkDocumentation.findBookmarksByTagId());
     }
@@ -56,7 +56,7 @@ public class TagBookmarkControllerTest extends ControllerTest {
     void findUntaggedBookmarks() throws Exception {
         bookmarkSetup.save(user);
 
-        read(user, "/api/v1/tags/untagged/bookmarks", jsonPath("$.id", is(nullValue())))
+        read(user, "/api/v1/tags/untagged/bookmarks?start=1&display=24", jsonPath("$.id", is(nullValue())))
                 .andDo(TagBookmarkDocumentation.findUntaggedBookmarks());
     }
 

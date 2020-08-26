@@ -1,7 +1,7 @@
 package com.woowacourse.taggle.tag.dto;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.woowacourse.taggle.tag.domain.Bookmark;
@@ -39,7 +39,7 @@ public class BookmarkResponse {
                 .collect(Collectors.toList());
     }
 
-    public static List<BookmarkResponse> asList(final Set<TagBookmark> bookmarks) {
+    public static List<BookmarkResponse> asList(final Collection<TagBookmark> bookmarks) {
         return bookmarks.stream()
                 .map(BookmarkResponse::of)
                 .collect(Collectors.toList());

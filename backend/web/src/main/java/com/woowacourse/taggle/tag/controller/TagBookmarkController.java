@@ -6,11 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.woowacourse.taggle.tag.dto.BookmarkFindRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.service.TagBookmarkService;
@@ -35,8 +37,10 @@ public class TagBookmarkController {
 
     @GetMapping("/tags/{tagId}/bookmarks")
     public ResponseEntity<TagBookmarkResponse> findBookmarksByTagId(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId) {
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tagId);
+            @PathVariable final Long tagId,
+            @ModelAttribute final BookmarkFindRequest bookmarkFindRequest) {
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tagId,
+                bookmarkFindRequest);
 
         return ResponseEntity.ok()
                 .body(tagBookmarkResponse);
@@ -44,8 +48,10 @@ public class TagBookmarkController {
 
     @GetMapping("/tags/untagged/bookmarks")
     public ResponseEntity<TagBookmarkResponse> findUntaggedBookmarks(
-            @AuthenticationPrincipal final SessionUser user) {
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findUntaggedBookmarks(user);
+            @AuthenticationPrincipal final SessionUser user,
+            @ModelAttribute final BookmarkFindRequest bookmarkFindRequest) {
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findUntaggedBookmarks(user,
+                bookmarkFindRequest);
 
         return ResponseEntity.ok()
                 .body(tagBookmarkResponse);

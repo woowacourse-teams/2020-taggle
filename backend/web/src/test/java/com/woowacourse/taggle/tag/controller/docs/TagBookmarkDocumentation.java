@@ -11,13 +11,17 @@ public class TagBookmarkDocumentation {
 
     public static RestDocumentationResultHandler findBookmarksByTagId() {
         return document("tags/bookmarks/get",
+                requestParameters(
+                        parameterWithName("start").description("시작 페이지").optional(),
+                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                ),
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")
                 ),
                 responseFields(
                         fieldWithPath("id").description("태그 ID"),
                         fieldWithPath("name").description("태그 이름"),
-                        fieldWithPath("bookmarks").description("태그의 북마크 (Nullable)").optional(),
+                        fieldWithPath("bookmarks").description("북마크 (optional)").optional(),
                         fieldWithPath("bookmarks.[].id").description("북마크 ID"),
                         fieldWithPath("bookmarks.[].url").description("북마크 URI"),
                         fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
@@ -28,9 +32,13 @@ public class TagBookmarkDocumentation {
 
     public static RestDocumentationResultHandler findUntaggedBookmarks() {
         return document("tags/bookmarks/untagged/get",
+                requestParameters(
+                        parameterWithName("start").description("시작 페이지").optional(),
+                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                ),
                 responseFields(
-                        fieldWithPath("id").description("태그 ID (Null)").optional(),
-                        fieldWithPath("name").description("태그 이름 (Untagged)"),
+                        fieldWithPath("id").description("태그 ID (optional)").optional(),
+                        fieldWithPath("name").description("태그 이름"),
                         fieldWithPath("bookmarks.[].id").description("북마크 ID"),
                         fieldWithPath("bookmarks.[].url").description("북마크 URI"),
                         fieldWithPath("bookmarks.[].title").description("북마크 타이틀"),
@@ -68,9 +76,9 @@ public class TagBookmarkDocumentation {
                 responseFields(
                         fieldWithPath("id").description("북마크 ID"),
                         fieldWithPath("url").description("북마크 URL"),
-                        fieldWithPath("tags").description("북마크의 태그 (Nullable)").optional(),
-                        fieldWithPath("tags.[].id").description("북마크에 있는 태그 ID"),
-                        fieldWithPath("tags.[].name").description("북마크에 있는 태그 이름")
+                        fieldWithPath("tags").description("북마크가 가진 태그 목록").optional(),
+                        fieldWithPath("tags.[].id").description("태그 ID"),
+                        fieldWithPath("tags.[].name").description("태그 이름")
                 )
         );
     }

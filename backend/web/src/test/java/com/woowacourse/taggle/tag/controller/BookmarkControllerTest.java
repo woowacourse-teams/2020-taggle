@@ -41,7 +41,7 @@ class BookmarkControllerTest extends ControllerTest {
     @Test
     void findBookmarks() throws Exception {
         bookmarkSetup.save(user);
-        read(user, "/api/v1/bookmarks", jsonPath("$", hasSize(1)))
+        read(user, "/api/v1/bookmarks?start=1&display=24", jsonPath("$", hasSize(1)))
                 .andDo(BookmarkDocumentation.findBookmarks());
     }
 

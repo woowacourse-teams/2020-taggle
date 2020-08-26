@@ -17,6 +17,7 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkFindRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.user.domain.User;
@@ -68,7 +69,8 @@ class BookmarkServiceTest {
 
         // when
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
-        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user,
+                bookmarkCreateRequest);
 
         // then
         assertThat(bookmarkResponse.getId()).isEqualTo(bookmarkResponseWithSameName.getId());
@@ -87,7 +89,8 @@ class BookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
-        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user);
+        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user, bookmarkFindRequest);
 
         //then
         assertThat(bookmarks).hasSize(1);
@@ -103,7 +106,9 @@ class BookmarkServiceTest {
 
         // when
         bookmarkService.removeBookmark(user, bookmarkResponse.getId());
-        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user);
+        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
+        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user, bookmarkFindRequest);
+        
         // then
         assertThat(bookmarkResponses).hasSize(0);
     }
