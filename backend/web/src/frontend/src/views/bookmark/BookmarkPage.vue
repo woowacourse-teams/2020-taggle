@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BookmarkCard from '@/views/bookmark/components/BookmarkCard.vue';
+import BookmarkCard from '@/views/bookmark/component/BookmarkCard.vue';
 import { mapActions } from 'vuex';
 import { FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
 

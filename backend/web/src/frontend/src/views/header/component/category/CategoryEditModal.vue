@@ -9,7 +9,7 @@
         </v-btn>
       </v-app-bar>
 
-      <v-card-text class="pt-6">
+      <v-card-text class="pa-4">
         <v-form ref="categoryEditForm" v-model="valid">
           <v-select
             v-model="categoryId"
@@ -18,10 +18,10 @@
             :rules="rules.category.changeTitle"
             outlined
             label="변경하려는 카테고리를 선택해주세요."
-          ></v-select>
+          />
         </v-form>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pt-0 px-4 pb-4">
         <v-spacer />
         <v-btn :disabled="!valid" @click.prevent="onChangeCategory">수정</v-btn>
         <v-btn @click="dialog = false">닫기</v-btn>
@@ -67,8 +67,8 @@ export default {
     dialog() {
       if (!this.dialog) {
         this.categoryId = '';
-        this.$emit('close');
         this.$refs.categoryEditForm.resetValidation();
+        this.$emit('close');
       }
     },
   },
@@ -91,8 +91,9 @@ export default {
         this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.FAIL);
+      } finally {
+        this.dialog = false;
       }
-      this.dialog = false;
     },
   },
 };

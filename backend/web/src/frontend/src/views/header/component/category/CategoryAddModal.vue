@@ -1,30 +1,28 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" class="mx-2" small icon>
-        <v-icon dark>mdi-plus</v-icon>
+      <v-btn fab v-bind="attrs" v-on="on" class="mx-2" large icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
     <v-card>
       <v-app-bar dense flat>
-        <v-card-title>
-          카테고리 추가
-        </v-card-title>
-        <v-spacer></v-spacer>
+        <v-card-title>카테고리 추가</v-card-title>
+        <v-spacer />
         <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-app-bar>
 
-      <v-card-text class="pt-6">
-        <v-form ref="createCategoryRequest" @submit.prevent="onAddCategory">
+      <v-card-text class="pa-4">
+        <v-form ref="createCategoryForm" @submit.prevent="onAddCategory">
           <v-text-field
             v-model="createCategoryRequest.title"
             dense
             :rules="rules"
             label="이름을 입력후에 enter를 입력하여 저장."
-          ></v-text-field>
+          />
         </v-form>
       </v-card-text>
     </v-card>
@@ -49,11 +47,19 @@ export default {
       dialog: false,
     };
   },
+  watch: {
+    dialog() {
+      if (!this.dialog) {
+        this.createCategoryRequest.title = '';
+        this.$refs.createCategoryForm.resetValidation();
+      }
+    },
+  },
   methods: {
     ...mapActions([CREATE_CATEGORY, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     async onAddCategory() {
-      if (!this.$refs.createCategoryRequest.validate()) {
+      if (!this.$refs.createCategoryForm.validate()) {
         return;
       }
       try {
@@ -63,7 +69,7 @@ export default {
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.CATEGORY.ADD.FAIL);
       } finally {
-        this.createCategoryRequest.title = '';
+        this.dialog = false;
       }
     },
   },

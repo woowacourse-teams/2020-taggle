@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import TagEditModal from '@/views/bookmark/components/TagEditModal.vue';
+import TagEditModal from '@/views/bookmark/component/TagEditModal.vue';
 
 export default {
   name: 'CardIcons',
