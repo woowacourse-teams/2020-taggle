@@ -8,6 +8,7 @@ const validator = {
   },
   category: {
     title: [(v) => !!v || 'title값은 필수입니다.'],
+    changeTitle: [(v) => !!v || '변경할 카테고리를 지정해주세요.'],
   },
 };
 
