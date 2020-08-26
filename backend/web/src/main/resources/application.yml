@@ -17,4 +17,11 @@ spring:
 
 logging:
   config: classpath:logback-prod.xml
+
 ---
+spring:
+  profiles: dev
+
+logging:
+  config: classpath:logback-dev.xml
+
