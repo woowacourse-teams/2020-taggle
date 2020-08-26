@@ -12,6 +12,7 @@
     </template>
     <template slot="menuDialog">
       <CategoryEditModal :tag="tag" :editDialog="editCategoryDialog" @close="editCategoryDialog = false" />
+      <ConfirmDialog ref="confirm" />
     </template>
   </ContextMenu>
 </template>
@@ -24,10 +25,12 @@ import { mapActions, mapMutations } from 'vuex';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import ContextMenu from '@/views/header/component/category/ContextMenu.vue';
 import CategoryEditModal from '@/views/header/component/category/CategoryEditModal.vue';
+import ConfirmDialog from '@/views/common/component/ConfirmDialog.vue';
 
 export default {
   name: 'TagContextMenu',
   components: {
+    ConfirmDialog,
     ContextMenu,
     CategoryEditModal,
   },
@@ -50,6 +53,10 @@ export default {
     ...mapActions([FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     async onDeleteTag() {
+      const confirm = await this.$refs.confirm.open('태그 삭제', '정말로 해당 태그를 삭제하시겠습니까?');
+      if (!confirm) {
+        return;
+      }
       try {
         await TagService.delete(this.tag.id);
         await this[FETCH_CATEGORIES]();

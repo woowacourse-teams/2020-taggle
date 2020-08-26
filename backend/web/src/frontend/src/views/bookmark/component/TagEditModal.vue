@@ -5,7 +5,7 @@
       <v-card>
         <v-app-bar dense flat>
           <v-toolbar-title>태그 편집</v-toolbar-title>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
