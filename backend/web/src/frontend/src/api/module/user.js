@@ -7,7 +7,7 @@ const UserService = {
     return ApiService.get(`${BASE_URL}/user-info`);
   },
   updateNotificationEmail(notificationEmail) {
-    return ApiService.put(`${BASE_URL}/notification-enabled`, notificationEmail);
+    return ApiService.put(`${BASE_URL}/notification-email`, notificationEmail);
   },
   updateNotificationEnabled(notificationEnabled) {
     return ApiService.put(`${BASE_URL}/notification-enabled`, notificationEnabled);

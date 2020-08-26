@@ -15,8 +15,8 @@
           <v-menu right offset-x>
             <template v-slot:activator="{ on, attrs }">
               <div class="text-center">
-                <v-avatar v-bind="attrs" v-on="on">
-                  <img :src="user.picture" alt="evan" />
+                <v-avatar size="40" v-bind="attrs" v-on="on">
+                  <img :src="user.picture" alt="user-profile" />
                 </v-avatar>
               </div>
             </template>

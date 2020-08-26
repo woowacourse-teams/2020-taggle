@@ -1,5 +1,5 @@
 <template>
-  <section style="margin: auto; width: 75%">
+  <section style="margin: auto; width: 65%">
     <div class="profile-img">
       <v-avatar size="200">
         <img :src="user.picture" alt="evan" />
@@ -16,13 +16,23 @@
     </div>
     <div class="profile">
       <div class="profile-title">
-        <h2>알람 이메일 주소</h2>
+        <h2>알림 이메일 주소</h2>
       </div>
-      <div class="profile-content">
-        {{ user.notificationEmail }}
+      <div v-if="fixEnabled" class="profile-content">
+        <div class="profile-notification-email">
+          <v-text-field full-width outlined hide-details clearable v-model="notificationEmail"></v-text-field>
+        </div>
       </div>
-      <div class="profile-button">
-        <v-btn>수정</v-btn>
+      <div v-else class="profile-content">
+        <div class="profile-notification-email">
+          {{ notificationEmail }}
+        </div>
+      </div>
+      <div v-if="fixEnabled" class="profile-button">
+        <v-btn depressed color="success" large @click="onUpdateNotificationEmail"><h3>저장</h3></v-btn>
+      </div>
+      <div v-else class="profile-button">
+        <v-btn depressed color="success" large @click="changeFixEnabled"><h3>수정</h3></v-btn>
       </div>
     </div>
     <div class="profile">
@@ -30,7 +40,7 @@
         <h2>이메일 알람 설정</h2>
       </div>
       <div class="profile-content">
-        <v-switch v-model="isNotice" inset color="success"></v-switch>
+        <v-switch v-model="notificationEnabled" inset color="success"></v-switch>
       </div>
     </div>
     <div class="profile">
@@ -46,7 +56,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED, DELETE_USER } from '@/store/share/actionTypes.js';
+import { DELETE_USER, UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED } from '@/store/share/actionTypes.js';
 import { USER } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -55,27 +65,36 @@ export default {
   name: 'ProfilePage',
   data() {
     return {
-      isNotice: '',
+      fixEnabled: false,
+      notificationEnabled: '',
       notificationEmail: '',
     };
   },
   created() {
-    this.isNotice = this.user.notificationEnabled;
+    this.notificationEnabled = this.user.notificationEnabled;
+    this.notificationEmail = this.user.notificationEmail;
   },
   methods: {
     ...mapActions([UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED, DELETE_USER]),
     ...mapMutations([SHOW_SNACKBAR]),
+    changeFixEnabled() {
+      this.fixEnabled = true;
+    },
+    changeFixDisabled() {
+      this.fixEnabled = false;
+    },
     async onUpdateNotificationEmail() {
       try {
         await this[UPDATE_NOTIFICATION_EMAIL]({ notificationEmail: this.notificationEmail });
         await this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_EMAIL.SUCCESS);
+        await this.changeFixDisabled();
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_EMAIL.FAIL);
       }
     },
     async onUpdateNotificationEnabled() {
       try {
-        await this[UPDATE_NOTIFICATION_ENABLED]({ notificationEnabled: this.isNotice });
+        await this[UPDATE_NOTIFICATION_ENABLED]({ notificationEnabled: this.notificationEnabled });
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_ENABLED.FAIL);
       }
@@ -94,7 +113,7 @@ export default {
     ...mapGetters([USER]),
   },
   watch: {
-    async isNotice() {
+    async notificationEnabled() {
       await this.onUpdateNotificationEnabled();
     },
   },
@@ -121,7 +140,20 @@ export default {
 }
 
 .profile-content {
+  display: flex;
+  width: 56%;
   align-self: center;
   font-size: 1.1rem;
+}
+
+.profile-notification-email {
+  width: 100%;
+  align-self: center;
+  margin-right: 1rem;
+}
+
+.profile-button {
+  align-self: center;
+  margin-left: auto;
 }
 </style>
