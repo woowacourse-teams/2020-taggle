@@ -37,7 +37,7 @@
     </div>
     <div class="profile">
       <div class="profile-title">
-        <h2>이메일 알람 설정</h2>
+        <h2>이메일 알림 설정</h2>
       </div>
       <div class="profile-content">
         <v-switch v-model="notificationEnabled" inset color="success"></v-switch>

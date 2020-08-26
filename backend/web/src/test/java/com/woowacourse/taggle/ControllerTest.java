@@ -92,6 +92,15 @@ public class ControllerTest {
                 .andDo(print());
     }
 
+    public ResultActions remove(final User user, final String uri) throws
+            Exception {
+        final SessionUser sessionUser = new SessionUser(user);
+        when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
+        return mockMvc.perform(delete(uri))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
     public ResultActions removeByPathVariables(final User user, final String uri, final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
