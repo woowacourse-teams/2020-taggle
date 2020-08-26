@@ -9,8 +9,11 @@ import org.hibernate.validator.constraints.URL;
 
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SessionUser implements Serializable {
 
