@@ -17,10 +17,11 @@ spring:
 
 logging:
   config: classpath:logback-prod.xml
----
 
+---
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  profiles: dev
+
+logging:
+  config: classpath:logback-dev.xml
+
