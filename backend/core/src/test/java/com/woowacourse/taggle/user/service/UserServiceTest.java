@@ -67,7 +67,7 @@ public class UserServiceTest {
         final User actual = userService.findById(newUser.getId());
 
         // then
-        assertThat(actual.getId()).isEqualTo(1L);
+        assertThat(actual.getId()).isEqualTo(newUser.getId());
         assertThat(actual.getEmail()).isEqualTo("jordyLover@kakao.com");
         assertThat(actual.getNickName()).isEqualTo("tigger");
         assertThat(actual.getPicture()).isEqualTo("https://www.naver.com/");
