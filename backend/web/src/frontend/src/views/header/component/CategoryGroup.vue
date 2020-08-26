@@ -13,33 +13,25 @@
         <CategoryContextMenu :category="category" @edit-category="isEditMode = !isEditMode" />
       </v-list-item-action>
     </template>
-    <v-list-item v-for="{ id, name } in category.tags" :key="id" :to="{ name: 'bookmarks', params: { id } }">
-      <!--            <v-list-item-title @click.prevent="">-->
-      <!--              <v-text-field :value="name" />-->
-      <!--            </v-list-item-title>-->
-      <v-list-item-title>
-        {{ name }}
-      </v-list-item-title>
-      <v-list-item-action>
-        <TagContextMenu :tag="{ id }" />
-      </v-list-item-action>
-    </v-list-item>
+    <v-list v-for="tag in category.tags" :key="tag.id">
+      <CategorySubGroup :subItem="tag" />
+    </v-list>
   </v-list-group>
 </template>
 
 <script>
-import CategoryContextMenu from '@/views/header/component/category/CategoryContextMenu.vue';
-import TagContextMenu from '@/views/header/component/category/TagContextMenu.vue';
 import { EDIT_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
+import CategoryContextMenu from '@/views/header/component/category/CategoryContextMenu.vue';
+import CategorySubGroup from '@/views/header/component/CategorySubGroup.vue';
 
 export default {
   name: 'CategoryGroup',
   components: {
+    CategorySubGroup,
     CategoryContextMenu,
-    TagContextMenu,
   },
   props: {
     category: {

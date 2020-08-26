@@ -15,10 +15,5 @@
 <script>
 export default {
   name: 'ContextMenu',
-  data() {
-    return {
-      items: [{ title: '수정' }, { title: '삭제' }],
-    };
-  },
 };
 </script>
