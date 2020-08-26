@@ -17,6 +17,7 @@
       spinner="waveDots"
     >
       <div slot="no-more" class="text--secondary">북마크를 모두 불러왔습니다.</div>
+      <div slot="no-results" class="text--secondary">북마크를 모두 불러왔습니다.</div>
     </Infinite-loading>
   </div>
 </template>
