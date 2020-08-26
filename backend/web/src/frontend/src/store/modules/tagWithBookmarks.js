@@ -1,13 +1,13 @@
 import TagService from '@/api/module/tag.js';
-import { FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
-import { SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
+import { CLEAR_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
+import { ADD_MORE_BOOKMARKS, SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
 import { BOOKMARKS } from '@/store/share/getterTypes.js';
 
 const state = {
   tagBookmarks: {
     id: '',
     name: '',
-    bookmarks: [{ id: '', name: '', title: '', image: '', description: '' }],
+    bookmarks: [],
   },
 };
 const getters = {
@@ -19,12 +19,29 @@ const mutations = {
   [SET_TAG_BOOKMARKS](state, tagBookmark) {
     state.tagBookmarks = tagBookmark;
   },
+  [ADD_MORE_BOOKMARKS](state, bookmarks) {
+    state.tagBookmarks.bookmarks = state.tagBookmarks.bookmarks.concat(bookmarks);
+  },
 };
 const actions = {
-  async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId }) {
-    const res = await TagService.findTagWithBookmarks(tagId);
+  async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId, start, display }) {
+    const res = await TagService.findBookmarksByTagId(tagId, start, display);
     const bookmarks = res.data;
     commit(SET_TAG_BOOKMARKS, bookmarks);
+    return bookmarks.bookmarks;
+  },
+  async [FETCH_MORE_BOOKMARKS]({ commit }, { tagId, start, display }) {
+    const res = await TagService.findBookmarksByTagId(tagId, start, display);
+    const { bookmarks } = res.data;
+    commit(ADD_MORE_BOOKMARKS, bookmarks);
+    return bookmarks;
+  },
+  [CLEAR_BOOKMARKS]({ commit }) {
+    commit(SET_TAG_BOOKMARKS, {
+      id: '',
+      name: '',
+      bookmarks: [],
+    });
   },
 };
 
