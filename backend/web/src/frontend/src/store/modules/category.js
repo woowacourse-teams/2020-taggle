@@ -7,7 +7,7 @@ import {
   FETCH_CATEGORIES,
 } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { CATEGORIES, ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
 
 const state = {
   categories: [],
@@ -15,6 +15,13 @@ const state = {
 const getters = {
   [CATEGORIES](state) {
     return state.categories;
+  },
+  [ALL_CATEGORIES_FOR_SELECT](state) {
+    return state.categories
+      .filter((category) => category.id !== null)
+      .map((category) => {
+        return { text: category.title, value: category.id };
+      });
   },
 };
 const mutations = {
@@ -37,7 +44,7 @@ const actions = {
   async [DELETE_CATEGORY](context, categoryId) {
     return CategoryService.delete(categoryId);
   },
-  async [EDIT_TAG](context, categoryId, tagId) {
+  async [EDIT_TAG](context, { categoryId, tagId }) {
     return CategoryService.editTag(categoryId, tagId);
   },
 };

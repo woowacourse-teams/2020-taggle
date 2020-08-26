@@ -10,28 +10,27 @@
       </v-app-bar>
 
       <v-card-text class="pt-6">
-        변경내용
-        <!--        <v-form ref="category" @submit.prevent="onEditCategory">-->
-        <!--          <v-text-field-->
-        <!--            v-model="category.title"-->
-        <!--            dense-->
-        <!--            :rules="rules"-->
-        <!--            label="이름을 입력후에 enter를 입력하여 저장."-->
-        <!--          ></v-text-field>-->
-        <!--        </v-form>-->
+        <v-form ref="category" @submit.prevent="onChangeCategory">
+          <v-select
+            v-model="categoryId"
+            :items="allCategoriesForSelect"
+            dense
+            outlined
+            label="변경하려는 카테고리를 선택해주세요."
+          ></v-select>
+        </v-form>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import { EDIT_TAG, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
   name: 'CategoryEditModal',
-  data() {
-    return {
-      dialog: false,
-    };
-  },
   props: {
     tag: {
       type: Object,
@@ -42,6 +41,12 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      dialog: false,
+      categoryId: '',
+    };
+  },
   watch: {
     editDialog(value) {
       if (value) {
@@ -51,6 +56,22 @@ export default {
     dialog() {
       if (!this.dialog) {
         this.$emit('close');
+      }
+    },
+  },
+  computed: {
+    ...mapGetters([ALL_CATEGORIES_FOR_SELECT]),
+  },
+  methods: {
+    ...mapActions([EDIT_TAG, FETCH_CATEGORIES]),
+    async onChangeCategory() {
+      try {
+        await this[EDIT_TAG]({
+          categoryId: this.categoryId,
+          tagId: this.tag.id,
+        });
+      } catch (e) {
+        //
       }
     },
   },
