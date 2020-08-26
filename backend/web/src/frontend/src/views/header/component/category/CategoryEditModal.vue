@@ -15,7 +15,7 @@
             v-model="categoryId"
             :items="allCategoriesForSelect"
             dense
-            :rules="rules.category.changeTitle"
+            :rules="rules.category.changeTitleFromTag"
             outlined
             label="변경하려는 카테고리를 선택해주세요."
           />
