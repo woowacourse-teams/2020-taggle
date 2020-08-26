@@ -52,7 +52,7 @@
 
 <script>
 import draggable from 'vuedraggable';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { TOTAL_CATEGORIES } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { EDIT_TAG } from '@/store/share/actionTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -69,7 +69,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([CATEGORIES]),
+    ...mapGetters([TOTAL_CATEGORIES]),
   },
   methods: {
     ...mapActions([EDIT_TAG]),

@@ -1,6 +1,6 @@
 <template>
   <v-card :flat="true">
-    <v-list v-for="category in categories" :key="category.id" class="grow">
+    <v-list :key="category.id" class="grow" v-for="category in categories">
       <CategoryGroup :category="category" />
     </v-list>
   </v-card>
@@ -9,7 +9,7 @@
 <script>
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapGetters } from 'vuex';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { SEARCHED_CATEGORIES, TOTAL_CATEGORIES } from '@/store/share/getterTypes.js';
 import CategoryGroup from '@/views/header/component/CategoryGroup.vue';
 
 export default {
@@ -17,8 +17,19 @@ export default {
   components: {
     CategoryGroup,
   },
+  props: {
+    searchKeyword: {
+      type: String,
+    },
+  },
   computed: {
-    ...mapGetters([CATEGORIES]),
+    ...mapGetters([TOTAL_CATEGORIES, SEARCHED_CATEGORIES]),
+    categories() {
+      if (this.searchKeyword === '') {
+        return this[TOTAL_CATEGORIES];
+      }
+      return this[SEARCHED_CATEGORIES](this.searchKeyword);
+    },
   },
   created() {
     this[FETCH_CATEGORIES]();

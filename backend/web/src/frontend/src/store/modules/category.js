@@ -7,14 +7,23 @@ import {
   FETCH_CATEGORIES,
 } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
+import { TOTAL_CATEGORIES, SEARCHED_CATEGORIES } from '@/store/share/getterTypes.js';
 
 const state = {
   categories: [],
 };
 const getters = {
-  [CATEGORIES](state) {
+  [TOTAL_CATEGORIES](state) {
     return state.categories;
+  },
+  [SEARCHED_CATEGORIES]: (state) => (searchKeyword) => {
+    const totalCategories = JSON.parse(JSON.stringify(state.categories));
+
+    totalCategories.forEach((category) => {
+      category.tags = category.tags.filter((tag) => tag.name.includes(searchKeyword));
+    });
+
+    return totalCategories;
   },
 };
 const mutations = {
