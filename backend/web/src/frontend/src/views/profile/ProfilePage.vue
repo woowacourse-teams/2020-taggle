@@ -1,5 +1,5 @@
 <template>
-  <section style="margin: auto; width: 65%">
+  <section class="profile-section">
     <div class="profile-img">
       <v-avatar size="200">
         <img :src="user.picture" alt="evan" />
@@ -121,6 +121,11 @@ export default {
 </script>
 
 <style>
+.profile-section {
+  margin: auto;
+  width: 65%;
+}
+
 .profile-img {
   text-align: center;
   padding-bottom: 1.5rem;
