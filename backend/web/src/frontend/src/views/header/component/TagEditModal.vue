@@ -7,9 +7,15 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline grey lighten-2">
-        카테고리 수정
-      </v-card-title>
+      <v-app-bar dense flat>
+        <v-card-title>
+          카테고리 수정
+        </v-card-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="dialog = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-app-bar>
 
       <v-card-text class="pt-6">
         <v-card class="mx-auto" max-width="100%" tile>
@@ -40,27 +46,20 @@
           </v-list>
         </v-card>
       </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" text @click="dialog = false">
-          닫기
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 import draggable from 'vuedraggable';
-import { CATEGORIES } from '@/store/share/getterTypes.js';
-import { mapGetters } from 'vuex';
-import CategoryService from '@/api/module/category.js';
+import { TOTAL_CATEGORIES } from '@/store/share/getterTypes.js';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { EDIT_TAG } from '@/store/share/actionTypes.js';
+import { MESSAGES } from '@/utils/constants.js';
+import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 
 export default {
-  name: 'CategoryTagModifyModal',
+  name: 'TagEditModal',
   components: {
     draggable,
   },
@@ -70,11 +69,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([CATEGORIES]),
+    ...mapGetters([TOTAL_CATEGORIES]),
   },
   methods: {
-    async changeTag({ added }, id) {
-      await CategoryService.changeTag(id, added.element.id);
+    ...mapActions([EDIT_TAG]),
+    ...mapMutations([SHOW_SNACKBAR]),
+    async changeTag({ added }, tagId) {
+      try {
+        await this[EDIT_TAG](tagId, added.element.id);
+        this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.SUCCESS);
+      } catch (e) {
+        this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.FAIL);
+      }
     },
   },
 };
