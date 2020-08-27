@@ -6,8 +6,8 @@ const BookmarkService = {
   findBookmarkWithTags(bookmarkId) {
     return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
   },
-  post(newBookmark) {
-    return ApiService.post(BASE_URL, newBookmark).then(({ data }) => data.id);
+  post(bookmark) {
+    return ApiService.post(BASE_URL, bookmark).then(({ data }) => data.id);
   },
   delete(bookmarkId) {
     return ApiService.delete(`${BASE_URL}/${bookmarkId}`);

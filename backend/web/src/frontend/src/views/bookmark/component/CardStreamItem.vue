@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import CardIcons from '@/views/bookmark/components/CardIcons.vue';
+import CardIcons from '@/views/bookmark/component/CardIcons.vue';
 
 export default {
   name: 'CardStreamItem',

@@ -22,16 +22,20 @@
 </template>
 
 <script>
-import BookmarkCard from '@/views/bookmark/components/BookmarkCard.vue';
-import InfiniteLoading from 'vue-infinite-loading';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { CLEAR_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
 import { BOOKMARKS, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
+import BookmarkCard from '@/views/bookmark/component/BookmarkCard.vue';
+import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
   name: 'BookmarkPage',
+  components: {
+    BookmarkCard,
+    InfiniteLoading,
+  },
   data() {
     return {
       page: 1,
@@ -82,10 +86,6 @@ export default {
         this.page += 1;
       }
     },
-  },
-  components: {
-    BookmarkCard,
-    InfiniteLoading,
   },
 };
 </script>

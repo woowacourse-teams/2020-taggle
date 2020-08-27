@@ -6,8 +6,8 @@ const CategoryService = {
   getAll() {
     return ApiService.get(`${BASE_URL}`);
   },
-  create(newCategory) {
-    return ApiService.post(`${BASE_URL}`, newCategory);
+  create(category) {
+    return ApiService.post(`${BASE_URL}`, category);
   },
   edit(id, category) {
     return ApiService.put(`${BASE_URL}/${id}`, category);
