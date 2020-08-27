@@ -12,8 +12,8 @@ public class TagBookmarkDocumentation {
     public static RestDocumentationResultHandler findBookmarksByTagId() {
         return document("tags/bookmarks/get",
                 requestParameters(
-                        parameterWithName("start").description("시작 페이지").optional(),
-                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                        parameterWithName("offset").description("시작 페이지").optional(),
+                        parameterWithName("limit").description("가져올 북마크의 수").optional()
                 ),
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")
@@ -33,8 +33,8 @@ public class TagBookmarkDocumentation {
     public static RestDocumentationResultHandler findUntaggedBookmarks() {
         return document("tags/bookmarks/untagged/get",
                 requestParameters(
-                        parameterWithName("start").description("시작 페이지").optional(),
-                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                        parameterWithName("offset").description("시작 페이지").optional(),
+                        parameterWithName("limit").description("가져올 북마크의 수").optional()
                 ),
                 responseFields(
                         fieldWithPath("id").description("태그 ID (optional)").optional(),

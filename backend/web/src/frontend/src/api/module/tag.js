@@ -6,8 +6,8 @@ const TagService = {
   findTagWithBookmarks(tagId) {
     return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
-  findBookmarksByTagId(tagId, start, display) {
-    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks?start=${start}&display=${display}`);
+  findBookmarksByTagId(tagId, offset, limit) {
+    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks?offset=${offset}&limit=${limit}`);
   },
   create(newTag) {
     return ApiService.post(`${BASE_URL}`, newTag).then(({ data }) => data.id);

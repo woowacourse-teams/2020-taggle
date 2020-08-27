@@ -27,8 +27,8 @@ const mutations = {
   },
 };
 const actions = {
-  async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId, start, display }) {
-    const res = await TagService.findBookmarksByTagId(tagId, start, display);
+  async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
+    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
     const bookmarks = res.data;
     commit(SET_TAG_BOOKMARKS, bookmarks);
     return bookmarks.bookmarks;

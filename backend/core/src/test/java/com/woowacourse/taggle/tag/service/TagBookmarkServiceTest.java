@@ -31,6 +31,7 @@ import com.woowacourse.taggle.user.service.UserService;
 class TagBookmarkServiceTest {
 
     private static final String TAG_NAME = "spring boot";
+    private static final BookmarkFindRequest BOOKMARK_FIND_REQUEST = new BookmarkFindRequest(1, 10);
 
     @Autowired
     private TagBookmarkService tagBookmarkService;
@@ -68,9 +69,8 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, tag.getId(), bookmark.getId());
 
         // when
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
         final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag.getId(),
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
 
         // then
         assertThat(tagBookmarkResponse.getName()).isEqualTo(TAG_NAME);
@@ -88,9 +88,8 @@ class TagBookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // when
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
         final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findUntaggedBookmarks(user,
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
 
         // then
         assertThat(untaggedBookmarks.getId()).isNull();
@@ -124,13 +123,12 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark2.getId());
         tagBookmarkService.createTagBookmark(user, google.getId(), bookmark3.getId());
 
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
         final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
         final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksByTagId(user, google.getId(),
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
         final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksByTagId(user, naver.getId(),
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
 
         // then
         assertThat(tagBookmark1.getId()).isEqualTo(taggle.getId());
@@ -162,9 +160,8 @@ class TagBookmarkServiceTest {
 
         // when
         tagBookmarkService.removeTagBookmark(user, taggle.getId(), bookmark1.getId());
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
         final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
-                bookmarkFindRequest);
+                BOOKMARK_FIND_REQUEST);
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);

@@ -31,8 +31,8 @@ public class BookmarkDocumentation {
     public static RestDocumentationResultHandler findBookmarks() {
         return document("bookmarks/get/List",
                 requestParameters(
-                        parameterWithName("start").description("시작 페이지").optional(),
-                        parameterWithName("display").description("가져올 북마크의 수").optional()
+                        parameterWithName("offset").description("시작 페이지").optional(),
+                        parameterWithName("limit").description("가져올 북마크의 수").optional()
                 ),
                 responseFields(
                         fieldWithPath("[].id").description("북마크 ID"),

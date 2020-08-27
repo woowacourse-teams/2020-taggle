@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       page: 1,
-      display: 10,
+      limit: 10,
       infiniteId: +new Date(),
     };
   },
@@ -54,8 +54,8 @@ export default {
     async infiniteHandler($state) {
       const bookmarks = await this.fetchMoreBookmarks({
         tagId: this.$route.params.id,
-        start: this.page,
-        display: this.display,
+        offset: this.page,
+        limit: this.limit,
       });
       if (bookmarks.length) {
         this.page += 1;
@@ -69,8 +69,8 @@ export default {
       this.infiniteId += 1;
       const bookmarks = await this.fetchTagWithBookmarks({
         tagId: this.$route.params.id,
-        start: this.page,
-        display: this.display,
+        offset: this.page,
+        limit: this.limit,
       });
       if (bookmarks.length) {
         this.page += 1;
