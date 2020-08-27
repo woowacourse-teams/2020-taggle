@@ -51,7 +51,6 @@ public class UserServiceTest {
         userService.removeUser(newUser.getId());
 
         // then
-
         assertThatThrownBy(() -> userService.findById(newUser.getId()))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("사용자가 존재하지 않습니다.");

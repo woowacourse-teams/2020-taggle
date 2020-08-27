@@ -51,6 +51,5 @@ public class UserControllerTest extends ControllerTest {
     void removeUser() throws Exception {
         remove(user, "/api/v1/users")
                 .andDo(UserDocumentation.removeUser());
-
     }
 }

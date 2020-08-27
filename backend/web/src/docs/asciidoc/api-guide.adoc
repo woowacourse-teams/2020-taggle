@@ -17,22 +17,22 @@ endif::[]
 == Users
 
 [[resources-users-get-info]]
-=== 사용자 정보 가져 오기
+=== 정보 가져 오기
 
 operation::users/get/info[snippets='http-request,http-response,response-fields']
 
 [[resources-users-update-notification-email]]
-=== 사용자 알림 이메일 수정하기
+=== 알림 이메일 수정하기
 
 operation::users/update/notification/email[snippets='http-request,request-body,request-fields,http-response']
 
 [[resources-users-update-notification-enabled]]
-=== 사용자 알림 설정 수정하기
+=== 알림 설정 수정하기
 
 operation::users/update/notification/enabled[snippets='http-request,request-body,request-fields,http-response']
 
 [[resources-users-delete]]
-=== 사용자 회원 탈퇴
+=== 회원 탈퇴
 
 operation::users/delete[snippets='http-request,http-response']
 

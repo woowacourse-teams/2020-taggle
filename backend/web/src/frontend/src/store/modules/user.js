@@ -36,12 +36,10 @@ const actions = {
     const user = res.data;
     commit(SET_USER, user);
   },
-  // eslint-disable-next-line no-unused-vars
-  async [UPDATE_NOTIFICATION_EMAIL]({ commit }, notificationEmail) {
+  async [UPDATE_NOTIFICATION_EMAIL](context, notificationEmail) {
     await UserService.updateNotificationEmail(notificationEmail);
   },
-  // eslint-disable-next-line no-unused-vars
-  async [UPDATE_NOTIFICATION_ENABLED]({ commit }, notificationEnabled) {
+  async [UPDATE_NOTIFICATION_ENABLED](context, notificationEnabled) {
     await UserService.updateNotificationEnabled(notificationEnabled);
   },
   async [DELETE_USER]() {
