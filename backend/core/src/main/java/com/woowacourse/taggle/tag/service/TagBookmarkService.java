@@ -1,8 +1,6 @@
 package com.woowacourse.taggle.tag.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +8,7 @@ import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
+import com.woowacourse.taggle.tag.dto.BookmarkFindRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.exception.TagBookmarkNotFoundException;
@@ -26,27 +25,27 @@ public class TagBookmarkService {
     private final TagBookmarkRepository tagBookmarkRepository;
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId) {
+    public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId,
+            final BookmarkFindRequest bookmarkFindRequest) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
+        final Page<TagBookmark> bookmarks = tagBookmarkRepository.findAllByTag(tag, bookmarkFindRequest.toPageable());
 
-        return TagBookmarkResponse.of(tag);
+        return TagBookmarkResponse.of(tag, bookmarks.getContent());
     }
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findUntaggedBookmarks(final SessionUser user) {
-        final List<Bookmark> bookmarks = bookmarkService.findAllByUserId(user.getId()).stream()
-                .filter(Bookmark::isTagsEmpty)
-                .collect(Collectors.toList());
-        return TagBookmarkResponse.ofUntagged(bookmarks);
+    public TagBookmarkResponse findUntaggedBookmarks(final SessionUser user,
+            final BookmarkFindRequest bookmarkFindRequest) {
+        final Page<Bookmark> bookmarks = bookmarkService.findUntaggedBookmarksByUserId(user.getId(),
+                bookmarkFindRequest.toPageable());
+        return TagBookmarkResponse.ofUntagged(bookmarks.getContent());
     }
 
     public void createTagBookmark(final SessionUser user, final Long tagId, final Long bookmarkId) {
-
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(bookmarkId, user.getId());
         final TagBookmark tagBookmark = tagBookmarkRepository.save(new TagBookmark(tag, bookmark));
 
-        tag.addTagBookmark(tagBookmark);
         bookmark.addTagBookmark(tagBookmark);
     }
 
@@ -55,10 +54,9 @@ public class TagBookmarkService {
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(bookmarkId, user.getId());
         final TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)
                 .orElseThrow(() -> new TagBookmarkNotFoundException(
-                        "태그북마크를 찾을 수 없습니다. tagId : " + tag + " bookmarkId: " + bookmarkId));
+                        "태그에 추가된 북마크를 찾을 수 없습니다. tagId : " + tag + " bookmarkId: " + bookmarkId));
 
         tagBookmarkRepository.delete(tagBookmark);
-        tag.removeTagBookmark(tagBookmark);
         bookmark.removeTagBookmark(tagBookmark);
     }
 
