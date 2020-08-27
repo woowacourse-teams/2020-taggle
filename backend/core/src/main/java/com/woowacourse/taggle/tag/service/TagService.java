@@ -46,6 +46,14 @@ public class TagService {
                         + "tagId: " + tagId));
     }
 
+    public List<Tag> findUncategorizedTagsByUserId(final Long userId) {
+        return tagRepository.findAllByUserIdAndCategoryIsNull(userId);
+    }
+
+    public List<Tag> findCategorizedTagsByUserId(final Long userId) {
+        return tagRepository.findAllByUserIdAndCategoryIsNotNull(userId);
+    }
+
     public List<Tag> findAllByUserId(final Long userId) {
         return tagRepository.findAllByUserId(userId);
     }

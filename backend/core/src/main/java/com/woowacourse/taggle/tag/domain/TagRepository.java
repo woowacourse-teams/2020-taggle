@@ -16,4 +16,8 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findAllByCategoryId(final Long categoryId);
 
     List<Tag> findAllByUserId(final Long userId);
+
+    List<Tag> findAllByUserIdAndCategoryIsNotNull(final Long userId);
+
+    List<Tag> findAllByUserIdAndCategoryIsNull(final Long userId);
 }
