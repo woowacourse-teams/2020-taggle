@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { EDIT_TAG, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { EDIT_TAG_FROM_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -76,14 +76,14 @@ export default {
     ...mapGetters([ALL_CATEGORIES_FOR_SELECT]),
   },
   methods: {
-    ...mapActions([EDIT_TAG, FETCH_CATEGORIES]),
+    ...mapActions([EDIT_TAG_FROM_CATEGORY, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     async onChangeCategory() {
       if (!this.$refs.categoryEditForm.validate()) {
         return;
       }
       try {
-        await this[EDIT_TAG]({
+        await this[EDIT_TAG_FROM_CATEGORY]({
           categoryId: this.categoryId,
           tagId: this.tag.id,
         });

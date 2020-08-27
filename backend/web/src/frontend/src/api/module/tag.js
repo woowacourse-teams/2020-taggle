@@ -6,8 +6,8 @@ const TagService = {
   findTagWithBookmarks(tagId) {
     return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
-  create(newTag) {
-    return ApiService.post(`${BASE_URL}`, newTag).then(({ data }) => data.id);
+  create(tag) {
+    return ApiService.post(`${BASE_URL}`, tag).then(({ data }) => data.id);
   },
   addBookmarkOnTag(tagId, bookmarkId) {
     return ApiService.post(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
