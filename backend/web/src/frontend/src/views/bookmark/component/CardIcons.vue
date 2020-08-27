@@ -49,7 +49,6 @@ export default {
       }
       try {
         await this[DELETE_BOOKMARK]({ bookmarkId: this.bookmark.id });
-        await this[FETCH_TAG_WITH_BOOKMARKS]({ tagId: this[TAG_ID], offset: 1, limit: 10 });
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.DELETE.SUCCESS);
       } catch {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.DELETE.FAIL);

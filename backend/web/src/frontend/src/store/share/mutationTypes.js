@@ -6,6 +6,7 @@ export const SHOW_SNACKBAR = 'showSnackbar';
 
 // tag
 export const SET_TAG_BOOKMARKS = 'setTagBookmarks';
+export const SET_BOOKMARKS = 'setBookmarks';
 
 // bookmark
 export const ADD_MORE_BOOKMARKS = 'addMoreBookmarks';

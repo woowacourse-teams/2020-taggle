@@ -1,13 +1,7 @@
 import BookmarkService from '@/api/module/bookmark.js';
 import TagService from '@/api/module/tag.js';
-import {
-  FETCH_BOOKMARK_WITH_TAGS,
-  CREATE_BOOKMARK,
-  ADD_TAG_ON_BOOKMARK,
-  DELETE_TAG_ON_BOOKMARK,
-  DELETE_BOOKMARK,
-} from '@/store/share/actionTypes.js';
-import { SET_BOOKMARK_TAGS, RESET_BOOKMARK_WITH_TAGS } from '@/store/share/mutationTypes.js';
+import { ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS } from '@/store/share/actionTypes.js';
+import { RESET_BOOKMARK_WITH_TAGS, SET_BOOKMARK_TAGS } from '@/store/share/mutationTypes.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 
 const state = {
@@ -42,12 +36,6 @@ const actions = {
     const res = await BookmarkService.findBookmarkWithTags(bookmarkId);
     const bookmarkTags = res.data;
     commit(SET_BOOKMARK_TAGS, bookmarkTags);
-  },
-  async [CREATE_BOOKMARK](context, bookmarkCreateRequest) {
-    return BookmarkService.post(bookmarkCreateRequest);
-  },
-  async [DELETE_BOOKMARK](context, { bookmarkId }) {
-    return BookmarkService.delete(bookmarkId);
   },
   async [ADD_TAG_ON_BOOKMARK](context, { bookmarkId, tagId }) {
     return TagService.addBookmarkOnTag(tagId, bookmarkId);
