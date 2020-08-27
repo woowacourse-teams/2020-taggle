@@ -23,8 +23,8 @@
       </v-card-text>
       <v-card-actions class="pt-0 px-4 pb-4">
         <v-spacer />
-        <v-btn :disabled="!valid" @click.prevent="onChangeCategory">수정</v-btn>
-        <v-btn @click="dialog = false">닫기</v-btn>
+        <v-btn depressed large :disabled="!valid" @click.prevent="onChangeCategory">수정</v-btn>
+        <v-btn depressed large @click="dialog = false">닫기</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

@@ -9,8 +9,8 @@
       </v-card-text>
       <v-card-actions class="pt-0 px-4 pb-4">
         <v-spacer></v-spacer>
-        <v-btn @click.native="cancel">취소</v-btn>
-        <v-btn @click.native="agree" color="error">확인</v-btn>
+        <v-btn depressed large @click.native="cancel">취소</v-btn>
+        <v-btn depressed large @click.native="agree" color="error">확인</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
