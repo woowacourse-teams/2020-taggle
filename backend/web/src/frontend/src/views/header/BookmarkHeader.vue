@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app permanent width="312px">
+  <v-navigation-drawer app permanent width="312px" floating>
     <v-row class="fill-height" no-gutters>
       <v-navigation-drawer mini-variant mini-variant-width="56" permanent>
         <!-- home icon -->
