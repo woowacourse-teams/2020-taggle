@@ -9,4 +9,5 @@ export const SNACKBAR_MESSAGE = 'message';
 export const BOOKMARK_WITH_TAGS = 'bookmarkTags';
 export const GET_TAG_ID_BY_NAME = 'getTagIdByName';
 export const IS_BOOKMARKS_EMPTY = 'isBookmarksEmpty';
+// user
 export const USER = 'user';

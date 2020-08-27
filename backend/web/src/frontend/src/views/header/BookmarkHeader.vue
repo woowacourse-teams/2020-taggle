@@ -13,7 +13,7 @@
         <template v-slot:append>
           <v-menu right offset-x>
             <template v-slot:activator="{ on, attrs }">
-              <div class="text-center">
+              <div class="text-center py-2">
                 <v-avatar size="40" v-bind="attrs" v-on="on">
                   <img :src="user.picture" alt="user-profile" />
                 </v-avatar>
@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import CategoryAddModal from '@/views/header/component/CategoryAddModal.vue';
-import CategoryTagModifyModal from '@/views/header/component/TagEditModal.vue';
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { CATEGORIES, USER } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
@@ -49,9 +47,6 @@ export default {
   name: 'BookmarkHeader',
   components: {
     TagNavigation,
-  },
-  created() {
-    this[FETCH_CATEGORIES]();
   },
   methods: {
     ...mapActions([FETCH_CATEGORIES]),
