@@ -1,7 +1,8 @@
 import MainPage from '@/views/main/MainPage.vue';
 import bookmarkRoutes from '@/router/modules/bookmark.js';
+import profileRoutes from '@/router/modules/profile.js';
 
-const mainChild = [...bookmarkRoutes];
+const mainChild = [...bookmarkRoutes, ...profileRoutes];
 
 const mainRoutes = [
   {

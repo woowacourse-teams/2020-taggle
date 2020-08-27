@@ -11,14 +11,23 @@
 
         <!--user information button-->
         <template v-slot:append>
-          <div class="text-center">
-            <v-avatar>
-              <img
-                src="https://avatars3.githubusercontent.com/u/45934117?s=460&u=32a2980278056093510eface6c7ddfca6bcd8bc9&v=4"
-                alt="evan"
-              />
-            </v-avatar>
-          </div>
+          <v-menu right offset-x>
+            <template v-slot:activator="{ on, attrs }">
+              <div class="text-center py-2">
+                <v-avatar size="40" v-bind="attrs" v-on="on">
+                  <img :src="user.picture" alt="user-profile" />
+                </v-avatar>
+              </div>
+            </template>
+            <v-list>
+              <v-list-item to="/profile">
+                <v-list-item-title>Profile</v-list-item-title>
+              </v-list-item>
+              <v-list-item href="/oauth2/logout">
+                <v-list-item-title>Logout</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </template>
       </v-navigation-drawer>
 
@@ -29,12 +38,21 @@
 </template>
 
 <script>
+import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { CATEGORIES, USER } from '@/store/share/getterTypes.js';
+import { mapActions, mapGetters } from 'vuex';
 import TagNavigation from '@/views/header/component/TagNavigation.vue';
 
 export default {
   name: 'BookmarkHeader',
   components: {
     TagNavigation,
+  },
+  methods: {
+    ...mapActions([FETCH_CATEGORIES]),
+  },
+  computed: {
+    ...mapGetters([CATEGORIES, USER]),
   },
 };
 </script>

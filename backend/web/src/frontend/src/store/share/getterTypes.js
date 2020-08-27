@@ -16,3 +16,5 @@ export const ALL_CATEGORIES_FOR_SELECT = 'allCategoriesForSelect';
 export const TOTAL_CATEGORIES = 'totalCategories';
 export const SEARCHED_CATEGORIES = 'searchedCategories';
 
+// user
+export const USER = 'user';

@@ -18,3 +18,9 @@ export const CREATE_BOOKMARK = 'createBookmark';
 export const DELETE_BOOKMARK = 'deleteBookmark';
 export const ADD_TAG_ON_BOOKMARK = 'addTagOnBookmark';
 export const DELETE_TAG_ON_BOOKMARK = 'deleteTagOnBookmark';
+export const EDIT_TAG = 'editTag';
+
+// user
+export const FETCH_USER = 'fetchUser';
+export const UPDATE_PROFILE = 'updateProfile';
+export const DELETE_USER = 'deleteUser';
