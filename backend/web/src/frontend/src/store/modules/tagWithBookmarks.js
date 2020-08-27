@@ -33,8 +33,8 @@ const actions = {
     commit(SET_TAG_BOOKMARKS, bookmarks);
     return bookmarks.bookmarks;
   },
-  async [FETCH_MORE_BOOKMARKS]({ commit }, { tagId, start, display }) {
-    const res = await TagService.findBookmarksByTagId(tagId, start, display);
+  async [FETCH_MORE_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
+    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
     const { bookmarks } = res.data;
     commit(ADD_MORE_BOOKMARKS, bookmarks);
     return bookmarks;
