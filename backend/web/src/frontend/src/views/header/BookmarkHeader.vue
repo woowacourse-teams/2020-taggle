@@ -1,11 +1,11 @@
 <template>
   <v-navigation-drawer app permanent width="312px">
     <v-row class="fill-height" no-gutters>
-      <v-navigation-drawer dark mini-variant mini-variant-width="56" permanent>
+      <v-navigation-drawer mini-variant mini-variant-width="56" permanent>
         <!-- home icon -->
         <v-list-item class="px-2">
           <v-list-item-avatar>
-            <v-img src="@/assets/images/TaggleLog.png"></v-img>
+            <v-img src="@/assets/images/TaggleLogo.png"></v-img>
           </v-list-item-avatar>
         </v-list-item>
 

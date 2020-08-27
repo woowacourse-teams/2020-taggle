@@ -1,6 +1,6 @@
 <template>
-  <v-row width="100%">
-    <v-col class="text-right">
+  <v-row>
+    <v-col>
       <CategoryAddModal />
     </v-col>
   </v-row>

@@ -1,5 +1,10 @@
 <template>
-  <v-row v-if="isBookmarksEmpty" justify="center" align="center" style="height: 100% !important;">
+  <v-row
+    v-if="isInitialLoadingCompleted && isBookmarksEmpty"
+    justify="center"
+    align="center"
+    style="height: 100% !important;"
+  >
     <v-col>
       <div class="ma-3 text-center">
         <h3 class="text--primary">북마크가 존재하지 않습니다.</h3>
@@ -41,6 +46,7 @@ export default {
       page: 1,
       limit: 10,
       infiniteId: +new Date(),
+      isInitialLoadingCompleted: false,
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -59,17 +65,19 @@ export default {
     ...mapMutations([SHOW_SNACKBAR]),
     async infiniteHandler($state) {
       try {
-        const bookmarks = await this[FETCH_MORE_BOOKMARKS]({
-          tagId: this.$route.params.id,
-          offset: this.page,
-          limit: this.limit,
-        });
-        if (bookmarks.length) {
-          this.page += 1;
-          $state.loaded();
-        } else {
-          $state.complete();
-        }
+        setTimeout(async () => {
+          const bookmarks = await this[FETCH_MORE_BOOKMARKS]({
+            tagId: this.$route.params.id,
+            offset: this.page,
+            limit: this.limit,
+          });
+          if (bookmarks.length) {
+            this.page += 1;
+            $state.loaded();
+          } else {
+            $state.complete();
+          }
+        }, 500);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.FETCH.FAIL);
       }
@@ -77,6 +85,7 @@ export default {
     async changeTag() {
       this.page = 1;
       this.infiniteId += 1;
+      this.isInitialLoadingCompleted = false;
       const bookmarks = await this[FETCH_TAG_WITH_BOOKMARKS]({
         tagId: this.$route.params.id,
         offset: this.page,
@@ -85,6 +94,7 @@ export default {
       if (bookmarks.length) {
         this.page += 1;
       }
+      this.isInitialLoadingCompleted = true;
     },
   },
 };
