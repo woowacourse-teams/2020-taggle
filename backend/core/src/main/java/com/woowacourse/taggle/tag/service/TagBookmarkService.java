@@ -44,7 +44,8 @@ public class TagBookmarkService {
     public void createTagBookmark(final SessionUser user, final Long tagId, final Long bookmarkId) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(bookmarkId, user.getId());
-        final TagBookmark tagBookmark = tagBookmarkRepository.save(new TagBookmark(tag, bookmark));
+        final TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)
+                .orElseGet(() -> tagBookmarkRepository.save(new TagBookmark(tag, bookmark)));
 
         bookmark.addTagBookmark(tagBookmark);
     }
