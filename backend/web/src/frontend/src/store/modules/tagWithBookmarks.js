@@ -1,6 +1,11 @@
 import TagService from '@/api/module/tag.js';
-import { FETCH_TAG_WITH_BOOKMARKS, CREATE_TAG, DELETE_TAG, FETCH_MORE_BOOKMARKS, CLEAR_BOOKMARKS } from '@/store/share/actionTypes.js';
-import { SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
+import {
+  FETCH_TAG_WITH_BOOKMARKS,
+  CREATE_TAG,
+  DELETE_TAG,
+  FETCH_MORE_BOOKMARKS,
+  CLEAR_BOOKMARKS,
+} from '@/store/share/actionTypes.js';
 import { BOOKMARKS, TAG_ID, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 import { ADD_MORE_BOOKMARKS, SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
 
