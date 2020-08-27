@@ -25,21 +25,21 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 
         // 카테고리를 가져온다.
         List<CategoryTagsResponse> categories = findCategories();
-        assertThat(categories).hasSize(1);
+        assertThat(categories).hasSize(2);
 
         // 이미 존재하는 카테고리와 같은 이름의 카테고리 생성요청시 새 카테고리를 생성하지 않는다.
         createCategory(categoryName);
         categories = findCategories();
 
-        assertThat(categories).hasSize(1);
+        assertThat(categories).hasSize(2);
 
         // 카테고리를 수정한다.
-        final CategoryTagsResponse categoryTagsResponse = categories.get(0);
+        final CategoryTagsResponse categoryTagsResponse = categories.get(1);
         final String updateTitle = "service";
         updateCategory(categoryTagsResponse.getId(), updateTitle);
         categories = findCategories();
 
-        assertThat(categories.get(0).getTitle()).isEqualTo(updateTitle);
+        assertThat(categories.get(1).getTitle()).isEqualTo(updateTitle);
 
         // 태그를 다른 카테고리로 이동한다.
         final String tagName = "moving";
@@ -47,9 +47,9 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         updateCategoryOnTag(categoryResponse.getId(), tagResponse.getId());
         categories = findCategories();
 
-        assertThat(categories.get(0).getTitle()).isEqualTo(updateTitle);
-        assertThat(categories.get(0).getTags()).hasSize(1);
-        assertThat(categories.get(0).getTags().get(0).getName()).isEqualTo(tagName);
+        assertThat(categories.get(1).getTitle()).isEqualTo(updateTitle);
+        assertThat(categories.get(1).getTags()).hasSize(1);
+        assertThat(categories.get(1).getTags().get(0).getName()).isEqualTo(tagName);
 
         // 카테고리를 제거한다.
         removeCategory(categoryTagsResponse.getId());
