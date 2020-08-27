@@ -8,8 +8,9 @@
       dense
       class="ma-2"
       hide-details="true"
+      v-model="searchKeyword"
     ></v-text-field>
-    <TagNavigationBody />
+    <TagNavigationBody :searchKeyword="searchKeyword" />
     <template v-slot:append>
       <TagNavigationFooter />
     </template>
@@ -22,6 +23,11 @@ import TagNavigationBody from '@/views/header/component/TagNavigationBody.vue';
 
 export default {
   name: 'TagNavigation',
+  data() {
+    return {
+      searchKeyword: '',
+    };
+  },
   components: {
     TagNavigationBody,
     TagNavigationFooter,

@@ -7,7 +7,10 @@ const TagService = {
     return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
   },
   create(tag) {
-    return ApiService.post(`${BASE_URL}`, tag).then(({ data }) => data.id);
+    return ApiService.post(`${BASE_URL}`, tag).then(({data}) => data.id);
+  },
+  findBookmarksByTagId(tagId, offset, limit) {
+    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks?offset=${offset}&limit=${limit}`);
   },
   addBookmarkOnTag(tagId, bookmarkId) {
     return ApiService.post(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);

@@ -7,13 +7,13 @@ import {
   FETCH_CATEGORIES,
 } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
-import { CATEGORIES, ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
+import { SEARCHED_CATEGORIES, TOTAL_CATEGORIES, ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
 
 const state = {
   categories: [],
 };
 const getters = {
-  [CATEGORIES](state) {
+  [TOTAL_CATEGORIES](state) {
     return state.categories;
   },
   [ALL_CATEGORIES_FOR_SELECT](state) {
@@ -23,6 +23,13 @@ const getters = {
         return { text: category.title, value: category.id };
       });
   },
+  [SEARCHED_CATEGORIES]: (state) => (searchKeyword) =>
+    state.categories.map((category) => {
+      return {
+        ...category,
+        tags: category.tags.filter((tag) => tag.name.includes(searchKeyword)),
+      };
+    }),
 };
 const mutations = {
   [SET_CATEGORIES](state, categories) {

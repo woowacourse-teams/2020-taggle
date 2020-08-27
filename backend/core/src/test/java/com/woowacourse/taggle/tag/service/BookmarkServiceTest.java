@@ -17,6 +17,7 @@ import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkFindRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.user.domain.User;
@@ -27,6 +28,7 @@ import com.woowacourse.taggle.user.service.UserService;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
 class BookmarkServiceTest {
+    private static final BookmarkFindRequest BOOKMARK_FIND_REQUEST = new BookmarkFindRequest(1, 10);
 
     @Autowired
     BookmarkService bookmarkService;
@@ -68,7 +70,8 @@ class BookmarkServiceTest {
 
         // when
         final BookmarkResponse bookmarkResponse = bookmarkService.createBookmark(user, bookmarkCreateRequest);
-        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user, bookmarkCreateRequest);
+        final BookmarkResponse bookmarkResponseWithSameName = bookmarkService.createBookmark(user,
+                bookmarkCreateRequest);
 
         // then
         assertThat(bookmarkResponse.getId()).isEqualTo(bookmarkResponseWithSameName.getId());
@@ -78,7 +81,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getImage()).isEqualTo(bookmarkResponseWithSameName.getImage());
     }
 
-    @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
+    @DisplayName("findBookmarks: 북마크를 1 페이지를 조회한다.")
     @Test
     void findBookmarks() {
         // given
@@ -87,7 +90,7 @@ class BookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
-        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user);
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user, BOOKMARK_FIND_REQUEST);
 
         //then
         assertThat(bookmarks).hasSize(1);
@@ -103,7 +106,8 @@ class BookmarkServiceTest {
 
         // when
         bookmarkService.removeBookmark(user, bookmarkResponse.getId());
-        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user);
+        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user, BOOKMARK_FIND_REQUEST);
+
         // then
         assertThat(bookmarkResponses).hasSize(0);
     }

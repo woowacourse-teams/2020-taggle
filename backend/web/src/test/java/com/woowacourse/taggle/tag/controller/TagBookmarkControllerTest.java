@@ -46,17 +46,17 @@ public class TagBookmarkControllerTest extends ControllerTest {
         final Bookmark bookmark = bookmarkSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks", tag.getId())
+        readByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks?limit=10&offset=1", tag.getId())
                 .andExpect(jsonPath("$.id", is(tag.getId().intValue())))
                 .andDo(TagBookmarkDocumentation.findBookmarksByTagId());
     }
 
-    @DisplayName("findUntaggedBookmarks: 태그가 없는 (Untagged) 북마크 목록을 조회한다.")
+    @DisplayName("findUntaggedBookmarks: 태그가 없는 북마크 목록을 조회한다.")
     @Test
     void findUntaggedBookmarks() throws Exception {
         bookmarkSetup.save(user);
 
-        read(user, "/api/v1/tags/untagged/bookmarks", jsonPath("$.id", is(nullValue())))
+        read(user, "/api/v1/tags/untagged/bookmarks?limit=10&offset=1", jsonPath("$.id", is(nullValue())))
                 .andDo(TagBookmarkDocumentation.findUntaggedBookmarks());
     }
 

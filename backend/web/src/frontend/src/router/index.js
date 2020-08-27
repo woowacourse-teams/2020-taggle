@@ -25,20 +25,6 @@ router.beforeEach(async (to, from, next) => {
   } else {
     next();
   }
-
-  // try {
-  //   await UserService.loggedIn();
-  //   next();
-  //   return;
-  // } catch (e) {
-  //   if (to.matched.some((routeInfo) => routeInfo.meta.requiresAuth)) {
-  //     next({
-  //       path: '/signin',
-  //     });
-  //   } else {
-  //     next();
-  //   }
-  // }
 });
 
 export default router;
