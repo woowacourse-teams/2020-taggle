@@ -1,5 +1,6 @@
 // tag
 export const BOOKMARKS = 'bookmarks';
+export const TAG_ID = 'tagId';
 
 // snackbar
 export const IS_SHOWN_SNACKBAR = 'isShow';

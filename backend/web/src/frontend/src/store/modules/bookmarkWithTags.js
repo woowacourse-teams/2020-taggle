@@ -5,6 +5,7 @@ import {
   CREATE_BOOKMARK,
   ADD_TAG_ON_BOOKMARK,
   DELETE_TAG_ON_BOOKMARK,
+  DELETE_BOOKMARK,
 } from '@/store/share/actionTypes.js';
 import { SET_BOOKMARK_TAGS, RESET_BOOKMARK_WITH_TAGS } from '@/store/share/mutationTypes.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
@@ -44,6 +45,9 @@ const actions = {
   },
   async [CREATE_BOOKMARK](context, bookmarkCreateRequest) {
     return BookmarkService.post(bookmarkCreateRequest);
+  },
+  async [DELETE_BOOKMARK](context, { bookmarkId }) {
+    return BookmarkService.delete(bookmarkId);
   },
   async [ADD_TAG_ON_BOOKMARK](context, { bookmarkId, tagId }) {
     return TagService.addBookmarkOnTag(tagId, bookmarkId);

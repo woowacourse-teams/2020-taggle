@@ -13,5 +13,6 @@ export const DELETE_TAG = 'deleteTag';
 // bookmark
 export const FETCH_BOOKMARK_WITH_TAGS = 'fetchBookmarkWithTags';
 export const CREATE_BOOKMARK = 'createBookmark';
+export const DELETE_BOOKMARK = 'deleteBookmark';
 export const ADD_TAG_ON_BOOKMARK = 'addTagOnBookmark';
 export const DELETE_TAG_ON_BOOKMARK = 'deleteTagOnBookmark';
