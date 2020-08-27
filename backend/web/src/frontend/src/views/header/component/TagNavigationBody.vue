@@ -39,3 +39,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-list {
+  padding: 0 !important;
+}
+.v-list-group__header {
+  padding: 4px !important;
+}
+.v-list-item {
+  padding: 0 20px !important;
+}
+</style>
