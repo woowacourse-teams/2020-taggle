@@ -1,5 +1,7 @@
 package com.woowacourse.taggle.tag.controller;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -78,5 +80,14 @@ public class ApiControllerAdvice {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("서버 내부적인 문제가 발생했습니다.");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> authenticationException(final AuthenticationException authenticationException) {
+        log.error(authenticationException.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("인증되지 않은 사용자 입니다.");
     }
 }
