@@ -39,7 +39,7 @@
 
 <script>
 import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
-import { CATEGORIES, USER } from '@/store/share/getterTypes.js';
+import { USER } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import TagNavigation from '@/views/header/component/TagNavigation.vue';
 
@@ -52,7 +52,7 @@ export default {
     ...mapActions([FETCH_CATEGORIES]),
   },
   computed: {
-    ...mapGetters([CATEGORIES, USER]),
+    ...mapGetters([USER]),
   },
 };
 </script>
