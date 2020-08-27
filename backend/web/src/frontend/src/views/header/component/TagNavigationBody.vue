@@ -1,6 +1,6 @@
 <template>
   <v-card :flat="true">
-    <v-list :key="category.id" class="grow" v-for="category in categories">
+    <v-list v-for="category in categories" :key="category.id" class="grow">
       <CategoryGroup :category="category" />
     </v-list>
   </v-card>
@@ -39,3 +39,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-list {
+  padding: 0 !important;
+}
+.v-list-group__header {
+  padding: 4px !important;
+}
+.v-list-item {
+  padding: 0 20px !important;
+}
+</style>

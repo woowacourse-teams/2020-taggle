@@ -1,71 +1,98 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn v-bind="attrs" v-on="on" class="mx-2" small icon>
-        <v-icon dark>mdi-pencil</v-icon>
-      </v-btn>
-    </template>
-
     <v-card>
       <v-app-bar dense flat>
-        <v-card-title>
-          카테고리 수정
-        </v-card-title>
+        <v-card-title>카테고리 변경</v-card-title>
         <v-spacer></v-spacer>
         <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-app-bar>
 
-      <v-card-text class="pt-6">
-        <v-form ref="category" @submit.prevent="onEditCategory">
-          <v-text-field
-            v-model="category.title"
+      <v-card-text class="pa-4">
+        <v-form ref="categoryEditForm" v-model="valid">
+          <v-select
+            v-model="categoryId"
+            :items="allCategoriesForSelect"
             dense
-            :rules="rules"
-            label="이름을 입력후에 enter를 입력하여 저장."
-          ></v-text-field>
+            :rules="rules.category.changeTitleFromTag"
+            outlined
+            label="변경하려는 카테고리를 선택해주세요."
+          />
         </v-form>
       </v-card-text>
+      <v-card-actions class="pt-0 px-4 pb-4">
+        <v-spacer />
+        <v-btn depressed large :disabled="!valid" @click.prevent="onChangeCategory">수정</v-btn>
+        <v-btn depressed large @click="dialog = false">닫기</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import { EDIT_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { EDIT_TAG_FROM_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import validator from '@/utils/validator.js';
 
 export default {
-  name: 'CategoryAddModal',
-  data() {
-    return {
-      rules: validator.category.title,
-      dialog: false,
-    };
-  },
+  name: 'CategoryEditModal',
   props: {
-    category: {
+    tag: {
       type: Object,
       required: true,
     },
+    editDialog: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      rules: { ...validator },
+      valid: false,
+      dialog: false,
+      categoryId: '',
+    };
+  },
+  watch: {
+    editDialog(value) {
+      if (value) {
+        this.dialog = value;
+      }
+    },
+    dialog() {
+      if (!this.dialog) {
+        this.categoryId = '';
+        this.$refs.categoryEditForm.resetValidation();
+        this.$emit('close');
+      }
+    },
+  },
+  computed: {
+    ...mapGetters([ALL_CATEGORIES_FOR_SELECT]),
   },
   methods: {
-    ...mapActions([EDIT_CATEGORY, FETCH_CATEGORIES]),
+    ...mapActions([EDIT_TAG_FROM_CATEGORY, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
-    async onEditCategory() {
-      if (!this.$refs.category.validate()) {
+    async onChangeCategory() {
+      if (!this.$refs.categoryEditForm.validate()) {
         return;
       }
       try {
-        await this[EDIT_CATEGORY](this.category);
+        await this[EDIT_TAG_FROM_CATEGORY]({
+          categoryId: this.categoryId,
+          tagId: this.tag.id,
+        });
         await this[FETCH_CATEGORIES]();
-        this[SHOW_SNACKBAR](MESSAGES.CATEGORY.EDIT.SUCCESS);
-        this.dialog = false;
+        this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.SUCCESS);
       } catch (e) {
-        this[SHOW_SNACKBAR](MESSAGES.CATEGORY.EDIT.FAIL);
+        this[SHOW_SNACKBAR](MESSAGES.TAG.EDIT.FAIL);
+      } finally {
+        this.dialog = false;
       }
     },
   },
