@@ -66,25 +66,24 @@ public class User extends BaseTimeEntity {
     private LocalDateTime signOutDate;
 
     @Builder
-    public User(final Long id, final String nickName, final String email, final String phoneNumber,
-            final String picture,
-            final Role role) {
+    public User(final Long id, final String nickName, final String email, final String notificationEmail,
+            final String phoneNumber, final String picture, final Boolean notificationEnabled, final Role role) {
         this.id = id;
         this.nickName = nickName;
         this.email = email;
-        this.notificationEmail = email;
+        this.notificationEmail = notificationEmail;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
-        this.notificationEnabled = false;
+        this.notificationEnabled = notificationEnabled;
         this.role = role;
     }
 
-    public void updateNotificationEmail(final String notificationEmail) {
-        this.notificationEmail = notificationEmail;
+    public void update(final User user) {
+        if (user.getNotificationEmail() != null) {
+            this.notificationEmail = user.getNotificationEmail();
+        }
+        if (user.getNotificationEnabled() != null) {
+            this.notificationEnabled = user.getNotificationEnabled();
+        }
     }
-
-    public void updateNotificationEnabled(final Boolean notificationEnabled) {
-        this.notificationEnabled = notificationEnabled;
-    }
-
 }

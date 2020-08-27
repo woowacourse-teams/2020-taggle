@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.woowacourse.taggle.tag.dto.NotificationEmailRequest;
-import com.woowacourse.taggle.tag.dto.NotificationEnabledRequest;
+import com.woowacourse.taggle.tag.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,32 +23,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/user-info")
-    public ResponseEntity<SessionUser> getUserInfo(@AuthenticationPrincipal final SessionUser user) {
+    @GetMapping("/me")
+    public ResponseEntity<SessionUser> getUserOfMine(@AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(user);
     }
 
-    @PutMapping("/notification-email")
-    public ResponseEntity<Void> updateNotificationEmail(@AuthenticationPrincipal final SessionUser user,
-            @RequestBody @Valid final NotificationEmailRequest notificationEmailRequest) {
-        userService.updateNotificationEmail(user.getId(), notificationEmailRequest);
+    @PutMapping("/me")
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal final SessionUser user,
+            @RequestBody @Valid final ProfileUpdateRequest profileUpdateRequest) {
+        userService.updateProfile(user.getId(), profileUpdateRequest);
 
         return ResponseEntity.ok()
                 .build();
     }
 
-    @PutMapping("/notification-enabled")
-    public ResponseEntity<Void> updateNotificationEnabled(@AuthenticationPrincipal final SessionUser user,
-            @RequestBody @Valid final NotificationEnabledRequest notificationEnabledRequest) {
-        userService.updateNotificationEnabled(user.getId(), notificationEnabledRequest);
-
-        return ResponseEntity.ok()
-                .build();
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> removeUser(@AuthenticationPrincipal final SessionUser user) {
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> removeUserOfMine(@AuthenticationPrincipal final SessionUser user) {
         userService.removeUser(user.getId());
 
         return ResponseEntity.noContent()

@@ -4,16 +4,13 @@ const BASE_URL = '/api/v1/users';
 
 const UserService = {
   getUserInfo() {
-    return ApiService.get(`${BASE_URL}/user-info`);
+    return ApiService.get(`${BASE_URL}/me`);
   },
-  updateNotificationEmail(notificationEmail) {
-    return ApiService.put(`${BASE_URL}/notification-email`, notificationEmail);
-  },
-  updateNotificationEnabled(notificationEnabled) {
-    return ApiService.put(`${BASE_URL}/notification-enabled`, notificationEnabled);
+  updateProfile(editingProfile) {
+    return ApiService.put(`${BASE_URL}/me`, editingProfile);
   },
   deleteUser() {
-    return ApiService.delete(BASE_URL);
+    return ApiService.delete(`${BASE_URL}/me`);
   },
 };
 

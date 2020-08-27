@@ -25,31 +25,25 @@ public class UserControllerTest extends ControllerTest {
         user = userSetup.save();
     }
 
-    @DisplayName("getUserInfo: 사용자 정보를 가져온다.")
+    @DisplayName("getUserOfMine: 사용자 정보를 가져온다.")
     @Test
-    void getUserInfo() throws Exception {
-        read(user, "/api/v1/users/user-info", jsonPath("$.id", is(user.getId().intValue())))
-                .andDo(UserDocumentation.getUserInfo());
+    void getUserOfMine() throws Exception {
+        read(user, "/api/v1/users/me", jsonPath("$.id", is(user.getId().intValue())))
+                .andDo(UserDocumentation.getUserOfMine());
     }
 
     @DisplayName("updateNotificationEmail: 사용자 알림 이메일을 수정한다.")
     @Test
-    void updateNotificationEmail() throws Exception {
-        updateByJsonParams(user, "/api/v1/users/notification-email", "{ \"notificationEmail\": \"tigger@kakao.com\" }")
-                .andDo(UserDocumentation.updateNotificationEmail());
+    void updateProfile() throws Exception {
+        updateByJsonParams(user, "/api/v1/users/me",
+                "{ \"notificationEmail\": \"tigger@kakao.com\",\"notificationEnabled\": \"True\"}")
+                .andDo(UserDocumentation.updateProfile());
     }
 
-    @DisplayName("updateNotificationEnabled: 사용자 알림 설정을 수정한다.")
+    @DisplayName("removeUserOfMine: 회원 탈퇴를 한다.")
     @Test
-    void updateNotificationEnabled() throws Exception {
-        updateByJsonParams(user, "/api/v1/users/notification-enabled", "{ \"notificationEnabled\": \"True\" }")
-                .andDo(UserDocumentation.updateNotificationEnabled());
-    }
-
-    @DisplayName("removeUser: 카테고리 하나를 제거한다.")
-    @Test
-    void removeUser() throws Exception {
-        remove(user, "/api/v1/users")
+    void removeUserOfMine() throws Exception {
+        remove(user, "/api/v1/users/me")
                 .andDo(UserDocumentation.removeUser());
     }
 }

@@ -1,10 +1,5 @@
 import UserService from '@/api/module/user.js';
-import {
-  FETCH_USER,
-  UPDATE_NOTIFICATION_EMAIL,
-  UPDATE_NOTIFICATION_ENABLED,
-  DELETE_USER,
-} from '@/store/share/actionTypes.js';
+import { FETCH_USER, UPDATE_PROFILE, DELETE_USER } from '@/store/share/actionTypes.js';
 import { SET_USER } from '@/store/share/mutationTypes.js';
 import { USER } from '@/store/share/getterTypes.js';
 
@@ -36,11 +31,8 @@ const actions = {
     const user = res.data;
     commit(SET_USER, user);
   },
-  async [UPDATE_NOTIFICATION_EMAIL](context, notificationEmail) {
-    await UserService.updateNotificationEmail(notificationEmail);
-  },
-  async [UPDATE_NOTIFICATION_ENABLED](context, notificationEnabled) {
-    await UserService.updateNotificationEnabled(notificationEnabled);
+  async [UPDATE_PROFILE](context, editingProfile) {
+    await UserService.updateProfile(editingProfile);
   },
   async [DELETE_USER]() {
     await UserService.deleteUser();

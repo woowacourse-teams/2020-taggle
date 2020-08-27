@@ -56,7 +56,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { DELETE_USER, UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED } from '@/store/share/actionTypes.js';
+import { DELETE_USER, UPDATE_PROFILE } from '@/store/share/actionTypes.js';
 import { USER } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -75,7 +75,7 @@ export default {
     this.notificationEmail = this.user.notificationEmail;
   },
   methods: {
-    ...mapActions([UPDATE_NOTIFICATION_EMAIL, UPDATE_NOTIFICATION_ENABLED, DELETE_USER]),
+    ...mapActions([UPDATE_PROFILE, DELETE_USER]),
     ...mapMutations([SHOW_SNACKBAR]),
     changeFixEnabled() {
       this.fixEnabled = true;
@@ -85,7 +85,7 @@ export default {
     },
     async onUpdateNotificationEmail() {
       try {
-        await this[UPDATE_NOTIFICATION_EMAIL]({ notificationEmail: this.notificationEmail });
+        await this[UPDATE_PROFILE]({ notificationEmail: this.notificationEmail });
         await this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_EMAIL.SUCCESS);
         await this.changeFixDisabled();
       } catch (e) {
@@ -94,7 +94,7 @@ export default {
     },
     async onUpdateNotificationEnabled() {
       try {
-        await this[UPDATE_NOTIFICATION_ENABLED]({ notificationEnabled: this.notificationEnabled });
+        await this[UPDATE_PROFILE]({ notificationEnabled: this.notificationEnabled });
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.USER.NOTIFICATION_ENABLED.FAIL);
       }

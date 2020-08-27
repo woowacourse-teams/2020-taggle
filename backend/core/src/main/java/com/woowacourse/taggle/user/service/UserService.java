@@ -3,8 +3,7 @@ package com.woowacourse.taggle.user.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.NotificationEmailRequest;
-import com.woowacourse.taggle.tag.dto.NotificationEnabledRequest;
+import com.woowacourse.taggle.tag.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
 import com.woowacourse.taggle.user.exception.UserNotFoundException;
@@ -21,14 +20,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void updateNotificationEmail(final Long id, final NotificationEmailRequest notificationEmailRequest) {
+    public void updateProfile(final Long id, final ProfileUpdateRequest profileUpdateRequest) {
         final User user = findById(id);
-        user.updateNotificationEmail(notificationEmailRequest.getNotificationEmail());
-    }
-
-    public void updateNotificationEnabled(final Long id, final NotificationEnabledRequest notificationEnabledRequest) {
-        final User user = findById(id);
-        user.updateNotificationEnabled(notificationEnabledRequest.getNotificationEnabled());
+        user.update(profileUpdateRequest.toEntity());
     }
 
     public void removeUser(final Long id) {

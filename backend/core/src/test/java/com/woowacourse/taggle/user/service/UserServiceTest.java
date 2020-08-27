@@ -13,6 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
+import com.woowacourse.taggle.tag.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.exception.UserNotFoundException;
 
@@ -39,6 +40,36 @@ public class UserServiceTest {
 
         // then
         assertThat(actual).isNotNull();
+    }
+
+    @DisplayName("updateProfile_email: 회원 정보 수정(이메일) 테스트")
+    @Test
+    void updateProfile_email() {
+        // given
+        User actual = userService.save(user);
+
+        // when
+        final ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest("tigger@taggle.kr", null);
+        userService.updateProfile(actual.getId(), profileUpdateRequest);
+        actual = userService.findById(actual.getId());
+
+        // then
+        assertThat(actual.getNotificationEmail()).isEqualTo("tigger@taggle.kr");
+    }
+
+    @DisplayName("updateProfile_enabled: 회원 정보 수정(알림 설정) 테스트")
+    @Test
+    void updateProfile_enabled() {
+        // given
+        User actual = userService.save(user);
+
+        // when
+        final ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(null, true);
+        userService.updateProfile(actual.getId(), profileUpdateRequest);
+        actual = userService.findById(actual.getId());
+
+        // then
+        assertThat(actual.getNotificationEnabled()).isTrue();
     }
 
     @DisplayName("removeUser: 회원 탈퇴 테스트")
