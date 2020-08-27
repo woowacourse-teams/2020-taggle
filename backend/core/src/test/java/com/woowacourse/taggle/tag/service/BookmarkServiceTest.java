@@ -28,6 +28,7 @@ import com.woowacourse.taggle.user.service.UserService;
 @ContextConfiguration(classes = JpaTestConfiguration.class)
 @DataJpaTest
 class BookmarkServiceTest {
+    private static final BookmarkFindRequest BOOKMARK_FIND_REQUEST = new BookmarkFindRequest(1, 10);
 
     @Autowired
     BookmarkService bookmarkService;
@@ -80,7 +81,7 @@ class BookmarkServiceTest {
         assertThat(bookmarkResponse.getImage()).isEqualTo(bookmarkResponseWithSameName.getImage());
     }
 
-    @DisplayName("findBookmarks: 전체 북마크를 조회한다.")
+    @DisplayName("findBookmarks: 북마크를 1 페이지를 조회한다.")
     @Test
     void findBookmarks() {
         // given
@@ -89,8 +90,7 @@ class BookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
-        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user, bookmarkFindRequest);
+        final List<BookmarkResponse> bookmarks = bookmarkService.findBookmarks(user, BOOKMARK_FIND_REQUEST);
 
         //then
         assertThat(bookmarks).hasSize(1);
@@ -106,9 +106,8 @@ class BookmarkServiceTest {
 
         // when
         bookmarkService.removeBookmark(user, bookmarkResponse.getId());
-        final BookmarkFindRequest bookmarkFindRequest = new BookmarkFindRequest(1, 24);
-        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user, bookmarkFindRequest);
-        
+        final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user, BOOKMARK_FIND_REQUEST);
+
         // then
         assertThat(bookmarkResponses).hasSize(0);
     }
