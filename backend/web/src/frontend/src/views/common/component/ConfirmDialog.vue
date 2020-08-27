@@ -1,16 +1,16 @@
 <template>
   <v-dialog v-model="show" :max-width="options.width" :style="{ zIndex: options.zIndex }" @keydown.esc="cancel">
     <v-card>
-      <v-toolbar :color="options.color" dark dense flat>
-        <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
-      </v-toolbar>
+      <v-app-bar :color="options.color" dense flat>
+        <v-card-title>{{ title }}</v-card-title>
+      </v-app-bar>
       <v-card-text class="pa-4">
         {{ message }}
       </v-card-text>
       <v-card-actions class="pt-0 px-4 pb-4">
         <v-spacer></v-spacer>
-        <v-btn @click.native="cancel" color="grey" text>취소</v-btn>
-        <v-btn @click.native="agree" color="error">확인</v-btn>
+        <v-btn depressed large @click.native="cancel">취소</v-btn>
+        <v-btn depressed large @click.native="agree" color="error">확인</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -60,8 +60,7 @@ export default {
       message: null,
       title: null,
       options: {
-        color: 'primary',
-        width: 290,
+        width: 500,
         zIndex: 200,
       },
     };

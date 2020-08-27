@@ -1,7 +1,13 @@
 import TagService from '@/api/module/tag.js';
-import { CLEAR_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
+import {
+  FETCH_TAG_WITH_BOOKMARKS,
+  CREATE_TAG,
+  DELETE_TAG,
+  FETCH_MORE_BOOKMARKS,
+  CLEAR_BOOKMARKS,
+} from '@/store/share/actionTypes.js';
+import { BOOKMARKS, TAG_ID, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 import { ADD_MORE_BOOKMARKS, SET_TAG_BOOKMARKS } from '@/store/share/mutationTypes.js';
-import { BOOKMARKS, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 
 const state = {
   tagBookmarks: {
@@ -13,6 +19,9 @@ const state = {
 const getters = {
   [BOOKMARKS](state) {
     return state.tagBookmarks.bookmarks;
+  },
+  [TAG_ID](state) {
+    return state.tagBookmarks.id;
   },
   [IS_BOOKMARKS_EMPTY](state) {
     return state.tagBookmarks.bookmarks.length === 0;
@@ -45,6 +54,12 @@ const actions = {
       name: '',
       bookmarks: [],
     });
+  },
+  async [CREATE_TAG](context, tagCreateRequest) {
+    return TagService.create(tagCreateRequest);
+  },
+  async [DELETE_TAG](context, { tagId }) {
+    return TagService.delete(tagId);
   },
 };
 
