@@ -54,11 +54,6 @@ operation::categories/get/List[snippets='http-request,http-response,response-fie
 
 operation::categories/update[snippets='http-request,request-fields,http-response']
 
-[[resources-categories-tags-update]]
-=== 태그의 카테고리 수정
-
-operation::categories/tags/update[snippets='http-request,path-parameters,http-response']
-
 [[resources-categories-delete]]
 === 카테고리 삭제
 
@@ -71,6 +66,11 @@ operation::categories/delete[snippets='http-request,path-parameters,http-respons
 === 태그 추가
 
 operation::tags/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
+
+[[resources-categories-tags-update]]
+=== 태그가 속한 카테고리 수정
+
+operation::categories/tags/update[snippets='http-request,path-parameters,http-response']
 
 [[resources-tags-delete]]
 === 태그 삭제
@@ -88,7 +88,7 @@ operation::bookmarks/create[snippets='http-request,request-fields,http-response,
 [[resources-bookmarks-get-list]]
 === 북마크 전체 조회
 
-operation::bookmarks/get/list[snippets='http-request,http-response,response-fields']
+operation::bookmarks/get/list[snippets='http-request,request-parameters,http-response,response-fields']
 
 [[resources-bookmarks-delete]]
 === 북마크 삭제
@@ -96,29 +96,29 @@ operation::bookmarks/get/list[snippets='http-request,http-response,response-fiel
 operation::bookmarks/delete[snippets='http-request,path-parameters,http-response']
 
 [[resources-tagbookmark]]
-== TagBookmark
+== Tag & Bookmark
 
 [[resources-tags-get]]
-=== 태그의 북마크 조회
+=== 특정 태그에 속한 북마크 조회
 
-operation::tags/bookmarks/get[snippets='http-request,path-parameters,http-response,response-fields']
+operation::tags/bookmarks/get[snippets='http-request,request-parameters,path-parameters,http-response,response-fields']
 
 [[resources-tags-untagged-get]]
-=== Untagged의 북마크 조회
+=== 태그가 등록되지 않은 북마크 조회
 
-operation::tags/bookmarks/untagged/get[snippets='http-request,http-response,response-fields']
+operation::tags/bookmarks/untagged/get[snippets='http-request,request-parameters,http-response,response-fields']
 
 [[resources-tags-bookmarks-create]]
-=== 태그에 북마크 추가
+=== 북마크에 태그 등록
 
 operation::tags/bookmarks/create[snippets='http-request,path-parameters,http-response,response-headers']
 
 [[resources-tags-bookmarks-delete]]
-=== 태그의 북마크 삭제
+=== 북마크에 등록된 태그 삭제
 
 operation::tags/bookmarks/delete[snippets='http-request,path-parameters,http-response']
 
 [[resources-bookmarks-get]]
-=== 북마크의 태그 조회
+=== 북마크에 등록된 태그 조회
 
 operation::bookmarks/tags/get[snippets='http-request,path-parameters,http-response,response-fields']

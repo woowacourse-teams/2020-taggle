@@ -10,6 +10,9 @@ export const MESSAGES = {
     },
   },
   BOOKMARK: {
+    FETCH: {
+      FAIL: '북마크에 등록된 태그목록 로딩중 오류 발생',
+    },
     ADD: {
       SUCCESS: '북마크 저장됨',
       FAIL: '북마크 저장 중 오류 발생',
