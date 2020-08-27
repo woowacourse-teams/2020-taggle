@@ -12,6 +12,8 @@
     ></v-text-field>
     <TagNavigationBody :searchKeyword="searchKeyword" />
     <template v-slot:append>
+      <v-divider></v-divider>
+
       <TagNavigationFooter />
     </template>
   </v-navigation-drawer>

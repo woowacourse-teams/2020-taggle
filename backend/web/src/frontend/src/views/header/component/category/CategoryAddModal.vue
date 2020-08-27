@@ -1,8 +1,9 @@
 <template>
   <v-dialog v-model="dialog" width="500">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn fab v-bind="attrs" v-on="on" class="mx-2" large icon>
-        <v-icon>mdi-plus</v-icon>
+      <v-btn v-bind="attrs" v-on="on" class="mx-2" tile text>
+        <v-icon left>mdi-plus</v-icon>
+        <div>카테고리 추가</div>
       </v-btn>
     </template>
 
