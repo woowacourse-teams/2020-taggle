@@ -13,6 +13,24 @@ endif::[]
 [[resources]]
 = Resources
 
+[[resources-users]]
+== Users
+
+[[resources-users-get-me]]
+=== 정보 가져 오기
+
+operation::users/get/me[snippets='http-request,http-response,response-fields']
+
+[[resources-users-update-profile]]
+=== 알림 이메일 수정하기
+
+operation::users/update/profile[snippets='http-request,request-body,request-fields,http-response']
+
+[[resources-users-delete-me]]
+=== 회원 탈퇴
+
+operation::users/delete/me[snippets='http-request,http-response']
+
 [[resources-categories]]
 == Categories
 

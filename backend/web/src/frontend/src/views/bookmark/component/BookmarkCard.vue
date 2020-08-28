@@ -15,8 +15,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import CardStream from '@/views/bookmark/components/CardStream.vue';
-import CardModule from '@/views/bookmark/components/CardModule.vue';
+import CardStream from '@/views/bookmark/component/CardStream.vue';
+import CardModule from '@/views/bookmark/component/CardModule.vue';
 import { BOOKMARKS } from '@/store/share/getterTypes.js';
 
 export default {

@@ -5,7 +5,7 @@
       <v-card>
         <v-app-bar dense flat>
           <v-toolbar-title>태그 편집</v-toolbar-title>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -29,13 +29,13 @@
 import VueTagsInput from '@johmun/vue-tags-input';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
-import TagService from '@/api/module/tag.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import {
   FETCH_BOOKMARK_WITH_TAGS,
   ADD_TAG_ON_BOOKMARK,
   DELETE_TAG_ON_BOOKMARK,
   FETCH_CATEGORIES,
+  CREATE_TAG,
 } from '@/store/share/actionTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 
@@ -64,7 +64,7 @@ export default {
     async dialog() {
       if (this.dialog) {
         try {
-          await this.fetchBookmark();
+          await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
           this.initTags();
         } catch (e) {
           this[SHOW_SNACKBAR](MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
@@ -73,7 +73,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions([FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES, ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK]),
+    ...mapActions([
+      FETCH_BOOKMARK_WITH_TAGS,
+      FETCH_CATEGORIES,
+      ADD_TAG_ON_BOOKMARK,
+      CREATE_TAG,
+      DELETE_TAG_ON_BOOKMARK,
+    ]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -84,9 +90,9 @@ export default {
     async onAddTagBookmark(data) {
       const targetTagName = data.tag.text;
       try {
-        const targetTagId = await TagService.create({ name: targetTagName });
+        const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
         await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
-        await this.fetchBookmark();
+        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
         await this[FETCH_CATEGORIES]();
         data.addTag();
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
@@ -99,18 +105,11 @@ export default {
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
         await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
-        await this.fetchBookmark();
+        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
         data.deleteTag();
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
-      }
-    },
-    async fetchBookmark() {
-      try {
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
-      } catch (e) {
-        throw new Error(MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
       }
     },
     initTags() {

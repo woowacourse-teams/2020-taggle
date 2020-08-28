@@ -5,7 +5,7 @@
       <v-container style="height: 100% !important;">
         <router-view></router-view>
       </v-container>
-      <BookmarkAddModal />
+      <BookmarkAddModal v-if="bookmarkAddModalEnabled()" />
       <Snackbar />
     </v-main>
   </v-app>
@@ -22,6 +22,11 @@ export default {
     BookmarkHeader,
     BookmarkAddModal,
     Snackbar,
+  },
+  methods: {
+    bookmarkAddModalEnabled() {
+      return this.$router.history.current.path !== '/profile';
+    },
   },
 };
 </script>

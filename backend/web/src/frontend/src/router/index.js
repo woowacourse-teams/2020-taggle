@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import loginRoutes from '@/router/modules/login.js';
 import mainRoutes from '@/router/modules/main.js';
-import UserService from '@/api/module/user.js';
+import store from '@/store/index.js';
+import { FETCH_USER } from '@/store/share/actionTypes.js';
 
 Vue.use(VueRouter);
 
@@ -17,7 +18,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some((routeInfo) => routeInfo.meta.requiresAuth)) {
     try {
-      await UserService.loggedIn();
+      await store.dispatch(FETCH_USER);
       next();
     } catch (e) {
       next('/signin');

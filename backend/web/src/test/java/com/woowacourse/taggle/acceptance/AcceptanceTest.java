@@ -58,8 +58,10 @@ public class AcceptanceTest {
                 .id(1L)
                 .nickName("tigger")
                 .email("tigger@aroundthirty.com")
+                .notificationEmail("tigger@aroundthirty.com")
                 .phoneNumber("010-1234-5678")
                 .picture("https://www.github.com")
+                .notificationEnabled(false)
                 .role(Role.ADMIN)
                 .build();
         final User saved = userRepository.save(user);

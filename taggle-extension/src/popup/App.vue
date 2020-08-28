@@ -2,8 +2,7 @@
   <v-app id="container">
     <section>
       <v-row class="ma-0" align="center">
-        <img @click="moveTagglePage" src="../assets/hashtag-1320568266489631024_24.png" alt="tagLogo" width="24" height="24"/>
-        <h2 class="ml-1">TAGGLE</h2>
+        <img @click="moveTagglePage" src="../assets/icon_48.png" alt="tagLogo" width="24" height="24"/>
         <v-spacer />
         <Buttons
           @deleteBookmark="onDelete"
