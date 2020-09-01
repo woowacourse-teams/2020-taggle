@@ -14,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -72,20 +71,6 @@ class TagServiceTest {
         // then
         assertThat(tagResponse.getId()).isEqualTo(tagResponseWithSameName.getId());
         assertThat(tagResponse.getName()).isEqualTo(tagResponseWithSameName.getName());
-    }
-
-    @DisplayName("findTagById: 특정 태그를 조회한다.")
-    @Test
-    void findTagById() {
-        // given
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
-        final TagResponse tag = tagService.createTag(user, tagCreateRequest);
-
-        // when
-        final TagBookmarkResponse tagBookmarkResponse = tagService.findTagById(user, tag.getId());
-
-        // then
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(0);
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")

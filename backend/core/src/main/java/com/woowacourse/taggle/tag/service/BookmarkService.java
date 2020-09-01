@@ -2,14 +2,16 @@ package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Bookmark;
 import com.woowacourse.taggle.tag.domain.BookmarkRepository;
 import com.woowacourse.taggle.tag.dto.BookmarkCreateDto;
+import com.woowacourse.taggle.tag.dto.BookmarkFindRequest;
 import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.tag.exception.BookmarkNotFoundException;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
@@ -35,23 +37,21 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public BookmarkTagResponse findBookmark(final SessionUser user, final Long id) {
-        final Bookmark bookmark = findByIdAndUserId(id, user.getId());
+    public List<BookmarkResponse> findBookmarks(final SessionUser user, final BookmarkFindRequest bookmarkFindRequest) {
+        final Page<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(user.getId(),
+                bookmarkFindRequest.toPageable());
 
-        return BookmarkTagResponse.of(bookmark);
-    }
-
-    @Transactional(readOnly = true)
-    public List<BookmarkResponse> findBookmarks(final SessionUser user) {
-        final List<Bookmark> bookmarks = bookmarkRepository.findAllByUserId(user.getId());
-
-        return BookmarkResponse.asList(bookmarks);
+        return BookmarkResponse.asList(bookmarks.getContent());
     }
 
     public void removeBookmark(final SessionUser user, final Long id) {
         final Bookmark bookmark = findByIdAndUserId(id, user.getId());
 
         bookmarkRepository.delete(bookmark);
+    }
+
+    public Page<Bookmark> findUntaggedBookmarksByUserId(final Long userId, final Pageable pageable) {
+        return bookmarkRepository.findAllByUserIdAndTagsEmpty(userId, pageable);
     }
 
     public Bookmark findByIdAndUserId(final Long bookmarkId, final Long userId) {

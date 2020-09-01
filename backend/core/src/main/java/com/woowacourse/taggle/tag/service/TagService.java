@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import com.woowacourse.taggle.tag.exception.TagNotFoundException;
@@ -32,13 +31,6 @@ public class TagService {
         return TagResponse.of(tag);
     }
 
-    @Transactional(readOnly = true)
-    public TagBookmarkResponse findTagById(final SessionUser user, final Long tagId) {
-        final Tag tag = findByIdAndUserId(tagId, user.getId());
-
-        return TagBookmarkResponse.of(tag);
-    }
-
     public void removeTag(final SessionUser user, final Long tagId) {
         final Tag tag = findByIdAndUserId(tagId, user.getId());
         tagRepository.delete(tag);
@@ -52,6 +44,14 @@ public class TagService {
         return tagRepository.findByIdAndUserId(tagId, userId)
                 .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다."
                         + "tagId: " + tagId));
+    }
+
+    public List<Tag> findUncategorizedTagsByUserId(final Long userId) {
+        return tagRepository.findAllByUserIdAndCategoryIsNull(userId);
+    }
+
+    public List<Tag> findCategorizedTagsByUserId(final Long userId) {
+        return tagRepository.findAllByUserIdAndCategoryIsNotNull(userId);
     }
 
     public List<Tag> findAllByUserId(final Long userId) {

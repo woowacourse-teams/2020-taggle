@@ -38,10 +38,11 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<CategoryTagsResponse> findAllTagsBy(final SessionUser user) {
-        final List<Tag> tags = tagService.findAllByUserId(user.getId());
-        final List<Category> categories = categoryRepository.findAllByUserId(user.getId());
+        final List<Tag> uncategorizedTags = tagService.findUncategorizedTagsByUserId(user.getId());
+        final List<Category> categories = categoryRepository.findAllByUserIdOrderByTitle(user.getId());
+        final List<Tag> categorizedTags = tagService.findCategorizedTagsByUserId(user.getId());
 
-        return CategoryTagsResponse.asList(tags, categories);
+        return CategoryTagsResponse.asList(uncategorizedTags, categories, categorizedTags);
     }
 
     public void updateCategory(final SessionUser user, final Long categoryId, final CategoryRequest categoryRequest) {

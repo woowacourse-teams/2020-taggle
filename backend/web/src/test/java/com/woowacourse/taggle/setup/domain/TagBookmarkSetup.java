@@ -17,7 +17,6 @@ public class TagBookmarkSetup {
     public TagBookmark save(final Tag tag, final Bookmark bookmark) {
         final TagBookmark tagBookmark = tagBookmarkRepository.save(new TagBookmark(tag, bookmark));
 
-        tag.addTagBookmark(tagBookmark);
         bookmark.addTagBookmark(tagBookmark);
 
         return tagBookmark;

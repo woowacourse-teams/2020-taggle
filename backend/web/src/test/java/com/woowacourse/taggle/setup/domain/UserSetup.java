@@ -17,9 +17,11 @@ public class UserSetup {
         final User user = User.builder()
                 .id(1L)
                 .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
                 .nickName("tigger")
                 .role(Role.USER)
                 .picture("https://www.naver.com/")
+                .notificationEnabled(false)
                 .build();
         return userRepository.save(user);
     }

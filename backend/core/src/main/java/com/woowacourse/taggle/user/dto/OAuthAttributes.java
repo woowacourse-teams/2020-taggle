@@ -79,7 +79,9 @@ public class OAuthAttributes {
         return User.builder()
                 .nickName(nickName)
                 .email(email)
+                .notificationEmail(email)
                 .picture(picture)
+                .notificationEnabled(false)
                 .role(Role.USER)
                 .build();
     }

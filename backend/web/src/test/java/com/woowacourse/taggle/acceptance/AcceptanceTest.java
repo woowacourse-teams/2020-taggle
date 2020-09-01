@@ -29,6 +29,8 @@ import com.woowacourse.taggle.user.dto.SessionUser;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
+import io.restassured.module.mockmvc.response.MockMvcResponse;
+import io.restassured.response.ExtractableResponse;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -52,16 +54,18 @@ public class AcceptanceTest {
         config = new RestAssuredMockMvcConfig()
                 .encoderConfig(new EncoderConfig("UTF-8", "UTF-8"));
         RestAssured.port = port;
-        User user = User.builder()
+        final User user = User.builder()
                 .id(1L)
                 .nickName("tigger")
-                .email("t@t.com")
+                .email("tigger@aroundthirty.com")
+                .notificationEmail("tigger@aroundthirty.com")
                 .phoneNumber("010-1234-5678")
                 .picture("https://www.github.com")
+                .notificationEnabled(false)
                 .role(Role.ADMIN)
                 .build();
-        User saved = userRepository.save(user);
-        SessionUser sessionUser = new SessionUser(saved);
+        final User saved = userRepository.save(user);
+        final SessionUser sessionUser = new SessionUser(saved);
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
     }
@@ -92,6 +96,19 @@ public class AcceptanceTest {
                         .statusCode(HttpStatus.OK.value())
                         .extract()
                         .jsonPath().getList(".", responseType);
+    }
+    // @formatter:on
+
+    // @formatter:off
+    public ExtractableResponse<MockMvcResponse> getExtractableResponse(final String path) {
+        return
+                given()
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .when()
+                        .get(path)
+                        .then()
+                        .log().all()
+                        .extract();
     }
     // @formatter:on
 

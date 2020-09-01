@@ -1,10 +1,10 @@
 package com.woowacourse.taggle.tag.dto;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.woowacourse.taggle.tag.domain.Category;
 import com.woowacourse.taggle.tag.domain.Tag;
@@ -32,54 +32,28 @@ public class CategoryTagsResponse {
                 TagResponse.asList(tags));
     }
 
-    public static List<CategoryTagsResponse> asList(final List<Tag> tags, final List<Category> categories) {
-        final List<CategoryTagsResponse> totalCategoryTagsResponses = createNoCategoryTagsResponses(tags);
-        final List<CategoryTagsResponse> categoryTagsResponses = createCategoryTagsResponses(tags, categories);
-        totalCategoryTagsResponses.addAll(categoryTagsResponses);
+    public static List<CategoryTagsResponse> asList(final List<Tag> uncategorizedTags, final List<Category> categories,
+            final List<Tag> categorizedTags) {
+        final CategoryTagsResponse totalCategoryTagsResponses = ofNoCategory(uncategorizedTags);
+        final List<CategoryTagsResponse> categoryTagsResponses = createCategoryTagsResponses(categories,
+                categorizedTags);
 
-        return totalCategoryTagsResponses;
+        categoryTagsResponses.add(0, totalCategoryTagsResponses);
+        return categoryTagsResponses;
     }
 
-    private static List<CategoryTagsResponse> createNoCategoryTagsResponses(final List<Tag> tags) {
-        final List<CategoryTagsResponse> uncategorizedTagsResponses = new ArrayList<>();
-
-        final List<Tag> tagsWithoutCategory = tags.stream()
-                .filter(Tag::isNotCategorized)
-                .collect(Collectors.toList());
-
-        if (tagsWithoutCategory.size() > 0) {
-            final CategoryTagsResponse categoryTagsResponse = CategoryTagsResponse.ofNoCategory(tagsWithoutCategory);
-            uncategorizedTagsResponses.add(categoryTagsResponse);
+    private static List<CategoryTagsResponse> createCategoryTagsResponses(final List<Category> categories,
+            final List<Tag> categorizedTags) {
+        Map<Category, List<Tag>> collectedTags = categorizedTags.stream()
+                .collect(groupingBy(Tag::getCategory));
+        List<CategoryTagsResponse> categoryTagsResponses = new ArrayList<>();
+        for (Category category : categories) {
+            if (collectedTags.containsKey(category)) {
+                categoryTagsResponses.add(of(category, collectedTags.get(category)));
+            } else {
+                categoryTagsResponses.add(of(category, new ArrayList<>()));
+            }
         }
-
-        return uncategorizedTagsResponses;
-    }
-
-    private static List<CategoryTagsResponse> createCategoryTagsResponses(final List<Tag> tags,
-            final List<Category> categories) {
-        final Map<Category, List<Tag>> cache = categorize(categories);
-
-        for (final Tag tag : tags) {
-            isCategorizedAndContainsKey(cache, tag);
-        }
-
-        return cache.keySet().stream()
-                .map(category -> CategoryTagsResponse.of(category, cache.get(category)))
-                .collect(Collectors.toList());
-    }
-
-    private static void isCategorizedAndContainsKey(final Map<Category, List<Tag>> cache, final Tag tag) {
-        if (!tag.isNotCategorized() && cache.containsKey(tag.getCategory())) {
-            cache.get(tag.getCategory()).add(tag);
-        }
-    }
-
-    private static Map<Category, List<Tag>> categorize(final List<Category> categories) {
-        final Map<Category, List<Tag>> categorize = new HashMap<>();
-        for (final Category category : categories) {
-            final List<Tag> emptyTags = new ArrayList<>();
-            categorize.put(category, emptyTags);
-        }
-        return categorize;
+        return categoryTagsResponses;
     }
 }

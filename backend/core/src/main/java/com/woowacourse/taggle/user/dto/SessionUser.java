@@ -9,8 +9,11 @@ import org.hibernate.validator.constraints.URL;
 
 import com.woowacourse.taggle.user.domain.Role;
 import com.woowacourse.taggle.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SessionUser implements Serializable {
 
@@ -23,10 +26,16 @@ public class SessionUser implements Serializable {
     @Email
     private String email;
 
+    @Email
+    private String notificationEmail;
+
     private String phoneNumber;
 
     @URL
     private String picture;
+
+    @NotEmpty
+    private Boolean notificationEnabled;
 
     private Role role;
 
@@ -34,8 +43,10 @@ public class SessionUser implements Serializable {
         this.id = user.getId();
         this.nickName = user.getNickName();
         this.email = user.getEmail();
+        this.notificationEmail = user.getNotificationEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.picture = user.getPicture();
+        this.notificationEnabled = user.getNotificationEnabled();
         this.role = user.getRole();
     }
 
