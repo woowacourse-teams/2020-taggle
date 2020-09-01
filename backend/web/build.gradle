@@ -26,8 +26,9 @@ asciidoctor {
 
 bootJar {
     dependsOn asciidoctor
-    from("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
+    copy {
+        from "${asciidoctor.outputDir}/html5"
+        into 'src/main/resources/static/docs'
     }
 }
 
