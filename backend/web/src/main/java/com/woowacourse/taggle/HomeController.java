@@ -17,11 +17,6 @@ public class HomeController implements ErrorController {
         return "index";
     }
 
-    @GetMapping("/docs")
-    public String docsIndex() {
-        return "../static/docs/api-guide.html";
-    }
-
     @Override
     public String getErrorPath() {
         return "/error";
