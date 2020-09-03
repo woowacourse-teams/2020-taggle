@@ -7,8 +7,6 @@ endif::[]
 :toc: left
 :toclevels: 2
 :sectlinks:
-:operation-http-request-title: Example Request
-:operation-http-response-title: Example Response
 
 [[resources]]
 = Resources
