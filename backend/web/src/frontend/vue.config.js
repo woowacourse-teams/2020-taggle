@@ -15,7 +15,6 @@ module.exports = {
     },
   },
   transpileDependencies: ['vuetify'],
-  indexPath: path.resolve(__dirname, '../main/resources/templates/index.html'),
   outputDir: path.resolve(__dirname, '../main/resources/static'),
   configureWebpack: {
     resolve: {
