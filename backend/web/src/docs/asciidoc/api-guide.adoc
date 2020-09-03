@@ -21,7 +21,7 @@ endif::[]
 
 include::{snippets}/users/get/me/http-request.adoc[]
 
-==== Examplme Response
+==== Example Response
 
 include::{snippets}/users/get/me/http-response.adoc[]
 
@@ -317,7 +317,7 @@ include::{snippets}/tags/bookmarks/create/response-headers.adoc[]
 
 include::{snippets}/tags/bookmarks/delete/http-request.adoc[]
 
-==== Path paramters
+==== Path parameters
 
 include::{snippets}/tags/bookmarks/delete/path-parameters.adoc[]
 
