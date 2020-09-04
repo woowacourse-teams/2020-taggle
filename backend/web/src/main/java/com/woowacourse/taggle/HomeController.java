@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class HomeController implements ErrorController {
 
-    @GetMapping()
+    @GetMapping
     public String index() {
         return "index.html";
     }
