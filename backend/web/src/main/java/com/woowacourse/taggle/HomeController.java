@@ -1,20 +1,23 @@
 package com.woowacourse.taggle;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Controller
 public class HomeController implements ErrorController {
-    
+
     @GetMapping()
     public String index() {
-        return "index";
+        return "index.html";
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/error")
     public String redirect() {
-        return "index";
+        return "index.html";
     }
 
     @Override

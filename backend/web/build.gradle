@@ -34,15 +34,16 @@ bootJar {
 dependencies {
     implementation project(':core')
     implementation project(':crawler-api')
-    implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     implementation 'org.mariadb.jdbc:mariadb-java-client'
     implementation 'org.flywaydb:flyway-core'
     implementation 'com.github.maricn:logback-slack-appender:1.4.0'
+    implementation 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 
     testImplementation 'io.rest-assured:rest-assured:3.3.0'
     testImplementation 'io.rest-assured:spring-mock-mvc:3.3.0'
