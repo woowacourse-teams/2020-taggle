@@ -13,4 +13,6 @@ public interface TagBookmarkRepository extends JpaRepository<TagBookmark, Long> 
     Optional<TagBookmark> findByTagAndBookmark(final Tag tag, final Bookmark bookmark);
 
     Page<TagBookmark> findAllByTag(final Tag tag, Pageable pageable);
+
+    void deleteAllByTag(final Tag tag);
 }
