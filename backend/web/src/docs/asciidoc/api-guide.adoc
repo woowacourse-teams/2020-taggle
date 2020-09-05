@@ -7,8 +7,6 @@ endif::[]
 :toc: left
 :toclevels: 2
 :sectlinks:
-:operation-http-request-title: Example Request
-:operation-http-response-title: Example Response
 
 [[resources]]
 = Resources
@@ -19,17 +17,47 @@ endif::[]
 [[resources-users-get-me]]
 === 정보 가져 오기
 
-operation::users/get/me[snippets='http-request,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/users/get/me/http-request.adoc[]
+
+==== Example Response
+
+include::{snippets}/users/get/me/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/users/get/me/response-fields.adoc[]
 
 [[resources-users-update-profile]]
 === 알림 이메일 수정하기
 
-operation::users/update/profile[snippets='http-request,request-body,request-fields,http-response']
+==== Example Request
+
+include::{snippets}/users/update/profile/http-request.adoc[]
+
+==== Request body
+
+include::{snippets}/users/update/profile/request-body.adoc[]
+
+==== Request fields
+
+include::{snippets}/users/update/profile/request-fields.adoc[]
+
+==== Example Response
+
+include::{snippets}/users/update/profile/http-response.adoc[]
 
 [[resources-users-delete-me]]
 === 회원 탈퇴
 
-operation::users/delete/me[snippets='http-request,http-response']
+==== Example Request
+
+include::{snippets}/users/delete/me/http-request.adoc[]
+
+==== Example Response
+
+include::{snippets}/users/delete/me/http-response.adoc[]
 
 [[resources-categories]]
 == Categories
@@ -37,22 +65,70 @@ operation::users/delete/me[snippets='http-request,http-response']
 [[resources-categories-create]]
 === 카테고리 추가
 
-operation::categories/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
+==== Example Request
+
+include::{snippets}/categories/create/http-request.adoc[]
+
+==== Request fields
+
+include::{snippets}/categories/create/request-fields.adoc[]
+
+====  Example Response
+
+include::{snippets}/categories/create/http-response.adoc[]
+
+==== Response headers
+
+include::{snippets}/categories/create/response-headers.adoc[]
+
+==== Response fields
+
+include::{snippets}/categories/create/response-fields.adoc[]
 
 [[resources-categories-get-list]]
 === 카테고리 전체 조회
 
-operation::categories/get/List[snippets='http-request,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/categories/get/List/http-request.adoc[]
+
+==== Example Response
+
+include::{snippets}/categories/get/List/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/categories/get/List/response-fields.adoc[]
 
 [[resources-categories-update]]
 === 카테고리 수정
 
-operation::categories/update[snippets='http-request,request-fields,http-response']
+==== Example Request
+
+include::{snippets}/categories/update/http-request.adoc[]
+
+==== Request fields
+
+include::{snippets}/categories/update/request-fields.adoc[]
+
+==== Example Response
+
+include::{snippets}/categories/update/http-response.adoc[]
 
 [[resources-categories-delete]]
 === 카테고리 삭제
 
-operation::categories/delete[snippets='http-request,path-parameters,http-response']
+==== Example Request
+
+include::{snippets}/categories/delete/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/categories/delete/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/categories/delete/http-response.adoc[]
 
 [[resources-tags]]
 == Tags
@@ -60,17 +136,55 @@ operation::categories/delete[snippets='http-request,path-parameters,http-respons
 [[resources-tags-create]]
 === 태그 추가
 
-operation::tags/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
+==== Example Request
+
+include::{snippets}/tags/create/http-request.adoc[]
+
+==== Request fields
+
+include::{snippets}/tags/create/request-fields.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/create/http-response.adoc[]
+
+==== Response headers
+
+include::{snippets}/tags/create/response-headers.adoc[]
+
+==== Response fields
+
+include::{snippets}/tags/create/response-fields.adoc[]
 
 [[resources-categories-tags-update]]
 === 태그가 속한 카테고리 수정
 
-operation::categories/tags/update[snippets='http-request,path-parameters,http-response']
+==== Example Request
+
+include::{snippets}/categories/tags/update/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/categories/tags/update/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/categories/tags/update/http-response.adoc[]
 
 [[resources-tags-delete]]
 === 태그 삭제
 
-operation::tags/delete[snippets='http-request,path-parameters,http-response']
+==== Example Request
+
+include::{snippets}/tags/delete/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/tags/delete/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/delete/http-response.adoc[]
 
 [[resources-bookmarks]]
 == Bookmarks
@@ -78,17 +192,59 @@ operation::tags/delete[snippets='http-request,path-parameters,http-response']
 [[resources-bookmarks-create]]
 === 북마크 추가
 
-operation::bookmarks/create[snippets='http-request,request-fields,http-response,response-headers,response-fields']
+==== Example Request
+
+include::{snippets}/bookmarks/create/http-request.adoc[]
+
+==== Request fields
+
+include::{snippets}/bookmarks/create/request-fields.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/create/http-response.adoc[]
+
+==== Response headers
+
+include::{snippets}/bookmarks/create/response-headers.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/create/response-fields.adoc[]
 
 [[resources-bookmarks-get-list]]
 === 북마크 전체 조회
 
-operation::bookmarks/get/list[snippets='http-request,request-parameters,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/bookmarks/get/List/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/bookmarks/get/List/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/List/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/List/response-fields.adoc[]
 
 [[resources-bookmarks-delete]]
 === 북마크 삭제
 
-operation::bookmarks/delete[snippets='http-request,path-parameters,http-response']
+==== Example Request
+
+include::{snippets}/bookmarks/delete/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/bookmarks/delete/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/delete/http-response.adoc[]
 
 [[resources-tagbookmark]]
 == Tag & Bookmark
@@ -96,24 +252,94 @@ operation::bookmarks/delete[snippets='http-request,path-parameters,http-response
 [[resources-tags-get]]
 === 특정 태그에 속한 북마크 조회
 
-operation::tags/bookmarks/get[snippets='http-request,request-parameters,path-parameters,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/tags/bookmarks/get/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/tags/bookmarks/get/request-parameters.adoc[]
+
+==== Path parameters
+
+include::{snippets}/tags/bookmarks/get/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/bookmarks/get/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/tags/bookmarks/get/response-fields.adoc[]
 
 [[resources-tags-untagged-get]]
 === 태그가 등록되지 않은 북마크 조회
 
-operation::tags/bookmarks/untagged/get[snippets='http-request,request-parameters,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/tags/bookmarks/untagged/get/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/tags/bookmarks/untagged/get/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/bookmarks/untagged/get/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/tags/bookmarks/untagged/get/response-fields.adoc[]
 
 [[resources-tags-bookmarks-create]]
 === 북마크에 태그 등록
 
-operation::tags/bookmarks/create[snippets='http-request,path-parameters,http-response,response-headers']
+==== Example Request
+
+include::{snippets}/tags/bookmarks/create/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/tags/bookmarks/create/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/bookmarks/create/http-response.adoc[]
+
+==== Response headers
+
+include::{snippets}/tags/bookmarks/create/response-headers.adoc[]
 
 [[resources-tags-bookmarks-delete]]
 === 북마크에 등록된 태그 삭제
 
-operation::tags/bookmarks/delete[snippets='http-request,path-parameters,http-response']
+==== Example Request
+
+include::{snippets}/tags/bookmarks/delete/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/tags/bookmarks/delete/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/tags/bookmarks/delete/http-response.adoc[]
 
 [[resources-bookmarks-get]]
 === 북마크에 등록된 태그 조회
 
-operation::bookmarks/tags/get[snippets='http-request,path-parameters,http-response,response-fields']
+==== Example Request
+
+include::{snippets}/bookmarks/tags/get/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/bookmarks/tags/get/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/tags/get/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/tags/get/response-fields.adoc[]

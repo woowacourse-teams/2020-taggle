@@ -6,15 +6,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController implements ErrorController {
-    
+
     @GetMapping()
     public String index() {
-        return "index";
+        return "index.html";
     }
 
     @GetMapping("/error")
     public String redirect() {
-        return "index";
+        return "index.html";
+    }
+
+    @GetMapping("/docs")
+    public String docsRedirect() {
+        return "/docs/api-guide.html";
     }
 
     @Override
