@@ -27,8 +27,18 @@ asciidoctor {
 bootJar {
     dependsOn asciidoctor
     from("${asciidoctor.outputDir}/html5") {
-        into 'static/docs'
+        into "BOOT-INF/classes/static/docs"
     }
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/asciidoc/html5")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
 }
 
 dependencies {

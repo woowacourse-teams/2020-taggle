@@ -20,6 +20,11 @@ public class HomeController implements ErrorController {
         return "index.html";
     }
 
+    @GetMapping("/docs")
+    public String docs() {
+        return "/docs/api-guide.html";
+    }
+
     @Override
     public String getErrorPath() {
         return "/error";
