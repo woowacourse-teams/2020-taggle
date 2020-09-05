@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .invalidateHttpSession(true)
                 .and()
                         .oauth2Login()
+                        .loginPage("/")
                         .userInfoEndpoint()
                         .userService(customOAuth2UserService);
     }

@@ -36,8 +36,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new AuthenticationException();
+        if (authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AuthenticationException("인증하지 않은 사용자입니다");
         }
 
         return getUser(authentication);
