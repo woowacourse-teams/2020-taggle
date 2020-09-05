@@ -9,17 +9,17 @@ public class HomeController implements ErrorController {
 
     @GetMapping()
     public String index() {
-        return "index";
+        return "index.html";
     }
 
     @GetMapping("/error")
     public String redirect() {
-        return "index";
+        return "index.html";
     }
 
     @GetMapping("/docs")
     public String docsRedirect() {
-        return "redirect:/docs/api-guide.html";
+        return "/docs/api-guide.html";
     }
 
     @Override
