@@ -50,19 +50,19 @@ export default {
 }
 
 .login-decoration-image {
-  max-height: 150px;
-  max-width: 150px;
-  margin: 25px;
+  max-height: 150px !important;
+  max-width: 150px !important;
+  margin: 25px !important;
 }
 
 .login-image {
-  max-height: 16px;
-  max-width: 16px;
-  margin-right: 8px;
+  max-height: 16px !important;
+  max-width: 16px !important;
+  margin-right: 8px !important;
 }
 
 .login-button {
   min-width: 520px !important;
-  margin-top: 4px;
+  margin-top: 4px !important;
 }
 </style>
