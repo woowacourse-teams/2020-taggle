@@ -2,10 +2,10 @@ package com.woowacourse.taggle.setup.domain;
 
 import org.springframework.stereotype.Component;
 
-import com.woowacourse.taggle.tag.domain.Bookmark;
+import com.woowacourse.taggle.bookmark.domain.Bookmark;
+import com.woowacourse.taggle.bookmark.domain.TagBookmark;
+import com.woowacourse.taggle.bookmark.domain.TagBookmarkRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.tag.domain.TagBookmark;
-import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
 import lombok.RequiredArgsConstructor;
 
 @Component

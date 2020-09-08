@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 
+import com.woowacourse.taggle.category.domain.Category;
 import com.woowacourse.taggle.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;

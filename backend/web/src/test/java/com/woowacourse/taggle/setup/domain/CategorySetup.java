@@ -2,8 +2,8 @@ package com.woowacourse.taggle.setup.domain;
 
 import org.springframework.stereotype.Component;
 
-import com.woowacourse.taggle.tag.domain.Category;
-import com.woowacourse.taggle.tag.domain.CategoryRepository;
+import com.woowacourse.taggle.category.domain.Category;
+import com.woowacourse.taggle.category.domain.CategoryRepository;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.user.domain.User;

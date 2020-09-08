@@ -3,9 +3,9 @@ package com.woowacourse.taggle.user.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.domain.UserRepository;
+import com.woowacourse.taggle.user.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 

@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.woowacourse.taggle.bookmark.domain.TagBookmark;
 import com.woowacourse.taggle.tag.domain.Tag;
-import com.woowacourse.taggle.tag.domain.TagBookmark;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

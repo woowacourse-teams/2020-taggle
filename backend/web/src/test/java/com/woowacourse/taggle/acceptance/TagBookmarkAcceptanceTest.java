@@ -8,9 +8,9 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.BookmarkResponse;
-import com.woowacourse.taggle.tag.dto.BookmarkTagResponse;
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
+import com.woowacourse.taggle.bookmark.dto.BookmarkResponse;
+import com.woowacourse.taggle.bookmark.dto.BookmarkTagResponse;
+import com.woowacourse.taggle.bookmark.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 
 public class TagBookmarkAcceptanceTest extends AcceptanceTest {

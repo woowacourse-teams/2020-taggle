@@ -13,8 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
 import com.woowacourse.taggle.fixture.UserFixture;
-import com.woowacourse.taggle.tag.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.ProfileUpdateRequest;
 import com.woowacourse.taggle.user.exception.UserNotFoundException;
 
 @ExtendWith(SpringExtension.class)

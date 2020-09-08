@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.woowacourse.taggle.tag.dto.TagBookmarkResponse;
+import com.woowacourse.taggle.bookmark.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.tag.dto.TagResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
