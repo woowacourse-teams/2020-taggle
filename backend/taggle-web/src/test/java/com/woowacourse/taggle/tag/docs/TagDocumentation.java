@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.tag.controller.docs;
+package com.woowacourse.taggle.tag.docs;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;

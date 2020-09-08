@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.woowacourse.taggle.ControllerTest;
 import com.woowacourse.taggle.setup.domain.TagSetup;
 import com.woowacourse.taggle.setup.domain.UserSetup;
-import com.woowacourse.taggle.tag.controller.docs.TagDocumentation;
+import com.woowacourse.taggle.tag.docs.TagDocumentation;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.user.domain.User;
 

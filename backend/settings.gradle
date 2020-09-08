@@ -1,6 +1,6 @@
 rootProject.name = 'taggle'
-include 'web'
-include 'core'
-include 'admin'
-include 'crawler-api'
+include 'taggle-web'
+include 'taggle-core'
+include 'taggle-admin'
+include 'taggle-crawler-api'
 

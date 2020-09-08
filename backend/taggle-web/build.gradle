@@ -42,8 +42,8 @@ build {
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':crawler-api')
+    implementation project(':taggle-core')
+    implementation project(':taggle-crawler-api')
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
