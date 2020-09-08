@@ -28,7 +28,6 @@ public class CategoryService {
 
     public CategoryResponse createCategory(final SessionUser sessionUser, final CategoryRequest categoryRequest) {
         final User user = userService.findById(sessionUser.getId());
-
         final Category category = categoryRepository.findByTitleAndUserId(categoryRequest.getTitle(),
                 sessionUser.getId())
                 .orElseGet(() -> categoryRepository.save(categoryRequest.toEntityWithUser(user)));
@@ -60,18 +59,16 @@ public class CategoryService {
 
     public void removeCategory(final SessionUser user, final Long categoryId) {
         final Category category = findByIdAndUserId(categoryId, user.getId());
-        List<Tag> tags = tagService.findByCategoryId(categoryId);
+        final List<Tag> tags = tagService.findByCategoryId(categoryId);
 
         for (Tag tag : tags) {
             tag.updateCategory(null);
         }
-
         categoryRepository.delete(category);
     }
 
     public Category findByIdAndUserId(final Long categoryId, final Long userId) {
         return categoryRepository.findByIdAndUserId(categoryId, userId)
-                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다.\n"
-                        + "categoryId:" + categoryId));
+                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다. categoryId:" + categoryId));
     }
 }

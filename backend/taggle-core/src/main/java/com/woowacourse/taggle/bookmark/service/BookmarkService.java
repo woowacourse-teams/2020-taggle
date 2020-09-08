@@ -26,10 +26,8 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
 
-    public BookmarkResponse createBookmark(final SessionUser sessionUser,
-            final BookmarkCreateDto bookmarkCreateDto) {
+    public BookmarkResponse createBookmark(final SessionUser sessionUser, final BookmarkCreateDto bookmarkCreateDto) {
         final User user = userService.findById(sessionUser.getId());
-
         final Bookmark bookmark = bookmarkRepository.findByUrlAndUserId(bookmarkCreateDto.getUrl(), user.getId())
                 .orElseGet(() -> bookmarkRepository.save(bookmarkCreateDto.toEntityWithUser(user)));
 
@@ -56,7 +54,6 @@ public class BookmarkService {
 
     public Bookmark findByIdAndUserId(final Long bookmarkId, final Long userId) {
         return bookmarkRepository.findByIdAndUserId(bookmarkId, userId)
-                .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다.\n"
-                        + "bookmarkId: " + bookmarkId));
+                .orElseThrow(() -> new BookmarkNotFoundException("북마크가 존재하지 않습니다. bookmarkId: " + bookmarkId));
     }
 }
