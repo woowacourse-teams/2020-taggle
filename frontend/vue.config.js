@@ -15,7 +15,7 @@ module.exports = {
     },
   },
   transpileDependencies: ['vuetify'],
-  outputDir: path.resolve(__dirname, '../main/resources/static'),
+  outputDir: path.resolve(__dirname, '../backend/taggle-web/src/main/resources/static'),
   configureWebpack: {
     resolve: {
       alias: {

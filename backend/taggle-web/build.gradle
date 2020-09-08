@@ -4,8 +4,8 @@ plugins {
 }
 
 node {
-    workDir = file("./src/frontend")
-    nodeModulesDir = file("./src/frontend")
+    workDir = file("../../frontend")
+    nodeModulesDir = file("../../frontend")
 }
 
 task buildFrontend(type: NpmTask, dependsOn: 'npmInstall') {
