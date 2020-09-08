@@ -14,8 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.woowacourse.taggle.JpaTestConfiguration;
-import com.woowacourse.taggle.bookmark.service.CategoryService;
-import com.woowacourse.taggle.bookmark.service.TagService;
+import com.woowacourse.taggle.tag.service.TagService;
 import com.woowacourse.taggle.category.domain.Category;
 import com.woowacourse.taggle.category.domain.CategoryRepository;
 import com.woowacourse.taggle.category.dto.CategoryRequest;

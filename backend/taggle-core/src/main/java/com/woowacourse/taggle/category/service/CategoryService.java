@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.service;
+package com.woowacourse.taggle.category.service;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.woowacourse.taggle.category.dto.CategoryResponse;
 import com.woowacourse.taggle.category.exception.CategoryNotFoundException;
 import com.woowacourse.taggle.tag.domain.Tag;
 import com.woowacourse.taggle.tag.dto.TagsResponse;
+import com.woowacourse.taggle.tag.service.TagService;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;

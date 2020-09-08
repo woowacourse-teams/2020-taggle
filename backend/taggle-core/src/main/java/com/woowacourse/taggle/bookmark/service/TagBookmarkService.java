@@ -12,6 +12,7 @@ import com.woowacourse.taggle.bookmark.dto.BookmarkTagResponse;
 import com.woowacourse.taggle.bookmark.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.bookmark.exception.TagBookmarkNotFoundException;
 import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.tag.service.TagService;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 

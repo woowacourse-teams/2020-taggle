@@ -21,6 +21,8 @@ import com.woowacourse.taggle.bookmark.dto.TagBookmarkResponse;
 import com.woowacourse.taggle.fixture.UserFixture;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
+import com.woowacourse.taggle.tag.exception.TagNotFoundException;
+import com.woowacourse.taggle.tag.service.TagService;
 import com.woowacourse.taggle.user.domain.User;
 import com.woowacourse.taggle.user.dto.SessionUser;
 import com.woowacourse.taggle.user.service.UserService;
@@ -165,6 +167,31 @@ class TagBookmarkServiceTest {
 
         // then
         assertThat(tagBookmark.getBookmarks()).hasSize(1);
+    }
+
+    @DisplayName("removeTagBookmark: 태그에 있는 북마크를 삭제한다.")
+    @Test
+    void removeTag_TagBookmarkRemoved() {
+        // given
+        final TagResponse taggle = tagService.createTag(user, new TagCreateRequest("taggle"));
+
+        final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
+                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
+                        "description", "image"));
+        final BookmarkResponse bookmark2 = bookmarkService.createBookmark(user,
+                new BookmarkCreateDto("https://taggle.co.kr/2", "title",
+                        "description", "image"));
+
+        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
+        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark2.getId());
+
+        // when
+        tagService.removeTag(user, taggle.getId());
+
+        // then
+        assertThatThrownBy(() -> tagBookmarkService.findBookmarksByTagId(user, taggle.getId(), BOOKMARK_FIND_REQUEST))
+                .isInstanceOf(TagNotFoundException.class)
+                .hasMessageContaining("태그가 존재하지 않습니다.");
     }
 
     @DisplayName("findBookmark: 하나의 북마크를 조회한다.")

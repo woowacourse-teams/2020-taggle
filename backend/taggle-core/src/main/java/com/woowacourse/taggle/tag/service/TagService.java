@@ -1,4 +1,4 @@
-package com.woowacourse.taggle.bookmark.service;
+package com.woowacourse.taggle.tag.service;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class TagService {
 
     public void removeTag(final SessionUser user, final Long tagId) {
         final Tag tag = findByIdAndUserId(tagId, user.getId());
-        tagBookmarkRepository.deleteAllByTag(tag);
+        tagBookmarkRepository.deleteAllByTagId(tag.getId());
         tagRepository.delete(tag);
     }
 

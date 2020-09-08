@@ -1,0 +1,118 @@
+package com.woowacourse.taggle.tag.service;
+
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.woowacourse.taggle.JpaTestConfiguration;
+import com.woowacourse.taggle.bookmark.domain.TagBookmarkRepository;
+import com.woowacourse.taggle.fixture.UserFixture;
+import com.woowacourse.taggle.tag.domain.TagRepository;
+import com.woowacourse.taggle.tag.dto.TagCreateRequest;
+import com.woowacourse.taggle.tag.dto.TagResponse;
+import com.woowacourse.taggle.tag.exception.TagNotFoundException;
+import com.woowacourse.taggle.user.domain.User;
+import com.woowacourse.taggle.user.dto.SessionUser;
+import com.woowacourse.taggle.user.service.UserService;
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = JpaTestConfiguration.class)
+@DataJpaTest
+class TagServiceTest {
+    private static final String TAG_NAME = "spring boot";
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    private SessionUser user;
+
+    @BeforeEach
+    void setUp() {
+        final User testUser = userService.save(UserFixture.DEFAULT_USER);
+        user = new SessionUser(testUser);
+    }
+
+    @DisplayName("createTag: 태그를 생성한다.")
+    @Test
+    void createTag() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+
+        // when
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+
+        // then
+        assertThat(tagResponse.getId()).isNotNull();
+        assertThat(tagResponse.getName()).isEqualTo(TAG_NAME);
+    }
+
+    @DisplayName("createTag: 이미 같은 이름의 태그가 존재하는 경우, 기존의 태그를 반환한다.")
+    @Test
+    void createTag_TagAlreadyExist_ReturnExistTag() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+
+        // when
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponseWithSameName = tagService.createTag(user, tagCreateRequest);
+
+        // then
+        assertThat(tagResponse.getId()).isEqualTo(tagResponseWithSameName.getId());
+        assertThat(tagResponse.getName()).isEqualTo(tagResponseWithSameName.getName());
+    }
+
+    @DisplayName("removeTag: 태그를 제거한다.")
+    @Test
+    void removeTag() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+
+        // when
+        tagService.removeTag(user, tagResponse.getId());
+
+        // then
+        assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
+    }
+
+    @DisplayName("removeTag: 태그를 제거한다.")
+    @Test
+    void removeTag_TagBookmarkExist() {
+        // given
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
+        tagService.createTag(user, tagCreateRequest);
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+
+        // when
+        tagService.removeTag(user, tagResponse.getId());
+
+        // then
+        assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
+    }
+
+    @DisplayName("removeTag: 태그가 존재하지 않으면 예외가 발생한다.")
+    @Test
+    void removeTag_TagNotExist_ExceptionThrown() {
+        // given
+        // when
+        // then
+        assertThatThrownBy(() -> tagService.removeTag(user, 2L))
+                .isInstanceOf(TagNotFoundException.class)
+                .hasMessageContaining("태그가 존재하지 않습니다");
+    }
+
+}
