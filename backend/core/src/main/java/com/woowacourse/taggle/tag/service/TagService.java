@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.woowacourse.taggle.tag.domain.Tag;
+import com.woowacourse.taggle.tag.domain.TagBookmarkRepository;
 import com.woowacourse.taggle.tag.domain.TagRepository;
 import com.woowacourse.taggle.tag.dto.TagCreateRequest;
 import com.woowacourse.taggle.tag.dto.TagResponse;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class TagService {
 
     private final TagRepository tagRepository;
+    private final TagBookmarkRepository tagBookmarkRepository;
     private final UserService userService;
 
     public TagResponse createTag(final SessionUser sessionUser, final TagCreateRequest tagCreateRequest) {
@@ -33,6 +35,7 @@ public class TagService {
 
     public void removeTag(final SessionUser user, final Long tagId) {
         final Tag tag = findByIdAndUserId(tagId, user.getId());
+        tagBookmarkRepository.deleteAllByTag(tag);
         tagRepository.delete(tag);
     }
 
@@ -42,8 +45,7 @@ public class TagService {
 
     public Tag findByIdAndUserId(final Long tagId, final Long userId) {
         return tagRepository.findByIdAndUserId(tagId, userId)
-                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다."
-                        + "tagId: " + tagId));
+                .orElseThrow(() -> new TagNotFoundException("태그가 존재하지 않습니다. tagId: " + tagId));
     }
 
     public List<Tag> findUncategorizedTagsByUserId(final Long userId) {

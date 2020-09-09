@@ -27,7 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                        .antMatchers("/", "/login**", "/fonts/**", "/img/**","/css/**", "/js/**", "/h2-console/**", "/api/**").permitAll() // @FIXME: 테스트를 위해 spring security off
+                        .antMatchers("/", "/signin", "/fonts/**", "/img/**","/css/**", "/js/**", "/taggle-favicon.ico", "/h2-console/**", "/api/**").permitAll()
+                        .antMatchers("/docs/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                         .cors()
@@ -39,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .invalidateHttpSession(true)
                 .and()
                         .oauth2Login()
+                        .loginPage("/")
                         .userInfoEndpoint()
                         .userService(customOAuth2UserService);
     }

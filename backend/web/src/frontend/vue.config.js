@@ -15,7 +15,6 @@ module.exports = {
     },
   },
   transpileDependencies: ['vuetify'],
-  indexPath: path.resolve(__dirname, '../main/resources/templates/index.html'),
   outputDir: path.resolve(__dirname, '../main/resources/static'),
   configureWebpack: {
     resolve: {
@@ -23,11 +22,5 @@ module.exports = {
         '@': path.join(__dirname, 'src/'),
       },
     },
-  },
-  chainWebpack: (config) => {
-    config.plugin('html').tap((args) => {
-      args[0].title = 'taggle';
-      return args;
-    });
   },
 };
