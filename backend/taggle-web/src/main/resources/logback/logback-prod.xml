@@ -3,7 +3,7 @@
     <property resource="config/application-log.yml"/>
 
     <property name="SLACK_WEBHOOK_URI" value="${logging.slack.webhookUri}"/>
-    <property name="TAGGLE_LOGS_PATH" value="./logs"/>
+    <property name="TAGGLE_LOGS_PATH" value="../logs"/>
 
     <!-- SLACK -->
     <appender name="SLACK" class="com.github.maricn.logback.SlackAppender">

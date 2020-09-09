@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <property name="TAGGLE_LOGS_PATH" value="./logs"/>
+    <property name="TAGGLE_LOGS_PATH" value="../logs"/>
     <timestamp key="dailyLog" datePattern="yyyyMMdd"/>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">

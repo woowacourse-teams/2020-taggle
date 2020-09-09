@@ -10,7 +10,7 @@
     </springProfile>
 
     <springProfile name="dev">
-        <property name="TAGGLE_LOGS_PATH" value="./logs"/>
+        <property name="TAGGLE_LOGS_PATH" value="../logs"/>
         <timestamp key="dailyLog" datePattern="yyyyMMdd"/>
 
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
