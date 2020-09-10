@@ -6,8 +6,8 @@ const UserService = {
   getUserInfo() {
     return ApiService.get(`${BASE_URL}/me`);
   },
-  updateProfile(editingProfile) {
-    return ApiService.put(`${BASE_URL}/me`, editingProfile);
+  updateProfile(profileUpdateRequest) {
+    return ApiService.put(`${BASE_URL}/me`, profileUpdateRequest);
   },
   deleteUser() {
     return ApiService.delete(`${BASE_URL}/me`);

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { EDIT_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
+import { UPDATE_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
@@ -58,14 +58,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions([EDIT_CATEGORY, FETCH_CATEGORIES]),
+    ...mapActions([UPDATE_CATEGORY, FETCH_CATEGORIES]),
     ...mapMutations([SHOW_SNACKBAR]),
     async onEditCategory() {
       if (!this.$refs.changeCategoryNameForm.validate()) {
         return;
       }
       try {
-        await this[EDIT_CATEGORY]({ id: this.category.id, title: this.title });
+        await this[UPDATE_CATEGORY]({ categoryId: this.category.id, categoryUpdateRequest: { title: this.title } });
         await this[FETCH_CATEGORIES]();
         this[SHOW_SNACKBAR](MESSAGES.CATEGORY.EDIT.SUCCESS);
       } catch (e) {

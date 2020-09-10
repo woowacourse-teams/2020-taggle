@@ -5,6 +5,7 @@ import {
   CREATE_TAG,
   DELETE_BOOKMARK,
   DELETE_TAG,
+  UPDATE_TAG,
   FETCH_MORE_BOOKMARKS,
   FETCH_TAG_WITH_BOOKMARKS,
 } from '@/store/share/actionTypes.js';
@@ -67,13 +68,15 @@ const actions = {
   async [DELETE_TAG](context, { tagId }) {
     return TagService.delete(tagId);
   },
+  async [UPDATE_TAG](context, { updateTagRequest, tagId }) {
+    return TagService.update(tagId, updateTagRequest);
+  },
   async [CREATE_BOOKMARK](context, bookmarkCreateRequest) {
     return BookmarkService.post(bookmarkCreateRequest);
   },
   async [DELETE_BOOKMARK](context, { bookmarkId }) {
     const response = await BookmarkService.delete(bookmarkId);
     const filteredBookmarks = context.state.tagBookmarks.bookmarks.filter((bookmark) => bookmark.id !== bookmarkId);
-    console.log(filteredBookmarks);
     context.commit(SET_BOOKMARKS, filteredBookmarks);
     return response;
   },
