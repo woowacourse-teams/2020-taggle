@@ -1,29 +1,40 @@
 spring:
   profiles:
     active: local
-    include:
-      - db
+
 logback:
   access:
     config: classpath:logback/logback-access.xml
 
 ---
+spring.profiles: local
 spring:
-  profiles: local
+  profiles:
+    include:
+      - db
+      - oauth
 
 logging:
   config: classpath:logback/logback-local.xml
 
 ---
+spring.profiles: prod
 spring:
-  profiles: prod
+  profiles:
+    include:
+      - db
+      - oauth
 
 logging:
   config: classpath:logback/logback-prod.xml
 
 ---
+spring.profiles: dev
 spring:
-  profiles: dev
+  profiles:
+    include:
+      - db
+      - oauth
 
 logging:
   config: classpath:logback/logback-dev.xml

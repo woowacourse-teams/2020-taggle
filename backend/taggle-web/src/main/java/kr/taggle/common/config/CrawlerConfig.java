@@ -7,7 +7,7 @@ import kr.taggle.linkpreview.LinkPreviewCrawler;
 
 @Configuration
 public class CrawlerConfig {
-    private final static String DEFAULT_IMAGE = "https://unsplash.com/a/img/empty-states/photos.png";
+    private static final String DEFAULT_IMAGE = "https://unsplash.com/a/img/empty-states/photos.png";
 
     @Bean
     public LinkPreviewCrawler linkPreviewCrawler() {
