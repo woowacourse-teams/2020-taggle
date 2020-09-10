@@ -34,7 +34,7 @@ public class TagController {
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", "/api/v1/tags/" + tag.getId())
+                .header("Location", String.format("/api/v1/tags/%d", tag.getId()))
                 .body(tag);
     }
 

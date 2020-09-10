@@ -63,7 +63,7 @@ public class TagBookmarkController {
             @PathVariable final Long bookmarkId) {
         tagBookmarkService.createTagBookmark(user, tagId, bookmarkId);
 
-        return ResponseEntity.created(URI.create("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId))
+        return ResponseEntity.created(URI.create(String.format("/api/v1/tags/%d/bookmarks/%d", tagId, bookmarkId)))
                 .build();
     }
 

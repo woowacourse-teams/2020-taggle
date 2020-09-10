@@ -36,7 +36,7 @@ public class CategoryController {
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", "/api/v1/categories/" + category.getId())
+                .header("Location", String.format("/api/v1/categories/%d", category.getId()))
                 .body(category);
     }
 

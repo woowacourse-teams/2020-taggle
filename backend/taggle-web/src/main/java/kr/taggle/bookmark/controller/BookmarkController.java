@@ -37,7 +37,7 @@ public class BookmarkController {
             @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
         final BookmarkResponse bookmark = bookmarkCreateService.createBookmark(bookmarkCreateRequest, user);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", "/api/v1/bookmarks/" + bookmark.getId())
+                .header("Location", String.format("/api/v1/bookmarks/%d", bookmark.getId()))
                 .body(bookmark);
     }
 
