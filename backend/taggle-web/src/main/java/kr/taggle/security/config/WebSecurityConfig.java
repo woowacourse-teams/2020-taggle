@@ -1,8 +1,10 @@
 package kr.taggle.security.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -17,6 +19,12 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+
+    @Override
+    public void configure(final WebSecurity webSecurity) {
+        webSecurity.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        webSecurity.ignoring().antMatchers("/taggle-favicon.ico", "/img/**");
+    }
 
     // @formatter:off
     @Override
