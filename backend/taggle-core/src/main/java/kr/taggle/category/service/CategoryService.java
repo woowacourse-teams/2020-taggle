@@ -51,13 +51,6 @@ public class CategoryService {
         category.update(categoryRequest.toEntity());
     }
 
-    public void updateCategoryOnTag(final SessionUser user, final Long categoryId, final Long tagId) {
-        final Category category = findByIdAndUserId(categoryId, user.getId());
-        final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
-
-        tag.updateCategory(category);
-    }
-
     public void removeCategory(final SessionUser user, final Long categoryId) {
         final Category category = findByIdAndUserId(categoryId, user.getId());
         final List<Tag> tags = tagService.findByCategoryId(categoryId);

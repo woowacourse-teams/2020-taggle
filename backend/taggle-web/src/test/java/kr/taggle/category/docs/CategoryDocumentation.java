@@ -39,17 +39,11 @@ public class CategoryDocumentation {
 
     public static RestDocumentationResultHandler updateCategory() {
         return document("categories/update",
+                pathParameters(
+                        parameterWithName("categoryId").description("카테고리 아이디")
+                ),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리 이름")
-                )
-        );
-    }
-
-    public static RestDocumentationResultHandler updateCategoryOnTag() {
-        return document("categories/tags/update",
-                pathParameters(
-                        parameterWithName("categoryId").description("카테고리 ID"),
-                        parameterWithName("tagId").description("태그 ID")
                 )
         );
     }

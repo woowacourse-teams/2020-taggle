@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.domain.TagBookmarkRepository;
+import kr.taggle.category.domain.Category;
+import kr.taggle.category.domain.CategoryRepository;
+import kr.taggle.category.exception.CategoryNotFoundException;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.domain.TagRepository;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
+import kr.taggle.tag.dto.TagUpdateRequest;
 import kr.taggle.tag.exception.TagNotFoundException;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
@@ -21,9 +25,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class TagService {
 
+    private final UserService userService;
     private final TagRepository tagRepository;
     private final TagBookmarkRepository tagBookmarkRepository;
-    private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
     public TagResponse createTag(final SessionUser sessionUser, final TagCreateRequest tagCreateRequest) {
         final User user = userService.findById(sessionUser.getId());
@@ -31,6 +36,14 @@ public class TagService {
                 .orElseGet(() -> tagRepository.save(tagCreateRequest.toEntityWithUser(user)));
 
         return TagResponse.of(tag);
+    }
+
+    public void updateTag(final SessionUser user, final TagUpdateRequest tagUpdateRequest, final Long tagId) {
+        final Category category = categoryRepository.findByIdAndUserId(tagUpdateRequest.getCategoryId(), user.getId())
+                .orElseThrow(() -> new CategoryNotFoundException("카테고리가 존재하지 않습니다. categoryId:" + tagUpdateRequest.getCategoryId()));
+        final Tag tag = findByIdAndUserId(tagId, user.getId());
+
+        tag.updateCategory(category);
     }
 
     public void removeTag(final SessionUser user, final Long tagId) {

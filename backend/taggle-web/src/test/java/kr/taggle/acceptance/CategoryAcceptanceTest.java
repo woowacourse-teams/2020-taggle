@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.category.dto.CategoryResponse;
-import kr.taggle.tag.dto.TagResponse;
 import kr.taggle.tag.dto.TagsResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
@@ -41,16 +40,6 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
 
         assertThat(categories.get(1).getTitle()).isEqualTo(updateTitle);
 
-        // 태그를 다른 카테고리로 이동한다.
-        final String tagName = "moving";
-        final TagResponse tagResponse = createTag(tagName);
-        updateCategoryOnTag(categoryResponse.getId(), tagResponse.getId());
-        categories = findCategories();
-
-        assertThat(categories.get(1).getTitle()).isEqualTo(updateTitle);
-        assertThat(categories.get(1).getTags()).hasSize(1);
-        assertThat(categories.get(1).getTags().get(0).getName()).isEqualTo(tagName);
-
         // 카테고리를 제거한다.
         removeCategory(tagsResponse.getId());
         categories = findCategories();
@@ -76,17 +65,6 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         request.put("title", title);
 
         put("/api/v1/categories/" + id, request);
-    }
-
-    public TagResponse createTag(final String name) {
-        final Map<String, Object> request = new HashMap<>();
-        request.put("name", name);
-
-        return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
-    }
-
-    public void updateCategoryOnTag(final Long categoryId, final Long tagId) {
-        put("/api/v1/categories/" + categoryId + "/tags/" + tagId, new HashMap<>());
     }
 
     public void removeCategory(final Long id) {

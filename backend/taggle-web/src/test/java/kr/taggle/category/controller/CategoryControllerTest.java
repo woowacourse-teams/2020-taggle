@@ -12,18 +12,13 @@ import kr.taggle.ControllerTest;
 import kr.taggle.category.docs.CategoryDocumentation;
 import kr.taggle.category.domain.Category;
 import kr.taggle.setup.domain.CategorySetup;
-import kr.taggle.setup.domain.TagSetup;
 import kr.taggle.setup.domain.UserSetup;
-import kr.taggle.tag.domain.Tag;
 import kr.taggle.user.domain.User;
 
 public class CategoryControllerTest extends ControllerTest {
 
     @Autowired
     private CategorySetup categorySetup;
-
-    @Autowired
-    private TagSetup tagSetup;
 
     @Autowired
     private UserSetup userSetup;
@@ -55,18 +50,9 @@ public class CategoryControllerTest extends ControllerTest {
     @Test
     void updateCategory() throws Exception {
         final Category category = categorySetup.save(user);
-        updateByJsonParams(user, "/api/v1/categories/" + category.getId(), "{ \"title\": \"newCategory\" }")
+        updateByJsonParamsAndPathVariables(user, "/api/v1/categories/{categoryId}", "{ \"title\": \"newCategory\" }",
+                category.getId())
                 .andDo(CategoryDocumentation.updateCategory());
-
-    }
-
-    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 변경한다.")
-    @Test
-    void updateCategoryOnTag() throws Exception {
-        final Category category = categorySetup.save(user);
-        final Tag tag = tagSetup.save(user);
-        updateByPathVariables(user, "/api/v1/categories/{categoryId}/tags/{tagId}", +category.getId(), tag.getId())
-                .andDo(CategoryDocumentation.updateCategoryOnTag());
 
     }
 

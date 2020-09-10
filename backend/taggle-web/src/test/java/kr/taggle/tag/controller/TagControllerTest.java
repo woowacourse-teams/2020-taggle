@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import kr.taggle.ControllerTest;
+import kr.taggle.category.domain.Category;
+import kr.taggle.setup.domain.CategorySetup;
 import kr.taggle.setup.domain.TagSetup;
 import kr.taggle.setup.domain.UserSetup;
 import kr.taggle.tag.docs.TagDocumentation;
@@ -16,6 +18,9 @@ public class TagControllerTest extends ControllerTest {
 
     @Autowired
     private TagSetup tagSetup;
+
+    @Autowired
+    private CategorySetup categorySetup;
 
     @Autowired
     private UserSetup userSetup;
@@ -40,6 +45,16 @@ public class TagControllerTest extends ControllerTest {
         final Tag tag = tagSetup.save(user);
 
         removeByPathVariables(user, "/api/v1/tags/{tagId}", tag.getId())
-                .andDo(TagDocumentation.removeTags());
+                .andDo(TagDocumentation.removeTag());
+    }
+
+    @DisplayName("updateTag: 태그의 카테고리를 변경한다.")
+    @Test
+    void updateTag() throws Exception {
+        final Category category = categorySetup.save(user);
+        final Tag tag = tagSetup.save(user);
+        updateByJsonParamsAndPathVariables(user, "/api/v1/tags/{tagId}", String.format( "{\"categoryId\" : %d }", category.getId()), tag.getId())
+                .andDo(TagDocumentation.updateTag());
+
     }
 }

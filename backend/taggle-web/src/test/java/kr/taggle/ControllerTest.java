@@ -110,13 +110,15 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions updateByPathVariables(final User user, final String uri, final Object... ids) throws
+    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams, final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri, ids)
+                .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -130,7 +132,7 @@ public class ControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }

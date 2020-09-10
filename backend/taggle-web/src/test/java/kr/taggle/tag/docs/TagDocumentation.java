@@ -25,7 +25,18 @@ public class TagDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler removeTags() {
+    public static RestDocumentationResultHandler updateTag() {
+        return document("tags/update",
+                pathParameters(
+                        parameterWithName("tagId").description("태그 ID")
+                ),
+                requestFields(
+                        fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("카테고리 ID")
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler removeTag() {
         return document("tags/delete",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")

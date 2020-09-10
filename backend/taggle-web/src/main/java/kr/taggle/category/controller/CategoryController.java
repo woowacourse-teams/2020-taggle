@@ -57,16 +57,6 @@ public class CategoryController {
                 .build();
     }
 
-    @PutMapping("/{categoryId}/tags/{tagId}")
-    public ResponseEntity<Void> updateCategoryOnTag(
-            @AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long categoryId,
-            @PathVariable final Long tagId) {
-        categoryService.updateCategoryOnTag(user, categoryId, tagId);
-        return ResponseEntity.ok()
-                .build();
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeCategory(
             @AuthenticationPrincipal final SessionUser user,
