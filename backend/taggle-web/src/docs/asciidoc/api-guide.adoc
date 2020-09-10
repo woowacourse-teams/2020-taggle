@@ -19,45 +19,45 @@ endif::[]
 
 ==== Example Request
 
-include::{snippets}/users/get/me/http-request.adoc[]
+include::{snippets}/me/get/http-request.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/get/me/http-response.adoc[]
+include::{snippets}/me/get/http-response.adoc[]
 
 ==== Response fields
 
-include::{snippets}/users/get/me/response-fields.adoc[]
+include::{snippets}/me/get/response-fields.adoc[]
 
 [[resources-users-update-profile]]
 === 알림 이메일 수정하기
 
 ==== Example Request
 
-include::{snippets}/users/update/profile/http-request.adoc[]
+include::{snippets}/me/update/http-request.adoc[]
 
 ==== Request body
 
-include::{snippets}/users/update/profile/request-body.adoc[]
+include::{snippets}/me/update/request-body.adoc[]
 
 ==== Request fields
 
-include::{snippets}/users/update/profile/request-fields.adoc[]
+include::{snippets}/me/update/request-fields.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/update/profile/http-response.adoc[]
+include::{snippets}/me/update/http-response.adoc[]
 
 [[resources-users-delete-me]]
 === 회원 탈퇴
 
 ==== Example Request
 
-include::{snippets}/users/delete/me/http-request.adoc[]
+include::{snippets}/me/delete/http-request.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/delete/me/http-response.adoc[]
+include::{snippets}/me/delete/http-response.adoc[]
 
 [[resources-categories]]
 == Categories
@@ -106,6 +106,10 @@ include::{snippets}/categories/get/List/response-fields.adoc[]
 ==== Example Request
 
 include::{snippets}/categories/update/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/categories/update/path-parameters.adoc[]
 
 ==== Request fields
 
@@ -161,15 +165,19 @@ include::{snippets}/tags/create/response-fields.adoc[]
 
 ==== Example Request
 
-include::{snippets}/categories/tags/update/http-request.adoc[]
+include::{snippets}/tags/update/http-request.adoc[]
 
 ==== Path parameters
 
-include::{snippets}/categories/tags/update/path-parameters.adoc[]
+include::{snippets}/tags/update/path-parameters.adoc[]
+
+==== Request fields
+
+include::{snippets}/tags/update/request-fields.adoc[]
 
 ==== Example Response
 
-include::{snippets}/categories/tags/update/http-response.adoc[]
+include::{snippets}/tags/update/http-response.adoc[]
 
 [[resources-tags-delete]]
 === 태그 삭제

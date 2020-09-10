@@ -8,7 +8,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 public class UserDocumentation {
 
     public static RestDocumentationResultHandler getUserOfMine() {
-        return document("users/get/me",
+        return document("me/get",
                 responseFields(
                         fieldWithPath("id").description("사용자 ID"),
                         fieldWithPath("nickName").description("사용자 닉네임"),
@@ -23,7 +23,7 @@ public class UserDocumentation {
     }
 
     public static RestDocumentationResultHandler updateProfile() {
-        return document("users/update/profile",
+        return document("me/update",
                 requestFields(
                         fieldWithPath("notificationEmail").description("사용자 알림 이메일 (optional)").optional(),
                         fieldWithPath("notificationEnabled").description("사용자 알림 설정 (optional)").optional()
@@ -32,6 +32,6 @@ public class UserDocumentation {
     }
 
     public static RestDocumentationResultHandler removeUser() {
-        return document("users/delete/me");
+        return document("me/delete");
     }
 }
