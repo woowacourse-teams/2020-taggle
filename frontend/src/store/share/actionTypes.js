@@ -13,7 +13,7 @@ export const UPDATE_TAG = 'updateTag';
 // bookmark
 export const FETCH_MORE_BOOKMARKS = 'fetchMoreBookmarks';
 export const CLEAR_BOOKMARKS = 'clearBookmarks';
-export const FETCH_BOOKMARK_WITH_TAGS = 'fetchBookmarkWithTags';
+export const FETCH_BOOKMARK_DETAIL = 'fetchBookmarkDetail';
 export const CREATE_BOOKMARK = 'createBookmark';
 export const DELETE_BOOKMARK = 'deleteBookmark';
 export const CREATE_TAG_BOOKMARK = 'createTagBookmark';

@@ -3,8 +3,8 @@ import ApiService from '@/api/index.js';
 const BASE_URL = '/api/v1/bookmarks';
 
 const BookmarkService = {
-  findBookmarkWithTags(bookmarkId) {
-    return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
+  findBookmarkDetail(bookmarkId) {
+    return ApiService.get(`${BASE_URL}/${bookmarkId}`);
   },
   create(bookmarkCreateRequest) {
     return ApiService.post(BASE_URL, bookmarkCreateRequest).then(({ data }) => data.id);

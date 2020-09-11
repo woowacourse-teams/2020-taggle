@@ -40,7 +40,7 @@ import { RESET_BOOKMARK_WITH_TAGS, SHOW_SNACKBAR } from '@/store/share/mutationT
 import {
   CREATE_TAG_BOOKMARK,
   DELETE_TAG_BOOKMARK,
-  FETCH_BOOKMARK_WITH_TAGS,
+  FETCH_BOOKMARK_DETAIL,
   FETCH_CATEGORIES,
   CREATE_TAG,
   CREATE_BOOKMARK,
@@ -87,7 +87,7 @@ export default {
   methods: {
     ...mapActions([
       FETCH_CATEGORIES,
-      FETCH_BOOKMARK_WITH_TAGS,
+      FETCH_BOOKMARK_DETAIL,
       CREATE_TAG_BOOKMARK,
       DELETE_TAG_BOOKMARK,
       CREATE_TAG,
@@ -114,7 +114,7 @@ export default {
       }
       try {
         this.bookmarkId = await this[CREATE_BOOKMARK]({ url: this.url });
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
@@ -126,7 +126,7 @@ export default {
         const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
         await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
         data.addTag();
       } catch (e) {
@@ -138,7 +138,7 @@ export default {
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
         await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
         data.deleteTag();
       } catch (e) {
