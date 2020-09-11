@@ -44,13 +44,13 @@ const mutations = {
 };
 const actions = {
   async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
-    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
+    const res = await BookmarkService.findBookmarksByTagId(tagId, offset, limit);
     const bookmarks = res.data;
     commit(SET_TAG_BOOKMARKS, bookmarks);
     return bookmarks.bookmarks;
   },
   async [FETCH_MORE_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
-    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
+    const res = await BookmarkService.findBookmarksByTagId(tagId, offset, limit);
     const { bookmarks } = res.data;
     commit(ADD_MORE_BOOKMARKS, bookmarks);
     return bookmarks;
