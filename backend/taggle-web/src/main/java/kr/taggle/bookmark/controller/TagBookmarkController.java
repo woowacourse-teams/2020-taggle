@@ -26,10 +26,10 @@ public class TagBookmarkController {
 
     private final TagBookmarkService tagBookmarkService;
 
-    @GetMapping("/bookmarks/{id}/tags")
-    public ResponseEntity<BookmarkTagResponse> findTagsByBookmarkId(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long id) {
-        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsByBookmarkId(user, id);
+    @GetMapping("/bookmarks/{bookmarkId}")
+    public ResponseEntity<BookmarkTagResponse> findBookmarkDetail(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long bookmarkId) {
+        final BookmarkTagResponse bookmarkTagResponse = tagBookmarkService.findTagsByBookmarkId(user, bookmarkId);
 
         return ResponseEntity.ok()
                 .body(bookmarkTagResponse);

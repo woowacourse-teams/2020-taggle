@@ -37,7 +37,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
 
         // 해당 북마크의 태그를 가져온다.
-        BookmarkTagResponse bookmarkTagResponse = findTagsByBookmarkId(bookmarkResponse.getId());
+        BookmarkTagResponse bookmarkTagResponse = findBookmarkDetail(bookmarkResponse.getId());
 
         assertThat(bookmarkTagResponse.getUrl()).isEqualTo("http://naver.com");
         assertThat(bookmarkTagResponse.getTags()).hasSize(1);
@@ -45,7 +45,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         // 북마크의 태그를 삭제한다.
         removeBookmarkOnTag(bookmarkResponse.getId(), tagResponse.getId());
 
-        bookmarkTagResponse = findTagsByBookmarkId(bookmarkResponse.getId());
+        bookmarkTagResponse = findBookmarkDetail(bookmarkResponse.getId());
 
         assertThat(bookmarkTagResponse.getUrl()).isEqualTo("http://naver.com");
         assertThat(bookmarkTagResponse.getTags()).hasSize(0);
@@ -78,8 +78,8 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
     }
 
-    public BookmarkTagResponse findTagsByBookmarkId(final Long id) {
-        return get("/api/v1/bookmarks/" + id + "/tags", BookmarkTagResponse.class);
+    public BookmarkTagResponse findBookmarkDetail(final Long bookmarkId) {
+        return get(String.format("/api/v1/bookmarks/%d", bookmarkId) , BookmarkTagResponse.class);
     }
 
     public void removeBookmarkOnTag(final Long bookmarkId, final Long tagId) {

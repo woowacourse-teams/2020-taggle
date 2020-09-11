@@ -68,7 +68,7 @@ public class TagBookmarkDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler findTagsByBookmarkId() {
+    public static RestDocumentationResultHandler findBookmarkDetail() {
         return document("bookmarks/tags/get",
                 pathParameters(
                         parameterWithName("bookmarkId").description("북마크 ID")

@@ -81,15 +81,15 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.removeTagBookmark());
     }
 
-    @DisplayName("findTagsByBookmarkId: 하나의 북마크에 포함된 태그목록을 조회한다.")
+    @DisplayName("findBookmarkDetail: 하나의 북마크에 포함된 태그목록을 조회한다.")
     @Test
-    void findTagsByBookmarkId() throws Exception {
+    void findBookmarkDetail() throws Exception {
         final Bookmark bookmark = bookmarkSetup.save(user);
         final Tag tag = tagSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags", bookmark.getId())
+        readByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}", bookmark.getId())
                 .andExpect(jsonPath("$.id", is(bookmark.getId().intValue())))
-                .andDo(TagBookmarkDocumentation.findTagsByBookmarkId());
+                .andDo(TagBookmarkDocumentation.findBookmarkDetail());
     }
 }
