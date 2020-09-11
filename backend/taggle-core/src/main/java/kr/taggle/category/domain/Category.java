@@ -25,7 +25,7 @@ public class Category {
     private Long id;
 
     @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, length = 25)
     private String title;
 
     @ManyToOne
