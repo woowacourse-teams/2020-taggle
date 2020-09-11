@@ -12,11 +12,9 @@ public class TagBookmarkDocumentation {
     public static RestDocumentationResultHandler findBookmarksByTagId() {
         return document("tags/bookmarks/get",
                 requestParameters(
+                        parameterWithName("tag").description("조회할 태그 id. 해당 태그를 포함하는 모든 북마크 목록을 조회한다."),
                         parameterWithName("offset").description("시작 페이지").optional(),
                         parameterWithName("limit").description("가져올 북마크의 수").optional()
-                ),
-                pathParameters(
-                        parameterWithName("tagId").description("태그 ID")
                 ),
                 responseFields(
                         fieldWithPath("id").description("태그 ID"),
@@ -33,6 +31,7 @@ public class TagBookmarkDocumentation {
     public static RestDocumentationResultHandler findUntaggedBookmarks() {
         return document("tags/bookmarks/untagged/get",
                 requestParameters(
+                        parameterWithName("tag").description("조회할 태그 id. 태그가 없는 북마크 목록 조회를 위해서는 해당 parameter에 none이 들어가야 한다."),
                         parameterWithName("offset").description("시작 페이지").optional(),
                         parameterWithName("limit").description("가져올 북마크의 수").optional()
                 ),

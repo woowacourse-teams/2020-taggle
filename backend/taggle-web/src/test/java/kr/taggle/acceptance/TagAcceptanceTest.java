@@ -21,7 +21,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
     @Transactional
     @Test
-    void manageBookmark() {
+    void manageTag() {
         // 태그를 생성한다
         final String tagName = "taggle";
         final TagResponse tagResponse = createTag(tagName);
@@ -66,12 +66,12 @@ public class TagAcceptanceTest extends AcceptanceTest {
         put("/api/v1/tags/" + tagId, request);
     }
 
-    public TagBookmarkResponse findBookmarksByTagId(final Long id) {
-        return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
+    public TagBookmarkResponse findBookmarksByTagId(final Long tagId) {
+        return get(String.format("/api/v1/bookmarks?tag=%d", tagId), TagBookmarkResponse.class);
     }
 
-    public ExtractableResponse<MockMvcResponse> findBookmarksOfTagExtractableResponse(final Long id) {
-        return getExtractableResponse("/api/v1/tags/" + id + "/bookmarks");
+    public ExtractableResponse<MockMvcResponse> findBookmarksOfTagExtractableResponse(final Long tagId) {
+        return getExtractableResponse(String.format("/api/v1/bookmarks?tag=%d", tagId));
     }
 
     public void deleteTeg(final Long id) {

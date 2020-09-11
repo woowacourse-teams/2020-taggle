@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
@@ -35,19 +36,19 @@ public class TagBookmarkController {
                 .body(bookmarkTagResponse);
     }
 
-    @GetMapping("/tags/{tagId}/bookmarks")
+    @GetMapping(value = "/bookmarks", params = "tag")
     public ResponseEntity<TagBookmarkResponse> findBookmarksByTagId(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId,
+            @RequestParam final Long tag,
             @ModelAttribute final BookmarkPageRequest bookmarkPageRequest) {
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tagId,
+        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag,
                 bookmarkPageRequest);
 
         return ResponseEntity.ok()
                 .body(tagBookmarkResponse);
     }
 
-    @GetMapping("/tags/untagged/bookmarks")
-    public ResponseEntity<TagBookmarkResponse> findUntaggedBookmarks(
+    @GetMapping(value = "/bookmarks", params = "tag=none")
+    public ResponseEntity<TagBookmarkResponse> findBookmarksWithUntagged(
             @AuthenticationPrincipal final SessionUser user,
             @ModelAttribute final BookmarkPageRequest bookmarkPageRequest) {
         final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findUntaggedBookmarks(user,
