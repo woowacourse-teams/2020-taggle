@@ -28,7 +28,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
 
         // 북마크에 태그를 추가한다.
         final TagResponse tagResponse = createTag("taggle");
-        addBookmarkOnTag(tagResponse.getId(), bookmarkResponse.getId());
+        addBookmarkOnTag(bookmarkResponse.getId(), tagResponse.getId());
 
         // 해당 태그의 북마크를 가져온다,
         tagBookmarkResponse = findBookmarksByTagId(tagResponse.getId());
@@ -43,7 +43,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         assertThat(bookmarkTagResponse.getTags()).hasSize(1);
 
         // 북마크의 태그를 삭제한다.
-        removeBookmarkOnTag(tagResponse.getId(), bookmarkResponse.getId());
+        removeBookmarkOnTag(bookmarkResponse.getId(), tagResponse.getId());
 
         bookmarkTagResponse = findTagsByBookmarkId(bookmarkResponse.getId());
 
@@ -69,9 +69,9 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         return get("/api/v1/tags/untagged/bookmarks", TagBookmarkResponse.class);
     }
 
-    public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId,
-                new HashMap<>(), "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
+    public void addBookmarkOnTag(final Long bookmarkId, final Long tagId) {
+        post("/api/v1/bookmarks/" + bookmarkId + "/tags/" + tagId,
+                new HashMap<>(), "/api/v1/bookmarks/" + bookmarkId + "/tags/" + tagId);
     }
 
     public TagBookmarkResponse findBookmarksByTagId(final Long id) {
@@ -82,7 +82,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         return get("/api/v1/bookmarks/" + id + "/tags", BookmarkTagResponse.class);
     }
 
-    public void removeBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        delete("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
+    public void removeBookmarkOnTag(final Long bookmarkId, final Long tagId) {
+        delete("/api/v1/bookmarks/" + bookmarkId + "/tags/" + tagId);
     }
 }

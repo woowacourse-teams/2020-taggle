@@ -42,7 +42,7 @@ public class TagBookmarkService {
         return TagBookmarkResponse.ofUntagged(bookmarks.getContent());
     }
 
-    public void createTagBookmark(final SessionUser user, final Long tagId, final Long bookmarkId) {
+    public void createTagBookmark(final SessionUser user, final Long bookmarkId, final Long tagId) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(bookmarkId, user.getId());
         final TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)
@@ -51,7 +51,7 @@ public class TagBookmarkService {
         bookmark.addTagBookmark(tagBookmark);
     }
 
-    public void removeTagBookmark(final SessionUser user, final Long tagId, final Long bookmarkId) {
+    public void removeTagBookmark(final SessionUser user, final Long bookmarkId, final Long tagId) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
         final Bookmark bookmark = bookmarkService.findByIdAndUserId(bookmarkId, user.getId());
         final TagBookmark tagBookmark = tagBookmarkRepository.findByTagAndBookmark(tag, bookmark)

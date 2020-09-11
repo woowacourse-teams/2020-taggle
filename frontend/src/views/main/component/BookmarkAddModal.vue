@@ -38,8 +38,8 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { RESET_BOOKMARK_WITH_TAGS, SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import {
-  ADD_TAG_ON_BOOKMARK,
-  DELETE_TAG_ON_BOOKMARK,
+  CREATE_TAG_BOOKMARK,
+  DELETE_TAG_BOOKMARK,
   FETCH_BOOKMARK_WITH_TAGS,
   FETCH_CATEGORIES,
   CREATE_TAG,
@@ -88,8 +88,8 @@ export default {
     ...mapActions([
       FETCH_CATEGORIES,
       FETCH_BOOKMARK_WITH_TAGS,
-      ADD_TAG_ON_BOOKMARK,
-      DELETE_TAG_ON_BOOKMARK,
+      CREATE_TAG_BOOKMARK,
+      DELETE_TAG_BOOKMARK,
       CREATE_TAG,
       CREATE_BOOKMARK,
     ]),
@@ -124,7 +124,7 @@ export default {
       const targetTagName = data.tag.text;
       try {
         const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
-        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
         await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
@@ -137,7 +137,7 @@ export default {
       const targetTagName = data.tag.text;
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
         data.deleteTag();

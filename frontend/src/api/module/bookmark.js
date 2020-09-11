@@ -6,11 +6,17 @@ const BookmarkService = {
   findBookmarkWithTags(bookmarkId) {
     return ApiService.get(`${BASE_URL}/${bookmarkId}/tags`);
   },
-  post(bookmarkCreateRequest) {
+  create(bookmarkCreateRequest) {
     return ApiService.post(BASE_URL, bookmarkCreateRequest).then(({ data }) => data.id);
   },
   delete(bookmarkId) {
     return ApiService.delete(`${BASE_URL}/${bookmarkId}`);
+  },
+  createTagBookmark(bookmarkId, tagId) {
+    return ApiService.post(`${BASE_URL}/${bookmarkId}/tags/${tagId}`);
+  },
+  deleteTagBookmark(bookmarkId, tagId) {
+    return ApiService.delete(`${BASE_URL}/${bookmarkId}/tags/${tagId}`);
   },
 };
 

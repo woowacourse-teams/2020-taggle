@@ -57,21 +57,19 @@ public class TagBookmarkController {
                 .body(tagBookmarkResponse);
     }
 
-    @PostMapping("/tags/{tagId}/bookmarks/{bookmarkId}")
+    @PostMapping("/bookmarks/{bookmarkId}/tags/{tagId}")
     public ResponseEntity<Void> addBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId,
-            @PathVariable final Long bookmarkId) {
-        tagBookmarkService.createTagBookmark(user, tagId, bookmarkId);
+            @PathVariable final Long bookmarkId, @PathVariable final Long tagId) {
+        tagBookmarkService.createTagBookmark(user, bookmarkId, tagId);
 
-        return ResponseEntity.created(URI.create(String.format("/api/v1/tags/%d/bookmarks/%d", tagId, bookmarkId)))
+        return ResponseEntity.created(URI.create(String.format("/api/v1/bookmarks/%d/tags/%d", bookmarkId, tagId)))
                 .build();
     }
 
-    @DeleteMapping("/tags/{tagId}/bookmarks/{bookmarkId}")
+    @DeleteMapping("/bookmarks/{bookmarkId}/tags/{tagId}")
     public ResponseEntity<Void> removeBookmarkOnTag(@AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long tagId,
-            @PathVariable final Long bookmarkId) {
-        tagBookmarkService.removeTagBookmark(user, tagId, bookmarkId);
+            @PathVariable final Long bookmarkId, @PathVariable final Long tagId) {
+        tagBookmarkService.removeTagBookmark(user, bookmarkId, tagId);
 
         return ResponseEntity.noContent()
                 .build();

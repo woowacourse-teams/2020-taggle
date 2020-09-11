@@ -12,17 +12,11 @@ const TagService = {
   findBookmarksByTagId(tagId, offset, limit) {
     return ApiService.get(`${BASE_URL}/${tagId}/bookmarks?offset=${offset}&limit=${limit}`);
   },
-  addBookmarkOnTag(tagId, bookmarkId) {
-    return ApiService.post(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
-  },
   update(tagId, tagUpdateRequest) {
     return ApiService.put(`${BASE_URL}/${tagId}`, tagUpdateRequest);
   },
   delete(tagId) {
     return ApiService.delete(`${BASE_URL}/${tagId}`);
-  },
-  deleteBookmarkOnTag(tagId, bookmarkId) {
-    return ApiService.delete(`${BASE_URL}/${tagId}/bookmarks/${bookmarkId}`);
   },
 };
 

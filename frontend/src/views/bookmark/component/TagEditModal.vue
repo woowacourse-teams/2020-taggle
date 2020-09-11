@@ -32,8 +32,8 @@ import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import {
   FETCH_BOOKMARK_WITH_TAGS,
-  ADD_TAG_ON_BOOKMARK,
-  DELETE_TAG_ON_BOOKMARK,
+  CREATE_TAG_BOOKMARK,
+  DELETE_TAG_BOOKMARK,
   FETCH_CATEGORIES,
   CREATE_TAG,
 } from '@/store/share/actionTypes.js';
@@ -73,13 +73,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      FETCH_BOOKMARK_WITH_TAGS,
-      FETCH_CATEGORIES,
-      ADD_TAG_ON_BOOKMARK,
-      CREATE_TAG,
-      DELETE_TAG_ON_BOOKMARK,
-    ]),
+    ...mapActions([FETCH_BOOKMARK_WITH_TAGS, FETCH_CATEGORIES, CREATE_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -91,7 +85,7 @@ export default {
       const targetTagName = data.tag.text;
       try {
         const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
-        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
         await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
         await this[FETCH_CATEGORIES]();
         data.addTag();
@@ -104,7 +98,7 @@ export default {
       const targetTagName = data.tag.text;
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
         await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
         data.deleteTag();
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);

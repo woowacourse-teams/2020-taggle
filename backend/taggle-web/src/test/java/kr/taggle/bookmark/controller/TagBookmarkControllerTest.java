@@ -60,25 +60,25 @@ public class TagBookmarkControllerTest extends ControllerTest {
                 .andDo(TagBookmarkDocumentation.findUntaggedBookmarks());
     }
 
-    @DisplayName("addBookmarkOnTag: 태그에 하나의 북마크를 추가한다.")
+    @DisplayName("createTagBookmark: 태그에 하나의 북마크를 추가한다.")
     @Test
-    void addBookmarkOnTag() throws Exception {
+    void createTagBookmark() throws Exception {
         final Tag tag = tagSetup.save(user);
         final Bookmark bookmark = bookmarkSetup.save(user);
 
-        createByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
-                .andDo(TagBookmarkDocumentation.addBookmarkOnTag());
+        createByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags/{tagId}", bookmark.getId(), tag.getId())
+                .andDo(TagBookmarkDocumentation.createTagBookmark());
     }
 
-    @DisplayName("removeBookmarkOnTag: 태그에 속해있는 하나의 북마크를 삭제한다.")
+    @DisplayName("removeTagBookmark: 태그에 속해있는 하나의 북마크를 삭제한다.")
     @Test
-    void removeBookmarkOnTag() throws Exception {
+    void removeTagBookmark() throws Exception {
         final Tag tag = tagSetup.save(user);
         final Bookmark bookmark = bookmarkSetup.save(user);
         tagBookmarkSetup.save(tag, bookmark);
 
-        removeByPathVariables(user, "/api/v1/tags/{tagId}/bookmarks/{bookmarkId}", tag.getId(), bookmark.getId())
-                .andDo(TagBookmarkDocumentation.removeBookmarkOnTag());
+        removeByPathVariables(user, "/api/v1/bookmarks/{bookmarkId}/tags/{tagId}", bookmark.getId(), tag.getId())
+                .andDo(TagBookmarkDocumentation.removeTagBookmark());
     }
 
     @DisplayName("findTagsByBookmarkId: 하나의 북마크에 포함된 태그목록을 조회한다.")

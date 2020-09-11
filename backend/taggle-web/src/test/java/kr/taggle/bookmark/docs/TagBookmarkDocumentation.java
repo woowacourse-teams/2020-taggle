@@ -47,11 +47,11 @@ public class TagBookmarkDocumentation {
                 ));
     }
 
-    public static RestDocumentationResultHandler addBookmarkOnTag() {
+    public static RestDocumentationResultHandler createTagBookmark() {
         return document("tags/bookmarks/create",
                 pathParameters(
-                        parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("bookmarkId").description("북마크 ID")
+                        parameterWithName("bookmarkId").description("북마크 ID"),
+                        parameterWithName("tagId").description("태그 ID")
                 ),
                 responseHeaders(
                         headerWithName("Location").description("태그 조회 URI")
@@ -59,11 +59,11 @@ public class TagBookmarkDocumentation {
         );
     }
 
-    public static RestDocumentationResultHandler removeBookmarkOnTag() {
+    public static RestDocumentationResultHandler removeTagBookmark() {
         return document("tags/bookmarks/delete",
                 pathParameters(
-                        parameterWithName("tagId").description("태그 ID"),
-                        parameterWithName("bookmarkId").description("북마크 ID")
+                        parameterWithName("bookmarkId").description("북마크 ID"),
+                        parameterWithName("tagId").description("태그 ID")
                 )
         );
     }

@@ -72,7 +72,7 @@ const actions = {
     return TagService.update(tagId, updateTagRequest);
   },
   async [CREATE_BOOKMARK](context, bookmarkCreateRequest) {
-    return BookmarkService.post(bookmarkCreateRequest);
+    return BookmarkService.create(bookmarkCreateRequest);
   },
   async [DELETE_BOOKMARK](context, { bookmarkId }) {
     const response = await BookmarkService.delete(bookmarkId);

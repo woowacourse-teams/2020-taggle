@@ -68,7 +68,7 @@ class TagBookmarkServiceTest {
                 "image");
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateDto);
 
-        tagBookmarkService.createTagBookmark(user, tag.getId(), bookmark.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark.getId(), tag.getId());
 
         // when
         final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag.getId(),
@@ -118,12 +118,12 @@ class TagBookmarkServiceTest {
                         "description", "image"));
 
         // when
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark2.getId());
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark3.getId());
-        tagBookmarkService.createTagBookmark(user, naver.getId(), bookmark1.getId());
-        tagBookmarkService.createTagBookmark(user, google.getId(), bookmark2.getId());
-        tagBookmarkService.createTagBookmark(user, google.getId(), bookmark3.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark3.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), naver.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), google.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark3.getId(), google.getId());
 
         final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
                 BOOKMARK_FIND_REQUEST);
@@ -157,11 +157,11 @@ class TagBookmarkServiceTest {
                 new BookmarkCreateDto("https://taggle.co.kr/2", "title",
                         "description", "image"));
 
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark2.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle.getId());
 
         // when
-        tagBookmarkService.removeTagBookmark(user, taggle.getId(), bookmark1.getId());
+        tagBookmarkService.removeTagBookmark(user, bookmark1.getId(), taggle.getId());
         final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
                 BOOKMARK_FIND_REQUEST);
 
@@ -182,8 +182,8 @@ class TagBookmarkServiceTest {
                 new BookmarkCreateDto("https://taggle.co.kr/2", "title",
                         "description", "image"));
 
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark1.getId());
-        tagBookmarkService.createTagBookmark(user, taggle.getId(), bookmark2.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle.getId());
 
         // when
         tagService.removeTag(user, taggle.getId());
