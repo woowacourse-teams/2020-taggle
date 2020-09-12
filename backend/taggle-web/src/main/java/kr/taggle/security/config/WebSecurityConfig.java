@@ -1,8 +1,10 @@
 package kr.taggle.security.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    @Override
+    public void configure(final WebSecurity webSecurity) {
+        webSecurity.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        webSecurity.ignoring().antMatchers("/taggle-favicon.ico", "/img/**");
+    }
+
     // @formatter:off
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -27,7 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                        .antMatchers("/", "/signin", "/fonts/**", "/img/**","/css/**", "/js/**", "/taggle-favicon.ico", "/h2-console/**", "/api/**").permitAll()
+                        .antMatchers("/", "/signin","/h2-console/**","/api/v1/users/me").permitAll()
+                        .antMatchers("/api/**").hasRole("USER")
                         .antMatchers("/docs/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

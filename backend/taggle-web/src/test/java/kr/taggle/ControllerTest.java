@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -27,6 +28,7 @@ import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 
 @ExtendWith(RestDocumentationExtension.class)
+@WithMockUser(roles = "USER")
 @SpringBootTest
 @Transactional
 public class ControllerTest {
