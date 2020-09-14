@@ -1,8 +1,8 @@
 {
   "name": "taggle-extension",
   "version": "1.0.0",
-  "description": "A Vue.js web extension",
-  "author": "",
+  "description": "효율적인 북마크 관리를 위한 Taggle 확장프로그램",
+  "author": "AroundThirty",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --hide-modules",
     "lint": "eslint --ext .js,.vue src",
