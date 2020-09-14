@@ -18,7 +18,6 @@
   "permissions": [
     "tabs",
     "cookies",
-    "http://*/*",
-    "https://*/*"
+    "https://taggle.kr/*"
   ]
 }
