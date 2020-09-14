@@ -9,16 +9,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.bookmark.dto.TagBookmarkResponse;
-import kr.taggle.tag.dto.TagResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import kr.taggle.bookmark.dto.TagBookmarkResponse;
+import kr.taggle.tag.dto.TagResponse;
 
 public class TagAcceptanceTest extends AcceptanceTest {
 
     @Transactional
     @Test
-    void manageBookmark() {
+    void manageTag() {
         // 태그를 생성한다
         final TagResponse tagResponse = createTag("taggle");
 

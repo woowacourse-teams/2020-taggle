@@ -40,13 +40,11 @@ public class ControllerLoggingAspect {
 
     @Around("logPointCut()")
     public Object logAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        Object result = null;
+        final long start = System.currentTimeMillis();
+        final Object result = proceedingJoinPoint.proceed();
+        final long end = System.currentTimeMillis();
 
         try {
-            final long start = System.currentTimeMillis();
-            result = proceedingJoinPoint.proceed();
-            final long end = System.currentTimeMillis();
-
             final HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             final String controllerName = proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName();
             final String methodName = proceedingJoinPoint.getSignature().getName();
