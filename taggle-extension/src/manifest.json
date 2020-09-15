@@ -1,6 +1,6 @@
 {
   "name": "Taggle",
-  "description": "태그단위로 당신의 북마크를 효율적으로 관리하세요!",
+  "description": "효율적인 북마크 관리를 위한 Taggle 확장프로그램",
   "version": "1.0.0",
   "manifest_version": 2,
   "icons": {
@@ -18,7 +18,6 @@
   "permissions": [
     "tabs",
     "cookies",
-    "http://*/*",
-    "https://*/*"
+    "https://taggle.kr/*"
   ]
 }
