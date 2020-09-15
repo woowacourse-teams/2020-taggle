@@ -71,7 +71,7 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, bookmark.getId(), tag.getId());
 
         // when
-        final TagBookmarkResponse tagBookmarkResponse = tagBookmarkService.findBookmarksByTagId(user, tag.getId(),
+        final TagBookmarkResponse tagBookmarkResponse = bookmarkService.findBookmarksByTagId(user, tag.getId(),
                 BOOKMARK_FIND_REQUEST);
 
         // then
@@ -90,7 +90,7 @@ class TagBookmarkServiceTest {
         bookmarkService.createBookmark(user, bookmarkCreateDto);
 
         // when
-        final TagBookmarkResponse untaggedBookmarks = tagBookmarkService.findUntaggedBookmarks(user,
+        final TagBookmarkResponse untaggedBookmarks = bookmarkService.findUntaggedBookmarks(user,
                 BOOKMARK_FIND_REQUEST);
 
         // then
@@ -125,11 +125,11 @@ class TagBookmarkServiceTest {
         tagBookmarkService.createTagBookmark(user, bookmark2.getId(), google.getId());
         tagBookmarkService.createTagBookmark(user, bookmark3.getId(), google.getId());
 
-        final TagBookmarkResponse tagBookmark1 = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
+        final TagBookmarkResponse tagBookmark1 = bookmarkService.findBookmarksByTagId(user, taggle.getId(),
                 BOOKMARK_FIND_REQUEST);
-        final TagBookmarkResponse tagBookmark2 = tagBookmarkService.findBookmarksByTagId(user, google.getId(),
+        final TagBookmarkResponse tagBookmark2 = bookmarkService.findBookmarksByTagId(user, google.getId(),
                 BOOKMARK_FIND_REQUEST);
-        final TagBookmarkResponse tagBookmark3 = tagBookmarkService.findBookmarksByTagId(user, naver.getId(),
+        final TagBookmarkResponse tagBookmark3 = bookmarkService.findBookmarksByTagId(user, naver.getId(),
                 BOOKMARK_FIND_REQUEST);
 
         // then
@@ -162,7 +162,7 @@ class TagBookmarkServiceTest {
 
         // when
         tagBookmarkService.removeTagBookmark(user, bookmark1.getId(), taggle.getId());
-        final TagBookmarkResponse tagBookmark = tagBookmarkService.findBookmarksByTagId(user, taggle.getId(),
+        final TagBookmarkResponse tagBookmark = bookmarkService.findBookmarksByTagId(user, taggle.getId(),
                 BOOKMARK_FIND_REQUEST);
 
         // then
@@ -189,7 +189,7 @@ class TagBookmarkServiceTest {
         tagService.removeTag(user, taggle.getId());
 
         // then
-        assertThatThrownBy(() -> tagBookmarkService.findBookmarksByTagId(user, taggle.getId(), BOOKMARK_FIND_REQUEST))
+        assertThatThrownBy(() -> bookmarkService.findBookmarksByTagId(user, taggle.getId(), BOOKMARK_FIND_REQUEST))
                 .isInstanceOf(TagNotFoundException.class)
                 .hasMessageContaining("태그가 존재하지 않습니다.");
     }
@@ -204,7 +204,7 @@ class TagBookmarkServiceTest {
         final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
 
         //when
-        final BookmarkTagResponse expected = tagBookmarkService.findTagsByBookmarkId(user, bookmark.getId());
+        final BookmarkTagResponse expected = bookmarkService.findTagsByBookmarkId(user, bookmark.getId());
 
         // then
         assertThat(expected.getId()).isEqualTo(bookmark.getId());

@@ -239,6 +239,63 @@ include::{snippets}/bookmarks/get/List/http-response.adoc[]
 
 include::{snippets}/bookmarks/get/List/response-fields.adoc[]
 
+[[resources-bookmarks-get-detail]]
+=== 태그 목록을 포함한 북마크 단건 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/detail/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/bookmarks/get/detail/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/detail/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/detail/response-fields.adoc[]
+
+[[resources-bookmarks-get-query-by-tag-id]]
+=== 특정 태그를 포함하고 있는 북마크 목록 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/query-by-tag-id/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/bookmarks/get/query-by-tag-id/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/query-by-tag-id/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/query-by-tag-id/response-fields.adoc[]
+
+[[resources-bookmarks-get-query-by-untagged-item]]
+=== 태그가 등록되지 않은 북마크 목록 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/response-fields.adoc[]
+
 [[resources-bookmarks-delete]]
 === 북마크 삭제
 
@@ -256,48 +313,6 @@ include::{snippets}/bookmarks/delete/http-response.adoc[]
 
 [[resources-tagbookmark]]
 == Tag & Bookmark
-
-[[resources-tags-get]]
-=== 특정 태그에 속한 북마크 조회
-
-==== Example Request
-
-include::{snippets}/tags/bookmarks/get/http-request.adoc[]
-
-==== Request parameters
-
-include::{snippets}/tags/bookmarks/get/request-parameters.adoc[]
-
-==== Path parameters
-
-include::{snippets}/tags/bookmarks/get/path-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/tags/bookmarks/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/tags/bookmarks/get/response-fields.adoc[]
-
-[[resources-tags-untagged-get]]
-=== 태그가 등록되지 않은 북마크 조회
-
-==== Example Request
-
-include::{snippets}/tags/bookmarks/untagged/get/http-request.adoc[]
-
-==== Request parameters
-
-include::{snippets}/tags/bookmarks/untagged/get/request-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/tags/bookmarks/untagged/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/tags/bookmarks/untagged/get/response-fields.adoc[]
 
 [[resources-tags-bookmarks-create]]
 === 북마크에 태그 등록
@@ -332,22 +347,3 @@ include::{snippets}/tags/bookmarks/delete/path-parameters.adoc[]
 ==== Example Response
 
 include::{snippets}/tags/bookmarks/delete/http-response.adoc[]
-
-[[resources-bookmarks-get]]
-=== 북마크에 등록된 태그 조회
-
-==== Example Request
-
-include::{snippets}/bookmarks/tags/get/http-request.adoc[]
-
-==== Path parameters
-
-include::{snippets}/bookmarks/tags/get/path-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/bookmarks/tags/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/bookmarks/tags/get/response-fields.adoc[]
