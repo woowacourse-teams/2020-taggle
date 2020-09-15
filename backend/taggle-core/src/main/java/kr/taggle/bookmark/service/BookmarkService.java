@@ -29,9 +29,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BookmarkService {
 
-    private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
     private final TagService tagService;
+    private final BookmarkRepository bookmarkRepository;
     private final TagBookmarkRepository tagBookmarkRepository;
 
     public BookmarkResponse createBookmark(final SessionUser sessionUser, final BookmarkCreateDto bookmarkCreateDto) {
@@ -50,7 +50,6 @@ public class BookmarkService {
         return BookmarkResponse.asList(bookmarks.getContent());
     }
 
-    //
     @Transactional(readOnly = true)
     public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId,
             final BookmarkPageRequest bookmarkPageRequest) {
@@ -74,7 +73,6 @@ public class BookmarkService {
 
         return BookmarkTagResponse.of(bookmark);
     }
-    //
 
     public void removeBookmark(final SessionUser user, final Long id) {
         final Bookmark bookmark = findByIdAndUserId(id, user.getId());
