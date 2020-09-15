@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const ejs = require('ejs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtensionReloader = require('webpack-extension-reloader');
 const { VueLoaderPlugin } = require('vue-loader');
 const path = require('path');
@@ -77,24 +77,34 @@ const config = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    new CopyPlugin([
-      { from: 'icons', to: 'icons', ignore: ['icon.xcf'] },
-      { from: 'popup/popup.html', to: 'popup/popup.html', transform: transformHtml },
-      {
-        from: 'manifest.json',
-        to: 'manifest.json',
-        transform: (content) => {
-          const jsonContent = JSON.parse(content);
-          jsonContent.version = version;
-
-          if (config.mode === 'development') {
-            jsonContent.content_security_policy = "script-src 'self' 'unsafe-eval'; object-src 'self'";
-          }
-
-          return JSON.stringify(jsonContent, null, 2);
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'icons', to: 'icons' },
+        {
+          from: 'popup/popup.html',
+          to: 'popup/popup.html',
+          transform: (content) => {
+            return ejs.render(content.toString(), {
+              ...process.env,
+            });
+          },
         },
-      },
-    ]),
+        {
+          from: 'manifest.json',
+          to: 'manifest.json',
+          transform: (content) => {
+            const jsonContent = JSON.parse(content);
+            jsonContent.version = version;
+
+            if (config.mode === 'development') {
+              jsonContent.content_security_policy = "script-src 'self' 'unsafe-eval'; object-src 'self'";
+            }
+
+            return JSON.stringify(jsonContent, null, 2);
+          },
+        },
+      ],
+    }),
   ],
 };
 
@@ -114,12 +124,6 @@ if (process.env.HMR === 'true') {
       manifest: `${__dirname}/src/manifest.json`,
     }),
   ]);
-}
-
-function transformHtml(content) {
-  return ejs.render(content.toString(), {
-    ...process.env,
-  });
 }
 
 module.exports = config;
