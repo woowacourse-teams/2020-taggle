@@ -1,5 +1,5 @@
 <configuration>
-    <springProfile name="local">
+    <springProfile name="console-access">
         <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>%fullRequest%n%n%fullResponse</pattern>
@@ -9,17 +9,17 @@
         <appender-ref ref="STDOUT"/>
     </springProfile>
 
-    <springProfile name="dev">
-        <property name="TAGGLE_LOGS_PATH" value="../logs"/>
+    <springProfile name="file-access">
+        <property name="LOGS_PATH" value="../logs"/>
         <timestamp key="dailyLog" datePattern="yyyyMMdd"/>
 
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${TAGGLE_LOGS_PATH}/access/taggle_dev_access_${dailyLog}.log</file>
+            <file>${LOGS_PATH}/access/access_log_${dailyLog}.log</file>
             <encoder>
                 <pattern>common</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_PATH}/logback/access_dev_${dailyLog}.%d\(.%i\).log</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}/logback/access_log_${dailyLog}.%d\(.%i\).log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <maxFileSize>100MB</maxFileSize>
                 </timeBasedFileNamingAndTriggeringPolicy>
