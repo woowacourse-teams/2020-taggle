@@ -1,20 +1,10 @@
 package kr.taggle.aop;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import net.minidev.json.JSONObject;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,16 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class ControllerLoggingAspect {
 
-    private static JSONObject getParams(final HttpServletRequest request) {
-        final JSONObject jsonObject = new JSONObject();
-        final Enumeration<String> params = request.getParameterNames();
-        while (params.hasMoreElements()) {
-            final String param = params.nextElement();
-            final String replaceParam = param.replaceAll("\\.", "-");
-            jsonObject.put(replaceParam, request.getParameter(param));
-        }
-        return jsonObject;
-    }
+    private static final String LOG_MESSAGE_FORMAT = "{ controller: {}, method: {}, execution_time: {}ms} ";
 
     @Pointcut("execution(* kr.taggle..controller..*Controller.*(..))")
     public void logPointCut() {
@@ -45,18 +26,10 @@ public class ControllerLoggingAspect {
         final long end = System.currentTimeMillis();
 
         try {
-            final HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
             final String controllerName = proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName();
             final String methodName = proceedingJoinPoint.getSignature().getName();
-
-            final Map<String, Object> params = new HashMap<>();
-            params.put("controller", controllerName);
-            params.put("method", methodName);
-            params.put("params", getParams(request));
-            params.put("request_uri", request.getRequestURI());
-            params.put("http_method", request.getMethod());
-            params.put("execution_time", end - start + "ms");
-            log.info("params : {}", params);
+            final long executionTime = end - start;
+            log.info(LOG_MESSAGE_FORMAT, controllerName, methodName, executionTime);
         } catch (final Exception e) {
             log.error("LoggingAspect error" + e.getMessage());
         }
