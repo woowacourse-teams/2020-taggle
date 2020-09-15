@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class TagCreateRequest {
 
     @NotEmpty
-    @Size(max = 25, message = "태그는 25자보다 클 수 없습니다.")
+    @Size(max = 25, message = "{size.tagCreateRequest.name}")
     private String name;
 
     public Tag toEntityWithUser(final User user) {
