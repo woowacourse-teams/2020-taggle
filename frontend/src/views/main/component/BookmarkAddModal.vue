@@ -25,11 +25,10 @@
               v-if="isBookmarkAdded"
               label="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
               :rules="rules.tag"
-              chips
+              small-chips
               multiple
-              solo
-              flat
               outlined
+              hide-details
             >
               <template v-slot:selection="{ attrs, item, select, selected }">
                 <v-chip
@@ -39,6 +38,7 @@
                   :input-value="selected"
                   @click="select"
                   close
+                  small
                   @click:close="onDeleteTagBookmark(item)"
                 >
                   <strong>{{ item }}</strong>
@@ -63,7 +63,7 @@ import {
   CREATE_TAG,
   CREATE_BOOKMARK,
 } from '@/store/share/actionTypes.js';
-import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS, IS_TAGS_EMPTY } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 import validator from '@/utils/validator.js';
 
@@ -79,6 +79,7 @@ export default {
       },
       dialog: false,
       tags: [],
+      isTagsLoaded: false,
       rules: {
         bookmark: validator.bookmark.url,
         tag: validator.tag.name,
@@ -94,16 +95,20 @@ export default {
       }
     },
     tags(newTags, oldTags) {
+      if (this.dialog && !this.isTagsLoaded) {
+        this.isTagsLoaded = true;
+        return;
+      }
       if (newTags.length > oldTags.length) {
         this.onAddTagBookmark(newTags[newTags.length - 1]);
       }
       if (newTags.length < oldTags.length) {
         this.onDeleteTagBookmark(oldTags[oldTags.length - 1]);
       }
-    }
+    },
   },
   computed: {
-    ...mapGetters([GET_TAG_ID_BY_NAME]),
+    ...mapGetters([GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS, IS_TAGS_EMPTY]),
     isBookmarkAdded() {
       return !!this.bookmarkId;
     },
@@ -128,6 +133,7 @@ export default {
       this.tags = [];
       this.bookmarkId = '';
       this.url = '';
+      this.isTagsLoaded = false;
       this[RESET_BOOKMARK_WITH_TAGS]();
       this.$refs.bookmarkForm.resetValidation();
     },
@@ -138,13 +144,15 @@ export default {
       try {
         this.bookmarkId = await this[CREATE_BOOKMARK]({ url: this.url });
         await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        this.initTags();
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
       }
     },
     async onAddTagBookmark(targetTagName) {
-      if (this.tags.length === 0) {
+      if (this.tags.length > 10) {
+        this.tags.pop();
         return;
       }
       if (!this.$refs.tagForm.validate()) {
@@ -178,6 +186,12 @@ export default {
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
       }
+    },
+    initTags() {
+      if (this[IS_TAGS_EMPTY]) {
+        return;
+      }
+      this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => tag.name);
     },
   },
 };
