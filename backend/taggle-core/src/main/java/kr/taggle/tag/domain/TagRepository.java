@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Optional<Tag> findByName(final String name);
+    Optional<Tag> findByNameAndUserId(final String name, final Long userId);
 
     Optional<Tag> findByIdAndUserId(final Long id, final Long userId);
 
