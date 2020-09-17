@@ -19,8 +19,8 @@ public class TagDocumentation {
                         headerWithName("Location").description("생성된 태그의 URI")
                 ),
                 responseFields(
-                        fieldWithPath("id").description("태그 ID"),
-                        fieldWithPath("name").description("태그 이름")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("태그 이름")
                 )
         );
     }

@@ -36,7 +36,7 @@ public class UserControllerTest extends ControllerTest {
     @Test
     void updateProfile() throws Exception {
         updateByJsonParams(user, "/api/v1/me",
-                "{ \"notificationEmail\": \"tigger@kakao.com\",\"notificationEnabled\": \"True\"}")
+                "{ \"notificationEmail\": \"tigger@kakao.com\",\"notificationEnabled\": true}")
                 .andDo(UserDocumentation.updateProfile());
     }
 
