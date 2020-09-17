@@ -118,7 +118,6 @@ public class ControllerTest {
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri, ids)
                 .content(jsonParams)
-                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
@@ -131,7 +130,6 @@ public class ControllerTest {
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri)
                 .content(jsonParams)
-                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
