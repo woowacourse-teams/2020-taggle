@@ -40,7 +40,7 @@ public class CategoryDocumentation {
     public static RestDocumentationResultHandler updateCategory() {
         return document("categories/update",
                 pathParameters(
-                        parameterWithName("categoryId").description("카테고리 아이디")
+                        parameterWithName("categoryId").description("카테고리 ID")
                 ),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리 이름")
