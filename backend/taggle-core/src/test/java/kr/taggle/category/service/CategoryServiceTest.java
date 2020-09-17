@@ -26,7 +26,7 @@ import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
@@ -107,13 +107,13 @@ class CategoryServiceTest {
         tagService.updateTag(user, tagUpdateRequest, tagResponse1.getId());
 
         // when
-        final List<TagsResponse> tagsResponse = categoryService.findAllTagsBy(user);
+        final List<CategoryDetailResponse> categoryDetailResponse = categoryService.findAllTagsBy(user);
 
         // then
-        assertThat(tagsResponse).hasSize(3);
-        assertThat(tagsResponse.get(0).getId()).isNull();
-        assertThat(tagsResponse.get(1).getId()).isNotNull();
-        assertThat(tagsResponse.get(2).getId()).isNotNull();
+        assertThat(categoryDetailResponse).hasSize(3);
+        assertThat(categoryDetailResponse.get(0).getId()).isNull();
+        assertThat(categoryDetailResponse.get(1).getId()).isNotNull();
+        assertThat(categoryDetailResponse.get(2).getId()).isNotNull();
     }
 
     @DisplayName("updateCategory: 카테고리 타이틀을 변경한다.")

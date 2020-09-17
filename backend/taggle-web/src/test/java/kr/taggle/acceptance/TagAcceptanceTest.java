@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.bookmark.dto.TagBookmarkResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.tag.dto.TagResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 
 public class TagAcceptanceTest extends AcceptanceTest {
 
@@ -30,15 +30,15 @@ public class TagAcceptanceTest extends AcceptanceTest {
 
         // 이미 존재하는 태그와 같은 이름의 태그 생성요청시 새 태그를 생성하지 않는다.
         final TagResponse sameNameTagResponse = createTag(tagName);
-        final TagBookmarkResponse sameNameTagBookmarkResponse = findBookmarksByTagId(sameNameTagResponse.getId());
+        final TagDetailResponse sameNameTagDetailResponse = findBookmarksByTagId(sameNameTagResponse.getId());
 
-        assertThat(tagResponse.getId()).isEqualTo(sameNameTagBookmarkResponse.getId());
+        assertThat(tagResponse.getId()).isEqualTo(sameNameTagDetailResponse.getId());
 
         // 태그를 다른 카테고리로 이동한다.
         final String categoryName = "eastjun";
         final CategoryResponse categoryResponse = createCategory(categoryName);
         updateTag(tagResponse.getId(), categoryResponse.getId());
-        List<TagsResponse> categories = findCategories();
+        List<CategoryDetailResponse> categories = findCategories();
 
         assertThat(categories.get(1).getTitle()).isEqualTo(categoryName);
         assertThat(categories.get(1).getTags()).hasSize(1);
@@ -66,8 +66,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         put("/api/v1/tags/" + tagId, request);
     }
 
-    public TagBookmarkResponse findBookmarksByTagId(final Long tagId) {
-        return get(String.format("/api/v1/bookmarks?tag=%d", tagId), TagBookmarkResponse.class);
+    public TagDetailResponse findBookmarksByTagId(final Long tagId) {
+        return get(String.format("/api/v1/bookmarks?tag=%d", tagId), TagDetailResponse.class);
     }
 
     public ExtractableResponse<MockMvcResponse> findBookmarksOfTagExtractableResponse(final Long tagId) {
@@ -86,8 +86,8 @@ public class TagAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/categories", request, CategoryResponse.class, "/api/v1/categories");
     }
 
-    public List<TagsResponse> findCategories() {
-        return getAsList("/api/v1/categories", TagsResponse.class);
+    public List<CategoryDetailResponse> findCategories() {
+        return getAsList("/api/v1/categories", CategoryDetailResponse.class);
     }
 }
 

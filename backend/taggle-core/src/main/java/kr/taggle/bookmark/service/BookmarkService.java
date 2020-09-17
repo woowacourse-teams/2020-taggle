@@ -14,8 +14,8 @@ import kr.taggle.bookmark.domain.TagBookmarkRepository;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
-import kr.taggle.bookmark.dto.BookmarkTagResponse;
-import kr.taggle.bookmark.dto.TagBookmarkResponse;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.bookmark.exception.BookmarkNotFoundException;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.service.TagService;
@@ -51,27 +51,27 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findBookmarksByTagId(final SessionUser user, final Long tagId,
+    public TagDetailResponse findBookmarksByTagId(final SessionUser user, final Long tagId,
             final BookmarkPageRequest bookmarkPageRequest) {
         final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
         final Page<TagBookmark> bookmarks = tagBookmarkRepository.findAllByTag(tag, bookmarkPageRequest.toPageable());
 
-        return TagBookmarkResponse.of(tag, bookmarks.getContent());
+        return TagDetailResponse.of(tag, bookmarks.getContent());
     }
 
     @Transactional(readOnly = true)
-    public TagBookmarkResponse findUntaggedBookmarks(final SessionUser user,
+    public TagDetailResponse findUntaggedBookmarks(final SessionUser user,
             final BookmarkPageRequest bookmarkPageRequest) {
         final Page<Bookmark> bookmarks = findUntaggedBookmarksByUserId(user.getId(),
                 bookmarkPageRequest.toPageable());
-        return TagBookmarkResponse.ofUntagged(bookmarks.getContent());
+        return TagDetailResponse.ofUntagged(bookmarks.getContent());
     }
 
     @Transactional(readOnly = true)
-    public BookmarkTagResponse findTagsByBookmarkId(final SessionUser user, final Long id) {
+    public BookmarkDetailResponse findTagsByBookmarkId(final SessionUser user, final Long id) {
         final Bookmark bookmark = findByIdAndUserId(id, user.getId());
 
-        return BookmarkTagResponse.of(bookmark);
+        return BookmarkDetailResponse.of(bookmark);
     }
 
     public void removeBookmark(final SessionUser user, final Long id) {

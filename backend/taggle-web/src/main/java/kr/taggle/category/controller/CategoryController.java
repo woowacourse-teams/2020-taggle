@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.taggle.category.service.CategoryService;
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
@@ -41,7 +41,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TagsResponse>> findAllCategories(
+    public ResponseEntity<List<CategoryDetailResponse>> findAllCategories(
             @AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(categoryService.findAllTagsBy(user));

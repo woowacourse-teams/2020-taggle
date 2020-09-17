@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.category.dto.CategoryResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 
 public class CategoryAcceptanceTest extends AcceptanceTest {
 
@@ -23,7 +23,7 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         assertThat(categoryResponse.getTitle()).isEqualTo(categoryName);
 
         // 카테고리를 가져온다.
-        List<TagsResponse> categories = findCategories();
+        List<CategoryDetailResponse> categories = findCategories();
         assertThat(categories).hasSize(2);
 
         // 이미 존재하는 카테고리와 같은 이름의 카테고리 생성요청시 새 카테고리를 생성하지 않는다.
@@ -33,15 +33,15 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         assertThat(categories).hasSize(2);
 
         // 카테고리를 수정한다.
-        final TagsResponse tagsResponse = categories.get(1);
+        final CategoryDetailResponse categoryDetailResponse = categories.get(1);
         final String updateTitle = "service";
-        updateCategory(tagsResponse.getId(), updateTitle);
+        updateCategory(categoryDetailResponse.getId(), updateTitle);
         categories = findCategories();
 
         assertThat(categories.get(1).getTitle()).isEqualTo(updateTitle);
 
         // 카테고리를 제거한다.
-        removeCategory(tagsResponse.getId());
+        removeCategory(categoryDetailResponse.getId());
         categories = findCategories();
 
         assertThat(categories).hasSize(1); // Uncategorized가 있기 때문에 sizs는 1이다.
@@ -55,8 +55,8 @@ public class CategoryAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/categories", request, CategoryResponse.class, "/api/v1/categories");
     }
 
-    public List<TagsResponse> findCategories() {
-        return getAsList("/api/v1/categories", TagsResponse.class);
+    public List<CategoryDetailResponse> findCategories() {
+        return getAsList("/api/v1/categories", CategoryDetailResponse.class);
     }
 
     private void updateCategory(final Long id, final String title) {
