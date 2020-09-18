@@ -27,7 +27,7 @@ public class TagService {
 
     public TagResponse createTag(final SessionUser sessionUser, final TagCreateRequest tagCreateRequest) {
         final User user = userService.findById(sessionUser.getId());
-        final Tag tag = tagRepository.findByName(tagCreateRequest.getName())
+        final Tag tag = tagRepository.findByNameAndUserId(tagCreateRequest.getName(), user.getId())
                 .orElseGet(() -> tagRepository.save(tagCreateRequest.toEntityWithUser(user)));
 
         return TagResponse.of(tag);
@@ -54,9 +54,5 @@ public class TagService {
 
     public List<Tag> findCategorizedTagsByUserId(final Long userId) {
         return tagRepository.findAllByUserIdAndCategoryIsNotNull(userId);
-    }
-
-    public List<Tag> findAllByUserId(final Long userId) {
-        return tagRepository.findAllByUserId(userId);
     }
 }
