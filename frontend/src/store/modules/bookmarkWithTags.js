@@ -2,7 +2,7 @@ import BookmarkService from '@/api/module/bookmark.js';
 import TagService from '@/api/module/tag.js';
 import { ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS } from '@/store/share/actionTypes.js';
 import { RESET_BOOKMARK_WITH_TAGS, SET_BOOKMARK_TAGS } from '@/store/share/mutationTypes.js';
-import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME, IS_TAGS_EMPTY } from '@/store/share/getterTypes.js';
 
 const state = {
   bookmarkTags: {
@@ -17,6 +17,9 @@ const state = {
 const getters = {
   [BOOKMARK_WITH_TAGS](state) {
     return state.bookmarkTags.tags;
+  },
+  [IS_TAGS_EMPTY](state) {
+    return !state.bookmarkTags || state.bookmarkTags.tags.length === 0;
   },
   [GET_TAG_ID_BY_NAME]: (state, getter) => (name) => {
     const tag = getter.bookmarkTags.find((item) => item.name === name);

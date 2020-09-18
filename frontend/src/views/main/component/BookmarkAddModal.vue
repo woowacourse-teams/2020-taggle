@@ -71,12 +71,6 @@ export default {
   name: 'BookmarkAddModal',
   data() {
     return {
-      createBookmarkRequest: {
-        url: '',
-      },
-      tagCreateRequest: {
-        name: '',
-      },
       dialog: false,
       tags: [],
       rules: {

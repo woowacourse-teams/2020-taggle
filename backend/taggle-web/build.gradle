@@ -60,7 +60,5 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation 'org.springframework:spring-webmvc:5.2.7.RELEASE'
-
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.1.RELEASE'
 }
