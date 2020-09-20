@@ -12,10 +12,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import kr.taggle.JpaTestConfiguration;
+import kr.taggle.category.dto.CategoryRequest;
+import kr.taggle.category.dto.CategoryResponse;
+import kr.taggle.category.service.CategoryService;
 import kr.taggle.fixture.UserFixture;
+import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.domain.TagRepository;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
+import kr.taggle.tag.dto.TagUpdateRequest;
 import kr.taggle.tag.exception.TagNotFoundException;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
@@ -32,6 +37,9 @@ class TagServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private TagRepository tagRepository;
@@ -71,6 +79,25 @@ class TagServiceTest {
         // then
         assertThat(tagResponse.getId()).isEqualTo(tagResponseWithSameName.getId());
         assertThat(tagResponse.getName()).isEqualTo(tagResponseWithSameName.getName());
+    }
+
+    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 변경한다.")
+    @Test
+    void updateCategoryOnTag() {
+        //given
+        final CategoryRequest categoryRequest = new CategoryRequest("project");
+        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
+        final TagUpdateRequest tagUpdateRequest = new TagUpdateRequest(categoryResponse.getId());
+
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest("tag");
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+
+        //when
+        tagService.updateTag(user, tagUpdateRequest, tagResponse.getId());
+        final Tag tag = tagService.findByIdAndUserId(tagResponse.getId(), user.getId());
+
+        //then
+        assertThat(tag.getCategory().getTitle()).isEqualTo("project");
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")

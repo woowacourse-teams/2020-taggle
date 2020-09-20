@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.bookmark.service.BookmarkCreateService;
 import kr.taggle.bookmark.service.BookmarkService;
 import kr.taggle.user.dto.SessionUser;
@@ -37,7 +40,7 @@ public class BookmarkController {
             @RequestBody @Valid final BookmarkCreateRequest bookmarkCreateRequest) {
         final BookmarkResponse bookmark = bookmarkCreateService.createBookmark(bookmarkCreateRequest, user);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", "/api/v1/bookmarks/" + bookmark.getId())
+                .header("Location", String.format("/api/v1/bookmarks/%d", bookmark.getId()))
                 .body(bookmark);
     }
 
@@ -48,6 +51,37 @@ public class BookmarkController {
 
         return ResponseEntity.ok()
                 .body(bookmarks);
+    }
+
+    @GetMapping("/{bookmarkId}")
+    public ResponseEntity<BookmarkDetailResponse> findBookmarkDetail(@AuthenticationPrincipal final SessionUser user,
+            @PathVariable final Long bookmarkId) {
+        final BookmarkDetailResponse bookmarkDetailResponse = bookmarkService.findTagsByBookmarkId(user, bookmarkId);
+
+        return ResponseEntity.ok()
+                .body(bookmarkDetailResponse);
+    }
+
+    @GetMapping(params = "tag")
+    public ResponseEntity<TagDetailResponse> findBookmarksByTagId(@AuthenticationPrincipal final SessionUser user,
+            @RequestParam final Long tag,
+            @ModelAttribute final BookmarkPageRequest bookmarkPageRequest) {
+        final TagDetailResponse tagDetailResponse = bookmarkService.findBookmarksByTagId(user, tag,
+                bookmarkPageRequest);
+
+        return ResponseEntity.ok()
+                .body(tagDetailResponse);
+    }
+
+    @GetMapping(params = "tag=none")
+    public ResponseEntity<TagDetailResponse> findBookmarksWithUntagged(
+            @AuthenticationPrincipal final SessionUser user,
+            @ModelAttribute final BookmarkPageRequest bookmarkPageRequest) {
+        final TagDetailResponse tagDetailResponse = bookmarkService.findUntaggedBookmarks(user,
+                bookmarkPageRequest);
+
+        return ResponseEntity.ok()
+                .body(tagDetailResponse);
     }
 
     @DeleteMapping("/{id}")

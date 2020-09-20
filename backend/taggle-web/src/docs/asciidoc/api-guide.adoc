@@ -19,45 +19,45 @@ endif::[]
 
 ==== Example Request
 
-include::{snippets}/users/get/me/http-request.adoc[]
+include::{snippets}/me/get/http-request.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/get/me/http-response.adoc[]
+include::{snippets}/me/get/http-response.adoc[]
 
 ==== Response fields
 
-include::{snippets}/users/get/me/response-fields.adoc[]
+include::{snippets}/me/get/response-fields.adoc[]
 
 [[resources-users-update-profile]]
 === 알림 이메일 수정하기
 
 ==== Example Request
 
-include::{snippets}/users/update/profile/http-request.adoc[]
+include::{snippets}/me/update/http-request.adoc[]
 
 ==== Request body
 
-include::{snippets}/users/update/profile/request-body.adoc[]
+include::{snippets}/me/update/request-body.adoc[]
 
 ==== Request fields
 
-include::{snippets}/users/update/profile/request-fields.adoc[]
+include::{snippets}/me/update/request-fields.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/update/profile/http-response.adoc[]
+include::{snippets}/me/update/http-response.adoc[]
 
 [[resources-users-delete-me]]
 === 회원 탈퇴
 
 ==== Example Request
 
-include::{snippets}/users/delete/me/http-request.adoc[]
+include::{snippets}/me/delete/http-request.adoc[]
 
 ==== Example Response
 
-include::{snippets}/users/delete/me/http-response.adoc[]
+include::{snippets}/me/delete/http-response.adoc[]
 
 [[resources-categories]]
 == Categories
@@ -106,6 +106,10 @@ include::{snippets}/categories/get/List/response-fields.adoc[]
 ==== Example Request
 
 include::{snippets}/categories/update/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/categories/update/path-parameters.adoc[]
 
 ==== Request fields
 
@@ -161,15 +165,19 @@ include::{snippets}/tags/create/response-fields.adoc[]
 
 ==== Example Request
 
-include::{snippets}/categories/tags/update/http-request.adoc[]
+include::{snippets}/tags/update/http-request.adoc[]
 
 ==== Path parameters
 
-include::{snippets}/categories/tags/update/path-parameters.adoc[]
+include::{snippets}/tags/update/path-parameters.adoc[]
+
+==== Request fields
+
+include::{snippets}/tags/update/request-fields.adoc[]
 
 ==== Example Response
 
-include::{snippets}/categories/tags/update/http-response.adoc[]
+include::{snippets}/tags/update/http-response.adoc[]
 
 [[resources-tags-delete]]
 === 태그 삭제
@@ -231,6 +239,63 @@ include::{snippets}/bookmarks/get/List/http-response.adoc[]
 
 include::{snippets}/bookmarks/get/List/response-fields.adoc[]
 
+[[resources-bookmarks-get-detail]]
+=== 태그 목록을 포함한 북마크 단건 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/detail/http-request.adoc[]
+
+==== Path parameters
+
+include::{snippets}/bookmarks/get/detail/path-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/detail/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/detail/response-fields.adoc[]
+
+[[resources-bookmarks-get-query-by-tag-id]]
+=== 특정 태그를 포함하고 있는 북마크 목록 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/query-by-tag-id/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/bookmarks/get/query-by-tag-id/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/query-by-tag-id/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/query-by-tag-id/response-fields.adoc[]
+
+[[resources-bookmarks-get-query-by-untagged-item]]
+=== 태그가 등록되지 않은 북마크 목록 조회
+
+==== Example Request
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/http-request.adoc[]
+
+==== Request parameters
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/request-parameters.adoc[]
+
+==== Example Response
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/http-response.adoc[]
+
+==== Response fields
+
+include::{snippets}/bookmarks/get/query-by-untagged-item/response-fields.adoc[]
+
 [[resources-bookmarks-delete]]
 === 북마크 삭제
 
@@ -248,48 +313,6 @@ include::{snippets}/bookmarks/delete/http-response.adoc[]
 
 [[resources-tagbookmark]]
 == Tag & Bookmark
-
-[[resources-tags-get]]
-=== 특정 태그에 속한 북마크 조회
-
-==== Example Request
-
-include::{snippets}/tags/bookmarks/get/http-request.adoc[]
-
-==== Request parameters
-
-include::{snippets}/tags/bookmarks/get/request-parameters.adoc[]
-
-==== Path parameters
-
-include::{snippets}/tags/bookmarks/get/path-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/tags/bookmarks/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/tags/bookmarks/get/response-fields.adoc[]
-
-[[resources-tags-untagged-get]]
-=== 태그가 등록되지 않은 북마크 조회
-
-==== Example Request
-
-include::{snippets}/tags/bookmarks/untagged/get/http-request.adoc[]
-
-==== Request parameters
-
-include::{snippets}/tags/bookmarks/untagged/get/request-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/tags/bookmarks/untagged/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/tags/bookmarks/untagged/get/response-fields.adoc[]
 
 [[resources-tags-bookmarks-create]]
 === 북마크에 태그 등록
@@ -324,22 +347,3 @@ include::{snippets}/tags/bookmarks/delete/path-parameters.adoc[]
 ==== Example Response
 
 include::{snippets}/tags/bookmarks/delete/http-response.adoc[]
-
-[[resources-bookmarks-get]]
-=== 북마크에 등록된 태그 조회
-
-==== Example Request
-
-include::{snippets}/bookmarks/tags/get/http-request.adoc[]
-
-==== Path parameters
-
-include::{snippets}/bookmarks/tags/get/path-parameters.adoc[]
-
-==== Example Response
-
-include::{snippets}/bookmarks/tags/get/http-response.adoc[]
-
-==== Response fields
-
-include::{snippets}/bookmarks/tags/get/response-fields.adoc[]

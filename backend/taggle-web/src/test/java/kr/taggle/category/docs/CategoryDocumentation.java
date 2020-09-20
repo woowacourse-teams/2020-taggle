@@ -19,8 +19,8 @@ public class CategoryDocumentation {
                         headerWithName("Location").description("생성된 카테고리의 URI")
                 ),
                 responseFields(
-                        fieldWithPath("id").description("카테고리 ID"),
-                        fieldWithPath("title").description("카테고리 이름")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("카테고리 ID"),
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리 이름")
                 )
         );
     }
@@ -28,28 +28,22 @@ public class CategoryDocumentation {
     public static RestDocumentationResultHandler findCategories() {
         return document("categories/get/List",
                 responseFields(
-                        fieldWithPath("[].id").description("카테고리 ID (optional)").optional(),
-                        fieldWithPath("[].title").description("카테고리 이름"),
-                        fieldWithPath("[].tags").description("카테고리에 속한 태그 (optional)").optional(),
-                        fieldWithPath("[].tags.[].id").description("태그 ID"),
-                        fieldWithPath("[].tags.[].name").description("태그 이름")
+                        fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("카테고리 ID").optional(),
+                        fieldWithPath("[].title").type(JsonFieldType.STRING).description("카테고리 이름"),
+                        fieldWithPath("[].tags").type(JsonFieldType.ARRAY).description("카테고리의 태그 목록").optional(),
+                        fieldWithPath("[].tags.[].id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                        fieldWithPath("[].tags.[].name").type(JsonFieldType.STRING).description("태그 이름")
                 )
         );
     }
 
     public static RestDocumentationResultHandler updateCategory() {
         return document("categories/update",
+                pathParameters(
+                        parameterWithName("categoryId").description("카테고리 ID")
+                ),
                 requestFields(
                         fieldWithPath("title").type(JsonFieldType.STRING).description("카테고리 이름")
-                )
-        );
-    }
-
-    public static RestDocumentationResultHandler updateCategoryOnTag() {
-        return document("categories/tags/update",
-                pathParameters(
-                        parameterWithName("categoryId").description("카테고리 ID"),
-                        parameterWithName("tagId").description("태그 ID")
                 )
         );
     }

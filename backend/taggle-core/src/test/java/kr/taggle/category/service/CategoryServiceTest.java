@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import kr.taggle.JpaTestConfiguration;
+import kr.taggle.tag.dto.TagUpdateRequest;
 import kr.taggle.tag.service.TagService;
 import kr.taggle.category.domain.Category;
 import kr.taggle.category.domain.CategoryRepository;
@@ -25,7 +26,7 @@ import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
@@ -100,18 +101,19 @@ class CategoryServiceTest {
         final CategoryRequest categoryRequest1 = new CategoryRequest("project1");
         final CategoryRequest categoryRequest2 = new CategoryRequest("project2");
         final CategoryResponse categoryResponse1 = categoryService.createCategory(user, categoryRequest1);
+        final TagUpdateRequest tagUpdateRequest = new TagUpdateRequest(categoryResponse1.getId());
         categoryService.createCategory(user, categoryRequest2);
 
-        categoryService.updateCategoryOnTag(user, categoryResponse1.getId(), tagResponse1.getId());
+        tagService.updateTag(user, tagUpdateRequest, tagResponse1.getId());
 
         // when
-        final List<TagsResponse> tagsRespons = categoryService.findAllTagsBy(user);
+        final List<CategoryDetailResponse> categoryDetailResponse = categoryService.findAllTagsBy(user);
 
         // then
-        assertThat(tagsRespons).hasSize(3);
-        assertThat(tagsRespons.get(0).getId()).isNull();
-        assertThat(tagsRespons.get(1).getId()).isNotNull();
-        assertThat(tagsRespons.get(2).getId()).isNotNull();
+        assertThat(categoryDetailResponse).hasSize(3);
+        assertThat(categoryDetailResponse.get(0).getId()).isNull();
+        assertThat(categoryDetailResponse.get(1).getId()).isNotNull();
+        assertThat(categoryDetailResponse.get(2).getId()).isNotNull();
     }
 
     @DisplayName("updateCategory: 카테고리 타이틀을 변경한다.")
@@ -128,24 +130,6 @@ class CategoryServiceTest {
 
         //then
         assertThat(category.getTitle()).isEqualTo("taggle");
-    }
-
-    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 변경한다.")
-    @Test
-    void updateCategoryOnTag() {
-        //given
-        final CategoryRequest categoryRequest = new CategoryRequest("project");
-        final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
-
-        final TagCreateRequest tagCreateRequest = new TagCreateRequest("tag");
-        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
-
-        //when
-        categoryService.updateCategoryOnTag(user, categoryResponse.getId(), tagResponse.getId());
-        final Tag tag = tagService.findByIdAndUserId(tagResponse.getId(), user.getId());
-
-        //then
-        Assertions.assertThat(tag.getCategory().getTitle()).isEqualTo("project");
     }
 
     @DisplayName("removeCategory: 해당 카테고리를 삭제한다.")
@@ -181,7 +165,8 @@ class CategoryServiceTest {
         final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
         final TagCreateRequest tagCreateRequest = new TagCreateRequest("taggle");
         final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
-        categoryService.updateCategoryOnTag(user, categoryResponse.getId(), tagResponse.getId());
+        final TagUpdateRequest tagUpdateRequest = new TagUpdateRequest(categoryResponse.getId());
+        tagService.updateTag(user, tagUpdateRequest, tagResponse.getId());
 
         //when
         categoryService.removeCategory(user, categoryResponse.getId());
