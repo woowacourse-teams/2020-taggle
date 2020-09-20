@@ -1,11 +1,5 @@
 import CategoryService from '@/api/module/category.js';
-import {
-  CREATE_CATEGORY,
-  DELETE_CATEGORY,
-  EDIT_CATEGORY,
-  EDIT_TAG_FROM_CATEGORY,
-  FETCH_CATEGORIES,
-} from '@/store/share/actionTypes.js';
+import { CREATE_CATEGORY, DELETE_CATEGORY, UPDATE_CATEGORY, FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { SET_CATEGORIES } from '@/store/share/mutationTypes.js';
 import { SEARCHED_CATEGORIES, TOTAL_CATEGORIES, ALL_CATEGORIES_FOR_SELECT } from '@/store/share/getterTypes.js';
 
@@ -45,14 +39,11 @@ const actions = {
   async [CREATE_CATEGORY](context, categoryCreateRequest) {
     return CategoryService.create(categoryCreateRequest);
   },
-  async [EDIT_CATEGORY](context, { id, title }) {
-    return CategoryService.edit(id, { title });
+  async [UPDATE_CATEGORY](context, { categoryId, categoryUpdateRequest }) {
+    return CategoryService.update(categoryId, categoryUpdateRequest);
   },
   async [DELETE_CATEGORY](context, categoryId) {
     return CategoryService.delete(categoryId);
-  },
-  async [EDIT_TAG_FROM_CATEGORY](context, { categoryId, tagId }) {
-    return CategoryService.editTag(categoryId, tagId);
   },
 };
 

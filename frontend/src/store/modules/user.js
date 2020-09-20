@@ -31,8 +31,8 @@ const actions = {
     const user = res.data;
     commit(SET_USER, user);
   },
-  async [UPDATE_PROFILE](context, editingProfile) {
-    await UserService.updateProfile(editingProfile);
+  async [UPDATE_PROFILE](context, profileUpdateRequest) {
+    await UserService.updateProfile(profileUpdateRequest);
   },
   async [DELETE_USER]() {
     await UserService.deleteUser();

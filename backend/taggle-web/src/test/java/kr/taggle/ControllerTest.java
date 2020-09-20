@@ -61,17 +61,17 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public ResultActions validateWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
+    public void validateWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
-        return mockMvc.perform(post(uri)
-                .content(jsonParams)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(expect)
-                .andDo(print());
+        mockMvc.perform(post(uri)
+            .content(jsonParams)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(expect)
+            .andDo(print());
     }
 
     public ResultActions createByPathVariables(final User user, final String uri, final Object... ids) throws
@@ -125,13 +125,14 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions updateByPathVariables(final User user, final String uri, final Object... ids) throws
+    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams, final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri, ids)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .content(jsonParams)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -142,10 +143,9 @@ public class ControllerTest {
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(put(uri)
                 .content(jsonParams)
-                .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }

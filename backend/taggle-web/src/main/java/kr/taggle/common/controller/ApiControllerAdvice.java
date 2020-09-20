@@ -32,7 +32,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(TagNotFoundException.class)
     public ResponseEntity<String> handleTagNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -41,7 +41,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(BookmarkNotFoundException.class)
     public ResponseEntity<String> handleBookmarkNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -50,7 +50,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(TagBookmarkNotFoundException.class)
     public ResponseEntity<String> handleTagBookmarkNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -59,7 +59,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -68,7 +68,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(CrawlerConnectionException.class)
     public ResponseEntity<String> crawlerConnectionException(final CrawlerConnectionException exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -77,7 +77,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(InvalidURLException.class)
     public ResponseEntity<String> InvalidURLException(final InvalidURLException exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -109,7 +109,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String> authenticationException(final AuthenticationException authenticationException) {
-        log.error(authenticationException.getMessage());
+        log.info(authenticationException.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

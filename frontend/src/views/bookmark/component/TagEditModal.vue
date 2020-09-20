@@ -48,9 +48,9 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME, IS_TAGS_EMPTY } from '@/store/share/getterTypes.js';
 import {
-  FETCH_BOOKMARK_WITH_TAGS,
-  ADD_TAG_ON_BOOKMARK,
-  DELETE_TAG_ON_BOOKMARK,
+  FETCH_BOOKMARK_DETAIL,
+  CREATE_TAG_BOOKMARK,
+  DELETE_TAG_BOOKMARK,
   FETCH_CATEGORIES,
   CREATE_TAG,
 } from '@/store/share/actionTypes.js';
@@ -80,7 +80,7 @@ export default {
     async dialog() {
       if (this.dialog) {
         try {
-          await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
+          await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmark.id });
           this.initTags();
         } catch (e) {
           this[SHOW_SNACKBAR](MESSAGES.BOOKMARK_WITH_TAGS.FETCH.FAIL);
@@ -101,13 +101,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      FETCH_BOOKMARK_WITH_TAGS,
-      FETCH_CATEGORIES,
-      ADD_TAG_ON_BOOKMARK,
-      CREATE_TAG,
-      DELETE_TAG_ON_BOOKMARK,
-    ]),
+    ...mapActions([FETCH_BOOKMARK_DETAIL, FETCH_CATEGORIES, CREATE_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK]),
     ...mapMutations([SHOW_SNACKBAR]),
     closeModal() {
       this.dialog = false;
@@ -126,9 +120,9 @@ export default {
       }
       try {
         const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
-        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmark.id });
         await this[FETCH_CATEGORIES]();
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
@@ -140,8 +134,8 @@ export default {
       }
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmark.id });
+        await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmark.id });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmark.id });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
         if (this.tags.indexOf(targetTagName) !== -1) {
           this.tags.splice(this.tags.indexOf(targetTagName), 1);

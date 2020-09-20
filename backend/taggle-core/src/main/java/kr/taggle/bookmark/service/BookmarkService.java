@@ -9,10 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.domain.Bookmark;
 import kr.taggle.bookmark.domain.BookmarkRepository;
+import kr.taggle.bookmark.domain.TagBookmark;
+import kr.taggle.bookmark.domain.TagBookmarkRepository;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.bookmark.exception.BookmarkNotFoundException;
+import kr.taggle.tag.domain.Tag;
+import kr.taggle.tag.service.TagService;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
@@ -23,8 +29,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BookmarkService {
 
-    private final BookmarkRepository bookmarkRepository;
     private final UserService userService;
+    private final TagService tagService;
+    private final BookmarkRepository bookmarkRepository;
+    private final TagBookmarkRepository tagBookmarkRepository;
 
     public BookmarkResponse createBookmark(final SessionUser sessionUser, final BookmarkCreateDto bookmarkCreateDto) {
         final User user = userService.findById(sessionUser.getId());
@@ -40,6 +48,30 @@ public class BookmarkService {
                 bookmarkPageRequest.toPageable());
 
         return BookmarkResponse.asList(bookmarks.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public TagDetailResponse findBookmarksByTagId(final SessionUser user, final Long tagId,
+            final BookmarkPageRequest bookmarkPageRequest) {
+        final Tag tag = tagService.findByIdAndUserId(tagId, user.getId());
+        final Page<TagBookmark> bookmarks = tagBookmarkRepository.findAllByTag(tag, bookmarkPageRequest.toPageable());
+
+        return TagDetailResponse.of(tag, bookmarks.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public TagDetailResponse findUntaggedBookmarks(final SessionUser user,
+            final BookmarkPageRequest bookmarkPageRequest) {
+        final Page<Bookmark> bookmarks = findUntaggedBookmarksByUserId(user.getId(),
+                bookmarkPageRequest.toPageable());
+        return TagDetailResponse.ofUntagged(bookmarks.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public BookmarkDetailResponse findTagsByBookmarkId(final SessionUser user, final Long id) {
+        final Bookmark bookmark = findByIdAndUserId(id, user.getId());
+
+        return BookmarkDetailResponse.of(bookmark);
     }
 
     public void removeBookmark(final SessionUser user, final Long id) {

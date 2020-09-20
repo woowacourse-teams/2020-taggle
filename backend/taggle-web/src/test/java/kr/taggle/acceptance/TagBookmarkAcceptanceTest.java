@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.dto.BookmarkResponse;
-import kr.taggle.bookmark.dto.BookmarkTagResponse;
-import kr.taggle.bookmark.dto.TagBookmarkResponse;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.tag.dto.TagResponse;
 
 public class TagBookmarkAcceptanceTest extends AcceptanceTest {
@@ -20,35 +20,35 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
     void manageTagBookmark() {
         // Untagged의 북마크 목록을 불러온다.
         final BookmarkResponse bookmarkResponse = createBookmark("http://naver.com");
-        TagBookmarkResponse tagBookmarkResponse = findUntaggedBookmarks();
+        TagDetailResponse tagDetailResponse = findUntaggedBookmarks();
 
-        assertThat(tagBookmarkResponse.getId()).isNull();
-        assertThat(tagBookmarkResponse.getName()).isEqualTo("Untagged");
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
+        assertThat(tagDetailResponse.getId()).isNull();
+        assertThat(tagDetailResponse.getName()).isEqualTo("Untagged");
+        assertThat(tagDetailResponse.getBookmarks()).hasSize(1);
 
         // 북마크에 태그를 추가한다.
         final TagResponse tagResponse = createTag("taggle");
-        addBookmarkOnTag(tagResponse.getId(), bookmarkResponse.getId());
+        addTagOnBookmark(bookmarkResponse.getId(), tagResponse.getId());
 
-        // 해당 태그의 북마크를 가져온다,
-        tagBookmarkResponse = findBookmarksByTagId(tagResponse.getId());
+        // 방금 추가한 태그를 질의어로 활용하여 북마크 목록을 조회한다.
+        tagDetailResponse = findBookmarksByTagId(tagResponse.getId());
 
-        assertThat(tagBookmarkResponse.getName()).isEqualTo("taggle");
-        assertThat(tagBookmarkResponse.getBookmarks()).hasSize(1);
+        assertThat(tagDetailResponse.getName()).isEqualTo("taggle");
+        assertThat(tagDetailResponse.getBookmarks()).hasSize(1);
 
-        // 해당 북마크의 태그를 가져온다.
-        BookmarkTagResponse bookmarkTagResponse = findTagsByBookmarkId(bookmarkResponse.getId());
+        // 해당 북마크 단건조회를 통해 북마크에 추가된 태그를 확인한다.
+        BookmarkDetailResponse bookmarkDetailResponse = findBookmarkDetail(bookmarkResponse.getId());
 
-        assertThat(bookmarkTagResponse.getUrl()).isEqualTo("http://naver.com");
-        assertThat(bookmarkTagResponse.getTags()).hasSize(1);
+        assertThat(bookmarkDetailResponse.getUrl()).isEqualTo("http://naver.com");
+        assertThat(bookmarkDetailResponse.getTags()).hasSize(1);
 
-        // 북마크의 태그를 삭제한다.
-        removeBookmarkOnTag(tagResponse.getId(), bookmarkResponse.getId());
+        // 북마크에 추가되어있는 태그를 삭제한다.
+        removeBookmarkOnTag(bookmarkResponse.getId(), tagResponse.getId());
 
-        bookmarkTagResponse = findTagsByBookmarkId(bookmarkResponse.getId());
+        bookmarkDetailResponse = findBookmarkDetail(bookmarkResponse.getId());
 
-        assertThat(bookmarkTagResponse.getUrl()).isEqualTo("http://naver.com");
-        assertThat(bookmarkTagResponse.getTags()).hasSize(0);
+        assertThat(bookmarkDetailResponse.getUrl()).isEqualTo("http://naver.com");
+        assertThat(bookmarkDetailResponse.getTags()).hasSize(0);
     }
 
     public BookmarkResponse createBookmark(final String url) {
@@ -65,24 +65,24 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
         return post("/api/v1/tags", request, TagResponse.class, "/api/v1/tags");
     }
 
-    public TagBookmarkResponse findUntaggedBookmarks() {
-        return get("/api/v1/tags/untagged/bookmarks", TagBookmarkResponse.class);
+    public TagDetailResponse findUntaggedBookmarks() {
+        return get("/api/v1/bookmarks?tag=none", TagDetailResponse.class);
     }
 
-    public void addBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        post("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId,
-                new HashMap<>(), "/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
+    public void addTagOnBookmark(final Long bookmarkId, final Long tagId) {
+        post(String.format("/api/v1/bookmarks/%d/tags/%d", bookmarkId, tagId),
+                new HashMap<>(), String.format("/api/v1/bookmarks/%d/tags/%d", bookmarkId, tagId));
     }
 
-    public TagBookmarkResponse findBookmarksByTagId(final Long id) {
-        return get("/api/v1/tags/" + id + "/bookmarks", TagBookmarkResponse.class);
+    public TagDetailResponse findBookmarksByTagId(final Long tagId) {
+        return get(String.format("/api/v1/bookmarks?tag=%d", tagId), TagDetailResponse.class);
     }
 
-    public BookmarkTagResponse findTagsByBookmarkId(final Long id) {
-        return get("/api/v1/bookmarks/" + id + "/tags", BookmarkTagResponse.class);
+    public BookmarkDetailResponse findBookmarkDetail(final Long bookmarkId) {
+        return get(String.format("/api/v1/bookmarks/%d", bookmarkId) , BookmarkDetailResponse.class);
     }
 
-    public void removeBookmarkOnTag(final Long tagId, final Long bookmarkId) {
-        delete("/api/v1/tags/" + tagId + "/bookmarks/" + bookmarkId);
+    public void removeBookmarkOnTag(final Long bookmarkId, final Long tagId) {
+        delete(String.format("/api/v1/bookmarks/%d/tags/%d", bookmarkId, tagId));
     }
 }

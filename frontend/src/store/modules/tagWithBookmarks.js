@@ -5,6 +5,7 @@ import {
   CREATE_TAG,
   DELETE_BOOKMARK,
   DELETE_TAG,
+  UPDATE_TAG,
   FETCH_MORE_BOOKMARKS,
   FETCH_TAG_WITH_BOOKMARKS,
 } from '@/store/share/actionTypes.js';
@@ -43,13 +44,13 @@ const mutations = {
 };
 const actions = {
   async [FETCH_TAG_WITH_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
-    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
+    const res = await BookmarkService.findBookmarksByTagId(tagId, offset, limit);
     const bookmarks = res.data;
     commit(SET_TAG_BOOKMARKS, bookmarks);
     return bookmarks.bookmarks;
   },
   async [FETCH_MORE_BOOKMARKS]({ commit }, { tagId, offset, limit }) {
-    const res = await TagService.findBookmarksByTagId(tagId, offset, limit);
+    const res = await BookmarkService.findBookmarksByTagId(tagId, offset, limit);
     const { bookmarks } = res.data;
     commit(ADD_MORE_BOOKMARKS, bookmarks);
     return bookmarks;
@@ -67,13 +68,15 @@ const actions = {
   async [DELETE_TAG](context, { tagId }) {
     return TagService.delete(tagId);
   },
+  async [UPDATE_TAG](context, { updateTagRequest, tagId }) {
+    return TagService.update(tagId, updateTagRequest);
+  },
   async [CREATE_BOOKMARK](context, bookmarkCreateRequest) {
-    return BookmarkService.post(bookmarkCreateRequest);
+    return BookmarkService.create(bookmarkCreateRequest);
   },
   async [DELETE_BOOKMARK](context, { bookmarkId }) {
     const response = await BookmarkService.delete(bookmarkId);
     const filteredBookmarks = context.state.tagBookmarks.bookmarks.filter((bookmark) => bookmark.id !== bookmarkId);
-    console.log(filteredBookmarks);
     context.commit(SET_BOOKMARKS, filteredBookmarks);
     return response;
   },
