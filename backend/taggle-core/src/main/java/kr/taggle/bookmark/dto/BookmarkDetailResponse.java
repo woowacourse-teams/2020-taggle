@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class BookmarkTagResponse {
+public class BookmarkDetailResponse {
 
     private Long id;
     private String url;
     private List<TagResponse> tags;
 
-    public static BookmarkTagResponse of(final Bookmark bookmark) {
-        return new BookmarkTagResponse(bookmark.getId(), bookmark.getUrl(), TagResponse.asList(bookmark.getTags()));
+    public static BookmarkDetailResponse of(final Bookmark bookmark) {
+        return new BookmarkDetailResponse(bookmark.getId(), bookmark.getUrl(), TagResponse.asList(bookmark.getTags()));
     }
 }

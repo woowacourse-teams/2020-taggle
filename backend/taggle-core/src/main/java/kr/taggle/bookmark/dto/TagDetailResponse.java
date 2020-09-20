@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-public class TagBookmarkResponse {
+public class TagDetailResponse {
 
     private Long id;
     private String name;
     private List<BookmarkResponse> bookmarks;
 
-    public static TagBookmarkResponse of(final Tag tag, final List<TagBookmark> bookmarks) {
-        return new TagBookmarkResponse(tag.getId(), tag.getName(), BookmarkResponse.asList(bookmarks));
+    public static TagDetailResponse of(final Tag tag, final List<TagBookmark> bookmarks) {
+        return new TagDetailResponse(tag.getId(), tag.getName(), BookmarkResponse.asList(bookmarks));
     }
 
-    public static TagBookmarkResponse ofUntagged(final List<Bookmark> bookmarks) {
-        return new TagBookmarkResponse(null, "Untagged", BookmarkResponse.asList(bookmarks));
+    public static TagDetailResponse ofUntagged(final List<Bookmark> bookmarks) {
+        return new TagDetailResponse(null, "Untagged", BookmarkResponse.asList(bookmarks));
     }
 }

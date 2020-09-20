@@ -1,6 +1,5 @@
 import BookmarkService from '@/api/module/bookmark.js';
-import TagService from '@/api/module/tag.js';
-import { ADD_TAG_ON_BOOKMARK, DELETE_TAG_ON_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS } from '@/store/share/actionTypes.js';
+import { CREATE_TAG_BOOKMARK, DELETE_TAG_BOOKMARK, FETCH_BOOKMARK_DETAIL } from '@/store/share/actionTypes.js';
 import { RESET_BOOKMARK_WITH_TAGS, SET_BOOKMARK_TAGS } from '@/store/share/mutationTypes.js';
 import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 
@@ -32,16 +31,16 @@ const mutations = {
   },
 };
 const actions = {
-  async [FETCH_BOOKMARK_WITH_TAGS]({ commit }, { bookmarkId }) {
-    const res = await BookmarkService.findBookmarkWithTags(bookmarkId);
+  async [FETCH_BOOKMARK_DETAIL]({ commit }, { bookmarkId }) {
+    const res = await BookmarkService.findBookmarkDetail(bookmarkId);
     const bookmarkTags = res.data;
     commit(SET_BOOKMARK_TAGS, bookmarkTags);
   },
-  async [ADD_TAG_ON_BOOKMARK](context, { bookmarkId, tagId }) {
-    return TagService.addBookmarkOnTag(tagId, bookmarkId);
+  async [CREATE_TAG_BOOKMARK](context, { bookmarkId, tagId }) {
+    return BookmarkService.createTagBookmark(bookmarkId, tagId);
   },
-  async [DELETE_TAG_ON_BOOKMARK](context, { bookmarkId, tagId }) {
-    return TagService.deleteBookmarkOnTag(tagId, bookmarkId);
+  async [DELETE_TAG_BOOKMARK](context, { bookmarkId, tagId }) {
+    return BookmarkService.deleteTagBookmark(bookmarkId, tagId);
   },
 };
 
