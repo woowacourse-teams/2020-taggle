@@ -1,11 +1,13 @@
 package kr.taggle.authentication;
 
+import java.util.Map;
+
 import javax.naming.AuthenticationException;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -35,7 +37,8 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken)SecurityContextHolder.getContext()
+                .getAuthentication();
         if (authentication.getPrincipal().equals("anonymousUser")) {
             throw new AuthenticationException("인증하지 않은 사용자입니다");
         }
@@ -43,10 +46,24 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         return getUser(authentication);
     }
 
-    private SessionUser getUser(final Authentication authentication) {
+    private SessionUser getUser(final OAuth2AuthenticationToken authentication) {
         final DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User)authentication.getPrincipal();
-        final User user = userRepository.findByEmail(defaultOAuth2User.getAttributes().get("email").toString())
-                .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
+
+        final User user = getUserWithRegistrationId(authentication.getAuthorizedClientRegistrationId(),
+                defaultOAuth2User);
         return new SessionUser(user);
+    }
+
+    public User getUserWithRegistrationId(final String registrationId, final DefaultOAuth2User defaultOAuth2User) {
+        if ("kakao".equals(registrationId)) {
+            final Map<String, Object> kakao_acount = (Map<String, Object>)defaultOAuth2User.getAttributes()
+                    .get("kakao_account");
+
+            return userRepository.findByEmail(kakao_acount.get("email").toString())
+                    .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
+        }
+
+        return userRepository.findByEmail(defaultOAuth2User.getAttributes().get("email").toString())
+                .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
     }
 }

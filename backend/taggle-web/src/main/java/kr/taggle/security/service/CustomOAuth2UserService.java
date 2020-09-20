@@ -2,10 +2,6 @@ package kr.taggle.security.service;
 
 import static java.util.Collections.*;
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpSession;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -19,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.domain.UserRepository;
 import kr.taggle.user.dto.OAuthAttributes;
-import kr.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
     @Transactional
     @Override
@@ -45,17 +39,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 oAuth2User.getAttributes());
         final User user = saveOrFind(attributes);
 
-        httpSession.setAttribute("user", new SessionUser(user));
-
         return new DefaultOAuth2User(singleton(new SimpleGrantedAuthority(user.getRole().getKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
     private User saveOrFind(final OAuthAttributes attributes) {
-        final Optional<User> user = userRepository.findByEmail(attributes.getEmail());
-
-        return user.orElseGet(() -> initialize(attributes));
+        return userRepository.findByEmail(attributes.getEmail())
+                .orElseGet(() -> initialize(attributes));
     }
 
     private User initialize(final OAuthAttributes attributes) {
