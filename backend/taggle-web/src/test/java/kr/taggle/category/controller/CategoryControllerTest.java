@@ -3,6 +3,7 @@ package kr.taggle.category.controller;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,14 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
     void createCategory() throws Exception {
-        categorySetup.save(user);
         createByJsonParams(user, "/api/v1/categories", "{\"title\":\"createCategory\"}")
                 .andDo(CategoryDocumentation.createCategory());
+    }
+
+    @DisplayName("expectBadRequestWhenCreateCategory: 카테고리 추가 시 카테고리의 제목 길이가 25 이상이면 오류 메시지를 보낸다.")
+    @Test
+    void expectBadRequestWhenCreateCategory() throws Exception {
+        expectBadRequestWhenPostRequest(user, "/api/v1/categories", "{\"title\":\"this is a test for category-title-length\"}", jsonPath("$.title", Is.is("카테고리는 25자보다 클 수 없습니다.")));
     }
 
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")

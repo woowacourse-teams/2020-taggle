@@ -1,8 +1,7 @@
 package kr.taggle.category.dto;
 
 import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Size;
 
 import kr.taggle.category.domain.Category;
 import kr.taggle.user.domain.User;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class CategoryRequest {
 
     @NotEmpty
-    @Length(max = 20, message = "카테고리 제목은 20자보다 클 수 없습니다.")
+    @Size(max = 25, message = "{size.categoryRequest.title}")
     private String title;
 
     public Category toEntity() {

@@ -1,5 +1,8 @@
 package kr.taggle.tag.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +40,13 @@ public class TagControllerTest extends ControllerTest {
     void createTag() throws Exception {
         createByJsonParams(user, "/api/v1/tags", "{\"name\": \"taggle\"}")
                 .andDo(TagDocumentation.createTag());
+    }
+
+    @DisplayName("expectBadRequestWhenCreateTag: 테그 추가 시 태그의 길이가 25 이상이면 오류 메시지를 보낸다.")
+    @Test
+    void expectBadRequestWhenCreateTag() throws Exception {
+        expectBadRequestWhenPostRequest(user, "/api/v1/tags", "{\"name\":\"this is a test for tag-name-length\"}", jsonPath("$.name", Is
+                .is("태그는 25자보다 클 수 없습니다.")));
     }
 
     @DisplayName("removeTag: 태그를 삭제한다.")
