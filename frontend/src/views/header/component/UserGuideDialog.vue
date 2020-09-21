@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" width="1200">
+  <v-dialog v-model="userGuideDialog" width="1200">
     <v-card>
       <v-carousel hide-delimiter-background show-arrows-on-hover height="auto">
         <v-carousel-item v-for="(item, i) in items" :key="i" eager>
@@ -32,7 +32,6 @@ export default {
   },
   data() {
     return {
-      dialog: false,
       items: [
         {
           src: 'https://i.ibb.co/gP4rhRS/guide-1-bookmark-add.png',
@@ -52,25 +51,13 @@ export default {
       ],
     };
   },
-  watch: {
-    userGuideDialog(value) {
-      if (value) {
-        this.dialog = value;
-      }
-    },
-    dialog() {
-      if (!this.dialog) {
-        this.$emit('close');
-      }
-    },
-  },
   methods: {
     onClickClose() {
-      this.dialog = false;
+      this.$emit('close');
     },
     onClickPermanentClose() {
       localStorage.setItem('dont_look_again', 'true');
-      this.dialog = false;
+      this.$emit('close');
     },
   },
 };
