@@ -38,10 +38,10 @@ public class CategoryControllerTest extends ControllerTest {
                 .andDo(CategoryDocumentation.createCategory());
     }
 
-    @DisplayName("validateWhenCategoryRequest: 카테고리 추가 시 카테고리의 제목 길이가 25 이상이면 오류 메시지를 보낸다.")
+    @DisplayName("expectBadRequestWhenCreateCategory: 카테고리 추가 시 카테고리의 제목 길이가 25 이상이면 오류 메시지를 보낸다.")
     @Test
-    void validateWhenCategoryRequest() throws Exception {
-        validateWhenPostRequest(user, "/api/v1/categories", "{\"title\":\"this is a test for category-title-length\"}", jsonPath("$.title", Is.is("카테고리는 25자보다 클 수 없습니다.")));
+    void expectBadRequestWhenCreateCategory() throws Exception {
+        expectBadRequestWhenPostRequest(user, "/api/v1/categories", "{\"title\":\"this is a test for category-title-length\"}", jsonPath("$.title", Is.is("카테고리는 25자보다 클 수 없습니다.")));
     }
 
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")

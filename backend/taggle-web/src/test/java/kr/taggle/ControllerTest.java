@@ -61,7 +61,7 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public void validateWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
+    public void expectBadRequestWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);

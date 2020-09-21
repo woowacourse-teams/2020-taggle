@@ -85,8 +85,9 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> InvalidURLException(final MethodArgumentNotValidException exception) {
-        log.error(exception.getMessage());
+    public ResponseEntity<Map<String, String>> MethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
+        log.info(exception.getMessage());
+
         Map<String, String> errors = new HashMap<>();
         for (ObjectError error : exception.getBindingResult().getAllErrors()) {
             String fieldName = ((FieldError) error).getField();

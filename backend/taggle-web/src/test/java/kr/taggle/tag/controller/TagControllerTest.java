@@ -42,10 +42,10 @@ public class TagControllerTest extends ControllerTest {
                 .andDo(TagDocumentation.createTag());
     }
 
-    @DisplayName("validateWhenTagCreateRequest: 테그 추가 시 태그의 길이가 25 이상이면 오류 메시지를 보낸다.")
+    @DisplayName("expectBadRequestWhenCreateTag: 테그 추가 시 태그의 길이가 25 이상이면 오류 메시지를 보낸다.")
     @Test
-    void validateWhenTagCreateRequest() throws Exception {
-        validateWhenPostRequest(user, "/api/v1/tags", "{\"name\":\"this is a test for tag-name-length\"}", jsonPath("$.name", Is
+    void expectBadRequestWhenCreateTag() throws Exception {
+        expectBadRequestWhenPostRequest(user, "/api/v1/tags", "{\"name\":\"this is a test for tag-name-length\"}", jsonPath("$.name", Is
                 .is("태그는 25자보다 클 수 없습니다.")));
     }
 
