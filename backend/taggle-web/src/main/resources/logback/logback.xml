@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <property resource="config/application-log.yml"/>
-
-    <property name="SLACK_WEBHOOK_URI" value="${logging.slack.webhook-uri}"/>
+    <springProperty name="SLACK_WEBHOOK_URI" source="logging.slack.webhook-uri"/>
     <property name="LOG_PATH" value="../logs"/>
-
     <timestamp key="dailyLog" datePattern="yyyy-MM-dd"/>
 
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <springProfile name="console-logging">
+        <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    </springProfile>
 
     <springProfile name="file-logging">
         <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOG_PATH}/logback/logback_dev_${dailyLog}.log</file>
+            <file>${LOG_PATH}/logback/logback_${dailyLog}.log</file>
             <encoder>
                 <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${LOG_PATH}/logback/logback_dev_${dailyLog}.%d\(.%i\).log</fileNamePattern>
+                <fileNamePattern>${LOG_PATH}/logback/logback_${dailyLog}.%d\(.%i\).log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <maxFileSize>100MB</maxFileSize>
                 </timeBasedFileNamingAndTriggeringPolicy>
@@ -33,20 +33,23 @@
             <username>taggle bot</username>
             <colorCoding>true</colorCoding>
         </appender>
+        <appender name="ASYNC_SLACK" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="SLACK"/>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+        </appender>
     </springProfile>
 
     <root>
-        <springProfile name="file-logging">
-            <appender-ref ref="ROLLING"/>
-        </springProfile>
         <springProfile name="console-logging">
             <appender-ref ref="CONSOLE"/>
         </springProfile>
-    </root>
-    <root level="error">
+        <springProfile name="file-logging">
+            <appender-ref ref="ROLLING"/>
+        </springProfile>
         <springProfile name="slack-logging">
-            <appender-ref ref="SLACK"/>
+            <appender-ref ref="ASYNC_SLACK"/>
         </springProfile>
     </root>
 </configuration>
-
