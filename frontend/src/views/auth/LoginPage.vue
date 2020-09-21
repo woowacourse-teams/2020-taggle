@@ -9,19 +9,19 @@
         </v-col>
         <v-col justify="center" align-self="center" class="text-center pa-4">
           <v-row justify="center">
-            <v-img src="@/assets/images/bookmark.png" class="login-decoration-image"></v-img>
-            <v-img src="@/assets/images/tag.png" class="login-decoration-image"></v-img>
-            <v-img src="@/assets/images/subscribe.png" class="login-decoration-image"></v-img>
+            <v-img src="@/assets/images/login/bookmark.png" class="login-decoration-image"></v-img>
+            <v-img src="@/assets/images/login/tag.png" class="login-decoration-image"></v-img>
+            <v-img src="@/assets/images/login/subscribe.png" class="login-decoration-image"></v-img>
           </v-row>
           <div class="ma-2">
             <v-btn class="login-button" large rounded depressed href="/oauth2/authorization/google">
-              <v-img class="login-image" src="@/assets/images/google-button.png" left></v-img>
+              <v-img class="login-image" src="@/assets/images/login/google-button.png" left></v-img>
               Sign In With Google
             </v-btn>
           </div>
           <div class="ma-2">
             <v-btn class="login-button yellow accent-4" large rounded depressed href="/oauth2/authorization/kakao">
-              <v-img class="login-image" src="@/assets/images/kakao-button.png" left></v-img>
+              <v-img class="login-image" src="@/assets/images/login/kakao-button.png" left></v-img>
               Sign In With Kakao
             </v-btn>
           </div>
