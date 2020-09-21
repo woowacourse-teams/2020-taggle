@@ -5,8 +5,44 @@ jar {
     enabled = true
 }
 
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'BUNDLE'
+
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+
+            excludes = []
+        }
+
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+
+            excludes = [
+                    'kr.taggle.user.dto.OAuthAttributes',
+                    'kr.taggle.tag.domain.Tag',
+                    'kr.taggle.category.domain.Category',
+                    'kr.taggle.bookmark.dto.BookmarkPageRequest'
+            ]
+        }
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
     runtimeOnly 'com.h2database:h2'
 }
 
