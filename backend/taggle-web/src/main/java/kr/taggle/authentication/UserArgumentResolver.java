@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.naming.AuthenticationException;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -37,13 +38,15 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer,
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
-        final OAuth2AuthenticationToken authentication = (OAuth2AuthenticationToken)SecurityContextHolder.getContext()
+        final Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
         if (authentication.getPrincipal().equals("anonymousUser")) {
             throw new AuthenticationException("인증하지 않은 사용자입니다");
         }
 
-        return getUser(authentication);
+        final OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken)authentication;
+
+        return getUser(authenticationToken);
     }
 
     private SessionUser getUser(final OAuth2AuthenticationToken authentication) {
@@ -54,12 +57,12 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         return new SessionUser(user);
     }
 
-    public User getUserWithRegistrationId(final String registrationId, final DefaultOAuth2User defaultOAuth2User) {
+    private User getUserWithRegistrationId(final String registrationId, final DefaultOAuth2User defaultOAuth2User) {
         if ("kakao".equals(registrationId)) {
-            final Map<String, Object> kakao_acount = (Map<String, Object>)defaultOAuth2User.getAttributes()
+            final Map<String, Object> kakaoAcount = (Map<String, Object>)defaultOAuth2User.getAttributes()
                     .get("kakao_account");
 
-            return userRepository.findByEmail(kakao_acount.get("email").toString())
+            return userRepository.findByEmail(kakaoAcount.get("email").toString())
                     .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
         }
 
