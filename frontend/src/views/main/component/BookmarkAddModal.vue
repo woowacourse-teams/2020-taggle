@@ -15,19 +15,37 @@
             <v-text-field
               v-model="url"
               label="URL 입력후 enter를 입력하여 저장. https://..."
-              :rules="rules"
+              :rules="rules.bookmark"
               :disabled="isBookmarkAdded"
             ></v-text-field>
           </v-form>
-          <vue-tags-input
-            v-model="tag"
-            v-if="isBookmarkAdded"
-            :tags="tags"
-            @before-adding-tag="onAddTagBookmark"
-            @before-deleting-tag="onDeleteTagBookmark"
-            @tags-changed="(newTags) => (tags = newTags)"
-            placeholder="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
-          />
+          <v-form ref="tagForm">
+            <v-combobox
+              v-model="tags"
+              v-if="isBookmarkAdded"
+              label="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
+              :rules="rules.tag"
+              chips
+              multiple
+              solo
+              flat
+              outlined
+            >
+              <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                  v-bind="attrs"
+                  color="light-blue lighten-1"
+                  text-color="white"
+                  :input-value="selected"
+                  @click="select"
+                  close
+                  @click:close="onDeleteTagBookmark(item)"
+                >
+                  <strong>{{ item }}</strong>
+                </v-chip>
+              </template>
+            </v-combobox>
+          </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -48,25 +66,17 @@ import {
 import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 import validator from '@/utils/validator.js';
-import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
   name: 'BookmarkAddModal',
-  components: {
-    VueTagsInput,
-  },
   data() {
     return {
-      createBookmarkRequest: {
-        url: '',
-      },
-      tagCreateRequest: {
-        name: '',
-      },
       dialog: false,
-      tag: '',
       tags: [],
-      rules: validator.bookmark.url,
+      rules: {
+        bookmark: validator.bookmark.url,
+        tag: validator.tag.name,
+      },
       bookmarkId: '',
       url: '',
     };
@@ -77,6 +87,14 @@ export default {
         this.clearInputTagForm();
       }
     },
+    tags(newTags, oldTags) {
+      if (newTags.length > oldTags.length) {
+        this.onAddTagBookmark(newTags[newTags.length - 1]);
+      }
+      if (newTags.length < oldTags.length) {
+        this.onDeleteTagBookmark(oldTags[oldTags.length - 1]);
+      }
+    }
   },
   computed: {
     ...mapGetters([GET_TAG_ID_BY_NAME]),
@@ -101,7 +119,6 @@ export default {
       this.dialog = true;
     },
     clearInputTagForm() {
-      this.tag = '';
       this.tags = [];
       this.bookmarkId = '';
       this.url = '';
@@ -120,27 +137,38 @@ export default {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
       }
     },
-    async onAddTagBookmark(data) {
-      const targetTagName = data.tag.text;
+    async onAddTagBookmark(targetTagName) {
+      if (this.tags.length === 0) {
+        return;
+      }
+      if (!this.$refs.tagForm.validate()) {
+        this.tags.splice(this.tags.indexOf(targetTagName), 1);
+        this.tags = [...this.tags];
+        return;
+      }
       try {
         const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
         await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
         await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
-        data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
       }
     },
-    async onDeleteTagBookmark(data) {
-      const targetTagName = data.tag.text;
+    async onDeleteTagBookmark(targetTagName) {
+      if (this.tags.length === 0) {
+        return;
+      }
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
         await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
         await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
-        data.deleteTag();
+        if (this.tags.indexOf(targetTagName) !== -1) {
+          this.tags.splice(this.tags.indexOf(targetTagName), 1);
+          this.tags = [...this.tags];
+        }
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
       }

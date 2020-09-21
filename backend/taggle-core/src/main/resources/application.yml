@@ -3,4 +3,8 @@ spring:
     show_sql: true
     format_sql: true
     use_sql_comments: true
+  messages:
+    basename: messages
+    encoding: UTF-8
+
 logging.level.org.hibernate.type.descriptor.sql: trace

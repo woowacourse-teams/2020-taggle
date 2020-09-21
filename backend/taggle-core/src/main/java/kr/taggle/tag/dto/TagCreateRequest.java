@@ -1,6 +1,7 @@
 package kr.taggle.tag.dto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.user.domain.User;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class TagCreateRequest {
 
     @NotEmpty
+    @Size(max = 25, message = "{size.tagCreateRequest.name}")
     private String name;
 
     public Tag toEntityWithUser(final User user) {
