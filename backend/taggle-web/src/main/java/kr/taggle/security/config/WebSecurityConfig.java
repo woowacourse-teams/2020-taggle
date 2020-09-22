@@ -3,7 +3,6 @@ package kr.taggle.security.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +27,9 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String KAKAO = "kakao";
+    private static final String GOOGLE = "google";
+
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Override
@@ -40,12 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
-                .csrf()
-                    .ignoringAntMatchers("/h2-console/**")
-                .and()
-                    .headers()
-                    .frameOptions()
-                    .sameOrigin();
+                .csrf().disable()
+                    .headers().frameOptions().sameOrigin();
 
         http
                 .authorizeRequests()
@@ -58,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                         .logout()
                         .logoutUrl("/oauth2/logout")
-                        .logoutSuccessUrl("/signin")
+                        .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                 .and()
@@ -81,26 +79,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository(
-            final OAuth2ClientProperties oAuth2ClientProperties,
-            @Value("${spring.security.oauth2.client.registration.kakao.client-id}")final String kakaoClientId,
-            @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")final String kakaoSecretId){
+            final OAuth2ClientProperties oAuth2ClientProperties){
 
         final List<ClientRegistration> registrations = new ArrayList<>();
 
-        final OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get("google");
+        OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get(GOOGLE);
 
         registrations.add(
-                CommonOAuth2Provider.GOOGLE.getBuilder("google")
+                CommonOAuth2Provider.GOOGLE.getBuilder(GOOGLE)
                 .clientId(registration.getClientId())
                 .clientSecret(registration.getClientSecret())
                 .scope("email", "profile")
                 .build()
         );
 
+        registration = oAuth2ClientProperties.getRegistration().get(KAKAO);
+
         registrations.add(
-                CustomOAuth2Provider.KAKAO.getBuilder("kakao")
-                .clientId(kakaoClientId)
-                .clientSecret(kakaoSecretId)
+                CustomOAuth2Provider.KAKAO.getBuilder(KAKAO)
+                .clientId(registration.getClientId())
+                .clientSecret(registration.getClientSecret())
                 .build()
         );
 

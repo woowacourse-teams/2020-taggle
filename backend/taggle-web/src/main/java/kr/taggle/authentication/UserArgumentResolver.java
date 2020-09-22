@@ -24,6 +24,10 @@ import kr.taggle.user.exception.UserNotFoundException;
 @Component
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String EMAIL = "email";
+    private static final String KAKAO = "kakao";
+    private static final String ANONYMOUS_USER = "anonymousUser";
+
     private final UserRepository userRepository;
 
     public UserArgumentResolver(final UserRepository userRepository) {
@@ -40,7 +44,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
             final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
         final Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
-        if (authentication.getPrincipal().equals("anonymousUser")) {
+        if (authentication.getPrincipal().equals(ANONYMOUS_USER)) {
             throw new AuthenticationException("인증하지 않은 사용자입니다");
         }
 
@@ -58,15 +62,15 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     private User getUserWithRegistrationId(final String registrationId, final DefaultOAuth2User defaultOAuth2User) {
-        if ("kakao".equals(registrationId)) {
+        if (KAKAO.equals(registrationId)) {
             final Map<String, Object> kakaoAcount = (Map<String, Object>)defaultOAuth2User.getAttributes()
                     .get("kakao_account");
 
-            return userRepository.findByEmail(kakaoAcount.get("email").toString())
+            return userRepository.findByEmail(kakaoAcount.get(EMAIL).toString())
                     .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
         }
 
-        return userRepository.findByEmail(defaultOAuth2User.getAttributes().get("email").toString())
+        return userRepository.findByEmail(defaultOAuth2User.getAttributes().get(EMAIL).toString())
                 .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다."));
     }
 }
