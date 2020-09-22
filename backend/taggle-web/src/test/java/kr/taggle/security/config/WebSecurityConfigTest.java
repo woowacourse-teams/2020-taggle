@@ -8,7 +8,7 @@ import io.restassured.RestAssured;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "spring.config.location=classpath:/config/application-oauth.properties"
+        properties = "spring.config.location=classpath:/config/application-oauth.yml"
 )
 class WebSecurityConfigTest {
 

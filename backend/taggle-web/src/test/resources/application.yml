@@ -7,11 +7,17 @@ spring:
     datasource.url: jdbc:h2:mem:testdb
   flyway:
     enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+          kakao:
+            client-id: test
+            client-secret: test
 
 logging.level.org.hibernate.type.descriptor.sql: trace
 
-spring.security.oauth2.client.registration.google:
-  client-id: test
-  client-secret: test
-  scope: profile,email
 
