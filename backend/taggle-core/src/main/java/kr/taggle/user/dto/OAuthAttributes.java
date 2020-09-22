@@ -1,6 +1,7 @@
 package kr.taggle.user.dto;
 
 import java.util.Map;
+import java.util.Objects;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -75,12 +76,12 @@ public class OAuthAttributes {
                 .build();
     }
 
-    private static String getPicture(final String profile_image_url) {
-        if (profile_image_url == null) {
+    private static String getPicture(final String profileImageUrl) {
+        if (Objects.isNull(profileImageUrl)) {
             return "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png";
         }
 
-        return profile_image_url;
+        return profileImageUrl;
     }
 
     public User toEntity() {
