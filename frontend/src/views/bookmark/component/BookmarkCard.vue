@@ -1,8 +1,10 @@
 <template>
   <v-row>
     <v-col>
-      <CardStream :bookmarks="bookmarks" v-show="cardDisplayMode === 'stream'" />
-      <CardModule :bookmarks="bookmarks" v-show="cardDisplayMode === 'module'" />
+      <CardStream v-if="hasTagId" :bookmarks="totalBookmarks" v-show="cardDisplayMode === 'stream'" />
+      <CardStream v-else :bookmarks="bookmarks" v-show="cardDisplayMode === 'stream'" />
+      <CardModule v-if="hasTagId" :bookmarks="totalBookmarks" v-show="cardDisplayMode === 'module'" />
+      <CardModule v-else :bookmarks="bookmarks" v-show="cardDisplayMode === 'module'" />
     </v-col>
     <v-col cols="1">
       <div class="card-change-button-container">
@@ -17,7 +19,7 @@
 import { mapGetters } from 'vuex';
 import CardStream from '@/views/bookmark/component/CardStream.vue';
 import CardModule from '@/views/bookmark/component/CardModule.vue';
-import { BOOKMARKS } from '@/store/share/getterTypes.js';
+import { BOOKMARKS, TOTAL_BOOKMARKS } from '@/store/share/getterTypes.js';
 
 export default {
   name: 'BookmarkCard',
@@ -25,8 +27,11 @@ export default {
     CardStream,
     CardModule,
   },
+  props: {
+    hasTagId: Boolean,
+  },
   computed: {
-    ...mapGetters([BOOKMARKS]),
+    ...mapGetters([BOOKMARKS, TOTAL_BOOKMARKS]),
   },
   data() {
     return {
