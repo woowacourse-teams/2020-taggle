@@ -67,7 +67,7 @@ export default {
       try {
         setTimeout(async () => {
           const bookmarks = await this[FETCH_MORE_BOOKMARKS]({
-            tagId: this.$route.params.id,
+            tagId: this.$route.query.tag,
             offset: this.page,
             limit: this.limit,
           });
@@ -87,7 +87,7 @@ export default {
       this.infiniteId += 1;
       this.isInitialLoadingCompleted = false;
       const bookmarks = await this[FETCH_TAG_WITH_BOOKMARKS]({
-        tagId: this.$route.params.id,
+        tagId: this.$route.query.tag,
         offset: this.page,
         limit: this.limit,
       });
