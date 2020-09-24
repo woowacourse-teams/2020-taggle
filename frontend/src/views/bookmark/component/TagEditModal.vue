@@ -47,7 +47,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
-import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME, IS_TAGS_EMPTY } from '@/store/share/getterTypes.js';
+import { BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
 import {
   FETCH_BOOKMARK_DETAIL,
   CREATE_TAG_BOOKMARK,
@@ -67,7 +67,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME, IS_TAGS_EMPTY]),
+    ...mapGetters([BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME]),
   },
   data() {
     return {

@@ -63,7 +63,7 @@ import {
   CREATE_TAG,
   CREATE_BOOKMARK,
 } from '@/store/share/actionTypes.js';
-import { GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS, IS_TAGS_EMPTY } from '@/store/share/getterTypes.js';
+import { GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 import validator from '@/utils/validator.js';
 
@@ -104,7 +104,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS, IS_TAGS_EMPTY]),
+    ...mapGetters([GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS]),
     isBookmarkAdded() {
       return !!this.bookmarkId;
     },
