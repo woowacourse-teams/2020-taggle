@@ -1,6 +1,6 @@
 <template>
   <v-card :flat="true">
-    <TotalBookmarkButton/>
+    <TotalBookmarkList/>
     <v-list v-for="category in categories" :key="category.id" class="grow">
       <CategoryGroup :category="category" />
     </v-list>
@@ -12,13 +12,13 @@ import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import { SEARCHED_CATEGORIES, TOTAL_CATEGORIES } from '@/store/share/getterTypes.js';
 import CategoryGroup from '@/views/header/component/CategoryGroup.vue';
-import TotalBookmarkButton from '@/views/header/component/TotalBookmarkButton.vue';
+import TotalBookmarkList from '@/views/header/component/TotalBookmarkList.vue';
 
 export default {
   name: 'TagNavigationBody',
   components: {
     CategoryGroup,
-    TotalBookmarkButton,
+    TotalBookmarkList,
   },
   props: {
     searchKeyword: {

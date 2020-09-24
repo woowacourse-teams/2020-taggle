@@ -1,5 +1,5 @@
 <template>
-  <v-list-item @click="move">
+  <v-list-item @click="push">
     <v-list-item-title>
       {{ subItem.name }}
     </v-list-item-title>
@@ -24,8 +24,8 @@ export default {
     },
   },
   methods: {
-    move() {
-      this.$router.push({name: 'bookmarks', query: { tag: this.subItem.id }});
+    push() {
+      this.$router.push({name: 'bookmarks', query: { tag: this.subItem.id }}).catch(() => {});
     }
   },
 };

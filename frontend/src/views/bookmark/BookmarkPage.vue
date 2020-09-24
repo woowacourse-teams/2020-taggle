@@ -1,6 +1,6 @@
 <template>
   <v-row
-    v-if="isInitialLoadingCompleted && isBookmarksEmpty"
+    v-if="isInitialLoadingCompleted && isBookmarksEmpty && isTotalBookmarksEmpty"
     justify="center"
     align="center"
     style="height: 100% !important;"
@@ -13,7 +13,8 @@
     </v-col>
   </v-row>
   <div v-else>
-    <BookmarkCard :hasTagId="hasTagId" />
+    <BookmarkCard v-if="hasTagId" :bookmarks="this.bookmarks" />
+    <BookmarkCard v-else :bookmarks="this.totalBookmarks" />
     <Infinite-loading
       :identifier="infiniteId"
       @infinite="infiniteHandler"
@@ -28,8 +29,8 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { CLEAR_BOOKMARKS, FETCH_TOTAL_BOOKMARKS, FETCH_MORE_TOTAL_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
-import { TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
+import { CLEAR_BOOKMARKS, CLEAR_TOTAL_BOOKMARKS, FETCH_TOTAL_BOOKMARKS, FETCH_MORE_TOTAL_BOOKMARKS, FETCH_MORE_BOOKMARKS, FETCH_TAG_WITH_BOOKMARKS } from '@/store/share/actionTypes.js';
+import { TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY, IS_TOTAL_BOOKMARKS_EMPTY } from '@/store/share/getterTypes.js';
 import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 import BookmarkCard from '@/views/bookmark/component/BookmarkCard.vue';
@@ -51,7 +52,7 @@ export default {
     };
   },
   beforeRouteUpdate(to, from, next) {
-    this[CLEAR_BOOKMARKS]();
+    this[(CLEAR_BOOKMARKS, CLEAR_TOTAL_BOOKMARKS)]();
     next();
     this.changeTag();
   },
@@ -59,7 +60,7 @@ export default {
     this.changeTag();
   },
   computed: {
-    ...mapGetters([TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY]),
+    ...mapGetters([TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY, IS_TOTAL_BOOKMARKS_EMPTY]),
   },
   methods: {
     ...mapActions([
@@ -68,6 +69,7 @@ export default {
       FETCH_TAG_WITH_BOOKMARKS,
       FETCH_MORE_BOOKMARKS,
       CLEAR_BOOKMARKS,
+      CLEAR_TOTAL_BOOKMARKS,
     ]),
     ...mapMutations([SHOW_SNACKBAR]),
     doyouhavetagid() {
@@ -104,6 +106,7 @@ export default {
       this.page = 1;
       this.infiniteId += 1;
       this.isInitialLoadingCompleted = false;
+      this.hasTagId = this.doyouhavetagid();
       let bookmarks;
       if (this.hasTagId === true) {
         bookmarks = await this[FETCH_TAG_WITH_BOOKMARKS]({
