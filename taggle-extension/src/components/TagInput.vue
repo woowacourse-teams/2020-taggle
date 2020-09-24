@@ -15,13 +15,13 @@
 import VueTagsInput from '@johmun/vue-tags-input';
 import { mapMutations, mapActions, mapGetters } from 'vuex';
 import {
-  ADD_TAG_ON_BOOKMARK,
+  CREATE_TAG_BOOKMARK,
   CREATE_TAG,
-  DELETE_TAG_ON_BOOKMARK,
-  FETCH_BOOKMARK_WITH_TAGS,
-} from '@/store/share/actionsType.js';
-import { BOOKMARK_ID, TAGS_WITH_BOOKMARK, GET_TAG_ID_BY_NAME } from '@/store/share/gettersType.js';
-import { SHOW_SNACKBAR } from '@/store/share/mutationsType.js';
+  DELETE_TAG_BOOKMARK,
+  FETCH_BOOKMARK_DETAIL,
+} from '@/store/share/actionTypes.js';
+import { BOOKMARK_ID, BOOKMARK_WITH_TAGS, GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { SNACKBAR_MESSAGES } from '@/utils/constants.js';
 
 export default {
@@ -39,13 +39,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([BOOKMARK_ID, GET_TAG_ID_BY_NAME, TAGS_WITH_BOOKMARK]),
+    ...mapGetters([BOOKMARK_ID, GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS]),
   },
   watch: {
     async [BOOKMARK_ID]() {
       if (this[BOOKMARK_ID]) {
         try {
-          await this[FETCH_BOOKMARK_WITH_TAGS](this[BOOKMARK_ID]);
+          await this[FETCH_BOOKMARK_DETAIL](this[BOOKMARK_ID]);
           this.initTags();
         } catch (e) {
           this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.TAG_BOOKMARK.FETCH.FAIL);
@@ -55,16 +55,16 @@ export default {
   },
   methods: {
     ...mapMutations([SHOW_SNACKBAR]),
-    ...mapActions([ADD_TAG_ON_BOOKMARK, CREATE_TAG, DELETE_TAG_ON_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS]),
+    ...mapActions([CREATE_TAG_BOOKMARK, CREATE_TAG, DELETE_TAG_BOOKMARK, FETCH_BOOKMARK_DETAIL]),
     async onAddTagBookmark(data) {
       this.tagCreateRequest.name = data.tag.text;
       try {
         const createdTagId = await this[CREATE_TAG](this.tagCreateRequest);
-        await this[ADD_TAG_ON_BOOKMARK]({
+        await this[CREATE_TAG_BOOKMARK]({
           bookmarkId: this[BOOKMARK_ID],
           tagId: createdTagId,
         });
-        await this[FETCH_BOOKMARK_WITH_TAGS](this[BOOKMARK_ID]);
+        await this[FETCH_BOOKMARK_DETAIL](this[BOOKMARK_ID]);
         data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.TAG_BOOKMARK.ADD.FAIL);
@@ -74,18 +74,18 @@ export default {
       const targetTagName = data.tag.text;
       const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await this[DELETE_TAG_ON_BOOKMARK]({
+        await this[DELETE_TAG_BOOKMARK]({
           bookmarkId: this[BOOKMARK_ID],
           tagId: targetTagId,
         });
-        await this[FETCH_BOOKMARK_WITH_TAGS](this[BOOKMARK_ID]);
+        await this[FETCH_BOOKMARK_DETAIL](this[BOOKMARK_ID]);
         data.deleteTag();
       } catch (e) {
         this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.TAG_BOOKMARK.DELETE.FAIL);
       }
     },
     initTags() {
-      this.tags = this[TAGS_WITH_BOOKMARK].map((tag) => this.mapTag(tag));
+      this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => this.mapTag(tag));
     },
     mapTag(tagValue) {
       return {
