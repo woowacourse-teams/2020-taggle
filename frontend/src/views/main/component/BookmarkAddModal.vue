@@ -14,7 +14,7 @@
           <v-form ref="bookmarkForm" @submit.prevent="addBookmark">
             <v-text-field
               v-model="url"
-              label="URL 입력후 enter를 입력하여 저장. https://..."
+              label="주소를 입력하세요."
               :rules="rules.bookmark"
               :disabled="isBookmarkAdded"
             ></v-text-field>
@@ -23,7 +23,7 @@
             <v-combobox
               v-model="tags"
               v-if="isBookmarkAdded"
-              label="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
+              label="북마크를 입력하세요."
               :rules="rules.tag"
               small-chips
               multiple
@@ -71,15 +71,9 @@ export default {
   name: 'BookmarkAddModal',
   data() {
     return {
-      createBookmarkRequest: {
-        url: '',
-      },
-      tagCreateRequest: {
-        name: '',
-      },
       dialog: false,
-      tags: [],
       isTagsLoaded: false,
+      tags: [],
       rules: {
         bookmark: validator.bookmark.url,
         tag: validator.tag.name,
@@ -95,7 +89,8 @@ export default {
       }
     },
     tags(newTags, oldTags) {
-      if (this.dialog && !this.isTagsLoaded) {
+      this.$refs.tagForm.resetValidation();
+      if (!this.isTagsLoaded) {
         this.isTagsLoaded = true;
         return;
       }
@@ -103,7 +98,8 @@ export default {
         this.onAddTagBookmark(newTags[newTags.length - 1]);
       }
       if (newTags.length < oldTags.length) {
-        this.onDeleteTagBookmark(oldTags[oldTags.length - 1]);
+        const removeTagName = oldTags.filter((tag) => !newTags.includes(tag))[0];
+        this.onDeleteTagBookmark(removeTagName);
       }
     },
   },
@@ -123,11 +119,11 @@ export default {
       CREATE_BOOKMARK,
     ]),
     ...mapMutations([SHOW_SNACKBAR, RESET_BOOKMARK_WITH_TAGS]),
-    closeModal() {
-      this.dialog = false;
-    },
     openModal() {
       this.dialog = true;
+    },
+    closeModal() {
+      this.dialog = false;
     },
     clearInputTagForm() {
       this.tags = [];
@@ -136,33 +132,30 @@ export default {
       this.isTagsLoaded = false;
       this[RESET_BOOKMARK_WITH_TAGS]();
       this.$refs.bookmarkForm.resetValidation();
+      this.$refs.tagForm.resetValidation();
     },
     async addBookmark() {
       if (!this.$refs.bookmarkForm.validate()) {
         return;
       }
       try {
+        this.isTagsLoaded = false;
         this.bookmarkId = await this[CREATE_BOOKMARK]({ url: this.url });
         await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
-        this.initTags();
+        this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => tag.name);
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
       }
     },
     async onAddTagBookmark(targetTagName) {
-      if (this.tags.length > 10) {
-        this.tags.pop();
-        return;
-      }
-      if (!this.$refs.tagForm.validate()) {
+      if (this.tags.length > 10 || !this.$refs.tagForm.validate()) {
         this.tags.splice(this.tags.indexOf(targetTagName), 1);
-        this.tags = [...this.tags];
         return;
       }
       try {
-        const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
-        await this[CREATE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        const tagId = await this[CREATE_TAG]({ name: targetTagName });
+        await this[CREATE_TAG_BOOKMARK]({ tagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
         await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
@@ -171,28 +164,17 @@ export default {
       }
     },
     async onDeleteTagBookmark(targetTagName) {
-      if (this.tags.length === 0) {
-        return;
-      }
-      const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
       try {
-        await this[DELETE_TAG_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        const tagId = this[GET_TAG_ID_BY_NAME](targetTagName);
+        await this[DELETE_TAG_BOOKMARK]({ tagId, bookmarkId: this.bookmarkId });
         await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
         if (this.tags.indexOf(targetTagName) !== -1) {
           this.tags.splice(this.tags.indexOf(targetTagName), 1);
-          this.tags = [...this.tags];
         }
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
       }
-    },
-    initTags() {
-      if (this[IS_TAGS_EMPTY]) {
-        this.isTagsLoaded = true;
-        return;
-      }
-      this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => tag.name);
     },
   },
 };
