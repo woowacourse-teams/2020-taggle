@@ -7,9 +7,9 @@
 
 <script>
 import { mapMutations, mapActions, mapGetters } from 'vuex';
-import { DELETE_BOOKMARK, CREATE_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS } from '@/store/share/actionsType.js';
-import { BOOKMARK_ID } from '@/store/share/gettersType.js';
-import { SHOW_SNACKBAR } from '@/store/share/mutationsType.js';
+import { DELETE_BOOKMARK, CREATE_BOOKMARK, FETCH_BOOKMARK_DETAIL } from '@/store/share/actionTypes.js';
+import { BOOKMARK_ID } from '@/store/share/getterTypes.js';
+import { SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import { SNACKBAR_MESSAGES } from '@/utils/constants.js';
 
 export default {
@@ -39,11 +39,11 @@ export default {
   },
   methods: {
     ...mapMutations([SHOW_SNACKBAR]),
-    ...mapActions([DELETE_BOOKMARK, CREATE_BOOKMARK, FETCH_BOOKMARK_WITH_TAGS]),
+    ...mapActions([DELETE_BOOKMARK, CREATE_BOOKMARK, FETCH_BOOKMARK_DETAIL]),
     async onCreateBookmark() {
       try {
         const createdBookmarkId = await this[CREATE_BOOKMARK](this.bookmarkCreateRequest);
-        await this[FETCH_BOOKMARK_WITH_TAGS](createdBookmarkId);
+        await this[FETCH_BOOKMARK_DETAIL](createdBookmarkId);
         this.$emit('createBookmark');
       } catch (e) {
         this[SHOW_SNACKBAR](SNACKBAR_MESSAGES.BOOKMARK.ADD.FAIL);
