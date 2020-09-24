@@ -1,6 +1,7 @@
 <template>
   <v-card :flat="true">
     <TotalBookmarkList/>
+    <UntaggedBookmarkList/>
     <v-list v-for="category in categories" :key="category.id" class="grow">
       <CategoryGroup :category="category" />
     </v-list>
@@ -13,10 +14,12 @@ import { mapActions, mapGetters } from 'vuex';
 import { SEARCHED_CATEGORIES, TOTAL_CATEGORIES } from '@/store/share/getterTypes.js';
 import CategoryGroup from '@/views/header/component/CategoryGroup.vue';
 import TotalBookmarkList from '@/views/header/component/TotalBookmarkList.vue';
+import UntaggedBookmarkList from '@/views/header/component/UntaggedBookmarkList.vue';
 
 export default {
   name: 'TagNavigationBody',
   components: {
+    UntaggedBookmarkList,
     CategoryGroup,
     TotalBookmarkList,
   },
