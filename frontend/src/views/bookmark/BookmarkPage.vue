@@ -5,6 +5,7 @@
     align="center"
     style="height: 100% !important;"
   >
+  <v-row v-if="isBookmarksExist" justify="center" align="center" style="height: 100% !important;">
     <v-col>
       <div class="ma-3 text-center">
         <h3 class="text--primary">북마크가 존재하지 않습니다.</h3>
@@ -61,6 +62,10 @@ export default {
   },
   computed: {
     ...mapGetters([TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY, IS_TOTAL_BOOKMARKS_EMPTY]),
+    ...mapGetters([BOOKMARKS, IS_BOOKMARKS_EMPTY]),
+    isBookmarksExist() {
+      return this.isInitialLoadingCompleted && this[IS_BOOKMARKS_EMPTY];
+    },
   },
   methods: {
     ...mapActions([

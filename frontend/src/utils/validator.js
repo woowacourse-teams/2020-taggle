@@ -5,6 +5,7 @@ const validator = {
       (v) =>
         /^(https?):\/\/[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]$/.test(v) || 'URL은 유효한 형태여야 합니다.',
     ],
+    tags: [(v) => v.length <= 10 || '북마크에 최대 10개의 태그를 추가할 수 있습니다.'],
   },
   category: {
     title: [
@@ -17,9 +18,6 @@ const validator = {
   tag: {
     name: [
       (v) => {
-        if (v instanceof Array && v.length === 0) {
-          return "";
-        }
         if (!v[v.length - 1]) {
           return '빈값일 수 없습니다.';
         }
