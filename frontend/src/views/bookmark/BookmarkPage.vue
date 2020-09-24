@@ -48,7 +48,7 @@ export default {
       limit: 10,
       infiniteId: +new Date(),
       isInitialLoadingCompleted: false,
-      hasTagId: this.doyouhavetagid(),
+      hasTagId: this.checkTagId(),
     };
   },
   beforeRouteUpdate(to, from, next) {
@@ -72,7 +72,7 @@ export default {
       CLEAR_TOTAL_BOOKMARKS,
     ]),
     ...mapMutations([SHOW_SNACKBAR]),
-    doyouhavetagid() {
+    checkTagId() {
       return !!this.$route.query.tag;
     },
     async infiniteHandler($state) {
@@ -106,7 +106,7 @@ export default {
       this.page = 1;
       this.infiniteId += 1;
       this.isInitialLoadingCompleted = false;
-      this.hasTagId = this.doyouhavetagid();
+      this.hasTagId = this.checkTagId();
       let bookmarks;
       if (this.hasTagId === true) {
         bookmarks = await this[FETCH_TAG_WITH_BOOKMARKS]({
