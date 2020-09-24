@@ -1,5 +1,5 @@
 <template>
-  <v-list-item :to="{ name: 'bookmarks', params: { id: subItem.id } }">
+  <v-list-item @click="push">
     <v-list-item-title>
       {{ subItem.name }}
     </v-list-item-title>
@@ -22,6 +22,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  methods: {
+    push() {
+      this.$router.push({name: 'bookmarks', query: { tag: this.subItem.id }}).catch(() => {});
+    }
   },
 };
 </script>

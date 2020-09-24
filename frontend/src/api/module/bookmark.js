@@ -3,8 +3,8 @@ import ApiService from '@/api/index.js';
 const BASE_URL = '/api/v1/bookmarks';
 
 const BookmarkService = {
-  findBookmarks(tagId) {
-    return ApiService.get(`${BASE_URL}/${tagId}/bookmarks`);
+  findBookmarks(offset, limit) {
+    return ApiService.get(`${BASE_URL}?offset=${offset}&limit=${limit}`);
   },
   findBookmarksByTagId(tagId, offset, limit) {
     return ApiService.get(`${BASE_URL}?tag=${tagId}&offset=${offset}&limit=${limit}`);

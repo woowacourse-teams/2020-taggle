@@ -19,7 +19,11 @@ router.beforeEach(async (to, from, next) => {
   if (to.matched.some((routeInfo) => routeInfo.meta.requiresAuth)) {
     try {
       await store.dispatch(FETCH_USER);
-      next();
+      if (to.name === 'main') {
+        next('/bookmarks');
+      } else {
+        next();
+      }
     } catch (e) {
       next('/signin');
     }

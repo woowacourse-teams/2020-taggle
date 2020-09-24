@@ -11,6 +11,8 @@ export const BOOKMARK_WITH_TAGS = 'bookmarkTags';
 export const IS_TAGS_EMPTY = 'isTagsEmpty';
 export const GET_TAG_ID_BY_NAME = 'getTagIdByName';
 export const IS_BOOKMARKS_EMPTY = 'isBookmarksEmpty';
+export const TOTAL_BOOKMARKS = 'totalBookmarks';
+export const IS_TOTAL_BOOKMARKS_EMPTY = 'isTotalBookmarksEmpty';
 
 // category
 export const ALL_CATEGORIES_FOR_SELECT = 'allCategoriesForSelect';

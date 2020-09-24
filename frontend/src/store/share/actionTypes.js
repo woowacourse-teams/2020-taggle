@@ -11,6 +11,9 @@ export const DELETE_TAG = 'deleteTag';
 export const UPDATE_TAG = 'updateTag';
 
 // bookmark
+export const FETCH_TOTAL_BOOKMARKS = 'fetchTotalBookmarks';
+export const FETCH_MORE_TOTAL_BOOKMARKS = 'fetchMoreTotalBookmarks';
+export const CLEAR_TOTAL_BOOKMARKS = 'clearTotalBookmarks';
 export const FETCH_MORE_BOOKMARKS = 'fetchMoreBookmarks';
 export const CLEAR_BOOKMARKS = 'clearBookmarks';
 export const FETCH_BOOKMARK_DETAIL = 'fetchBookmarkDetail';
