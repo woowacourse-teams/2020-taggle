@@ -3,7 +3,7 @@
     <v-list-item-group>
       <v-list-item>
         <v-list-item-icon class="mx-0">
-          <v-icon>dehaze</v-icon>
+          <v-icon>reorder</v-icon>
         </v-list-item-icon>
         <v-list-item-content class="font-weight-black text-h7 mx-4" @click="push">
           All
