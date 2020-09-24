@@ -20,17 +20,26 @@
               </div>
             </template>
             <v-list>
+              <v-list-item
+                href="https://chrome.google.com/webstore/detail/taggle/oacdjiemdacpldngplhlklpkeijpjijc"
+                target="_blank"
+              >
+                <v-list-item-title>크롬 확장 설치하기</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click.prevent="openUserGuideDialog">
+                <v-list-item-title>사용법</v-list-item-title>
+              </v-list-item>
               <v-list-item to="/profile">
-                <v-list-item-title>Profile</v-list-item-title>
+                <v-list-item-title>프로필</v-list-item-title>
               </v-list-item>
               <v-list-item href="/oauth2/logout">
-                <v-list-item-title>Logout</v-list-item-title>
+                <v-list-item-title>로그아웃</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
         </template>
+        <UserGuideDialog :userGuideDialog="guideDialog" :permanentClose="false" @close="guideDialog = false" />
       </v-navigation-drawer>
-
       <!-- tags & categories -->
       <TagNavigation />
     </v-row>
@@ -42,14 +51,24 @@ import { FETCH_CATEGORIES } from '@/store/share/actionTypes.js';
 import { USER } from '@/store/share/getterTypes.js';
 import { mapActions, mapGetters } from 'vuex';
 import TagNavigation from '@/views/header/component/TagNavigation.vue';
+import UserGuideDialog from '@/views/header/component/UserGuideDialog.vue';
 
 export default {
   name: 'BookmarkHeader',
   components: {
+    UserGuideDialog,
     TagNavigation,
+  },
+  data() {
+    return {
+      guideDialog: false,
+    };
   },
   methods: {
     ...mapActions([FETCH_CATEGORIES]),
+    openUserGuideDialog() {
+      this.guideDialog = true;
+    },
   },
   computed: {
     ...mapGetters([USER]),
