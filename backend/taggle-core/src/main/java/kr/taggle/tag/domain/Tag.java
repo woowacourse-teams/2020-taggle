@@ -26,7 +26,7 @@ public class Tag {
     private Long id;
 
     @NotEmpty
-    @Column(nullable = false)
+    @Column(nullable = false, length = 25)
     private String name;
 
     @ManyToOne

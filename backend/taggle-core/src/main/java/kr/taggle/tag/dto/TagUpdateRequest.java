@@ -1,17 +1,13 @@
 package kr.taggle.tag.dto;
 
-import javax.validation.constraints.NotNull;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
-public class TagRequest {
-
-    @NotNull
-    private Long id;
+public class TagUpdateRequest {
+    private Long categoryId;
 }

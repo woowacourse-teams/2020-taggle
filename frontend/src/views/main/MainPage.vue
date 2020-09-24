@@ -8,12 +8,14 @@
       <BookmarkAddModal v-if="bookmarkAddModalEnabled()" />
       <Snackbar />
     </v-main>
+    <UserGuideDialog :userGuideDialog="guideDialog" :permanentClose="true" @close="guideDialog = false" />
   </v-app>
 </template>
 
 <script>
 import BookmarkHeader from '@/views/header/BookmarkHeader.vue';
 import BookmarkAddModal from '@/views/main/component/BookmarkAddModal.vue';
+import UserGuideDialog from '@/views/header/component/UserGuideDialog.vue';
 import Snackbar from '@/views/main/component/Snackbar.vue';
 
 export default {
@@ -21,7 +23,16 @@ export default {
   components: {
     BookmarkHeader,
     BookmarkAddModal,
+    UserGuideDialog,
     Snackbar,
+  },
+  data() {
+    return {
+      guideDialog: false,
+    };
+  },
+  created() {
+    this.guideDialog = localStorage.getItem('dont_look_again') !== 'true';
   },
   methods: {
     bookmarkAddModalEnabled() {

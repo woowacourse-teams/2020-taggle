@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.taggle.category.service.CategoryService;
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
-import kr.taggle.tag.dto.TagsResponse;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 
@@ -36,12 +36,12 @@ public class CategoryController {
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         final CategoryResponse category = categoryService.createCategory(user, categoryRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Location", "/api/v1/categories/" + category.getId())
+                .header("Location", String.format("/api/v1/categories/%d", category.getId()))
                 .body(category);
     }
 
     @GetMapping
-    public ResponseEntity<List<TagsResponse>> findAllCategories(
+    public ResponseEntity<List<CategoryDetailResponse>> findAllCategories(
             @AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(categoryService.findAllTagsBy(user));
@@ -53,16 +53,6 @@ public class CategoryController {
             @PathVariable final Long id,
             @RequestBody @Valid final CategoryRequest categoryRequest) {
         categoryService.updateCategory(user, id, categoryRequest);
-        return ResponseEntity.ok()
-                .build();
-    }
-
-    @PutMapping("/{categoryId}/tags/{tagId}")
-    public ResponseEntity<Void> updateCategoryOnTag(
-            @AuthenticationPrincipal final SessionUser user,
-            @PathVariable final Long categoryId,
-            @PathVariable final Long tagId) {
-        categoryService.updateCategoryOnTag(user, categoryId, tagId);
         return ResponseEntity.ok()
                 .build();
     }

@@ -17,19 +17,19 @@ import kr.taggle.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/me")
 @RestController
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/me")
+    @GetMapping
     public ResponseEntity<SessionUser> getUserOfMine(@AuthenticationPrincipal final SessionUser user) {
         return ResponseEntity.ok()
                 .body(user);
     }
 
-    @PutMapping("/me")
+    @PutMapping
     public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal final SessionUser user,
             @RequestBody @Valid final ProfileUpdateRequest profileUpdateRequest) {
         userService.updateProfile(user.getId(), profileUpdateRequest);
@@ -38,7 +38,7 @@ public class UserController {
                 .build();
     }
 
-    @DeleteMapping("/me")
+    @DeleteMapping
     public ResponseEntity<Void> removeUserOfMine(@AuthenticationPrincipal final SessionUser user) {
         userService.removeUser(user.getId());
 

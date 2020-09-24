@@ -3,8 +3,11 @@ import BookmarkPage from '@/views/bookmark/BookmarkPage.vue';
 const bookmarkRoutes = [
   {
     name: 'bookmarks',
-    path: '/tags/:id/bookmarks',
+    path: '/bookmarks',
     component: BookmarkPage,
+    props: (route) => ({
+      tag: route.query.id,
+    })
   },
 ];
 

@@ -14,10 +14,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import CardStream from '@/views/bookmark/component/CardStream.vue';
 import CardModule from '@/views/bookmark/component/CardModule.vue';
-import { BOOKMARKS } from '@/store/share/getterTypes.js';
 
 export default {
   name: 'BookmarkCard',
@@ -25,8 +23,8 @@ export default {
     CardStream,
     CardModule,
   },
-  computed: {
-    ...mapGetters([BOOKMARKS]),
+  props: {
+    bookmarks: Array,
   },
   data() {
     return {

@@ -1,9 +1,17 @@
 package kr.taggle.common.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.naming.AuthenticationException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -19,9 +27,12 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class ApiControllerAdvice {
 
+    @Autowired
+    private MessageSource messageSource;
+
     @ExceptionHandler(TagNotFoundException.class)
     public ResponseEntity<String> handleTagNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -30,7 +41,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(BookmarkNotFoundException.class)
     public ResponseEntity<String> handleBookmarkNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -39,7 +50,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(TagBookmarkNotFoundException.class)
     public ResponseEntity<String> handleTagBookmarkNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -48,7 +59,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(final Exception exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -57,7 +68,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(CrawlerConnectionException.class)
     public ResponseEntity<String> crawlerConnectionException(final CrawlerConnectionException exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -66,11 +77,26 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(InvalidURLException.class)
     public ResponseEntity<String> InvalidURLException(final InvalidURLException exception) {
-        log.error(exception.getMessage());
+        log.info(exception.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body("잘못된 URL 입니다.");
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> MethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
+        log.info(exception.getMessage());
+
+        Map<String, String> errors = new HashMap<>();
+        for (ObjectError error : exception.getBindingResult().getAllErrors()) {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        }
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errors);
     }
 
     @ExceptionHandler(Exception.class)
@@ -84,7 +110,7 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<String> authenticationException(final AuthenticationException authenticationException) {
-        log.error(authenticationException.getMessage());
+        log.info(authenticationException.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

@@ -28,22 +28,22 @@ public class UserControllerTest extends ControllerTest {
     @DisplayName("getUserOfMine: 사용자 정보를 가져온다.")
     @Test
     void getUserOfMine() throws Exception {
-        read(user, "/api/v1/users/me", jsonPath("$.id", is(user.getId().intValue())))
+        read(user, "/api/v1/me", jsonPath("$.id", is(user.getId().intValue())))
                 .andDo(UserDocumentation.getUserOfMine());
     }
 
     @DisplayName("updateNotificationEmail: 사용자 알림 이메일을 수정한다.")
     @Test
     void updateProfile() throws Exception {
-        updateByJsonParams(user, "/api/v1/users/me",
-                "{ \"notificationEmail\": \"tigger@kakao.com\",\"notificationEnabled\": \"True\"}")
+        updateByJsonParams(user, "/api/v1/me",
+                "{ \"notificationEmail\": \"tigger@kakao.com\",\"notificationEnabled\": true}")
                 .andDo(UserDocumentation.updateProfile());
     }
 
     @DisplayName("removeUserOfMine: 회원 탈퇴를 한다.")
     @Test
     void removeUserOfMine() throws Exception {
-        remove(user, "/api/v1/users/me")
+        remove(user, "/api/v1/me")
                 .andDo(UserDocumentation.removeUser());
     }
 }

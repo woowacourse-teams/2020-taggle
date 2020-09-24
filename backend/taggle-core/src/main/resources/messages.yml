@@ -1,0 +1,5 @@
+size:
+  categoryRequest:
+    title: 카테고리는 25자보다 클 수 없습니다.
+  tagCreateRequest:
+    name: 태그는 25자보다 클 수 없습니다.

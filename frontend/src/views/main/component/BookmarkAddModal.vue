@@ -14,20 +14,38 @@
           <v-form ref="bookmarkForm" @submit.prevent="addBookmark">
             <v-text-field
               v-model="url"
-              label="URL 입력후 enter를 입력하여 저장. https://..."
-              :rules="rules"
+              label="주소를 입력하세요."
+              :rules="rules.bookmark"
               :disabled="isBookmarkAdded"
             ></v-text-field>
           </v-form>
-          <vue-tags-input
-            v-model="tag"
-            v-if="isBookmarkAdded"
-            :tags="tags"
-            @before-adding-tag="onAddTagBookmark"
-            @before-deleting-tag="onDeleteTagBookmark"
-            @tags-changed="(newTags) => (tags = newTags)"
-            placeholder="해당 북마크에 태그를 추가하거나 삭제할 수 있습니다."
-          />
+          <v-form ref="tagForm">
+            <v-combobox
+              v-model="tags"
+              v-if="isBookmarkAdded"
+              label="북마크를 입력하세요."
+              :rules="rules.tag"
+              small-chips
+              multiple
+              outlined
+              hide-details
+            >
+              <template v-slot:selection="{ attrs, item, select, selected }">
+                <v-chip
+                  v-bind="attrs"
+                  color="light-blue lighten-1"
+                  text-color="white"
+                  :input-value="selected"
+                  @click="select"
+                  close
+                  small
+                  @click:close="onDeleteTagBookmark(item)"
+                >
+                  <strong>{{ item }}</strong>
+                </v-chip>
+              </template>
+            </v-combobox>
+          </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -38,35 +56,28 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { RESET_BOOKMARK_WITH_TAGS, SHOW_SNACKBAR } from '@/store/share/mutationTypes.js';
 import {
-  ADD_TAG_ON_BOOKMARK,
-  DELETE_TAG_ON_BOOKMARK,
-  FETCH_BOOKMARK_WITH_TAGS,
+  CREATE_TAG_BOOKMARK,
+  DELETE_TAG_BOOKMARK,
+  FETCH_BOOKMARK_DETAIL,
   FETCH_CATEGORIES,
   CREATE_TAG,
   CREATE_BOOKMARK,
 } from '@/store/share/actionTypes.js';
-import { GET_TAG_ID_BY_NAME } from '@/store/share/getterTypes.js';
+import { GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS } from '@/store/share/getterTypes.js';
 import { MESSAGES } from '@/utils/constants.js';
 import validator from '@/utils/validator.js';
-import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
   name: 'BookmarkAddModal',
-  components: {
-    VueTagsInput,
-  },
   data() {
     return {
-      createBookmarkRequest: {
-        url: '',
-      },
-      tagCreateRequest: {
-        name: '',
-      },
       dialog: false,
-      tag: '',
+      isTagsLoaded: false,
       tags: [],
-      rules: validator.bookmark.url,
+      rules: {
+        bookmark: validator.bookmark.url,
+        tag: validator.tag.name,
+      },
       bookmarkId: '',
       url: '',
     };
@@ -77,9 +88,23 @@ export default {
         this.clearInputTagForm();
       }
     },
+    tags(newTags, oldTags) {
+      this.$refs.tagForm.resetValidation();
+      if (!this.isTagsLoaded) {
+        this.isTagsLoaded = true;
+        return;
+      }
+      if (newTags.length > oldTags.length) {
+        this.onAddTagBookmark(newTags[newTags.length - 1]);
+      }
+      if (newTags.length < oldTags.length) {
+        const removeTagName = oldTags.filter((tag) => !newTags.includes(tag))[0];
+        this.onDeleteTagBookmark(removeTagName);
+      }
+    },
   },
   computed: {
-    ...mapGetters([GET_TAG_ID_BY_NAME]),
+    ...mapGetters([GET_TAG_ID_BY_NAME, BOOKMARK_WITH_TAGS]),
     isBookmarkAdded() {
       return !!this.bookmarkId;
     },
@@ -87,60 +112,66 @@ export default {
   methods: {
     ...mapActions([
       FETCH_CATEGORIES,
-      FETCH_BOOKMARK_WITH_TAGS,
-      ADD_TAG_ON_BOOKMARK,
-      DELETE_TAG_ON_BOOKMARK,
+      FETCH_BOOKMARK_DETAIL,
+      CREATE_TAG_BOOKMARK,
+      DELETE_TAG_BOOKMARK,
       CREATE_TAG,
       CREATE_BOOKMARK,
     ]),
     ...mapMutations([SHOW_SNACKBAR, RESET_BOOKMARK_WITH_TAGS]),
-    closeModal() {
-      this.dialog = false;
-    },
     openModal() {
       this.dialog = true;
     },
+    closeModal() {
+      this.dialog = false;
+    },
     clearInputTagForm() {
-      this.tag = '';
       this.tags = [];
       this.bookmarkId = '';
       this.url = '';
+      this.isTagsLoaded = false;
       this[RESET_BOOKMARK_WITH_TAGS]();
       this.$refs.bookmarkForm.resetValidation();
+      this.$refs.tagForm.resetValidation();
     },
     async addBookmark() {
       if (!this.$refs.bookmarkForm.validate()) {
         return;
       }
       try {
+        this.isTagsLoaded = false;
         this.bookmarkId = await this[CREATE_BOOKMARK]({ url: this.url });
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
+        this.tags = this[BOOKMARK_WITH_TAGS].map((tag) => tag.name);
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.SUCCESS);
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.BOOKMARK.ADD.FAIL);
       }
     },
-    async onAddTagBookmark(data) {
-      const targetTagName = data.tag.text;
+    async onAddTagBookmark(targetTagName) {
+      if (this.tags.length > 10 || !this.$refs.tagForm.validate()) {
+        this.tags.splice(this.tags.indexOf(targetTagName), 1);
+        return;
+      }
       try {
-        const targetTagId = await this[CREATE_TAG]({ name: targetTagName });
-        await this[ADD_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
+        const tagId = await this[CREATE_TAG]({ name: targetTagName });
+        await this[CREATE_TAG_BOOKMARK]({ tagId, bookmarkId: this.bookmarkId });
         await this[FETCH_CATEGORIES]();
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.SUCCESS);
-        data.addTag();
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.ADD.FAIL);
       }
     },
-    async onDeleteTagBookmark(data) {
-      const targetTagName = data.tag.text;
-      const targetTagId = this[GET_TAG_ID_BY_NAME](targetTagName);
+    async onDeleteTagBookmark(targetTagName) {
       try {
-        await this[DELETE_TAG_ON_BOOKMARK]({ tagId: targetTagId, bookmarkId: this.bookmarkId });
-        await this[FETCH_BOOKMARK_WITH_TAGS]({ bookmarkId: this.bookmarkId });
+        const tagId = this[GET_TAG_ID_BY_NAME](targetTagName);
+        await this[DELETE_TAG_BOOKMARK]({ tagId, bookmarkId: this.bookmarkId });
+        await this[FETCH_BOOKMARK_DETAIL]({ bookmarkId: this.bookmarkId });
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.SUCCESS);
-        data.deleteTag();
+        if (this.tags.indexOf(targetTagName) !== -1) {
+          this.tags.splice(this.tags.indexOf(targetTagName), 1);
+        }
       } catch (e) {
         this[SHOW_SNACKBAR](MESSAGES.TAG_WITH_BOOKMARKS.DELETE.FAIL);
       }

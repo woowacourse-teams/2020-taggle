@@ -19,13 +19,24 @@ public class TagDocumentation {
                         headerWithName("Location").description("생성된 태그의 URI")
                 ),
                 responseFields(
-                        fieldWithPath("id").description("태그 ID"),
-                        fieldWithPath("name").description("태그 이름")
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("태그 ID"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("태그 이름")
                 )
         );
     }
 
-    public static RestDocumentationResultHandler removeTags() {
+    public static RestDocumentationResultHandler updateTag() {
+        return document("tags/update",
+                pathParameters(
+                        parameterWithName("tagId").description("태그 ID")
+                ),
+                requestFields(
+                        fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("카테고리 ID")
+                )
+        );
+    }
+
+    public static RestDocumentationResultHandler removeTag() {
         return document("tags/delete",
                 pathParameters(
                         parameterWithName("tagId").description("태그 ID")

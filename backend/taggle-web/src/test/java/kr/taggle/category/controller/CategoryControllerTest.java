@@ -3,6 +3,7 @@ package kr.taggle.category.controller;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,18 +13,13 @@ import kr.taggle.ControllerTest;
 import kr.taggle.category.docs.CategoryDocumentation;
 import kr.taggle.category.domain.Category;
 import kr.taggle.setup.domain.CategorySetup;
-import kr.taggle.setup.domain.TagSetup;
 import kr.taggle.setup.domain.UserSetup;
-import kr.taggle.tag.domain.Tag;
 import kr.taggle.user.domain.User;
 
 public class CategoryControllerTest extends ControllerTest {
 
     @Autowired
     private CategorySetup categorySetup;
-
-    @Autowired
-    private TagSetup tagSetup;
 
     @Autowired
     private UserSetup userSetup;
@@ -38,9 +34,14 @@ public class CategoryControllerTest extends ControllerTest {
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
     void createCategory() throws Exception {
-        categorySetup.save(user);
         createByJsonParams(user, "/api/v1/categories", "{\"title\":\"createCategory\"}")
                 .andDo(CategoryDocumentation.createCategory());
+    }
+
+    @DisplayName("expectBadRequestWhenCreateCategory: 카테고리 추가 시 카테고리의 제목 길이가 25 이상이면 오류 메시지를 보낸다.")
+    @Test
+    void expectBadRequestWhenCreateCategory() throws Exception {
+        expectBadRequestWhenPostRequest(user, "/api/v1/categories", "{\"title\":\"this is a test for category-title-length\"}", jsonPath("$.title", Is.is("카테고리는 25자보다 클 수 없습니다.")));
     }
 
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")
@@ -55,18 +56,9 @@ public class CategoryControllerTest extends ControllerTest {
     @Test
     void updateCategory() throws Exception {
         final Category category = categorySetup.save(user);
-        updateByJsonParams(user, "/api/v1/categories/" + category.getId(), "{ \"title\": \"newCategory\" }")
+        updateByJsonParamsAndPathVariables(user, "/api/v1/categories/{categoryId}", "{ \"title\": \"newCategory\" }",
+                category.getId())
                 .andDo(CategoryDocumentation.updateCategory());
-
-    }
-
-    @DisplayName("updateCategoryOnTag: 태그의 카테고리를 변경한다.")
-    @Test
-    void updateCategoryOnTag() throws Exception {
-        final Category category = categorySetup.save(user);
-        final Tag tag = tagSetup.save(user);
-        updateByPathVariables(user, "/api/v1/categories/{categoryId}/tags/{tagId}", +category.getId(), tag.getId())
-                .andDo(CategoryDocumentation.updateCategoryOnTag());
 
     }
 
