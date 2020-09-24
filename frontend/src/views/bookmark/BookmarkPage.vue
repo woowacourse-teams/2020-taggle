@@ -1,10 +1,4 @@
 <template>
-  <v-row
-    v-if="isInitialLoadingCompleted && isBookmarksEmpty && isTotalBookmarksEmpty"
-    justify="center"
-    align="center"
-    style="height: 100% !important;"
-  >
   <v-row v-if="isBookmarksExist" justify="center" align="center" style="height: 100% !important;">
     <v-col>
       <div class="ma-3 text-center">
@@ -62,9 +56,8 @@ export default {
   },
   computed: {
     ...mapGetters([TOTAL_BOOKMARKS, BOOKMARKS, IS_BOOKMARKS_EMPTY, IS_TOTAL_BOOKMARKS_EMPTY]),
-    ...mapGetters([BOOKMARKS, IS_BOOKMARKS_EMPTY]),
     isBookmarksExist() {
-      return this.isInitialLoadingCompleted && this[IS_BOOKMARKS_EMPTY];
+      return this.isInitialLoadingCompleted && this[IS_BOOKMARKS_EMPTY] && this[IS_TOTAL_BOOKMARKS_EMPTY];
     },
   },
   methods: {
