@@ -36,7 +36,7 @@ public class WebMvcConfigTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().exists("Etag"))
-                .andExpect(header().string("Cache-Control","no-cache, must-revalidate"));
+                .andExpect(header().string("Cache-Control","no-cache, must-revalidate, public"));
     }
 
     @DisplayName("Etag가 변경되지 않으면 304 status를 반환한다")

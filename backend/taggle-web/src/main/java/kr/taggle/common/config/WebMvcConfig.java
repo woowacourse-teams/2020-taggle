@@ -18,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
                 .setCachePeriod(60 * 60 * 24 * 365)
-                .setCacheControl(CacheControl.noCache().mustRevalidate());
+                .setCacheControl(CacheControl.noCache().mustRevalidate().cachePublic());
     }
 
     @Bean
