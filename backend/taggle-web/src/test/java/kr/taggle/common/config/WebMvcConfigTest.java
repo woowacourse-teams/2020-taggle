@@ -27,9 +27,9 @@ public class WebMvcConfigTest {
                 .build();
     }
 
-    @DisplayName("정적 리소스 요청에 Etag가 설정 되고 no-cache, must-revalidate로 Cache-Control이 설정된다.")
+    @DisplayName("정적 리소스 요청에 Etag가 설정 되고 no-cache, must-revalidate로 Cache-Control 설정된다.")
     @Test
-    void test() throws Exception{
+    void getEtagAndCacheControl() throws Exception{
         String uri = "/taggle-favicon.ico";
 
         mockMvc.perform(get(uri).accept(MediaType.APPLICATION_JSON))
@@ -41,7 +41,7 @@ public class WebMvcConfigTest {
 
     @DisplayName("Etag가 변경되지 않으면 304 status를 반환한다")
     @Test
-    void test2() throws Exception{
+    void UnChangedEtag() throws Exception{
         String uri = "/img/google-button.57a6f216.png";
 
         MvcResult mvcResult = mockMvc.perform(get(uri))
@@ -61,7 +61,7 @@ public class WebMvcConfigTest {
 
     @DisplayName("Etag가 다를경우 200 status를 반환한다.")
     @Test
-    void test1() throws Exception {
+    void differentEtag() throws Exception {
         String uri = "/img/google-button.57a6f216.png";
 
         mockMvc.perform(get(uri))
