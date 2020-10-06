@@ -10,14 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.bookmark.dto.TagDetailResponse;
-import kr.taggle.category.dto.CategoryResponse;
-import kr.taggle.tag.dto.TagResponse;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import kr.taggle.bookmark.dto.TagDetailResponse;
+import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.tag.dto.CategoryDetailResponse;
+import kr.taggle.tag.dto.TagResponse;
 
-public class TagAcceptanceTest extends AcceptanceTest {
+class TagAcceptanceTest extends AcceptanceTest {
 
     @Transactional
     @Test
@@ -38,7 +38,7 @@ public class TagAcceptanceTest extends AcceptanceTest {
         final String categoryName = "eastjun";
         final CategoryResponse categoryResponse = createCategory(categoryName);
         updateTag(tagResponse.getId(), categoryResponse.getId());
-        List<CategoryDetailResponse> categories = findCategories();
+        final List<CategoryDetailResponse> categories = findCategories();
 
         assertThat(categories.get(1).getTitle()).isEqualTo(categoryName);
         assertThat(categories.get(1).getTags()).hasSize(1);

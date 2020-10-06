@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
-public class CategoryTest {
+class CategoryTest {
     private static final User USER = UserFixture.DEFAULT_USER;
 
     @DisplayName("update: 카테고리를 수정한다.")

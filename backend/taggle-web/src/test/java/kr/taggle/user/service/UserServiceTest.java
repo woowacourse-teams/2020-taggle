@@ -19,7 +19,7 @@ import kr.taggle.user.exception.UserNotFoundException;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-public class UserServiceTest {
+class UserServiceTest {
 
     @Autowired
     private UserService userService;

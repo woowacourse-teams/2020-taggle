@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.tag.dto.CategoryDetailResponse;
 
-public class CategoryAcceptanceTest extends AcceptanceTest {
+class CategoryAcceptanceTest extends AcceptanceTest {
 
     @Transactional
     @Test

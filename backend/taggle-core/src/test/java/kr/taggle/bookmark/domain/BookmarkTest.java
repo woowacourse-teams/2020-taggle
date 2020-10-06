@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
-public class BookmarkTest {
+class BookmarkTest {
 
     private static final String URL = "https://github.com/taggle";
 

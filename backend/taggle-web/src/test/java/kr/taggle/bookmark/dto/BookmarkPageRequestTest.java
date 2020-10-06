@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import kr.taggle.common.exception.InvalidPageRequestException;
 
-public class BookmarkPageRequestTest {
+class BookmarkPageRequestTest {
 
     @DisplayName("toPageable: Pageable 생성")
     @Test

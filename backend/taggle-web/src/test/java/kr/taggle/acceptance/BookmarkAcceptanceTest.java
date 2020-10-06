@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.dto.BookmarkResponse;
 
-public class BookmarkAcceptanceTest extends AcceptanceTest {
+class BookmarkAcceptanceTest extends AcceptanceTest {
 
     @Transactional
     @Test

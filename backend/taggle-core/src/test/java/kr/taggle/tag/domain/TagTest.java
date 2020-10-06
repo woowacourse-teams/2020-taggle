@@ -9,7 +9,7 @@ import kr.taggle.category.domain.Category;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
-public class TagTest {
+class TagTest {
     private static final User USER = UserFixture.DEFAULT_USER;
 
     @DisplayName("updateCategory: 카테고리를 변경한다.")

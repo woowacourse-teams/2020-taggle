@@ -38,7 +38,7 @@ import kr.taggle.user.dto.SessionUser;
 @WithMockUser(roles = "USER")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-public class AcceptanceTest {
+class AcceptanceTest {
 
     @LocalServerPort
     int port;

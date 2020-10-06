@@ -10,7 +10,7 @@ import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.user.domain.User;
 
-public class TagBookmarkTest {
+class TagBookmarkTest {
 
     @DisplayName("constructor: TagBookmark를 생성한다.")
     @Test
