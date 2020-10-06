@@ -1,5 +1,7 @@
 package kr.taggle.tag.domain;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import kr.taggle.category.domain.Category;
 import kr.taggle.user.domain.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,15 +40,12 @@ public class Tag {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Tag(final String name, final User user) {
-        this.name = name;
-        this.category = null;
-        this.user = user;
-    }
-
-    public Tag(final String name, final Category category) {
+    @Builder
+    public Tag(final Long id, final String name, final Category category, final User user) {
+        this.id = id;
         this.name = name;
         this.category = category;
+        this.user = user;
     }
 
     public void updateCategory(final Category category) {
@@ -53,6 +53,6 @@ public class Tag {
     }
 
     public boolean isNotCategorized() {
-        return category == null;
+        return Objects.isNull(category);
     }
 }

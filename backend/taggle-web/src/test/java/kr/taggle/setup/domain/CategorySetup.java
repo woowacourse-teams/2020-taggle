@@ -17,14 +17,29 @@ public class CategorySetup {
     private final TagRepository tagRepository;
 
     public Category save(final User user) {
-        return categoryRepository.save(new Category("project", user));
+        return categoryRepository.save(Category.builder()
+                .title("project")
+                .user(user)
+                .build());
     }
 
     public void saveWithTag(final User user) {
-        final Category category1 = categoryRepository.save(new Category("project1", user));
-        final Tag tag = tagRepository.save(new Tag("taggle1", user));
-        categoryRepository.save(new Category("project2", user));
-        tagRepository.save(new Tag("taggle2", user));
+        final Category category1 = categoryRepository.save(Category.builder()
+                .title("project1")
+                .user(user)
+                .build());
+        final Tag tag = tagRepository.save(Tag.builder()
+                .name("taggle1")
+                .user(user)
+                .build());
+        categoryRepository.save(Category.builder()
+                .title("project2")
+                .user(user)
+                .build());
+        tagRepository.save(Tag.builder()
+                .name("taggle2")
+                .user(user)
+                .build());
         tag.updateCategory(category1);
     }
 }
