@@ -14,6 +14,7 @@
       >
         <template v-slot:selection="{ attrs, item, select, selected }">
           <v-chip
+            class="mt-1"
             v-bind="attrs"
             color="light-blue lighten-1"
             text-color="white"
