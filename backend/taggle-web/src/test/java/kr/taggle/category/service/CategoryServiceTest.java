@@ -10,13 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import kr.taggle.JpaTestConfiguration;
-import kr.taggle.tag.dto.TagUpdateRequest;
-import kr.taggle.tag.service.TagService;
 import kr.taggle.category.domain.Category;
 import kr.taggle.category.domain.CategoryRepository;
 import kr.taggle.category.dto.CategoryRequest;
@@ -24,16 +21,18 @@ import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.category.exception.CategoryNotFoundException;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.domain.Tag;
+import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
-import kr.taggle.tag.dto.CategoryDetailResponse;
+import kr.taggle.tag.dto.TagUpdateRequest;
+import kr.taggle.tag.service.TagService;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = JpaTestConfiguration.class)
-@DataJpaTest
+@SpringBootTest
+@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class CategoryServiceTest {
 
     @Autowired

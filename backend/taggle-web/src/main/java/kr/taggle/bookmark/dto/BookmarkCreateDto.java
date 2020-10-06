@@ -10,17 +10,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class BookmarkCreateDto {
+
     private String url;
     private String title;
     private String description;
     private String image;
 
-    public static BookmarkCreateDto of(BookmarkCreateRequest bookmarkCreateRequest, String title, String description,
-            String image) {
+    public static BookmarkCreateDto of(
+            final BookmarkCreateRequest bookmarkCreateRequest, final String title, final String description,
+            final String image) {
         return new BookmarkCreateDto(bookmarkCreateRequest.getUrl(), title, description, image);
     }
 
-    public Bookmark toEntityWithUser(User user) {
+    public Bookmark toEntityWithUser(final User user) {
         return new Bookmark(url, user, title, description, image);
     }
 }

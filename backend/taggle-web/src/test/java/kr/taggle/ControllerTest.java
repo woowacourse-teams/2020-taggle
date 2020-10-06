@@ -16,11 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import kr.taggle.authentication.UserArgumentResolver;
@@ -30,7 +30,7 @@ import kr.taggle.user.dto.SessionUser;
 @ExtendWith(RestDocumentationExtension.class)
 @WithMockUser(roles = "USER")
 @SpringBootTest
-@Transactional
+@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ControllerTest {
 
     @MockBean
@@ -61,17 +61,18 @@ public class ControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    public void expectBadRequestWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
+    public void expectBadRequestWhenPostRequest(final User user, final String uri, final String jsonParams,
+            final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         mockMvc.perform(post(uri)
-            .content(jsonParams)
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest())
-            .andExpect(expect)
-            .andDo(print());
+                .content(jsonParams)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(expect)
+                .andDo(print());
     }
 
     public ResultActions createByPathVariables(final User user, final String uri, final Object... ids) throws
@@ -125,7 +126,8 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams, final Object... ids) throws
+    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams,
+            final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);

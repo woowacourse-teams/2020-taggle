@@ -7,11 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import kr.taggle.JpaTestConfiguration;
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.category.service.CategoryService;
@@ -27,8 +26,8 @@ import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = JpaTestConfiguration.class)
-@DataJpaTest
+@SpringBootTest
+@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class TagServiceTest {
     private static final String TAG_NAME = "spring boot";
 

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.taggle.category.service.CategoryService;
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
+import kr.taggle.category.service.CategoryService;
 import kr.taggle.tag.dto.CategoryDetailResponse;
 import kr.taggle.user.dto.SessionUser;
 import lombok.RequiredArgsConstructor;

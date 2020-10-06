@@ -8,14 +8,14 @@ import org.junit.jupiter.api.Test;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
-class BookmarkTest {
+public class BookmarkTest {
 
     private static final String URL = "https://github.com/taggle";
 
     @DisplayName("constructor: url을 입력받아 북마크를 생성한다.")
     @Test
     void constructor() {
-        User user = UserFixture.DEFAULT_USER;
+        final User user = UserFixture.DEFAULT_USER;
 
         assertThat(new Bookmark(URL, user, "title", "description", "image")).isInstanceOf(Bookmark.class);
     }

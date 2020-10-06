@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
-class CategoryTest {
+public class CategoryTest {
 
     @DisplayName("constructor: 카테고리를 생성한다.")
     @Test

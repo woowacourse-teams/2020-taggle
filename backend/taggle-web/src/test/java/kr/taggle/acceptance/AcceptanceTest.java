@@ -19,23 +19,25 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.WebApplicationContext;
 
-import kr.taggle.authentication.UserArgumentResolver;
-import kr.taggle.user.domain.Role;
-import kr.taggle.user.domain.User;
-import kr.taggle.user.domain.UserRepository;
-import kr.taggle.user.dto.SessionUser;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import kr.taggle.authentication.UserArgumentResolver;
+import kr.taggle.user.domain.Role;
+import kr.taggle.user.domain.User;
+import kr.taggle.user.domain.UserRepository;
+import kr.taggle.user.dto.SessionUser;
 
 @ExtendWith(SpringExtension.class)
 @WithMockUser(roles = "USER")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class AcceptanceTest {
 
     @LocalServerPort

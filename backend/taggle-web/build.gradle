@@ -68,6 +68,7 @@ tasks.jacocoTestCoverageVerification {
 
             excludes = [
                     'kr.taggle.authentication.UserArgumentResolver',
+                    'kr.taggle.user.dto.OAuthAttributes'
             ]
         }
     }
