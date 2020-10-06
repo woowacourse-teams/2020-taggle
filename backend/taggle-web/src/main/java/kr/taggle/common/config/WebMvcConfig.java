@@ -13,11 +13,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    private static final int MINUTE = 60;
+    private static final int HOUR = 60;
+    private static final int DAY = 24;
+    private static final int YEAR = 365;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
-                .setCachePeriod(60 * 60 * 24 * 365)
+                .setCachePeriod(MINUTE * HOUR * DAY * YEAR)
                 .setCacheControl(CacheControl.noCache().mustRevalidate().cachePublic());
     }
 
