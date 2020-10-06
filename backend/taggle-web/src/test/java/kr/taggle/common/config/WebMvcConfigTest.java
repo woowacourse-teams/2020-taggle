@@ -18,7 +18,7 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 @SpringBootTest
 public class WebMvcConfigTest {
 
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(final WebApplicationContext webApplicationContext) {
