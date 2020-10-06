@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
@@ -19,7 +18,6 @@ import kr.taggle.tag.dto.TagResponse;
 
 class TagAcceptanceTest extends AcceptanceTest {
 
-    @Transactional
     @Test
     void manageTag() {
         // 태그를 생성한다

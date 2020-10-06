@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.dto.BookmarkResponse;
 
 class BookmarkAcceptanceTest extends AcceptanceTest {
 
-    @Transactional
     @Test
     void manageBookmark() {
         // 북마크를 생성한다.

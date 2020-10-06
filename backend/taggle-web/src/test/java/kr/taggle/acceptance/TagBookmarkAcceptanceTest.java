@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.BookmarkResponse;
@@ -15,7 +14,6 @@ import kr.taggle.tag.dto.TagResponse;
 
 class TagBookmarkAcceptanceTest extends AcceptanceTest {
 
-    @Transactional
     @Test
     void manageTagBookmark() {
         // Untagged의 북마크 목록을 불러온다.
