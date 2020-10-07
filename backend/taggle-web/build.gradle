@@ -93,6 +93,7 @@ dependencies {
 
     implementation 'org.springframework:spring-webmvc:5.2.7.RELEASE'
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+    implementation 'com.google.guava:guava:29.0-jre'
 
     asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor:2.0.1.RELEASE'
 }

@@ -9,9 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 
+import kr.taggle.ServiceTest;
 import kr.taggle.category.domain.Category;
 import kr.taggle.category.domain.CategoryRepository;
 import kr.taggle.category.dto.CategoryRequest;
@@ -28,9 +27,7 @@ import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-@SpringBootTest
-@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class CategoryServiceTest {
+class CategoryServiceTest extends ServiceTest {
 
     @Autowired
     private CategoryService categoryService;

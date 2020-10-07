@@ -6,9 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
 
+import kr.taggle.ServiceTest;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
 import kr.taggle.bookmark.dto.BookmarkDetailResponse;
@@ -24,9 +23,7 @@ import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-@SpringBootTest
-@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class TagBookmarkServiceTest {
+class TagBookmarkServiceTest extends ServiceTest {
 
     private static final String TAG_NAME = "spring boot";
     private static final BookmarkPageRequest BOOKMARK_FIND_REQUEST = new BookmarkPageRequest(1, 10);

@@ -8,15 +8,17 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -30,8 +32,11 @@ import kr.taggle.user.dto.SessionUser;
 @ExtendWith(RestDocumentationExtension.class)
 @WithMockUser(roles = "USER")
 @SpringBootTest
-@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@ActiveProfiles("test")
 public class ControllerTest {
+
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @MockBean
     private UserArgumentResolver userArgumentResolver;
@@ -41,12 +46,18 @@ public class ControllerTest {
     @BeforeEach
     void setUp(final WebApplicationContext webApplicationContext,
             final RestDocumentationContextProvider restDocumentationContextProvider) {
+        databaseCleanup.afterPropertiesSet();
 
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
                 .build();
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
+    }
+
+    @AfterEach
+    void tearDown() {
+        databaseCleanup.execute();
     }
 
     public ResultActions createByJsonParams(final User user, final String uri, final String jsonParams) throws

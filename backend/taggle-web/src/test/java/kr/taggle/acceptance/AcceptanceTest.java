@@ -18,7 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
 
 import io.restassured.RestAssured;
@@ -26,6 +26,7 @@ import io.restassured.config.EncoderConfig;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import kr.taggle.DatabaseCleanup;
 import kr.taggle.authentication.UserArgumentResolver;
 import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
@@ -34,11 +35,14 @@ import kr.taggle.user.dto.SessionUser;
 
 @WithMockUser(roles = "USER")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@ActiveProfiles("test")
 class AcceptanceTest {
 
     @LocalServerPort
     int port;
+
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -54,7 +58,10 @@ class AcceptanceTest {
         webAppContextSetup(webApplicationContext);
         config = new RestAssuredMockMvcConfig()
                 .encoderConfig(new EncoderConfig("UTF-8", "UTF-8"));
+
         RestAssured.port = port;
+        databaseCleanup.afterPropertiesSet();
+
         final User user = User.builder()
                 .id(1L)
                 .nickName("tigger")
@@ -69,6 +76,12 @@ class AcceptanceTest {
         final SessionUser sessionUser = new SessionUser(saved);
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        databaseCleanup.execute();
+        reset();
     }
 
     // @formatter:off
@@ -169,10 +182,5 @@ class AcceptanceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
     // @formatter:on
-
-    @AfterEach
-    public void tearDown() {
-        reset();
-    }
 }
 

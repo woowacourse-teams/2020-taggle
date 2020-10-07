@@ -5,21 +5,15 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import kr.taggle.ServiceTest;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.ProfileUpdateRequest;
 import kr.taggle.user.exception.UserNotFoundException;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@Sql(value = "/truncate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class UserServiceTest {
+class UserServiceTest extends ServiceTest {
 
     @Autowired
     private UserService userService;
