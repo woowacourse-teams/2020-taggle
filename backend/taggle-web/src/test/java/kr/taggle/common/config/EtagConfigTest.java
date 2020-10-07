@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -38,8 +39,8 @@ public class EtagConfigTest {
         mockMvc.perform(get(uri).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(header().exists("Etag"))
-                .andExpect(header().string("Cache-Control","no-cache, must-revalidate, public"));
+                .andExpect(header().exists(HttpHeaders.ETAG))
+                .andExpect(header().string(HttpHeaders.CACHE_CONTROL,"no-cache, must-revalidate, public"));
     }
 
     @DisplayName("UnChangedEtag: Etag가 변경되지 않으면 304 status를 반환한다")
@@ -52,16 +53,16 @@ public class EtagConfigTest {
         MvcResult mvcResult = mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(header().exists("Etag"))
+                .andExpect(header().exists(HttpHeaders.ETAG))
                 .andReturn();
 
-        String etag = mvcResult.getResponse().getHeader("Etag");
+        String etag = mvcResult.getResponse().getHeader(HttpHeaders.ETAG);
 
         //then
-        mockMvc.perform(get(uri).header("If-None-Match", etag))
+        mockMvc.perform(get(uri).header(HttpHeaders.IF_NONE_MATCH, etag))
                 .andDo(print())
                 .andExpect(status().isNotModified())
-                .andExpect(header().exists("Etag"))
+                .andExpect(header().exists(HttpHeaders.ETAG))
                 .andReturn();
     }
 
@@ -74,13 +75,13 @@ public class EtagConfigTest {
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(header().exists("ETag"))
-                .andExpect(header().exists("Cache-Control"))
+                .andExpect(header().exists(HttpHeaders.ETAG))
+                .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))
                 .andReturn();
 
         //when
         //then
-        mockMvc.perform(get(uri).header("If-None-Match","anotherEtag"))
+        mockMvc.perform(get(uri).header(HttpHeaders.IF_NONE_MATCH,"anotherEtag"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
