@@ -1,5 +1,7 @@
 package kr.taggle.common.config;
 
+import java.time.Duration;
+
 import javax.servlet.Filter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -13,16 +15,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class EtagConfig implements WebMvcConfigurer {
 
-    private static final int MINUTE = 60;
-    private static final int HOUR = 60;
-    private static final int DAY = 24;
-    private static final int YEAR = 365;
+    private static final int CACHE_PERIOD = Math.toIntExact(Duration.ofDays(365).getSeconds());
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
-                .setCachePeriod(MINUTE * HOUR * DAY * YEAR)
+                .setCachePeriod(CACHE_PERIOD)
                 .setCacheControl(CacheControl.noCache().mustRevalidate().cachePublic());
     }
 
