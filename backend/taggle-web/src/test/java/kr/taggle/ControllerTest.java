@@ -56,7 +56,8 @@ public class ControllerTest {
         return mockMvc.perform(post(uri)
                 .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
@@ -69,7 +70,8 @@ public class ControllerTest {
         mockMvc.perform(post(uri)
                 .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isBadRequest())
                 .andExpect(expect)
                 .andDo(print());
@@ -92,7 +94,8 @@ public class ControllerTest {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andExpect(expect)
                 .andDo(print());
