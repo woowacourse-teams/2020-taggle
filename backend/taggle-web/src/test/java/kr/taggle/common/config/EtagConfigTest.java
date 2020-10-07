@@ -27,12 +27,13 @@ public class EtagConfigTest {
                 .build();
     }
 
-    @DisplayName("정적 리소스 요청에 Etag가 설정 되고 no-cache, must-revalidate로 Cache-Control 설정된다.")
+    @DisplayName("getEtagAndCacheControl: 정적 리소스 요청에 Etag가 설정 되고 no-cache, must-revalidate로 Cache-Control 설정된다.")
     @Test
     void getEtagAndCacheControl() throws Exception {
         //given
         String uri = "/taggle-favicon.ico";
 
+        //when
         //then
         mockMvc.perform(get(uri).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -41,7 +42,7 @@ public class EtagConfigTest {
                 .andExpect(header().string("Cache-Control","no-cache, must-revalidate, public"));
     }
 
-    @DisplayName("Etag가 변경되지 않으면 304 status를 반환한다")
+    @DisplayName("UnChangedEtag: Etag가 변경되지 않으면 304 status를 반환한다")
     @Test
     void UnChangedEtag() throws Exception {
         //given
@@ -64,7 +65,7 @@ public class EtagConfigTest {
                 .andReturn();
     }
 
-    @DisplayName("Etag가 다를경우 200 status를 반환한다.")
+    @DisplayName("differentEtag: Etag가 다를경우 200 status를 반환한다.")
     @Test
     void differentEtag() throws Exception {
         //given
@@ -77,6 +78,7 @@ public class EtagConfigTest {
                 .andExpect(header().exists("Cache-Control"))
                 .andReturn();
 
+        //when
         //then
         mockMvc.perform(get(uri).header("If-None-Match","anotherEtag"))
                 .andDo(print())
