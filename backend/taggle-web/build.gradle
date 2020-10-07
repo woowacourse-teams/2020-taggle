@@ -52,8 +52,6 @@ tasks.jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.70
             }
-
-            excludes = []
         }
 
         rule {
