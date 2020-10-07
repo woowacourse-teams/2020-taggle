@@ -21,7 +21,7 @@
             :input-value="selected"
             @click="select"
             close
-            x-small
+            small
             @click:close="onDeleteTagBookmark(item)"
           >
             <strong>{{ item }}</strong>
@@ -128,3 +128,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.v-select__selections {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+</style>
