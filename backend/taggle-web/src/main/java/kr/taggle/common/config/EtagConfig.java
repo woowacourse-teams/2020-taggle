@@ -2,8 +2,6 @@ package kr.taggle.common.config;
 
 import java.time.Duration;
 
-import javax.servlet.Filter;
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +24,9 @@ public class EtagConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean filterRegistrationBean(){
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        Filter etagHeaderFilter = new ShallowEtagHeaderFilter();
-        registration.setFilter(etagHeaderFilter);
+    public FilterRegistrationBean<ShallowEtagHeaderFilter> filterRegistrationBean() {
+        FilterRegistrationBean<ShallowEtagHeaderFilter> registration = new FilterRegistrationBean<>(
+                new ShallowEtagHeaderFilter());
         registration.addUrlPatterns("/*");
         return registration;
     }
