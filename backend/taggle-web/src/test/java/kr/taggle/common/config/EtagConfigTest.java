@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,7 +28,7 @@ public class EtagConfigTest {
 
         //when
         //then
-        mockMvc.perform(get(uri).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().exists(HttpHeaders.ETAG))
@@ -47,6 +46,7 @@ public class EtagConfigTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(header().exists(HttpHeaders.ETAG))
+                .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))
                 .andReturn();
 
         String etag = mvcResult.getResponse().getHeader(HttpHeaders.ETAG);
@@ -64,13 +64,6 @@ public class EtagConfigTest {
     void differentEtag() throws Exception {
         //given
         String uri = "/img/google-button.57a6f216.png";
-
-        mockMvc.perform(get(uri))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(header().exists(HttpHeaders.ETAG))
-                .andExpect(header().exists(HttpHeaders.CACHE_CONTROL))
-                .andReturn();
 
         //when
         //then
