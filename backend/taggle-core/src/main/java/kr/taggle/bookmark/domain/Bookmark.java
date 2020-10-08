@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -30,16 +31,19 @@ public class Bookmark {
     private Long id;
 
     @URL
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
+    @Lob
     private String url;
 
     @Column
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
+    @Lob
     private String description;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
+    @Lob
     private String image;
 
     @Column(nullable = false)
