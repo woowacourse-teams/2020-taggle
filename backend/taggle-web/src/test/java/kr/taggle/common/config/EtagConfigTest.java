@@ -55,8 +55,7 @@ public class EtagConfigTest {
         mockMvc.perform(get(uri).header(HttpHeaders.IF_NONE_MATCH, etag))
                 .andDo(print())
                 .andExpect(status().isNotModified())
-                .andExpect(header().exists(HttpHeaders.ETAG))
-                .andReturn();
+                .andExpect(header().exists(HttpHeaders.ETAG));
     }
 
     @DisplayName("differentEtag: Etag가 다를경우 200 status를 반환한다.")
@@ -70,6 +69,7 @@ public class EtagConfigTest {
         mockMvc.perform(get(uri).header(HttpHeaders.IF_NONE_MATCH,"anotherEtag"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(header().exists(HttpHeaders.ETAG))
+                .andExpect(header().exists(HttpHeaders.CACHE_CONTROL));
     }
 }
