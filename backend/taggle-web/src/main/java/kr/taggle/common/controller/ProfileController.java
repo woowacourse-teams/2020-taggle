@@ -1,6 +1,7 @@
 package kr.taggle.common.controller;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,13 @@ public class ProfileController {
 
     @GetMapping
     public String profile() {
+        final List<String> profiles = Arrays.asList(environment.getActiveProfiles());
+        final List<String> prodProfiles = Arrays.asList("prod1", "prod2");
+        final String defaultProfile = profiles.get(0);
+
         return Arrays.stream(environment.getActiveProfiles())
-                .findFirst()
-                .orElse("");
+                .filter(prodProfiles::contains)
+                .findAny()
+                .orElse(defaultProfile);
     }
 }
