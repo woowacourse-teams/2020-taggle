@@ -6,24 +6,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.ServiceTest;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
 import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
 import kr.taggle.bookmark.dto.TagDetailResponse;
-import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
 import kr.taggle.tag.exception.TagNotFoundException;
 import kr.taggle.tag.service.TagService;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-class TagBookmarkServiceTest extends ServiceTest {
+@Transactional
+@SpringBootTest
+class TagBookmarkServiceTest {
 
     private static final String TAG_NAME = "spring boot";
     private static final BookmarkPageRequest BOOKMARK_FIND_REQUEST = new BookmarkPageRequest(1, 10);
@@ -44,7 +47,14 @@ class TagBookmarkServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(UserFixture.DEFAULT_USER);
+        final User testUser = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
         user = new SessionUser(testUser);
     }
 

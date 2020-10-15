@@ -8,19 +8,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.ServiceTest;
 import kr.taggle.bookmark.domain.BookmarkRepository;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
 import kr.taggle.bookmark.exception.BookmarkNotFoundException;
-import kr.taggle.fixture.UserFixture;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-class BookmarkServiceTest extends ServiceTest {
+@Transactional
+@SpringBootTest
+class BookmarkServiceTest {
     private static final BookmarkPageRequest BOOKMARK_FIND_REQUEST = new BookmarkPageRequest(1, 10);
 
     @Autowired
@@ -36,7 +39,14 @@ class BookmarkServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(UserFixture.DEFAULT_USER);
+        final User testUser = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
         user = new SessionUser(testUser);
     }
 

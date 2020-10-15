@@ -35,7 +35,7 @@ import kr.taggle.user.dto.SessionUser;
 
 @WithMockUser(roles = "USER")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
+@ActiveProfiles("acceptance")
 class AcceptanceTest {
 
     @LocalServerPort

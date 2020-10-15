@@ -6,23 +6,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.ServiceTest;
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.category.service.CategoryService;
-import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.domain.TagRepository;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
 import kr.taggle.tag.dto.TagUpdateRequest;
 import kr.taggle.tag.exception.TagNotFoundException;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-class TagServiceTest extends ServiceTest {
+@Transactional
+@SpringBootTest
+class TagServiceTest {
+
     private static final String TAG_NAME = "spring boot";
 
     @Autowired
@@ -41,7 +45,14 @@ class TagServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(UserFixture.DEFAULT_USER);
+        final User testUser = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
         user = new SessionUser(testUser);
     }
 

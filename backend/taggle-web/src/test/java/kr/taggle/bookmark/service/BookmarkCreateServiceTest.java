@@ -7,27 +7,38 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.ServiceTest;
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
-import kr.taggle.setup.domain.UserSetup;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
+import kr.taggle.user.service.UserService;
 
-class BookmarkCreateServiceTest extends ServiceTest {
+@Transactional
+@SpringBootTest
+class BookmarkCreateServiceTest {
 
     @Autowired
     private BookmarkCreateService bookmarkCreateService;
 
     @Autowired
-    private UserSetup userSetup;
+    private UserService userService;
 
     private SessionUser user;
 
     @BeforeEach
     void setUp() {
-        final User testUser = userSetup.save();
+        final User testUser = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
         user = new SessionUser(testUser);
     }
 
