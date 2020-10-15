@@ -73,6 +73,12 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
+sonarqube {
+    properties {
+        property "sonar.exclusions", "*.doc"
+    }
+}
+
 dependencies {
     implementation project(':taggle-core')
     implementation project(':taggle-crawler-api')
