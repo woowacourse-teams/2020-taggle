@@ -15,7 +15,7 @@ class BookmarkTest {
     @DisplayName("constructor: url을 입력받아 북마크를 생성한다.")
     @Test
     void constructor() {
-        User user = UserFixture.DEFAULT_USER;
+        final User user = UserFixture.DEFAULT_USER;
 
         assertThat(new Bookmark(URL, user, "title", "description", "image")).isInstanceOf(Bookmark.class);
     }

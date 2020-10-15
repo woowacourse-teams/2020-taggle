@@ -55,7 +55,7 @@ public class CategoryService {
         final Category category = findByIdAndUserId(categoryId, user.getId());
         final List<Tag> tags = tagService.findByCategoryId(categoryId);
 
-        for (Tag tag : tags) {
+        for (final Tag tag : tags) {
             tag.updateCategory(null);
         }
         categoryRepository.delete(category);

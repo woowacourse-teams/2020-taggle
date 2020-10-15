@@ -20,6 +20,9 @@ public class TagCreateRequest {
     private String name;
 
     public Tag toEntityWithUser(final User user) {
-        return new Tag(name, user);
+        return Tag.builder()
+                .name(name)
+                .user(user)
+                .build();
     }
 }

@@ -20,10 +20,15 @@ public class CategoryRequest {
     private String title;
 
     public Category toEntity() {
-        return new Category(title);
+        return Category.builder()
+                .title(title)
+                .build();
     }
 
     public Category toEntityWithUser(final User user) {
-        return new Category(title, user);
+        return Category.builder()
+                .title(title)
+                .user(user)
+                .build();
     }
 }

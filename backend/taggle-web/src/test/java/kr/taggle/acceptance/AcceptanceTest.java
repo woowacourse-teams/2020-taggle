@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,27 +18,31 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.context.WebApplicationContext;
 
-import kr.taggle.authentication.UserArgumentResolver;
-import kr.taggle.user.domain.Role;
-import kr.taggle.user.domain.User;
-import kr.taggle.user.domain.UserRepository;
-import kr.taggle.user.dto.SessionUser;
 import io.restassured.RestAssured;
 import io.restassured.config.EncoderConfig;
 import io.restassured.module.mockmvc.config.RestAssuredMockMvcConfig;
 import io.restassured.module.mockmvc.response.MockMvcResponse;
 import io.restassured.response.ExtractableResponse;
+import kr.taggle.DatabaseCleanup;
+import kr.taggle.authentication.UserArgumentResolver;
+import kr.taggle.user.domain.Role;
+import kr.taggle.user.domain.User;
+import kr.taggle.user.domain.UserRepository;
+import kr.taggle.user.dto.SessionUser;
 
-@ExtendWith(SpringExtension.class)
 @WithMockUser(roles = "USER")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AcceptanceTest {
+@ActiveProfiles("acceptance")
+class AcceptanceTest {
 
     @LocalServerPort
     int port;
+
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -55,7 +58,10 @@ public class AcceptanceTest {
         webAppContextSetup(webApplicationContext);
         config = new RestAssuredMockMvcConfig()
                 .encoderConfig(new EncoderConfig("UTF-8", "UTF-8"));
+
         RestAssured.port = port;
+        databaseCleanup.afterPropertiesSet();
+
         final User user = User.builder()
                 .id(1L)
                 .nickName("tigger")
@@ -70,6 +76,12 @@ public class AcceptanceTest {
         final SessionUser sessionUser = new SessionUser(saved);
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        databaseCleanup.execute();
+        reset();
     }
 
     // @formatter:off
@@ -170,10 +182,5 @@ public class AcceptanceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
     // @formatter:on
-
-    @AfterEach
-    public void tearDown() {
-        reset();
-    }
 }
 

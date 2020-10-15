@@ -9,12 +9,42 @@ import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
 class CategoryTest {
+    private static final User USER = UserFixture.DEFAULT_USER;
 
-    @DisplayName("constructor: 카테고리를 생성한다.")
+    @DisplayName("update: 카테고리를 수정한다.")
     @Test
-    void constructor() {
-        final User user = UserFixture.DEFAULT_USER;
+    void update() {
+        // given
+        final Category category = Category.builder()
+                .title("category")
+                .user(USER)
+                .build();
+        final Category updateCategory = Category.builder()
+                .title("update")
+                .build();
 
-        assertThat(new Category("project", user)).isInstanceOf(Category.class);
+        // when
+        category.update(updateCategory);
+
+        // then
+        assertThat(category.getTitle()).isEqualTo("update");
+    }
+
+    @DisplayName("update: 변경할 내역이 없으면 변경하지 않는다.")
+    @Test
+    void update_NotUpdated() {
+        // given
+        final Category category = Category.builder()
+                .title("category")
+                .user(USER)
+                .build();
+        final Category updateCategory = Category.builder()
+                .build();
+
+        // when
+        category.update(updateCategory);
+
+        // then
+        assertThat(category.getTitle()).isEqualTo("category");
     }
 }

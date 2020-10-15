@@ -5,16 +5,30 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import kr.taggle.category.domain.Category;
 import kr.taggle.fixture.UserFixture;
 import kr.taggle.user.domain.User;
 
 class TagTest {
+    private static final User USER = UserFixture.DEFAULT_USER;
 
-    @DisplayName("constructor: 태그를 생성한다.")
+    @DisplayName("updateCategory: 카테고리를 변경한다.")
     @Test
-    void constructor() {
-        User user = UserFixture.DEFAULT_USER;
+    void updateCategory() {
+        // given
+        final Category category = Category.builder()
+                .title("category")
+                .build();
+        final Tag tag = Tag.builder()
+                .name("tag")
+                .category(category)
+                .user(USER)
+                .build();
 
-        assertThat(new Tag("taggle", user)).isInstanceOf(Tag.class);
+        // when
+        tag.updateCategory(category);
+
+        // then
+        assertThat(tag.getCategory()).isEqualTo(category);
     }
 }

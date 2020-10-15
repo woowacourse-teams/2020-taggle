@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
-import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.bookmark.service.BookmarkCreateService;
 import kr.taggle.bookmark.service.BookmarkService;

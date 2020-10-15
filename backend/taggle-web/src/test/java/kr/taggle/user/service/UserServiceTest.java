@@ -5,22 +5,18 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.JpaTestConfiguration;
-import kr.taggle.fixture.UserFixture;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.ProfileUpdateRequest;
 import kr.taggle.user.exception.UserNotFoundException;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = JpaTestConfiguration.class)
-@DataJpaTest
-public class UserServiceTest {
+@Transactional
+@SpringBootTest
+class UserServiceTest {
 
     @Autowired
     private UserService userService;
@@ -29,7 +25,14 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        user = UserFixture.DEFAULT_USER;
+        user = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
     }
 
     @DisplayName("save: 유저 저장 확인 테스트")

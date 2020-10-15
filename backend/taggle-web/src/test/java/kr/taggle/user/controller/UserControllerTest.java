@@ -13,7 +13,7 @@ import kr.taggle.setup.domain.UserSetup;
 import kr.taggle.user.controller.docs.UserDocumentation;
 import kr.taggle.user.domain.User;
 
-public class UserControllerTest extends ControllerTest {
+class UserControllerTest extends ControllerTest {
 
     @Autowired
     private UserSetup userSetup;

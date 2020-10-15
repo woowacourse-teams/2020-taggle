@@ -6,16 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.bookmark.dto.BookmarkResponse;
 import kr.taggle.bookmark.dto.BookmarkDetailResponse;
+import kr.taggle.bookmark.dto.BookmarkResponse;
 import kr.taggle.bookmark.dto.TagDetailResponse;
 import kr.taggle.tag.dto.TagResponse;
 
-public class TagBookmarkAcceptanceTest extends AcceptanceTest {
+class TagBookmarkAcceptanceTest extends AcceptanceTest {
 
-    @Transactional
     @Test
     void manageTagBookmark() {
         // Untagged의 북마크 목록을 불러온다.
@@ -79,7 +77,7 @@ public class TagBookmarkAcceptanceTest extends AcceptanceTest {
     }
 
     public BookmarkDetailResponse findBookmarkDetail(final Long bookmarkId) {
-        return get(String.format("/api/v1/bookmarks/%d", bookmarkId) , BookmarkDetailResponse.class);
+        return get(String.format("/api/v1/bookmarks/%d", bookmarkId), BookmarkDetailResponse.class);
     }
 
     public void removeBookmarkOnTag(final Long bookmarkId, final Long tagId) {

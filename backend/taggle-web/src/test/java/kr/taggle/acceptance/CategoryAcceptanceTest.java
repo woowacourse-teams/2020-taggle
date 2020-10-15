@@ -7,14 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.category.dto.CategoryResponse;
 import kr.taggle.tag.dto.CategoryDetailResponse;
 
-public class CategoryAcceptanceTest extends AcceptanceTest {
+class CategoryAcceptanceTest extends AcceptanceTest {
 
-    @Transactional
     @Test
     void manageCategory() {
         // 카테고리를 생성한다.

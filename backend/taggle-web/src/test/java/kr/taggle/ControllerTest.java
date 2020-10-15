@@ -27,12 +27,11 @@ import kr.taggle.authentication.UserArgumentResolver;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 
+@Transactional
 @ExtendWith(RestDocumentationExtension.class)
 @WithMockUser(roles = "USER")
 @SpringBootTest
-@Transactional
 public class ControllerTest {
-
     @MockBean
     private UserArgumentResolver userArgumentResolver;
 
@@ -41,7 +40,6 @@ public class ControllerTest {
     @BeforeEach
     void setUp(final WebApplicationContext webApplicationContext,
             final RestDocumentationContextProvider restDocumentationContextProvider) {
-
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(springSecurity())
                 .apply(documentationConfiguration(restDocumentationContextProvider))
@@ -56,22 +54,25 @@ public class ControllerTest {
         return mockMvc.perform(post(uri)
                 .content(jsonParams)
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
                 .andDo(print())
                 .andExpect(status().isCreated());
     }
 
-    public void expectBadRequestWhenPostRequest(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
+    public void expectBadRequestWhenPostRequest(final User user, final String uri, final String jsonParams,
+            final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         mockMvc.perform(post(uri)
-            .content(jsonParams)
-            .accept(MediaType.APPLICATION_JSON)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isBadRequest())
-            .andExpect(expect)
-            .andDo(print());
+                .content(jsonParams)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(expect)
+                .andDo(print());
     }
 
     public ResultActions createByPathVariables(final User user, final String uri, final Object... ids) throws
@@ -91,7 +92,8 @@ public class ControllerTest {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
         return mockMvc.perform(get(uri)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+        )
                 .andExpect(status().isOk())
                 .andExpect(expect)
                 .andDo(print());
@@ -125,7 +127,8 @@ public class ControllerTest {
                 .andDo(print());
     }
 
-    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams, final Object... ids) throws
+    public ResultActions updateByJsonParamsAndPathVariables(final User user, final String uri, final String jsonParams,
+            final Object... ids) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);

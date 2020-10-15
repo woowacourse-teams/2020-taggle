@@ -15,7 +15,7 @@ import kr.taggle.setup.domain.UserSetup;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.user.domain.User;
 
-public class TagBookmarkControllerTest extends ControllerTest {
+class TagBookmarkControllerTest extends ControllerTest {
 
     @Autowired
     private TagBookmarkSetup tagBookmarkSetup;

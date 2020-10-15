@@ -16,8 +16,6 @@ tasks.jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.70
             }
-
-            excludes = []
         }
 
         rule {
@@ -29,13 +27,6 @@ tasks.jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.80
             }
-
-            excludes = [
-                    'kr.taggle.user.dto.OAuthAttributes',
-                    'kr.taggle.tag.domain.Tag',
-                    'kr.taggle.category.domain.Category',
-                    'kr.taggle.bookmark.dto.BookmarkPageRequest'
-            ]
         }
     }
 }

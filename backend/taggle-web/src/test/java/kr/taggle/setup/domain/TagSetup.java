@@ -14,6 +14,9 @@ public class TagSetup {
     private final TagRepository tagRepository;
 
     public Tag save(final User user) {
-        return tagRepository.save(new Tag("태글", user));
+        return tagRepository.save(Tag.builder()
+                .name("태글")
+                .user(user)
+                .build());
     }
 }

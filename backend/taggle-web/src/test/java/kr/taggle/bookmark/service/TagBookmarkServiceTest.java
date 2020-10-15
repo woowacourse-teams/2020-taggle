@@ -5,31 +5,27 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
-import kr.taggle.JpaTestConfiguration;
 import kr.taggle.bookmark.dto.BookmarkCreateDto;
 import kr.taggle.bookmark.dto.BookmarkCreateRequest;
+import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
-import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.TagDetailResponse;
-import kr.taggle.fixture.UserFixture;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
 import kr.taggle.tag.exception.TagNotFoundException;
 import kr.taggle.tag.service.TagService;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 import kr.taggle.user.dto.SessionUser;
 import kr.taggle.user.service.UserService;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = JpaTestConfiguration.class)
-@DataJpaTest
+@Transactional
+@SpringBootTest
 class TagBookmarkServiceTest {
 
     private static final String TAG_NAME = "spring boot";
@@ -51,7 +47,14 @@ class TagBookmarkServiceTest {
 
     @BeforeEach
     void setUp() {
-        final User testUser = userService.save(UserFixture.DEFAULT_USER);
+        final User testUser = userService.save(User.builder()
+                .email("jordyLover@kakao.com")
+                .notificationEmail("jordyLover@kakao.com")
+                .nickName("tigger")
+                .role(Role.USER)
+                .picture("https://www.naver.com/")
+                .notificationEnabled(false)
+                .build());
         user = new SessionUser(testUser);
     }
 
