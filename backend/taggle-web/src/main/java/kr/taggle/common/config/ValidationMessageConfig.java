@@ -18,9 +18,10 @@ public class ValidationMessageConfig implements WebMvcConfigurer {
     @Bean
     @Override
     public Validator getValidator() {
-        final LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setValidationMessageSource(messageSource());
-        return bean;
+        try (final LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean()) {
+            bean.setValidationMessageSource(messageSource());
+            return bean;
+        }
     }
 
     private MessageSource messageSource() {
