@@ -76,7 +76,4 @@ public class Bookmark {
         tags.remove(tagBookmark);
     }
 
-    public boolean isTagsEmpty() {
-        return tags.isEmpty();
-    }
 }
