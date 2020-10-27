@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.URL;
 
 import kr.taggle.user.domain.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -56,6 +57,7 @@ public class Bookmark {
     @OneToMany(mappedBy = "bookmark", orphanRemoval = true)
     private Set<TagBookmark> tags = new HashSet<>();
 
+    @Builder
     public Bookmark(final String url, final User user, final String title, final String description,
             final String image) {
         this.url = url;

@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 
 import kr.taggle.tag.domain.Tag;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -38,6 +39,7 @@ public class TagBookmark implements Serializable {
     @JoinColumn(name = "bookmark_id")
     private Bookmark bookmark;
 
+    @Builder
     public TagBookmark(final Tag tag, final Bookmark bookmark) {
         this.tag = tag;
         this.bookmark = bookmark;
