@@ -1,7 +1,5 @@
 package kr.taggle.tag.domain;
 
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,9 +48,5 @@ public class Tag {
 
     public void updateCategory(final Category category) {
         this.category = category;
-    }
-
-    public boolean isNotCategorized() {
-        return Objects.isNull(category);
     }
 }
