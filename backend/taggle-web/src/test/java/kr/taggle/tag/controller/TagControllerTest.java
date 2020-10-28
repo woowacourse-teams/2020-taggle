@@ -1,44 +1,40 @@
 package kr.taggle.tag.controller;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import kr.taggle.ControllerTest;
-import kr.taggle.category.domain.Category;
-import kr.taggle.setup.domain.CategorySetup;
-import kr.taggle.setup.domain.TagSetup;
-import kr.taggle.setup.domain.UserSetup;
 import kr.taggle.tag.docs.TagDocumentation;
-import kr.taggle.tag.domain.Tag;
+import kr.taggle.tag.dto.TagResponse;
+import kr.taggle.tag.service.TagService;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 
 class TagControllerTest extends ControllerTest {
 
-    @Autowired
-    private TagSetup tagSetup;
-
-    @Autowired
-    private CategorySetup categorySetup;
-
-    @Autowired
-    private UserSetup userSetup;
+    @MockBean
+    TagService tagService;
 
     private User user;
 
     @BeforeEach
     void setUp() {
-        user = userSetup.save();
+        user = new User(1L, "User","User@gmail.com","notiUser@gamil.com", null, "picture", Boolean.FALSE, Role.USER);
     }
 
     @DisplayName("createTag: 태그를 추가한다.")
     @Test
     void createTag() throws Exception {
-        createByJsonParams(user, "/api/v1/tags", "{\"name\": \"taggle\"}")
+        TagResponse tagResponse = new TagResponse(1L, "taggle");
+        when(tagService.createTag(any(),any())).thenReturn(tagResponse);
+        createByJsonParams(user, "/api/v1/tags", "{\"name\": \"taggle\"}",
+                jsonPath("$.name", Is.is("taggle")))
                 .andDo(TagDocumentation.createTag());
     }
 
@@ -53,20 +49,16 @@ class TagControllerTest extends ControllerTest {
     @DisplayName("removeTag: 태그를 삭제한다.")
     @Test
     void removeTag() throws Exception {
-        final Tag tag = tagSetup.save(user);
 
-        removeByPathVariables(user, "/api/v1/tags/{tagId}", tag.getId())
+        removeByPathVariables(user, "/api/v1/tags/{tagId}", 1L)
                 .andDo(TagDocumentation.removeTag());
     }
 
     @DisplayName("updateTag: 태그의 카테고리를 변경한다.")
     @Test
     void updateTag() throws Exception {
-        final Category category = categorySetup.save(user);
-        final Tag tag = tagSetup.save(user);
         updateByJsonParamsAndPathVariables(user, "/api/v1/tags/{tagId}",
-                String.format("{\"categoryId\" : %d }", category.getId()), tag.getId())
+                String.format("{\"categoryId\" : %d }", 1L),1L)
                 .andDo(TagDocumentation.updateTag());
-
     }
 }
