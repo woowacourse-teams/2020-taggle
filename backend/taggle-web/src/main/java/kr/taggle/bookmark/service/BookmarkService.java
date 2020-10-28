@@ -62,7 +62,7 @@ public class BookmarkService {
     @Transactional(readOnly = true)
     public TagDetailResponse findUntaggedBookmarks(final SessionUser user,
             final BookmarkPageRequest bookmarkPageRequest) {
-        final Page<Bookmark> bookmarks = findUntaggedBookmarksByUserId(user.getId(),
+        final Page<Bookmark> bookmarks = bookmarkRepository.findAllByUserIdAndTagsEmpty(user.getId(),
                 bookmarkPageRequest.toPageable());
         return TagDetailResponse.ofUntagged(bookmarks.getContent());
     }
@@ -78,10 +78,6 @@ public class BookmarkService {
         final Bookmark bookmark = findByIdAndUserId(id, user.getId());
 
         bookmarkRepository.delete(bookmark);
-    }
-
-    public Page<Bookmark> findUntaggedBookmarksByUserId(final Long userId, final Pageable pageable) {
-        return bookmarkRepository.findAllByUserIdAndTagsEmpty(userId, pageable);
     }
 
     public Bookmark findByIdAndUserId(final Long bookmarkId, final Long userId) {

@@ -15,6 +15,8 @@ import kr.taggle.bookmark.dto.BookmarkDetailResponse;
 import kr.taggle.bookmark.dto.BookmarkPageRequest;
 import kr.taggle.bookmark.dto.BookmarkResponse;
 import kr.taggle.bookmark.dto.TagDetailResponse;
+import kr.taggle.bookmark.exception.BookmarkNotFoundException;
+import kr.taggle.bookmark.exception.TagBookmarkNotFoundException;
 import kr.taggle.tag.dto.TagCreateRequest;
 import kr.taggle.tag.dto.TagResponse;
 import kr.taggle.tag.exception.TagNotFoundException;
@@ -58,9 +60,9 @@ class TagBookmarkServiceTest {
         user = new SessionUser(testUser);
     }
 
-    @DisplayName("findBookmarksByTagId: 특정 태그의 북마크를 조회한다.")
+    @DisplayName("createTagBookmark: 태그에 북마크를 추가한다.")
     @Test
-    void findBookmarksByTagId() {
+    void createTagBookmark() {
         // given
         final TagCreateRequest tagCreateRequest = new TagCreateRequest(TAG_NAME);
         final TagResponse tag = tagService.createTag(user, tagCreateRequest);
@@ -82,9 +84,9 @@ class TagBookmarkServiceTest {
         assertThat(tagDetailResponse.getBookmarks()).hasSize(1);
     }
 
-    @DisplayName("findUntaggedBookmarks: Untagged의 북마크를 조회한다.")
+    @DisplayName("createTagBookmark_Untagged: Untagged의 북마크를 조회한다.")
     @Test
-    void findUntaggedBookmarks() {
+    void createTagBookmark_Untagged() {
         // given
         final BookmarkCreateRequest bookmarkCreateRequest = new BookmarkCreateRequest(
                 "https://github.com/woowacourse-teams/2020-taggle");
@@ -100,51 +102,6 @@ class TagBookmarkServiceTest {
         assertThat(untaggedBookmarks.getId()).isNull();
         assertThat(untaggedBookmarks.getName()).isEqualTo("Untagged");
         assertThat(untaggedBookmarks.getBookmarks()).hasSize(1);
-    }
-
-    @DisplayName("createTagBookmark: 태그에 북마크를 추가한다.")
-    @Test
-    void createTagBookmark() {
-        // given
-        final TagResponse taggle = tagService.createTag(user, new TagCreateRequest("taggle"));
-        final TagResponse google = tagService.createTag(user, new TagCreateRequest("google"));
-        final TagResponse naver = tagService.createTag(user, new TagCreateRequest("naver"));
-
-        final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
-                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
-                        "description", "image"));
-        final BookmarkResponse bookmark2 = bookmarkService.createBookmark(user,
-                new BookmarkCreateDto("https://taggle.co.kr/2", "title",
-                        "description", "image"));
-        final BookmarkResponse bookmark3 = bookmarkService.createBookmark(user,
-                new BookmarkCreateDto("https://taggle.co.kr/3", "title",
-                        "description", "image"));
-
-        // when
-        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark3.getId(), taggle.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), naver.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), google.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark3.getId(), google.getId());
-
-        final TagDetailResponse tagBookmark1 = bookmarkService.findBookmarksByTagId(user, taggle.getId(),
-                BOOKMARK_FIND_REQUEST);
-        final TagDetailResponse tagBookmark2 = bookmarkService.findBookmarksByTagId(user, google.getId(),
-                BOOKMARK_FIND_REQUEST);
-        final TagDetailResponse tagBookmark3 = bookmarkService.findBookmarksByTagId(user, naver.getId(),
-                BOOKMARK_FIND_REQUEST);
-
-        // then
-        assertThat(tagBookmark1.getId()).isEqualTo(taggle.getId());
-        assertThat(tagBookmark1.getName()).isEqualTo(taggle.getName());
-        assertThat(tagBookmark1.getBookmarks()).hasSize(3);
-        assertThat(tagBookmark2.getId()).isEqualTo(google.getId());
-        assertThat(tagBookmark2.getName()).isEqualTo(google.getName());
-        assertThat(tagBookmark2.getBookmarks()).hasSize(2);
-        assertThat(tagBookmark3.getId()).isEqualTo(naver.getId());
-        assertThat(tagBookmark3.getName()).isEqualTo(naver.getName());
-        assertThat(tagBookmark3.getBookmarks()).hasSize(1);
     }
 
     @DisplayName("removeTagBookmark: 태그에 있는 북마크를 삭제한다.")
@@ -174,9 +131,45 @@ class TagBookmarkServiceTest {
 
     @DisplayName("removeTagBookmark: 태그에 있는 북마크를 삭제한다.")
     @Test
-    void removeTag_TagBookmarkRemoved() {
+    void removeTagBookmark_TagNotFound_ExceptionThrown() {
         // given
         final TagResponse taggle = tagService.createTag(user, new TagCreateRequest("taggle"));
+
+        final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
+                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
+                        "description", "image"));
+
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
+
+        // when // then
+        assertThatThrownBy(() -> tagService.removeTag(user, 0L))
+                .isInstanceOf(TagNotFoundException.class)
+                .hasMessageContaining("태그가 존재하지 않습니다.");
+    }
+
+    @Test
+    void removeTagBookmark_BookmarkNotFound_ExceptionThrown() {
+        // given
+        final TagResponse taggle = tagService.createTag(user, new TagCreateRequest("taggle"));
+
+        final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
+                new BookmarkCreateDto("https://taggle.co.kr/1", "title",
+                        "description", "image"));
+
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
+        final Long tagId = taggle.getId();
+
+        // when // then
+        assertThatThrownBy(() -> tagBookmarkService.removeTagBookmark(user, 0L, tagId))
+                .isInstanceOf(BookmarkNotFoundException.class)
+                .hasMessageContaining("북마크가 존재하지 않습니다.");
+    }
+
+    @Test
+    void removeTagBookmark_TagBookmarkNotFound_ExceptionThrown() {
+        // given
+        final TagResponse taggle1 = tagService.createTag(user, new TagCreateRequest("taggle1"));
+        final TagResponse taggle2 = tagService.createTag(user, new TagCreateRequest("taggle2"));
 
         final BookmarkResponse bookmark1 = bookmarkService.createBookmark(user,
                 new BookmarkCreateDto("https://taggle.co.kr/1", "title",
@@ -185,31 +178,15 @@ class TagBookmarkServiceTest {
                 new BookmarkCreateDto("https://taggle.co.kr/2", "title",
                         "description", "image"));
 
-        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle.getId());
-        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark1.getId(), taggle1.getId());
+        tagBookmarkService.createTagBookmark(user, bookmark2.getId(), taggle2.getId());
+        final Long bookmarkId = bookmark1.getId();
+        final Long tagId = taggle2.getId();
 
-        // when
-        tagService.removeTag(user, taggle.getId());
 
-        // then
-        assertThatThrownBy(() -> bookmarkService.findBookmarksByTagId(user, taggle.getId(), BOOKMARK_FIND_REQUEST))
-                .isInstanceOf(TagNotFoundException.class)
-                .hasMessageContaining("태그가 존재하지 않습니다.");
-    }
-
-    @DisplayName("findBookmark: 하나의 북마크를 조회한다.")
-    @Test
-    void findTagsByBookmarkId() {
-        // given
-        final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto(
-                "https://github.com/woowacourse-teams/2020-taggle", "title",
-                "description", "image");
-        final BookmarkResponse bookmark = bookmarkService.createBookmark(user, bookmarkCreateRequest);
-
-        //when
-        final BookmarkDetailResponse expected = bookmarkService.findTagsByBookmarkId(user, bookmark.getId());
-
-        // then
-        assertThat(expected.getId()).isEqualTo(bookmark.getId());
+        // when // then
+        assertThatThrownBy(() -> tagBookmarkService.removeTagBookmark(user, bookmarkId, tagId))
+                .isInstanceOf(TagBookmarkNotFoundException.class)
+                .hasMessageContaining("태그에 추가된 북마크를 찾을 수 없습니다.");
     }
 }
