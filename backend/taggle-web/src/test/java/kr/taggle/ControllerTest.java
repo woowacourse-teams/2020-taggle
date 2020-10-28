@@ -47,7 +47,7 @@ public class ControllerTest {
         when(userArgumentResolver.supportsParameter(any())).thenReturn(true);
     }
 
-    public ResultActions createByJsonParams(final User user, final String uri, final String jsonParams) throws
+    public ResultActions createByJsonParams(final User user, final String uri, final String jsonParams, final ResultMatcher expect) throws
             Exception {
         final SessionUser sessionUser = new SessionUser(user);
         when(userArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(sessionUser);
@@ -57,6 +57,7 @@ public class ControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andDo(print())
+                .andExpect(expect)
                 .andExpect(status().isCreated());
     }
 
