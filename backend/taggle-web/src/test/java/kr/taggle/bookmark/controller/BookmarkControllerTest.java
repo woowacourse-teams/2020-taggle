@@ -37,8 +37,16 @@ class BookmarkControllerTest extends ControllerTest {
 
     @BeforeEach
     void setUp() {
-        //builder수정
-        user = new User(1L, "User","User@gmail.com","notiUser@gamil.com", null, "picture", Boolean.FALSE, Role.USER);
+        user = User.builder()
+                .id(1L)
+                .nickName("User")
+                .email("User@gmail.com")
+                .notificationEmail("notiUser@gmail.com")
+                .phoneNumber(null)
+                .picture("picture")
+                .notificationEnabled(Boolean.FALSE)
+                .role(Role.USER)
+                .build();
     }
 
     @DisplayName("createBookmark: 북마크를 추가한다.")
