@@ -74,7 +74,7 @@ tasks.jacocoTestCoverageVerification {
 
 sonarqube {
     properties {
-        property "sonar.exclusions", "*.doc"
+        property "sonar.exclusions", "*.doc, **/*Doc*.java, **/*Set*.java, **/DatabaseCleanup.java, **/WebApplication.java, **/CustomOAuth2UserService.java"
     }
 }
 
