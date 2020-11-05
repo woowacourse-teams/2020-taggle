@@ -1,3 +1,6 @@
 [submodule "backend/taggle-web/src/main/resources/config"]
 	path = backend/taggle-web/src/main/resources/config
 	url = https://github.com/taejinseok/secret-key.git
+[submodule "backend/taggle-secret"]
+	path = backend/taggle-secret
+	url = https://github.com/taejinseok/secret-key.git
