@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.taggle.category.dto.CategoryRequest;
 import kr.taggle.category.dto.CategoryResponse;
+import kr.taggle.category.exception.CategoryNotFoundException;
 import kr.taggle.category.service.CategoryService;
 import kr.taggle.tag.domain.Tag;
 import kr.taggle.tag.domain.TagRepository;
@@ -88,7 +89,7 @@ class TagServiceTest {
     @DisplayName("updateCategoryOnTag: 태그의 카테고리를 변경한다.")
     @Test
     void updateCategoryOnTag() {
-        //given
+        // given
         final CategoryRequest categoryRequest = new CategoryRequest("project");
         final CategoryResponse categoryResponse = categoryService.createCategory(user, categoryRequest);
         final TagUpdateRequest tagUpdateRequest = new TagUpdateRequest(categoryResponse.getId());
@@ -96,12 +97,29 @@ class TagServiceTest {
         final TagCreateRequest tagCreateRequest = new TagCreateRequest("tag");
         final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
 
-        //when
+        // when
         tagService.updateTag(user, tagUpdateRequest, tagResponse.getId());
         final Tag tag = tagService.findByIdAndUserId(tagResponse.getId(), user.getId());
 
-        //then
+        // then
         assertThat(tag.getCategory().getTitle()).isEqualTo("project");
+    }
+
+    @DisplayName("updateCategoryOnTag: 태그의 카테고리 ID가 없을 때 예외 처리")
+    @Test
+    void updateCategoryOnTag_ExceptionThrown() {
+        // given
+        final TagUpdateRequest tagUpdateRequest = new TagUpdateRequest(0L);
+
+        final TagCreateRequest tagCreateRequest = new TagCreateRequest("tag");
+        final TagResponse tagResponse = tagService.createTag(user, tagCreateRequest);
+        final Long tagId = tagResponse.getId();
+
+        // when
+        // then
+        assertThatThrownBy(() -> tagService.updateTag(user, tagUpdateRequest, tagId))
+                .isInstanceOf(CategoryNotFoundException.class)
+                .hasMessageContaining("카테고리가 존재하지 않습니다.");
     }
 
     @DisplayName("removeTag: 태그를 제거한다.")
@@ -119,7 +137,7 @@ class TagServiceTest {
         assertThat(tagRepository.existsById(tagResponse.getId())).isFalse();
     }
 
-    @DisplayName("removeTag: 태그를 제거한다.")
+    @DisplayName("removeTag: 북마크가 존재할 때 태그를 제거한다.")
     @Test
     void removeTag_TagBookmarkExist() {
         // given

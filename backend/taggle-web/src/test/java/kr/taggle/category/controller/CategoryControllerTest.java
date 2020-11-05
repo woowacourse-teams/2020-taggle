@@ -1,40 +1,56 @@
 package kr.taggle.category.controller;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import kr.taggle.ControllerTest;
 import kr.taggle.category.docs.CategoryDocumentation;
-import kr.taggle.category.domain.Category;
-import kr.taggle.setup.domain.CategorySetup;
-import kr.taggle.setup.domain.UserSetup;
+import kr.taggle.category.dto.CategoryResponse;
+import kr.taggle.category.service.CategoryService;
+import kr.taggle.tag.dto.CategoryDetailResponse;
+import kr.taggle.tag.dto.TagResponse;
+import kr.taggle.user.domain.Role;
 import kr.taggle.user.domain.User;
 
 class CategoryControllerTest extends ControllerTest {
 
-    @Autowired
-    private CategorySetup categorySetup;
-
-    @Autowired
-    private UserSetup userSetup;
+    @MockBean
+    CategoryService categoryService;
 
     private User user;
 
     @BeforeEach
     void setUp() {
-        user = userSetup.save();
+        user = User.builder()
+                .id(1L)
+                .nickName("User")
+                .email("User@gmail.com")
+                .notificationEmail("notiUser@gmail.com")
+                .phoneNumber(null)
+                .picture("picture")
+                .notificationEnabled(Boolean.FALSE)
+                .role(Role.USER)
+                .build();
     }
 
     @DisplayName("createCategory: 카테고리를 추가한다.")
     @Test
     void createCategory() throws Exception {
-        createByJsonParams(user, "/api/v1/categories", "{\"title\":\"createCategory\"}")
+        CategoryResponse categoryResponse = new CategoryResponse(1L, "webSite");
+        when(categoryService.createCategory(any(), any())).thenReturn(categoryResponse);
+        createByJsonParams(user, "/api/v1/categories", "{\"title\":\"createCategory\"}",
+                jsonPath("$.title", Is.is("webSite")))
                 .andDo(CategoryDocumentation.createCategory());
     }
 
@@ -49,28 +65,26 @@ class CategoryControllerTest extends ControllerTest {
     @DisplayName("findCategories: 카테고리 목록을 가져온다.")
     @Test
     void findCategories() throws Exception {
-        categorySetup.saveWithTag(user);
-        read(user, "/api/v1/categories", jsonPath("$", hasSize(3)))
+        List<TagResponse> tagResponse = Arrays.asList(new TagResponse(1L, "tagResponse"));
+        List<CategoryDetailResponse> webSite = Arrays.asList(new CategoryDetailResponse(1L, "webSite", tagResponse));
+        when(categoryService.findAllTagsBy(any())).thenReturn(webSite);
+        read(user, "/api/v1/categories", jsonPath("$", hasSize(1)))
                 .andDo(CategoryDocumentation.findCategories());
     }
 
     @DisplayName("updateCategory: 카테고리의 제목을 변경한다.")
     @Test
     void updateCategory() throws Exception {
-        final Category category = categorySetup.save(user);
         updateByJsonParamsAndPathVariables(user, "/api/v1/categories/{categoryId}", "{ \"title\": \"newCategory\" }",
-                category.getId())
+                1L)
                 .andDo(CategoryDocumentation.updateCategory());
-
     }
 
     @DisplayName("removeCategory: 카테고리 하나를 제거한다.")
     @Test
     void removeCategory() throws Exception {
-        final Category category = categorySetup.save(user);
-        removeByPathVariables(user, "/api/v1/categories/{categoryId}", category.getId())
+        removeByPathVariables(user, "/api/v1/categories/{categoryId}", 1L)
                 .andDo(CategoryDocumentation.removeCategory());
-
     }
 }
 

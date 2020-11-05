@@ -19,15 +19,14 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
     @Transactional
     @Override
-    public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        final OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        final OAuth2User oAuth2User = delegate.loadUser(userRequest);
+    public OAuth2User loadUser(final OAuth2UserRequest userRequest) {
+        final OAuth2User oAuth2User = super.loadUser(userRequest);
 
         final String registrationId = userRequest.getClientRegistration().getRegistrationId();
         final String userNameAttributeName = userRequest.getClientRegistration()

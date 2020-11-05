@@ -27,10 +27,7 @@ class BookmarkServiceTest {
     private static final BookmarkPageRequest BOOKMARK_FIND_REQUEST = new BookmarkPageRequest(1, 10);
 
     @Autowired
-    BookmarkService bookmarkService;
-
-    @Autowired
-    BookmarkRepository bookmarkRepository;
+    private BookmarkService bookmarkService;
 
     @Autowired
     private UserService userService;
@@ -66,7 +63,7 @@ class BookmarkServiceTest {
 
     @DisplayName("createBookmark: 이미 같은 이름의 url을 가진 북마크가 존재 하는 경우, 기존의 북마크를 반환한다.")
     @Test
-    void createBookmark_DuplicateBookmark_ExceptionThrown() {
+    void createBookmark_DuplicateBookmark() {
         // given
         final BookmarkCreateDto bookmarkCreateRequest = new BookmarkCreateDto("https://taggle.co.kr", "title",
                 "description", "image");
@@ -112,7 +109,7 @@ class BookmarkServiceTest {
         final List<BookmarkResponse> bookmarkResponses = bookmarkService.findBookmarks(user, BOOKMARK_FIND_REQUEST);
 
         // then
-        assertThat(bookmarkResponses).hasSize(0);
+        assertThat(bookmarkResponses).isEmpty();
     }
 
     @DisplayName("removeBookmark: 삭제하려는 북마크가 존재 하지 않을 경우 익셉션을 발생한다")
