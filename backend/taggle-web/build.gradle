@@ -37,8 +37,15 @@ task copyDocument(type: Copy) {
     into file("src/main/resources/static/docs")
 }
 
+task copyConfigSettings(type: Copy) {
+    description = "Copy application-slack.yml from taggle-secret"
+    from '../taggle-secret'
+    into 'src/main/resources/'
+}
+
 build {
     dependsOn copyDocument
+    dependsOn copyConfigSettings
 }
 
 tasks.jacocoTestCoverageVerification {
@@ -77,6 +84,7 @@ sonarqube {
         property "sonar.exclusions", "*.doc, **/*Doc*.java, **/*Set*.java, **/DatabaseCleanup.java, **/WebApplication.java, **/CustomOAuth2UserService.java"
     }
 }
+
 
 dependencies {
     implementation project(':taggle-core')
