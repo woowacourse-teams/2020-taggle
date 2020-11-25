@@ -3,7 +3,4 @@ spring:
     active: local
     include:
       - db
-      - oauth
-      - log
-      - prod
-
+      - mail
