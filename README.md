@@ -14,8 +14,6 @@
 
 "브라우저, 메신저, 노션... 여러곳에 링크를 저장해뒀다 어디에 기록했는지 기억이 나지않아😭"
 
-
-
 그런 당신을 위해 준비했습니다! 태그 기반의 북마크 관리 서비스 **Taggle**👍
 
 <img src="https://user-images.githubusercontent.com/45934117/94047882-a8e79280-fe0d-11ea-8cb7-76200245ea14.png"/>
@@ -27,6 +25,8 @@
 <img src="https://user-images.githubusercontent.com/45934117/94048397-6d00fd00-fe0e-11ea-9480-d7cab2f655a6.png"/>
 
 <img src="https://user-images.githubusercontent.com/45934117/94048447-8144fa00-fe0e-11ea-8ff7-d19d42c0a946.png"/>
+
+<img src="https://user-images.githubusercontent.com/20358042/100330751-afafa300-3012-11eb-9295-838648918e57.jpg"/>
 
 ## 📚 기술 스택
 
@@ -50,7 +50,7 @@
 |  럿고  | 김세윤 |    [Github](https://github.com/ksy90101)    |
 |  티거  | 김준석 | [Github](https://github.com/kimevanjunseok) |
 
-## 📜LICENSE
+## 📜 LICENSE
 
 Copyright (c) 2020 By taggle. All right reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
