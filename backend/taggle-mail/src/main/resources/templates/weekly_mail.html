@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>주간 북마크 알림</title>
+</head>
+<body>
+<div>
+
+  <img src="https://user-images.githubusercontent.com/45934117/94068485-35a04980-fe2a-11ea-8b57-abd9bde30014.png"
+       style="display: block;
+       margin: 0px auto;" width="700px">
+
+  <h2>지난 일주일간 등록하신 북마크입니다.</h2>
+
+  <li style="border-top-width: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      position: relative;
+      border-top: 1px solid #f2f2f2;"
+      th:each="bookmark : ${bookmarks}">
+
+    <a rel="noopener noreferrer" style="padding-top: 17px;
+       padding-bottom: 13px;
+       overflow: hidden;
+       position: relative;
+       display: table;
+       width: 100%;
+       box-sizing: border-box;
+       z-index: 100;
+       height: 75px;
+       padding: 11px 15px;
+       color: #000;
+       text-decoration: none;" target="_blank" th:href="${bookmark.url}">
+
+      <div style="position: relative;
+          display: table-cell;
+          width: 90px;
+          text-align: center;">
+
+        <img style="max-width: 90px;height: 75px;vertical-align: top;"
+             th:src="${bookmark.image}">
+
+      </div>
+
+      <div style="padding: 0 0 0 13px;
+        display: table-cell;
+        height: 75px;
+        box-sizing: border-box;
+        vertical-align: middle;
+        font-family: HelveticaNeue-Light,AppleSDGothicNeo-Light,sans-serif;
+        letter-spacing: -1px;
+        line-height: 17.5px;">
+
+      <span style="display: block;
+          padding-bottom: 3px;
+          font-size: 16px;
+          line-height: 21px;
+          font-weight: normal;
+          word-break: break-all;
+          word-wrap: break-word;">
+
+        <strong style="overflow: hidden;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            font-size: 16px;
+            font-weight: normal;
+            line-height: 1.278;"
+                th:text="${bookmark.title}"></strong>
+
+      </span>
+        <em style="position: relative;
+            z-index: 100;
+            display: inline-block;
+            padding-bottom: 3px;
+            color: #7d7d7d;
+            font-size: 14px;
+            line-height: 1.25;
+            vertical-align: top;
+            font-style: normal;">
+
+          <b style="vertical-align:top;font-weight: normal;" th:text="${bookmark.description}"></b>
+
+        </em>
+
+        <br>
+
+      </div>
+
+    </a>
+
+  </li>
+
+</div>
+</body>
+</html>
