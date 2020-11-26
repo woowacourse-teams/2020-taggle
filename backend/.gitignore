@@ -3,6 +3,7 @@ HELP.md
 application-oauth.properties
 **/src/main/resources/static/
 **/src/main/resources/templates/
+**/src/main/resources/db/migration/*.sql
 **/src/main/resources/application-*.yml
 build/
 !gradle/wrapper/gradle-wrapper.jar
