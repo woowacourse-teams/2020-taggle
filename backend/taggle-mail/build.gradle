@@ -1,0 +1,22 @@
+dependencies {
+    implementation project(path: ':taggle-core', configuration: 'default')
+
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
+    implementation 'org.flywaydb:flyway-core'
+
+    testImplementation 'org.springframework.batch:spring-batch-test'
+}
+
+task copyConfigSettings(type: Copy) {
+    description = "Copy application-slack.yml from taggle-secret"
+    from '../taggle-secret'
+    into 'src/main/resources/'
+}
+
+build {
+    dependsOn copyConfigSettings
+}
