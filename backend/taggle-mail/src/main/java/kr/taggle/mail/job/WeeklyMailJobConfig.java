@@ -13,6 +13,7 @@ import org.springframework.batch.item.mail.javamail.MimeMessageItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import kr.taggle.mail.config.BatchConfig;
 import kr.taggle.mail.processor.WeeklyMailBatchProcessor;
 import kr.taggle.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class WeeklyMailJobConfig {
     private final EntityManagerFactory entityManagerFactory;
     private final WeeklyMailBatchProcessor weeklyMailBatchProcessor;
     private final MimeMessageItemWriter mimeMessageItemWriter;
+    private final BatchConfig batchConfig;
 
     @Bean
     public Job weeklyMailSendJob() {
@@ -39,7 +41,7 @@ public class WeeklyMailJobConfig {
     @Bean
     public Step weeklyMailSendStep() {
         return stepBuilderFactory.get("weeklyMailSendStep")
-                .<User, MimeMessage>chunk(10)
+                .<User, MimeMessage>chunk(batchConfig.getChunk())
                 .reader(userReader())
                 .processor(weeklyMailBatchProcessor)
                 .writer(mimeMessageItemWriter)
@@ -50,7 +52,7 @@ public class WeeklyMailJobConfig {
     public JpaPagingItemReader<User> userReader() {
         return new JpaPagingItemReaderBuilder<User>()
                 .entityManagerFactory(entityManagerFactory)
-                .pageSize(10)
+                .pageSize(batchConfig.getChunk())
                 .saveState(false)
                 .queryString("SELECT u FROM User u WHERE u.notificationEnabled = true ORDER BY u.id")
                 .build();
