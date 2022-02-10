@@ -49,7 +49,7 @@
     "file-loader": "^5.0.2",
     "material-design-icons-iconfont": "^5.0.1",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "prettier": "^1.17.1",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",
